@@ -14,7 +14,12 @@ env_files = ["../../.env"]
 models = ["gemini-3.5-flash", "gemini-3.6-flash", "groq:openai/gpt-oss-120b", "gemini-3.5-flash-lite"]
 temperature = 1.0
 # The whole call, not per read. 2026-10-29 evening: even "Say OK." took 171 s on the free tier, so 90 s was too short.
-timeout_seconds = 300
+# 2026-10-30 on GitHub: the script step sat 24+ min on gemini-3.5-flash (503s, then quota 429s), so calls are capped
+# lower and the whole step has a budget; past it, no new model is tried (the best style-only draft is used, if any).
+timeout_seconds = 180
+max_minutes = 15
+# Per-minute 429s: wait (retry-after, max 90 s) this many times per model, then move on. A daily-quota 429 moves on at once.
+rate_limit_waits = 2
 # Attempts per model when the output breaks a rule (the broken rules are sent back to fix).
 attempts = 3
 

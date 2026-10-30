@@ -494,7 +494,12 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
     system, user = build_prompt(brief, cfg)
     schema = response_schema(brief)
     best = None  # (script, model, problems): the best draft whose problems are all style-only
+    # the whole step has a budget: on GitHub (2026-10-30) Gemini sat 24+ min between 503s and quota 429s
+    deadline = time.time() + cfg["llm"].get("max_minutes", 12) * 60
     for model in models:
+        if time.time() > deadline:
+            log(f"out of time ({cfg['llm'].get('max_minutes', 12)} min); not trying {model} and the rest")
+            break
         provider = model.partition(":")[0] if ":" in model else "gemini"
         if not keys.get(provider):
             log(f"{model}: skipped, no API key for {provider}")
@@ -503,14 +508,18 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
         attempt, waits, busy = 0, 0, 0
         # fast models get more tries (flash-lite answers in ~3 s, gpt-oss in ~10 s)
         tries = cfg["llm"].get("attempts_per_model", {}).get(model, cfg["llm"]["attempts"])
-        while attempt < tries:
+        while attempt < tries and time.time() < deadline:
             attempt += 1
             started = time.time()
+            log(f"{model}: attempt {attempt}, asking (up to {cfg['llm']['timeout_seconds']} s)")
             try:
                 script = call_model(model, keys, system, messages, schema, cfg)
             except urllib.error.HTTPError as e:
-                detail = e.read()[:300].decode("utf-8", "replace")
+                detail = e.read()[:4000].decode("utf-8", "replace")  # Gemini names the quota (…PerDay…) far down the body
                 log(f"{model}: HTTP {e.code} {detail.strip()[:200]}")
+                if e.code == 429 and re.search(r"PerDay|per day|daily", detail, re.I):
+                    log(f"{model}: daily quota used up, trying the next model")
+                    break
                 if e.code in (500, 503) and busy < len(cfg["llm"].get("busy_backoff", [2, 4, 8])):
                     # "high demand" (Gemini's free tier at Indian peak hours): back off 2 -> 4 -> 8 s without spending
                     # an attempt, then move to the next model
@@ -522,7 +531,7 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
                     continue
                 if e.code in (500, 503):
                     break
-                if e.code == 429 and waits < 3:
+                if e.code == 429 and waits < cfg["llm"].get("rate_limit_waits", 2):
                     # per-minute limit (Groq free: 8000 tokens/min on gpt-oss-120b); wait as told, without using up an attempt
                     waits += 1
                     attempt -= 1
