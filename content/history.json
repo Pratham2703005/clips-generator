@@ -1,3 +1,21 @@
 {
-  "days": []
+  "days": [
+    {
+      "date": "2026-10-30",
+      "track": "product_pitch",
+      "format": "two-minute-setup",
+      "niche": "india-freshers",
+      "platform": "landing",
+      "cast": "arjun+riya",
+      "job_ids": [
+        "d73a49f2b59e915bde3efd0c7ae30944"
+      ],
+      "companies": [
+        "Zanskar"
+      ],
+      "premise": "ai-interviewer",
+      "hook": "replacement",
+      "dynamic": "learner-bites-back"
+    }
+  ]
 }
