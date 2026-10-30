@@ -1,0 +1,72 @@
+{
+  "Algenib": {
+    "median_hz": 104.6,
+    "p10_hz": 81,
+    "p90_hz": 132,
+    "frames": 210,
+    "match": 0.93,
+    "source": "Rasalgethi_Algenib.wav",
+    "model": "gemini-3.8-flash-tts"
+  },
+  "Alnilam": {
+    "median_hz": 121.2,
+    "p10_hz": 90,
+    "p90_hz": 203,
+    "frames": 216,
+    "match": 0.98,
+    "source": "Schedar_Alnilam.wav",
+    "model": "gemini-3.8-flash-tts"
+  },
+  "Charon": {
+    "median_hz": 103.2,
+    "p10_hz": 81,
+    "p90_hz": 149,
+    "frames": 229,
+    "match": 0.95,
+    "source": "Charon_Enceladus.wav"
+  },
+  "Enceladus": {
+    "median_hz": 120.3,
+    "p10_hz": 86,
+    "p90_hz": 158,
+    "frames": 209,
+    "match": 0.95,
+    "source": "Charon_Enceladus.wav"
+  },
+  "Iapetus": {
+    "median_hz": 156.9,
+    "p10_hz": 105,
+    "p90_hz": 227,
+    "frames": 165,
+    "match": 0.74,
+    "source": "Orus_Iapetus.wav",
+    "model": "gemini-3.8-flash-tts"
+  },
+  "Orus": {
+    "median_hz": 132.2,
+    "p10_hz": 104,
+    "p90_hz": 162,
+    "frames": 199,
+    "match": 0.74,
+    "source": "Orus_Iapetus.wav",
+    "model": "gemini-3.8-flash-tts"
+  },
+  "Rasalgethi": {
+    "median_hz": 137.3,
+    "p10_hz": 98,
+    "p90_hz": 239,
+    "frames": 200,
+    "match": 0.93,
+    "source": "Rasalgethi_Algenib.wav",
+    "model": "gemini-3.8-flash-tts"
+  },
+  "Schedar": {
+    "median_hz": 139.1,
+    "p10_hz": 98,
+    "p90_hz": 219,
+    "frames": 217,
+    "match": 0.98,
+    "source": "Schedar_Alnilam.wav",
+    "model": "gemini-3.8-flash-tts"
+  }
+}

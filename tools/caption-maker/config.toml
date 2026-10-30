@@ -1,0 +1,79 @@
+# caption-maker settings. Relative paths are resolved from this file's folder.
+
+[paths]
+# Scripts are read from <content_dir>/<date>/script.json; the outputs go next to it.
+content_dir = "../../content"
+# Audio used for timing when no --audio/--video is given (next to the script).
+default_audio = "voice.wav"
+# Full path to ffmpeg if it isn't on PATH (empty = look on PATH).
+ffmpeg = ""
+# Folder with extra .ttf/.otf fonts for burning in (empty = system fonts only).
+# Archivo Black (SIL OFL) ships in public/fonts, so the same font renders on Windows and the Linux runner.
+fonts_dir = "../../public/fonts"
+
+[whisper]
+# faster-whisper model; base.en timed 26 s of speech in 2 s on CPU (2026-10-29). small.en is more exact, slower.
+# Hinglish needs a multilingual model ("small", ~460 MB, the user installs it once); base.en matched only 51% of a
+# Hinglish script. language "en" makes Whisper write Hindi words in Roman script, like our scripts.
+model = "small"
+language = "en"
+device = "cpu"
+compute_type = "int8"
+# Also try with the script as a hint (helps with names) and keep whichever run matches the script better.
+# Never used alone: with the hint, Whisper skipped the first 4 s on 2026-10-29.
+try_script_prompt = true
+# Skip the hint pass when the plain pass already matches this much of the script.
+good_match = 0.85
+# Below this share of script words matched to what Whisper heard, the timing is suspect: warn.
+min_match = 0.7
+
+[video]
+# The canvas the captions are laid out on (the reel's size).
+width = 1080
+height = 1920
+
+[captions]
+# Words on screen at once; a chunk also ends at punctuation and never spans two speakers.
+max_words = 3
+uppercase = true
+font = "Archivo Black"
+size = 100
+bold = true
+# "glow": white text with a soft, light glow and drop shadow in the speaker's colour (user's pick, 2026-10-29:
+#   the solid box and then the hard outline+shadow looked boxy).
+# "shadow": white text, hard outline and drop shadow in the speaker's colour.
+# "box": white text on a solid box in the speaker's colour. "outline": white text with a coloured outline only.
+look = "glow"
+# Outline width (glow, shadow, outline) or box padding (box), in pixels.
+border = 3
+# Drop shadow offset in pixels (glow and shadow looks).
+shadow = 4
+# How solid the drop shadow is, 0-100 (glow look).
+shadow_opacity = 70
+# Softens the outline and shadow edges (0 = sharp).
+blur = 2
+# The glow behind the text (glow look): spread in pixels, softness, and how solid it is (0-100).
+glow_size = 14
+glow_blur = 12
+glow_opacity = 55
+text_color = "#FFFFFF"
+# The word being spoken right now.
+highlight_color = "#FFE600"
+# Bottom-centre anchor, this many pixels above the bottom edge. 575 sits the captions just above the composer's
+# characters (now at most ~575 px tall) and below its screenshot panel (y 560-1116).
+margin_bottom = 560
+margin_sides = 80
+# Each chunk pops in from this scale (percent) over this many ms; 100 turns it off.
+pop_from = 85
+pop_ms = 90
+# A gap between two chunks shorter than this keeps the earlier chunk on screen (no flicker), in seconds.
+hold_gap = 0.4
+
+# Caption colour per character id. Dark, saturated colours so white and yellow text stay readable.
+[speakers]
+arjun = "#1565C0"
+bunty = "#E65100"
+riya = "#C2185B"
+verma = "#2E7D32"
+malhotra = "#6A1B9A"
+default = "#212121"

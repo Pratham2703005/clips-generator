@@ -1,0 +1,35 @@
+# normalize-video settings. Relative paths are resolved from this file's folder.
+# Any value here can be overridden for one run from the command line (see README.md).
+
+[paths]
+input_dir = "../../public/bg-minecraft-video/raw"
+output_dir = "../../public/bg-minecraft-video/input"
+# Written into output_dir: one entry per output file (duration, size, the settings used).
+manifest = "manifest.json"
+# Only files with these extensions are picked up from input_dir.
+extensions = [".mp4", ".mkv", ".mov", ".webm"]
+
+[video]
+width = 1080
+height = 1920
+# "crop": fill the frame and cut the overflow from the centre (no bars).
+# "pad":  fit the whole picture inside and fill the rest with pad_color.
+fit = "crop"
+pad_color = "black"
+# 0 keeps the source frame rate.
+fps = 30
+# x264 quality: lower = better and bigger. 28 is plenty for a background.
+crf = 28
+# x264 speed: ultrafast ... medium ... slow ... veryslow (slower = a bit smaller, same quality).
+preset = "medium"
+
+[audio]
+keep = false
+bitrate = "128k"
+
+[trim]
+# Seconds cut from the start and end (starting/stopping the recorder, menus).
+start = 3.0
+end = 3.0
+# Pixels cut off every edge before fitting (window borders, a taskbar line).
+margin = 6

@@ -1,0 +1,89 @@
+# visual-capture settings. Relative paths are resolved from this file's folder.
+
+[paths]
+# Scripts and briefs are read from <content_dir>/<date>/; screenshots go to <date>/visuals/.
+content_dir = "../../content"
+# Product pages change rarely, so their screenshots are kept here and reused for cache_days.
+cache_dir = "../../public/visual-cache"
+cache_days = 7
+
+[chrome]
+# The first one that exists is used (Windows Chrome, Windows Edge, then Linux names on PATH for GitHub Actions).
+paths = [
+  "C:/Program Files/Google/Chrome/Application/chrome.exe",
+  "C:/Program Files (x86)/Microsoft/Edge/Application/msedge.exe",
+  "google-chrome", "chromium", "chromium-browser",
+]
+# A desktop monitor viewport (user, 2026-10-30: show the pages as they look on a monitor, not the phone layout),
+# at 2x so it stays sharp when the composer scales it into the reel.
+width = 1280
+height = 800
+scale = 2
+mobile = false
+# Height of the saved shot in css px (x scale): taller than the viewport, so the panel has page to scroll through.
+shot_height = 2000
+# After the load event, wait until the page's text stops growing for settle_ms, at most wait_ms
+# (Workday job pages are skeletons at load and fill in a few seconds later).
+settle_ms = 2500
+wait_ms = 15000
+# How long the page may load and run scripts before the shot (ms), and the hard limit per shot (s).
+budget_ms = 10000
+timeout = 60
+# One retry when a shot fails (this network resets TLS connections now and then, 2026-10-30).
+retries = 1
+
+# What to show on which line. Lines with a job_id get that job's own apply page (real proof that the job exists).
+# Other lines that name a product get its page; the call-to-action line gets the day's platform page.
+[rules]
+job_pages = true
+# The last line (call to action) shows the brief's platform page.
+cta_page = true
+# At most this many screenshots per reel (each is a ~15 s Chrome run).
+max_visuals = 6
+# When line 1 has a number (the hook, "You sent 200 applications..."), show an illustrative applications tracker with
+# that many "No response" rows from frame 0, scrolling fast (px/s in the reel). Labelled "illustration"; generic rows.
+hook_tracker = true
+hook_scroll = 500
+# Text on a job's own page that means it shouldn't be in a reel (regex, case-insensitive). Found on 2026-10-30: the
+# API had "Technical Writer" at Wycliffe; its Workday page said "Position Type: Volunteer".
+job_red_flags = [
+  "position type\\s*:?\\s*volunteer", "\\bvolunteer (position|role|opportunity)\\b", "\\bunpaid\\b",
+  "no longer accepting applications", "this (job|position) (is|has been) (closed|filled)", "job (is )?no longer available",
+]
+
+# Words in a line (lower case, regex) -> the page to show. Checked in order; the first match wins.
+[[rules.mentions]]
+pattern = "\\bn8n\\b"
+page = "n8n"
+[[rules.mentions]]
+pattern = "\\bmake(\\.com)?\\b.*template|template.*\\bmake(\\.com)?\\b"
+page = "make"
+[[rules.mentions]]
+pattern = "\\bmcp\\b"
+page = "apify-mcp"
+[[rules.mentions]]
+pattern = "\\bapify\\b"
+page = "apify"
+[[rules.mentions]]
+pattern = "rapid ?api"
+page = "rapidapi"
+[[rules.mentions]]
+pattern = "api\\.market"
+page = "api-market"
+[[rules.mentions]]
+pattern = "\\bzyla\\b"
+page = "zyla"
+[[rules.mentions]]
+pattern = "website|landing page|ats jobs api"
+page = "landing"
+
+# The product pages (ids match content-data-preparation's [platforms]).
+[pages]
+landing = "https://ats-jobs-api.pk2732004.workers.dev"
+apify = "https://apify.com/pk07007/ats-jobs-api"
+apify-mcp = "https://apify.com/pk07007/ats-jobs-api"
+n8n = "https://n8n.io/workflows/21483"
+make = "https://www.make.com/en/templates/20017-get-new-jobs-from-company-career-sites-into-google-sheets-every-day"
+rapidapi = "https://rapidapi.com/pk2732004/api/company-career-sites-jobs-api1"
+api-market = "https://api.market/store/pratham-org/career-site-jobs"
+zyla = "https://zylalabs.com/api-marketplace/other/career+site+job+listings+api/14345"

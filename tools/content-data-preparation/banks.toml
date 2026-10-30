@@ -1,0 +1,424 @@
+# Idea banks for variety (user, 2026-10-30: three reels in a row opened on "200 applications" and a roast).
+# Every reel draws one premise, one hook formula and one dynamic; cooldowns in config.toml [rules] keep them from
+# repeating soon. Premises come from what Indian freshers and early-career people actually complain about (off-campus
+# drives, ghosting, CTC vs in-hand, notice periods, Telegram drive groups, referrals). No numbers here: any number in a
+# script must still come from the brief.
+# `fits`: the tracks a premise suits (job_drop = jobs reel, product_pitch = API/n8n/MCP reel).
+
+# ---------------------------------------------------------------- premises
+[[premises]]
+id = "ghosted-after-apply"
+text = "Applied weeks ago: no rejection mail, no test link, no HR call. Just silence, and refreshing the inbox."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "ghosted-after-interview"
+text = "Cleared every round, HR said 'we'll get back to you', and never did. The learner still has the tab open."
+fits = ["job_drop"]
+[[premises]]
+id = "ctc-vs-inhand"
+text = "Offer says a big LPA number; the first salary credit is much smaller. Someone just learned what CTC actually means."
+fits = ["job_drop"]
+[[premises]]
+id = "immediate-joiner"
+text = "Every listing wants an 'immediate joiner', but the companies themselves keep you on a long notice period."
+fits = ["job_drop"]
+[[premises]]
+id = "experience-for-fresher"
+text = "A 'fresher' job asks for years of experience. How do you get experience without a first job?"
+fits = ["job_drop"]
+[[premises]]
+id = "telegram-drive-groups"
+text = "The learner is in endless Telegram and WhatsApp 'off-campus drive' groups; half the links are old, the other half are forwards of forwards."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "referral-begging"
+text = "Messaging strangers on LinkedIn: 'Sir, can you refer me?' Seen. No reply."
+fits = ["job_drop"]
+[[premises]]
+id = "linkedin-cringe"
+text = "The learner wrote a dramatic LinkedIn post ('Humbled and excited...') about a job they don't have yet."
+fits = ["job_drop"]
+[[premises]]
+id = "five-years-question"
+text = "Interview question: 'Where do you see yourself in five years?' The honest answer would get them rejected."
+fits = ["job_drop"]
+[[premises]]
+id = "tell-me-about-yourself"
+text = "The learner's 'Tell me about yourself' answer is just their resume read aloud, slowly."
+fits = ["job_drop"]
+[[premises]]
+id = "resume-ten-fonts"
+text = "The resume has rainbow colours, a selfie and every skill from MS Word to quantum physics."
+fits = ["job_drop"]
+[[premises]]
+id = "ats-keyword-panic"
+text = "The learner heard 'the ATS rejects you' and stuffed every keyword into the resume in white text."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "placement-season-panic"
+text = "Placement season: everyone in the hostel suddenly 'loves' the same mass recruiter, and the learner panics."
+fits = ["job_drop"]
+[[premises]]
+id = "no-campus-placement"
+text = "The college placement cell has gone quiet; the learner realises off-campus is the real route now."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "parents-sharma-ji"
+knows = ["arjun"]  # Arjun IS "Sharma ji ka beta"
+text = "Relatives at a family function compare the learner to Sharma ji's son, who 'got placed in a big company'."
+fits = ["job_drop"]
+[[premises]]
+id = "bond-agreement"
+text = "The offer letter has a service bond buried on the last page. The learner signed without reading."
+fits = ["job_drop"]
+[[premises]]
+id = "aptitude-test-trauma"
+text = "Online aptitude test: trains, pipes, ages of fathers and sons. The learner has flashbacks."
+fits = ["job_drop"]
+[[premises]]
+id = "group-discussion"
+text = "Group discussion round: one candidate shouts the loudest and thinks that is leadership."
+fits = ["job_drop"]
+[[premises]]
+id = "chatgpt-cover-letter"
+text = "The learner sent a ChatGPT cover letter that still says 'Dear [Hiring Manager Name]'."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "chatgpt-job-list"
+text = "The learner asked a chatbot for 'latest jobs' and got a confident list of openings that are closed or don't exist."
+fits = ["product_pitch", "job_drop"]
+[[premises]]
+id = "apply-everywhere"
+text = "The learner's strategy is 'apply to everything': same resume, every job board, every role, zero reading."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "fake-job-scam"
+text = "A 'job' on WhatsApp asked for a registration fee. The learner almost paid."
+fits = ["job_drop"]
+[[premises]]
+id = "unpaid-internship"
+text = "An 'internship' offers exposure and a certificate instead of a stipend, for months, on-site."
+fits = ["job_drop"]
+[[premises]]
+id = "remote-dream"
+text = "The learner only wants remote jobs from the beach, but every 'remote' listing is remote inside one country."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "bengaluru-traffic"
+text = "The job is in Bengaluru; the commute plan involves hours in traffic every day."
+fits = ["job_drop"]
+[[premises]]
+id = "pg-life"
+text = "Moving to a new city for the job: the PG has one bathroom, a crowd of roommates and a strict night curfew."
+fits = ["job_drop"]
+[[premises]]
+id = "first-salary-plans"
+text = "The learner has already spent their first salary in their head: phone, trip, gifts. They don't have the job yet."
+fits = ["job_drop"]
+[[premises]]
+id = "job-board-repost"
+text = "The same listing shows up on many sites with different dates. Which one is real?"
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "applied-on-closed"
+text = "The learner wrote a perfect application for a job that closed weeks ago; the board still shows it."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "too-early-too-late"
+text = "By the time the job reached the learner's group chat, a crowd had applied. Timing is everything."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "career-switch-uncle"
+text = "An uncle insists on government exam prep; the learner wants a tech job. Family meeting energy."
+fits = ["job_drop"]
+[[premises]]
+id = "verma-old-ways"
+learns = ["verma"]
+text = "The placement officer still believes in printed resumes, file folders and 'walk-in with formal shoes'."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "hr-inside-view"
+knows = ["malhotra"]
+text = "An HR insider reveals what actually happens to the hundredth application in the pile."
+fits = ["job_drop"]
+[[premises]]
+id = "notice-period-limbo"
+text = "Offer accepted, but the new company wants them next week and the old one wants months of notice."
+fits = ["job_drop"]
+[[premises]]
+id = "salary-negotiation"
+text = "HR asks 'what is your expected CTC?' and the learner says 'whatever you think is right'. Mistake."
+fits = ["job_drop"]
+[[premises]]
+id = "overqualified-underpaid"
+text = "An engineering graduate applying for a role that needs 'basic Excel'. It still asks for experience."
+fits = ["job_drop"]
+[[premises]]
+id = "dream-company-only"
+text = "The learner only applies to famous brands and ignores companies they've never heard of, where nobody else applies."
+fits = ["job_drop"]
+[[premises]]
+id = "automation-hero"
+text = "The learner wants a bot that finds jobs while they sleep, instead of scrolling job boards late at night."
+fits = ["product_pitch"]
+[[premises]]
+id = "dev-friend-flex"
+text = "A developer friend built their own job feed with an API and stopped scrolling job boards forever."
+fits = ["product_pitch"]
+[[premises]]
+id = "spreadsheet-tracker"
+text = "The learner keeps a giant spreadsheet of applications, colour-coded by how hopeless each one is."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "monday-motivation"
+text = "Monday morning: the learner promised to apply today and has opened a ridiculous number of tabs instead."
+fits = ["job_drop"]
+[[premises]]
+id = "weekend-applying"
+text = "Applying on a Sunday night feels productive; nobody posts jobs on weekends though."
+fits = ["job_drop"]
+[[premises]]
+id = "video-interview-fail"
+text = "Video interview: the Wi-Fi drops, the camera shows a pile of laundry, and mom walks in with chai."
+fits = ["job_drop"]
+[[premises]]
+id = "ai-interviewer"
+text = "The first round was with an AI interviewer that never blinks. The learner is not okay."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "skills-section-lies"
+text = "The resume says 'expert in Python'; the learner wrote one print statement in college."
+fits = ["job_drop"]
+[[premises]]
+id = "mass-recruiter-wait"
+text = "Selected by a mass recruiter, then told to wait for onboarding. Indefinitely."
+fits = ["job_drop"]
+[[premises]]
+id = "startup-vs-mnc"
+text = "Startup with chaos and learning, or big MNC with a fixed desk and a slow life? The learner can't pick."
+fits = ["job_drop"]
+[[premises]]
+id = "company-career-page-secret"
+text = "Most people never open a company's own careers page, where the job is posted first."
+fits = ["job_drop", "product_pitch"]
+[[premises]]
+id = "job-alert-spam"
+text = "The learner's inbox has hundreds of job alerts a day, none of them relevant."
+fits = ["product_pitch", "job_drop"]
+[[premises]]
+id = "manager-review"
+text = "First job, first performance review: the manager says 'good effort'. What does that mean?"
+fits = ["job_drop"]
+[[premises]]
+id = "intern-coffee"
+text = "The intern was promised 'real projects' and has mostly fixed slide fonts and fetched coffee."
+fits = ["job_drop"]
+[[premises]]
+id = "layoff-fear"
+text = "News says layoffs; the learner wonders whether to even apply to tech now."
+fits = ["job_drop"]
+[[premises]]
+id = "wfh-family"
+text = "Working from home means the family thinks you are free all day."
+fits = ["job_drop"]
+[[premises]]
+id = "portfolio-none"
+text = "The designer has 'passion' but no portfolio link; the HR asks for one, twice."
+fits = ["job_drop"]
+[[premises]]
+id = "data-science-hype"
+text = "Everyone wants to be a 'Data Scientist' after one online course and a certificate."
+fits = ["job_drop"]
+[[premises]]
+id = "sales-hesitation"
+text = "The learner avoids sales jobs ('I'm not a talker') while sales teams hire more freshers than anyone."
+fits = ["job_drop"]
+[[premises]]
+id = "support-underrated"
+text = "Customer support roles are 'beneath' the learner, until they see the career path and the companies hiring."
+fits = ["job_drop"]
+[[premises]]
+id = "mcp-confusion"
+text = "Someone mentions an MCP server; the learner thinks it's a new government scheme."
+fits = ["product_pitch"]
+[[premises]]
+id = "n8n-what"
+text = "The learner thinks n8n is a typo; it's the tool that could send them fresh jobs every morning."
+fits = ["product_pitch"]
+
+# ---------------------------------------------------------------- hook formulas (from the ig-reel skill, 26)
+# The script adapts one to Hinglish for line 1. `numbers` = the formula needs a number: only use one from the brief.
+[[hooks]]
+id = "cost-confession"
+name = "Cost Confession"
+template = "{one mistake} cost me {something real: weeks, an offer, a job}."
+example = "Ek galat resume ne mujhse teen interviews chheen liye."
+numbers = true
+[[hooks]]
+id = "negative-command"
+name = "Negative Command"
+template = "Stop {common action}. Do {alternative} instead."
+example = "Job boards pe apply karna band karo. Pehle company ka career page dekho."
+[[hooks]]
+id = "nobody-tells-you"
+name = "Nobody Tells You"
+template = "Nobody tells you that {uncomfortable truth}."
+example = "Nobody tells you ki 'immediate joiner' ka matlab hai 'kal se aao'."
+[[hooks]]
+id = "replacement"
+fits = ["product_pitch"]  # "X replaced Y" reads as a product line
+name = "The Replacement"
+template = "{This thing} replaced {annoying thing}."
+example = "Ek n8n template ne mere tees job alert emails replace kar diye."
+[[hooks]]
+id = "time-collapse"
+fits = ["product_pitch"]
+name = "Time Collapse"
+template = "{Thing} used to take {long}. Now it takes {short}."
+example = "Jobs dhoondhne mein poora din jaata tha. Ab chai khatam hone tak ho jaata hai."
+[[hooks]]
+id = "receipt"
+name = "The Receipt"
+template = "I did {thing} for {time}. Here's what happened."
+example = "Maine ek hafta sirf career pages pe apply kiya. Result dekho."
+[[hooks]]
+id = "wrong-way-right-way"
+name = "Wrong Way, Right Way"
+template = "You're doing {thing} wrong, and it's not your fault."
+example = "Tum job search galat kar rahe ho, aur ismein tumhari galti nahi hai."
+[[hooks]]
+id = "insider-leak"
+knows = ["malhotra"]  # "I spent years in HR" only fits the HR insider
+name = "Insider Leak"
+template = "I spent years {inside the thing}. Here's what we never say out loud."
+example = "Main saalon se HR mein hoon. Ye baat hum kabhi bolte nahi."
+[[hooks]]
+id = "the-steal"
+name = "The Steal"
+template = "Steal this {thing}."
+example = "Ye job search trick chura lo. Mujhe seekhne mein ek saal laga."
+[[hooks]]
+id = "if-this-then-watch"
+name = "If This, Then Watch"
+template = "If you {specific situation}, watch this."
+example = "Agar HR ne tumhe ghost kiya hai, ye reel tumhare liye hai."
+[[hooks]]
+id = "numbered-favourite"
+name = "Numbered With A Favourite"
+template = "{N} {things}. Number {k} is the one nobody uses."
+example = "Teen job search tricks. Teesri wali koi use nahi karta."
+[[hooks]]
+id = "the-objection"
+name = "The Objection"
+template = "\"{Objection they actually say}.\" Fine. Here's what works anyway."
+example = "'Mere paas experience nahi hai.' Theek hai. Phir bhi ye karo."
+[[hooks]]
+id = "before-after"
+name = "Before And After"
+template = "{Old way}. {New way}. {The one lever}."
+example = "Pehle: forty tabs, zero calls. Ab: ek alert, roz subah."
+[[hooks]]
+id = "the-callout"
+name = "The Callout"
+template = "{Specific group}, this is the one you've been ignoring."
+example = "Freshers jo sirf bade brands pe apply karte ho, ye tumhare liye hai."
+[[hooks]]
+id = "flop-record"
+name = "The Flop Record"
+template = "My first {attempts} did nothing. Here's what changed."
+example = "Meri pehli saari applications fail hui. Phir ek cheez badli."
+[[hooks]]
+id = "verbatim-question"
+name = "The Verbatim Question"
+template = "\"{Question exactly as asked}\" I get this every week."
+example = "'Ma'am, mujhe call kyun nahi aata?' Ye sawaal har hafte aata hai."
+[[hooks]]
+id = "head-to-head"
+name = "Head To Head"
+template = "{A} versus {B}. One wasn't even close."
+example = "Job board versus company career page. Mukabla tha hi nahi."
+[[hooks]]
+id = "cold-open"
+name = "Cold Open"
+template = "{Start mid-action.} Watch this."
+example = "Dekho, ye job kal raat post hui hai. Abhi tak kisi ne dekhi bhi nahi."
+[[hooks]]
+id = "the-deadline"
+name = "The Deadline"
+template = "{Thing} is closing soon. Do {action} before then."
+example = "Placement season khatam hone se pehle ye ek kaam kar lo."
+[[hooks]]
+id = "permission"
+name = "Permission"
+template = "You don't need {the thing everyone says you need}."
+example = "Tumhe referral ki zaroorat nahi hai. Tumhe timing chahiye."
+[[hooks]]
+id = "mid-sentence"
+name = "Mid-Sentence Start"
+template = "...and that's when {the turn}."
+example = "...aur tab HR ne bola, 'we'll get back to you.' Teen mahine pehle."
+[[hooks]]
+id = "contrarian-flip"
+name = "Contrarian Flip"
+template = "{Well-known saying, inverted.}"
+example = "Jaldi apply karna smart nahi hai. Sahi jagah apply karna smart hai."
+[[hooks]]
+id = "the-statistic"
+name = "The Statistic"
+template = "{Number from the brief} {surprising fact}."
+example = "Over four hundred thousand new jobs last week. Tumne kitni dekhi?"
+numbers = true
+[[hooks]]
+id = "the-reveal"
+name = "The Reveal"
+template = "This is the new {thing}."
+example = "Ye hai naya tareeka job dhoondhne ka. Bina job board ke."
+[[hooks]]
+id = "someone-elses-result"
+name = "Someone Else's Result"
+template = "There was one {person} who {outcome}."
+example = "Mera ek dost tha jisne ek hafte mein teen interview calls le liye."
+[[hooks]]
+id = "superlative"
+name = "The Superlative"
+template = "The {fastest / only} way to {thing} is {answer}."
+example = "Fresh job pakadne ka sabse fast tareeka: company ka apna page."
+
+# ---------------------------------------------------------------- dynamics (who does what to whom)
+[[dynamics]]
+id = "classic-roast"
+text = "The one who knows roasts the learner's mistake, then shows the better way."
+[[dynamics]]
+id = "learner-bites-back"
+text = "The learner keeps landing comebacks; the expert wins only at the very end."
+[[dynamics]]
+id = "both-vs-system"
+text = "Both characters team up against the absurd job market and roast it together."
+[[dynamics]]
+id = "expert-caught-out"
+text = "The expert gets something wrong first, gets roasted, then recovers with the real answer."
+[[dynamics]]
+id = "quiz-show"
+text = "The expert runs a quick quiz or guessing game; the learner's wrong guesses are the jokes."
+[[dynamics]]
+id = "mock-interview"
+text = "The expert plays interviewer; the learner's answers get worse, then one smart move saves them."
+[[dynamics]]
+id = "therapy-session"
+text = "The learner vents dramatically like in therapy; the expert answers like a deadpan doctor with a prescription."
+[[dynamics]]
+id = "news-anchor"
+text = "One character reports the job market like breaking news; the other reacts live."
+[[dynamics]]
+id = "detective"
+text = "The expert investigates why the learner gets no calls, like a detective, and names the culprit."
+[[dynamics]]
+id = "challenge"
+text = "A bet or challenge: the learner tries their way, the expert tries theirs, and the result is the punchline."
+[[dynamics]]
+id = "flashback"
+text = "Starts with the learner's past disaster as a flashback, then the expert shows what should have happened."
+[[dynamics]]
+id = "reverse-mentor"
+learns = ["verma"]  # the younger teaches the older: only when Verma is the learner
+text = "The younger one teaches the older one something modern, with mutual roasting about age."

@@ -1,0 +1,30 @@
+# Custom mode: same settings as ATS mode (this file started as a copy of ats.toml), plus your own choices.
+#   python run.py custom                      # uses the settings below
+#   python run.py custom my-script.txt        # your script file, everything else from below
+#   python run.py custom --left riya --right bunty --visuals off
+#
+# Your own script is a plain text file, one line per spoken line:
+#     hook: ZERO CALLS. ZERO REPLIES.
+#     Riya: Ma'am, mujhe call kyun nahi aata?
+#     Malhotra (shocked): Kyunki tum har jagah apply karti ho. Rejected.
+#     Riya: Toh kahan karun? [show: https://ats-jobs-api.pk2732004.workers.dev]
+# "(shocked)" uses the shocked face; "[show: URL]" puts that page on screen during the line; "hook:" is the on-screen
+# hook card; lines starting with # are ignored. The first two names are the two characters (first = left).
+# What you write is what gets made: no fact checks, no rewriting.
+#
+# Any tool table can be repeated here to change it only for custom reels (e.g. [compose.overlay] enabled = false).
+
+[run]
+# Your own script (relative to this file). Empty = the AI writes one from today's brief, like ATS mode.
+script_file = "example-script.txt"
+# Characters, by id or name (arjun, bunty, riya, verma, malhotra). Empty = from the script (first two speakers).
+left = ""
+right = ""
+# On-screen hook card (6 words or fewer). A "hook:" line in the script wins over this.
+hook_card = ""
+# Screenshots of real pages ([show: URL] lines; with an AI script also job and product pages).
+visuals = true
+# Background clip in public/bg-minecraft-video/input. Empty = a random one.
+clip = ""
+# Output folder name (content/custom/<name>). Empty = the script file's name + today's date.
+name = ""

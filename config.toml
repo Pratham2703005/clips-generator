@@ -1,0 +1,84 @@
+# Master config. Each table overrides that tool's own config.toml (tools/<tool>/config.toml), which always keeps a
+# full set of values so every tool also runs and is configured on its own.
+#
+#   tool's own config  <  this file  <  the run mode (modes/ats.toml or modes/custom.toml, via run.py)
+#
+# Only put keys here that exist in the tool's config (a key that doesn't is reported). Paths are relative to this file.
+# Tables: [content] content-data-preparation, [script] script-writer, [voice] voice-generator,
+# [captions] caption-maker, [visuals] visual-capture, [compose] composer, [normalize] normalize-video.
+# The values below are the ones worth tuning from one place; everything else lives in the tool configs.
+
+# ---- what each daily reel is about
+[content.tracks]
+# Weights: two job-drop reels for every product pitch.
+job_drop = 2
+product_pitch = 1
+
+[content.rules]
+# Only jobs posted within this many days; open every apply link before using it.
+posted_within_days = 2
+check_links = true
+# Idea banks (tools/content-data-preparation/banks.toml): days before a premise, hook formula or dynamic comes back.
+premise_cooldown_days = 30
+hook_cooldown_days = 7
+dynamic_cooldown_days = 4
+
+# ---- the script
+[script.llm]
+# Tried in order. One script a day fits Gemini's free quota; Groq is the fast fallback.
+models = ["gemini-3.5-flash", "gemini-3.6-flash", "groq:openai/gpt-oss-120b", "gemini-3.5-flash-lite"]
+
+[script.script]
+# ~140-170 words is a ~41-50 s reel at our voice speed.
+min_words = 140
+max_words = 170
+
+[script.judge]
+# A second model scores each draft 1-10; below min_score its notes go back to the writer.
+enabled = true
+min_score = 7
+
+# ---- the voice
+[voice.tts]
+# Each TTS model has its own free daily quota; a used-up one moves on to the next.
+models = ["gemini-2.5-flash-preview-tts", "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview", "gemini-3.8-flash-lite-tts"]
+
+[voice.voice]
+# Finished voice at this many words per second (speed-up chosen per take, within min/max).
+target_wps = 3.4
+min_speed = 1.15
+max_speed = 1.6
+loudness_lufs = -14
+
+# ---- captions
+[captions.whisper]
+# Multilingual model for Hinglish timing.
+model = "small"
+language = "en"
+
+[captions.captions]
+look = "glow"
+size = 100
+max_words = 3
+
+# ---- screenshots of real pages
+[visuals.rules]
+job_pages = true
+cta_page = true
+hook_tracker = true
+max_visuals = 6
+
+# ---- the finished reel
+[compose.characters]
+height = 700
+inner_edge = 0.36
+
+[compose.panel]
+enabled = true
+scroll = 90
+
+[compose.overlay]
+enabled = true
+
+[compose.audio]
+music_gain_db = -24

@@ -1,0 +1,89 @@
+# Daily reel: runs `python run.py ats` every morning and keeps the reel as a downloadable artifact.
+# Before the first run (see README.md, "GitHub setup"):
+#   - repository secrets: GEMINI_API_KEY, GROQ_API_KEY, JOB_FEED_API_KEY
+#   - a release tagged `backgrounds` with the processed clips (clip1.mp4, clip2.mp4, ... as named in
+#     public/bg-minecraft-video/input/manifest.json) attached as assets
+name: Daily reel
+
+on:
+  schedule:
+    - cron: "30 2 * * *"   # 08:00 IST
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "ats or custom"
+        default: "ats"
+      script:
+        description: "custom mode: path to a script file in the repo (optional)"
+        default: ""
+
+permissions:
+  contents: write   # to commit content/history.json (keeps reels from repeating)
+
+concurrency:
+  group: daily-reel
+  cancel-in-progress: false
+
+jobs:
+  reel:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      JOB_FEED_API_KEY: ${{ secrets.JOB_FEED_API_KEY }}
+      HF_HUB_DISABLE_TELEMETRY: "1"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: FFmpeg
+        run: sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+
+      - name: Python packages
+        run: pip install -r requirements.txt
+
+      - name: Whisper model cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-small-v1
+
+      - name: Background clips
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download backgrounds --pattern "*.mp4" --dir public/bg-minecraft-video/input --skip-existing
+
+      - name: Make the reel
+        run: |
+          DAY=$(TZ=Asia/Kolkata date +%F)
+          echo "DAY=$DAY" >> "$GITHUB_ENV"
+          if [ "${{ inputs.mode || 'ats' }}" = "custom" ] && [ -n "${{ inputs.script }}" ]; then
+            python run.py custom "${{ inputs.script }}" --date "$DAY" --name "custom-$DAY"
+          else
+            python run.py "${{ inputs.mode || 'ats' }}" --date "$DAY"
+          fi
+
+      - name: Keep the reel
+        uses: actions/upload-artifact@v4
+        with:
+          name: reel-${{ env.DAY }}
+          path: |
+            content/${{ env.DAY }}/reel.mp4
+            content/${{ env.DAY }}/script.md
+            content/${{ env.DAY }}/script.json
+            content/custom/custom-${{ env.DAY }}/reel.mp4
+          if-no-files-found: warn
+          retention-days: 30
+
+      - name: Save history
+        if: success()
+        run: |
+          git config user.name "reel-bot"
+          git config user.email "reel-bot@users.noreply.github.com"
+          git add content/history.json
+          git diff --cached --quiet || (git commit -m "history: reel for ${DAY}" && git push)

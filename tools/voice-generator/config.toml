@@ -1,0 +1,115 @@
+# voice-generator settings. Relative paths are resolved from this file's folder.
+
+[paths]
+# Scripts are read from <content_dir>/<date>/script.json; the voice is written next to it.
+content_dir = "../../content"
+# Full path to ffmpeg if it isn't on PATH (empty = look on PATH).
+ffmpeg = ""
+
+[tts]
+key_env = "GEMINI_API_KEY"
+env_files = ["../../.env"]
+# Tried in order. 2026-10-29: gemini-2.5-flash-preview-tts takes the whole dialogue as one transcript with director
+# notes and sounds the most in character; gemini-3.8-flash-tts needs one part per line and rejects director notes.
+# Each TTS model has its own free daily quota (2026-10-30: 2.5's ran out after ~15 requests while 3.8, 3.1 and
+# 3.8-lite still answered), so a daily-quota 429 moves on to the next one.
+models = ["gemini-2.5-flash-preview-tts", "gemini-3.8-flash-tts", "gemini-3.1-flash-tts-preview", "gemini-3.8-flash-lite-tts"]
+# Models that take one part per line (speaker in speechMetadata, style as the character's inline `tag`) and reject
+# director notes.
+per_line_models = ["gemini-3"]
+# A 15-20 s dialogue took ~180 s on the free tier; ~45 s reels (130 words) need more.
+timeout_seconds = 900
+# Attempts per model: a reply with no audio, or audio far too short or long for the words, is retried.
+attempts = 3
+# Sane speaking rate of the raw (1x) audio, in words per second. Outside this the audio was cut off or garbled.
+min_words_per_second = 1.5
+max_words_per_second = 5.0
+
+[voice]
+# Speed-up after generation, pitch kept (ffmpeg atempo). The user liked the casting samples at 1.25x (2026-10-29).
+speed = 1.25
+# Instead of a fixed speed: aim the finished voice at this many words per second (2.5 at 1.25x gave ~3.4, which the
+# user liked; gemini-3.8-flash-tts talks slower, so it gets more speed-up), kept within min/max.
+target_wps = 3.4
+min_speed = 1.15
+max_speed = 1.6
+# Loudness-normalise to Instagram's level (integrated LUFS); set to 0 to skip.
+loudness_lufs = -14
+sample_rate = 48000
+# Sent before the per-character notes.
+# Hinglish with Indian accents (user, 2026-10-30: a Hinglish version beat the American English one side by side).
+direction = "Perform this as a fast, punchy Instagram Reel dialogue in natural Hinglish, the way young urban Indians talk, mixing Hindi and English, with natural Indian accents: quick pace (about 1.4x normal speech), natural comic timing, tiny pauses between speakers, real emotion in every line. The two voices must sound clearly different."
+# Per-line models: added to a shocked line's tags.
+shocked_tag = "[shocked]"
+# Added for lines the script marks as shocked ({lines} is replaced by the quoted lines).
+shocked = "Say these lines with real shock and disbelief: {lines}."
+
+# audition.py: measures each voice's pitch so a cast's voices are clearly apart (2026-10-30: Bunty/Puck 138 Hz and
+# Malhotra/Gacrux 135 Hz sounded the same). Two voices per request, one request at a time.
+[audition]
+# Measured pitches (kept in git; the pitch check reads them) and the audition audio (git-ignored, to listen to).
+results = "voice-pitch.json"
+out_dir = "audition-audio"
+# Seconds between requests (gemini-2.5-flash-preview-tts free tier: 3 requests per minute).
+min_interval = 25
+direction = "Read this as a natural conversation between two friends, at a normal pace, in your own natural voice."
+lines = [
+  "I sent two hundred applications this month and nobody called me back.",
+  "Because you keep applying where everyone else applies.",
+  "So where am I supposed to look, then?",
+  "On the company's own career page, the day the job goes up.",
+]
+# Two characters in one reel closer than this (in semitones, from voice-pitch.json) get a warning before any API call.
+min_gap_semitones = 3
+# Candidates not measured yet. Measured voices live in voice-pitch.json and are not requested again.
+voices = ["Fenrir", "Kore", "Charon", "Sulafat", "Sadachbia", "Autonoe", "Orus", "Pulcherrima", "Achird", "Zephyr", "Enceladus", "Despina"]
+
+# Casting briefs for one part: `python tools/voice-generator/audition.py --profile oldman`.
+[audition.profiles.oldman]
+direction = "Two American men in their sixties chatting, with natural American English accents: a little raspy and breathy, old-fashioned, with an elderly warmth, at a brisk conversational pace."
+# Inline style for the per-line gemini-3.x models (they ignore `direction`).
+tag = "[American accent, older man in his sixties, slightly raspy, brisk]"
+lines = [
+  "In my day, kid, we mailed our resumes and waited weeks.",
+  "And now these children apply on the phone in two minutes.",
+  "Hmm. Straight from the company's own website, you say?",
+  "Yes, yes. No middleman at all. Even I could do it.",
+]
+voices = ["Charon", "Enceladus", "Orus", "Iapetus", "Schedar", "Alnilam", "Rasalgethi", "Algenib"]
+
+# One fixed voice per character, every reel. Keys are the character ids from content-data-preparation.
+# label: the name used in the transcript (one word, no apostrophes). voice: a Gemini prebuilt voice.
+# notes: the director note (gemini-2.5). tag: the inline style for the per-line gemini-3.x models.
+[characters.arjun]
+label = "Arjun"
+voice = "Algenib"
+notes = "Arjun: mid 20s, deep calm voice, smug and confident, slightly teasing, never rushed."
+tag = "[Hinglish, Indian accent, calm, smug, teasing]"
+
+[characters.bunty]
+label = "Bunty"
+# Was Puck (121 Hz), the same pitch as Malhotra's Gacrux (122 Hz): the user couldn't tell them apart. Sadachbia 168 Hz.
+voice = "Sadachbia"
+notes = "Bunty: early 20s, higher excitable voice, exhausted and dramatic, whiny, cracks with disbelief, desperate at the end."
+tag = "[Hinglish, Indian accent, fast, whiny, dramatic]"
+
+[characters.riya]
+label = "Riya"
+voice = "Leda"
+notes = "Riya: 22, bright quick voice, sharp and confident, a little cheeky."
+tag = "[Hinglish, Indian accent, bright, quick, cheeky]"
+
+[characters.verma]
+label = "Verma"
+# Was Rasalgethi (137 Hz): "didn't feel like an old man" (user, 2026-10-30). Charon won the old-man audition
+# (samples/voice-audition/oldman, 103 Hz as an older American man).
+voice = "Charon"
+notes = "Verma: college placement officer in his late 50s, an older man's slightly raspy voice, old-fashioned and lecturing but quick, suspicious, then pleasantly surprised."
+tag = "[Hinglish, Indian accent, older man, slightly raspy, lecturing]"
+
+[characters.malhotra]
+label = "Malhotra"
+# Was Gacrux (122 Hz, as low as the male voices). Sulafat 205 Hz: clearly above Bunty (168) and below Riya (258).
+voice = "Sulafat"
+notes = "Malhotra: HR lady in her mid 40s, dry and unimpressed, sarcastic, a deadpan 'Rejected', grudgingly impressed at the end."
+tag = "[Hinglish, Indian accent, dry, sarcastic, deadpan]"

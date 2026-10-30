@@ -1,0 +1,11 @@
+# Example custom script. Copy it, change the lines, and run: python run.py custom your-file.txt
+hook: ZERO CALLS. ZERO REPLIES.
+Malhotra: Zero calls, Riya? Kahan apply kar rahi ho tum?
+Riya: Har jagah, Ma'am. Har job board, har app, har raat.
+Malhotra: Wahi toh problem hai. Tum sabse lambi line mein khadi ho.
+Riya (shocked): Toh choti line kahan hai?
+Malhotra: Company ke apne career page pe, jis din job post hoti hai.
+Riya: Ye roz kaun check karega, Ma'am? Main toh so jaati hoon.
+Malhotra: Ek website hai jo ye sab ek jagah dikhati hai. [show: https://ats-jobs-api.pk2732004.workers.dev]
+Riya: Applied. Next. Link kahan hai?
+Malhotra: Link in bio. Ab zero excuses.

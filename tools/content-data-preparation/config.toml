@@ -1,0 +1,278 @@
+# content-data-preparation settings. Relative paths are resolved from this file's folder.
+
+[api]
+base_url = "https://job-feed-api.pk2732004.workers.dev/api/public/v1"
+# The key is never written here: it is read from this environment variable, which can also come from an env file.
+key_env = "JOB_FEED_API_KEY"
+env_files = ["../../.env"]
+# Some filtered queries (a whole category, no country) took over 2 minutes on 2026-10-29.
+timeout_seconds = 180
+
+[output]
+# One folder per day: <dir>/<YYYY-MM-DD>/brief.json
+dir = "../../content"
+# What was used on which day, so niches, formats, platforms and jobs don't repeat too soon.
+history = "../../content/history.json"
+
+[rules]
+jobs_per_reel = 3
+# How many jobs to fetch per niche to choose from.
+candidates = 60
+# Only jobs posted within this many days.
+posted_within_days = 2
+# A niche with fewer usable jobs than this is skipped for the day.
+min_jobs = 3
+# Days before the same niche / format / platform / cast can come back.
+niche_cooldown_days = 6
+format_cooldown_days = 2
+platform_cooldown_days = 4
+cast_cooldown_days = 1
+# Idea banks (banks.toml): a premise, hook formula and dynamic per reel, not repeated within these many days.
+premise_cooldown_days = 30
+hook_cooldown_days = 7
+dynamic_cooldown_days = 4
+# A job or company featured within this many days is not used again.
+job_cooldown_days = 30
+company_cooldown_days = 7
+# Open every apply link before using it (closed Greenhouse jobs redirect with ?error=true).
+check_links = true
+# Jobs never to feature, with why. visual-capture warns when a job's own page shows a problem the API can't
+# (volunteer, unpaid, closed); add the id here.
+blocked_job_ids = [
+  "b7e19f21b7c80ecf6dfb308cde238a2c",  # Wycliffe / SIL "Technical Writer": "Position Type: Volunteer" (2026-10-30)
+]
+# Companies whose name matches this are skipped (staffing, data labelling).
+exclude_companies = "(staffing|recruit|talent|sourcing|hiring|consultancy|placement|manpower|outlier|remotasks|dataannotation|mercor|crossing hurdles|micro1|veta virtual|virtual assistant|20four7va)"
+
+# How often each track runs: weights for a weighted random pick (2:1 = two job drops for every product pitch).
+[tracks]
+job_drop = 2
+product_pitch = 1
+
+# ---- characters (packs live in public/character-packs/<pack>) ----
+[characters.arjun]
+name = "Arjun"
+nickname = "Sharma ji ka beta"
+pack = "sharma-ji"
+side = "left"
+faces = "right"
+persona = "Smart, a bit of a show-off, always knows the right tool. Calm and confident."
+catchphrase = "Bro, you're doing it wrong."
+
+[characters.bunty]
+name = "Bunty"
+pack = "confused-bro"
+side = "right"
+faces = "left"
+persona = "Asks ChatGPT everything and applies to everything. Tired, dramatic, lovable."
+# A gag to bring back now and then, not a hook (in the persona it opened three reels in a row, 2026-10-30).
+running_gag = "his application count only ever goes up: 200 and counting, still no interviews"
+catchphrase = "But ChatGPT said..."
+
+[characters.riya]
+name = "Riya"
+pack = "fresher"
+side = "left"
+faces = "right"
+persona = "Sharp new graduate who moves fast and doesn't waste time."
+catchphrase = "Applied. Next."
+
+[characters.verma]
+name = "Verma Sir"
+pack = "placement-uncle"
+side = "right"
+faces = "left"
+persona = "College placement officer stuck in old ways, slowly impressed by new ideas."
+catchphrase = "In my day, we mailed our resumes."
+
+[characters.malhotra]
+name = "Malhotra Ma'am"
+pack = "hr-aunty"
+side = "right"
+faces = "left"
+persona = "HR lady with a coffee mug who rejects every resume, secretly respects people who apply smart."
+catchphrase = "Rejected."
+
+# Who can appear together, per track: [left, right].
+[casts]
+# The left one knows, the right one learns (script-writer's roles). Malhotra knows how hiring works from the inside, so she
+# roasts Bunty; Bunty as the one who knows broke both personas (2026-10-29).
+# Malhotra (HR) only ever knows: as the learner she became a job seeker sending applications, and every judge scored
+# that 4-6/10 for broken roles (2026-10-30). The learner is always someone who would be looking for a job (or
+# Verma, who places students).
+job_drop = [["riya", "verma"], ["malhotra", "riya"], ["arjun", "bunty"], ["malhotra", "bunty"]]
+product_pitch = [["arjun", "bunty"], ["malhotra", "bunty"], ["riya", "bunty"], ["arjun", "riya"]]
+
+# ---- formats: `jobs` = how many jobs the format needs; `instructions` go to the script writer ----
+[formats.top-drop]
+track = "job_drop"
+jobs = 3
+instructions = "Count down today's freshest jobs in this niche. One job per beat: role, company, where, how fresh. Second character reacts."
+
+[formats.guess-the-company]
+track = "job_drop"
+jobs = 2
+instructions = "Give hints (role, city, how fresh) and let the other character guess the company before revealing it. Two rounds."
+
+[formats.company-spotlight]
+track = "job_drop"
+jobs = 3
+instructions = "One company is hiring a lot in this niche today (spotlight.count roles). Talk about that company and its roles."
+
+[formats.number-shock]
+track = "job_drop"
+jobs = 2
+instructions = "Open with a surprising real number from stats, then show two of today's jobs as proof."
+
+[formats.using-ai-wrong]
+track = "product_pitch"
+jobs = 1
+instructions = "One character is using AI wrong for job search (asking a chatbot to 'find jobs' and getting vague or old results). The other shows the platform below: real, fresh jobs straight from company career sites. Use one real job as the example. End with how to find the platform."
+
+[formats.direct-link-myth]
+track = "product_pitch"
+jobs = 1
+instructions = "Myth vs fact: job boards repost old jobs; this pulls straight from company career pages with the company's own apply link. Use one real job as the example. End with how to find the platform."
+
+[formats.two-minute-setup]
+track = "product_pitch"
+jobs = 1
+instructions = "One character sets up the platform below in a couple of steps while the other doubts it, then a real fresh job shows up. Keep steps truthful and simple. End with how to find the platform."
+
+# ---- niches: `filters` are /jobs query parameters ----
+[niches.india-freshers]
+label = "Fresher jobs in India"
+audience = "freshers and new grads in India"
+filters = { countries = "India", experienceLevels = "Fresher,Junior" }
+
+[niches.remote-india]
+label = "Remote jobs you can do from India"
+audience = "people in India who want remote work"
+filters = { countries = "India", workModes = "remote" }
+
+[niches.remote-worldwide]
+label = "Remote jobs open worldwide"
+audience = "anyone who wants a remote job from anywhere"
+# Junior/Mid only (2026-10-30: a worldwide pick was "Principal Counsel", useless for the fresher audience).
+filters = { includeWorldwideRemote = "true", experienceLevels = "Junior,Mid" }
+
+[niches.bangalore-tech]
+label = "Tech jobs in Bengaluru"
+audience = "software people in Bengaluru"
+filters = { city = "Bengaluru", categories = "Software Engineering" }
+
+[niches.data-ai]
+label = "Data & AI jobs"
+audience = "data analysts, data engineers and ML people"
+filters = { categories = "Data & AI", countries = "India" }
+
+[niches.design-ux]
+label = "Design & UX jobs"
+audience = "designers"
+filters = { subcategories = "Design & UX", countries = "India" }
+
+[niches.product-managers]
+label = "Product manager jobs"
+audience = "product managers and aspiring PMs"
+filters = { subcategories = "Product management", countries = "India" }
+
+[niches.sales-sdr]
+label = "Sales development (SDR/BDR) jobs"
+audience = "people starting in sales"
+# India filter added 2026-10-30: without it the picks were US part-time internships for an Indian audience.
+filters = { subcategories = "Sales development (SDR / BDR)", countries = "India" }
+
+[niches.marketing]
+label = "Marketing & content jobs"
+audience = "marketers and content writers"
+filters = { categories = "Marketing & Content", countries = "India" }
+
+[niches.support-india]
+label = "Customer support jobs in India"
+audience = "people looking for support and customer success roles in India"
+filters = { categories = "Customer Support & Success", countries = "India" }
+
+[niches.big-companies]
+label = "Big companies hiring today"
+audience = "anyone who wants a big-name company"
+filters = { company = "Google,Microsoft,Amazon,Apple,Meta,Netflix,Adobe,Salesforce,Oracle,IBM,Intel,NVIDIA,Uber,Airbnb,Stripe,Atlassian,Accenture,Deloitte,Goldman Sachs,JPMorgan Chase" }
+
+# ---- platforms the product pitch rotates through (and the CTA of the day) ----
+[platforms.landing]
+name = "the ATS Jobs API website"
+what = "the website that shows every way to get these jobs: the API, the MCP server, and the n8n and Make templates"
+for = "anyone curious"
+how_to_find = "link in bio"
+cta = "Link in bio."
+
+[platforms.apify]
+name = "ATS Jobs API on Apify"
+what = "an Apify Actor: pick your filters, run it, get the jobs as a dataset; you pay per result"
+for = "developers and data people"
+how_to_find = "search 'ATS Jobs API' on Apify, or link in bio"
+cta = "Search ATS Jobs API on Apify. Link in bio."
+
+[platforms.apify-mcp]
+name = "the ATS Jobs API MCP server"
+what = "an MCP server, so Claude, Cursor or any MCP client can search these jobs for you"
+for = "people using Claude, Cursor or other AI agents"
+how_to_find = "add the ATS Jobs API MCP server from Apify, link in bio"
+cta = "Plug it into your AI as an MCP server. Link in bio."
+
+[platforms.n8n]
+name = "the n8n daily job alert template"
+what = "a ready-made n8n workflow that checks these jobs every day, uses any AI model to pick the ones that fit you, and sends them to Telegram, Gmail or Discord"
+for = "n8n and automation people"
+how_to_find = "n8n template 21483, link in bio"
+cta = "Grab the n8n template. Link in bio."
+
+[platforms.make]
+name = "the Make.com job alert template"
+what = "a ready-made Make.com template that pulls fresh jobs from the API into your own scenario"
+for = "Make.com users"
+how_to_find = "Make template 20017, link in bio"
+cta = "Grab the Make template. Link in bio."
+
+[platforms.rapidapi]
+name = "Company Career Sites Jobs API on RapidAPI"
+what = "the same jobs API, for developers who already use RapidAPI"
+for = "developers"
+how_to_find = "search 'Company Career Sites Jobs API' on RapidAPI, link in bio"
+cta = "Find it on RapidAPI. Link in bio."
+
+[platforms.api-market]
+name = "Career Site Jobs on api.market"
+what = "the same jobs API, for developers who already use api.market"
+for = "developers"
+how_to_find = "search 'Career Site Jobs' on api.market, link in bio"
+cta = "Find it on api.market. Link in bio."
+
+[platforms.zyla]
+name = "Career Site Job Listings API on Zyla"
+what = "the same jobs API, for developers who already use Zyla API Hub"
+for = "developers"
+how_to_find = "Zyla API Hub, link in bio"
+cta = "Find it on Zyla. Link in bio."
+
+# Things the script may say about the product. Numbers come live from /stats and are added to the brief separately.
+[facts]
+product = [
+  "It reads company career sites (Workday, Greenhouse, Lever, Ashby, SmartRecruiters, Oracle and more) every day.",
+  "Every job links to the company's own apply page, not a job board repost.",
+  "It is not LinkedIn or Indeed: the jobs come straight from the employers' sites.",
+  "Jobs can be filtered by category, experience level, country, city and remote.",
+  "It covers big companies and small ones, with strong coverage in India.",
+]
+# General background the script may use for the problem and the banter (60-70% of a reel is story, 2026-10-29).
+# Each is true without needing a source; no numbers, no named job sites. Edit freely, but keep them true.
+context = [
+  "Many job boards copy listings from company career pages, so one job shows up in many places.",
+  "A copied listing can stay up on a job board after the company has already closed the job.",
+  "A job board's copy of a listing always appears after the company's own posting, never before.",
+  "Applying on the company's own career page puts the application straight into the company's own hiring system.",
+  "Many companies run their career pages on hiring systems like Workday, Greenhouse or Lever.",
+  "When a job has just been posted, fewer people have applied yet.",
+  "A popular listing on a big job board can get flooded with applications within days.",
+  "A chatbot without live search has no list of today's open jobs; asked for jobs, it can suggest listings that are closed or made up.",
+  "Sending the same resume to every listing without checking if the job is still open wastes hours on dead listings.",
+]

@@ -1,0 +1,137 @@
+# script-writer settings. Relative paths are resolved from this file's folder.
+
+[paths]
+# Briefs are read from <content_dir>/<date>/brief.json; the script is written next to it.
+content_dir = "../../content"
+
+[llm]
+key_env = "GEMINI_API_KEY"
+env_files = ["../../.env"]
+# Tried in order: the next one is used when a model is unavailable, rate-limited or keeps failing the checks.
+# "<provider>:<model>" uses a provider from [llm.providers].
+# The daily run writes one script a day, which fits Gemini's free quota; gemini-3.5-flash wrote the best free scripts.
+# Groq gpt-oss is the fast fallback (3-10 s; free tier 8000 tokens/min), flash-lite the last resort (3 s, writes short).
+models = ["gemini-3.5-flash", "gemini-3.6-flash", "groq:openai/gpt-oss-120b", "gemini-3.5-flash-lite"]
+temperature = 1.0
+# The whole call, not per read. 2026-10-29 evening: even "Say OK." took 171 s on the free tier, so 90 s was too short.
+timeout_seconds = 300
+# Attempts per model when the output breaks a rule (the broken rules are sent back to fix).
+attempts = 3
+
+# Fast models get more tries: a fix round costs seconds, not minutes.
+attempts_per_model = { "gemini-3.5-flash-lite" = 6, "groq:openai/gpt-oss-120b" = 4 }
+
+# Gemini "high demand" (503) retries, in seconds, before moving to the next model. They don't use up an attempt.
+busy_backoff = [2, 4, 8]
+
+# OpenAI-style chat APIs usable in `models` as "<name>:<model>". A provider without its key in the env is skipped.
+# `extra` goes into the request body as is.
+[llm.providers.groq]
+base_url = "https://api.groq.com/openai/v1"
+key_env = "GROQ_API_KEY"
+# gpt-oss models reason before answering; with the default limit the JSON came back cut off or empty
+# (json_validate_failed, 2026-10-30). A 150-word script is ~500 tokens plus 300-800+ of reasoning.
+# 4096 still hit finish_reason=length once, and Groq counts the requested tokens against the free 8000 tokens/minute,
+# so: less reasoning, a 3000-token cap.
+extra = { max_completion_tokens = 3000, reasoning_effort = "low" }
+
+[script]
+# Target ~45 s reels (user, 2026-10-29: 45-60 s reels get more reach; story over job lists). At 1.25x the voice runs
+# ~3.4 words per second (2026-10-30: 141 words -> 41.0 s; the 2.9 guess came from a 54-word reel), so 150-170 words
+# is ~44-50 s. For a ~30 s test use 95-110 words and 8-12 lines.
+min_lines = 12
+max_lines = 20
+# 14 words is ~4 s at 1.25x; beats.py flags anything longer as a static beat.
+max_words_per_line = 14
+# 140 (~41 s): flash-lite kept landing at 137-140; the reel still runs ~41-50 s.
+min_words = 140
+max_words = 170
+# Outside the targets above but inside these is a style miss (sent back to fix, accepted when nothing passes); beyond
+# them it is a hard fail. Every model kept trading one small miss for another (138 words, then a 15-word line).
+soft_min_words = 125
+soft_max_words = 185
+soft_max_words_per_line = 18
+# A speaker says at most this many lines in a row, and gets at least this share of the lines (a dialogue, not a monologue).
+max_run = 2
+min_share = 0.35
+# Lines about a specific job (job_id set) take at most this share of the words: ~30% data, ~70% story (user's call).
+max_data_share = 0.4
+hashtags_min = 5
+hashtags_max = 10
+# Small numbers anyone may say without them being in the brief ("two jobs", "24 hours", "7 days").
+# 0: "zero calls", "0 replies" is the running joke, not a stat.
+free_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 24, 30, 60, 100]
+
+# A second model scores every draft that passes the rules (2026-10-30: a rule-passing script was a 3/10 for the user:
+# an invented "applied 2 times" hook, the learner giving the CTA, a tacked-on catchphrase). Below min_score its issues
+# go back to the writer; when nothing reaches it, the best-judged clean draft is used. The judge prefers a different
+# provider than the writer.
+[judge]
+enabled = true
+min_score = 7
+# Strongest first: flash-lite judged a draft with "You applied to 2 million jobs" a 7 (2026-10-30). A different provider
+# than the writer still goes first when there is one.
+models = ["groq:openai/gpt-oss-120b", "gemini-3.5-flash-lite"]
+rubric = """You are a strict editor of short comedy sketches for Instagram Reels, for young people looking for jobs, written in natural Hinglish (Hindi + English in Roman script, the way young urban Indians talk); stiff textbook Hindi or pure formal English is a fault.
+Score the script honestly; most drafts are a 4-6. A 7 means you would post it; 9-10 is rare.
+Check:
+- Hook: line 1 makes sense on its own, has real tension, and doesn't invent a silly number.
+- Roles: the one who knows stays the expert and roasts; the learner reacts, overreacts and asks; the learner never gives the call to action.
+- Personas: each line sounds like that character (age, attitude); catchphrases only where they land.
+- Comedy: there are actual jokes or roasts with a punchline (not explanations), and they escalate; the ending pays off the hook.
+- Logic: every reply follows from the line before; numbers are not mixed up or compared wrongly.
+- Flow: it sounds like people talking, not a list of facts.
+List the most important concrete fixes, best first (e.g. "line 3: Verma explains instead of reacting; make him mishear it as a postal address")."""
+
+# The ig-reel skill's scorers, run on every draft (a missing file skips the check). 2026-10-30 review: the 41.8 s
+# reel's hook scored 63 and beats.py found no loop and empty middle beats. wpm 204 = our 1.25x voice (3.4 words/s).
+[quality]
+hookscore = "~/.claude/skills/ig-reel/hookscore.py"
+# hookscore.py is English-only (it gave a good Hinglish hook 46), so it no longer blocks; the judge checks the hook.
+min_hook_score = 0
+beats = "~/.claude/skills/ig-reel/beats.py"
+wpm = 204
+
+# The voice of every script. The brief adds the format, cast, jobs, stats and facts.
+[style]
+rules = [
+  "Write a short, funny conversation for a vertical video (Instagram Reel) in natural Hinglish, the way young urban Indians talk: Hindi and English mixed freely, written in Roman script only (no Devanagari). Job titles, company names, places, product names and tech words stay in English. Say every number in English (two hundred, eighteen) or digits, never in Hindi (do sau), so the number checks can read it. (User, 2026-10-30: Hinglish beat American English in a side-by-side test.)",
+  "The first line is the hook: a relatable pain or a bold claim that makes people stop scrolling. No 'Hey guys', no greetings.",
+  "It is a mini story, not a list. Beats, in order: (1) hook; (2) the problem and the roast: the one who learns is doing it wrong, the other teases them and explains why, using context_facts; (3) the reveal: the real jobs, each followed by a reaction or a joke from the other character; (4) a punchline that calls back to the hook; (5) the call to action. About 30% of the words are data (jobs, numbers), 70% are story, banter and context. Every line moves it forward.",
+  "Make it something a viewer sends to a friend: the learner's mistake should feel like someone they know.",
+  "Line 1 is said to the other character but lands on the viewer too: it says 'you', has tension (still, never, no, zero) and something concrete, 5-12 words (e.g. 'You applied everywhere and still got zero calls?'). Use a number only if it is in the brief or a persona and makes sense; 'zero' always works. Never invent a count ('you applied 2 times').",
+  "The call to action at the end is said by roles.knows, never by roles.learns.",
+  "Build the reel around `premise` (today's situation): the comedy comes from it, and the jobs or the product are the way out of it. Open with line 1 written on the `hook` formula (template and example), adapted to Hinglish and to the premise; don't copy the example. Play the scene the way `dynamic` says.",
+  "A character's running_gag may come back once at most, only where the premise invites it; it is never the hook unless the premise is about it.",
+  "The stats are about the job index, never about a character: nobody 'applied to 2 million jobs'.",
+  "Mark a line 'shocked' only for a real shock moment: at most 2 shocked lines in the whole script.",
+  "roles.knows delivers the jobs like an insider. After every job line, roles.learns answers with a reaction that is a joke or a punchline (shock, jealousy, a dramatic overreaction), never an explanation.",
+  "Jokes escalate: each roast lands harder than the last. A running gag from a character's persona or catchphrase may come back, twisted.",
+  "The last line echoes a word from line 1, so the reel loops cleanly into its start.",
+  "hook_card is the on-screen version of the hook, at most 6 words, punchy, using the hook's own number, e.g. '<N> APPLICATIONS. 0 CALLS.'",
+  "Background claims (why job boards fail, why chatbots fail, why career pages win) come only from context_facts and product_facts, reworded naturally.",
+  "Each line is one or two short sentences that sound natural when read aloud by a text-to-speech voice. No emojis, no hashtags, no URLs, no stage directions in the lines.",
+  "The two characters talk to each other by name and stay in character (persona given). Use a catchphrase only where it lands naturally, at most once each; never tack one on.",
+  "roles.knows has the answer; roles.learns has the problem. The one who knows teases the other playfully in at least two lines, like friends roasting each other: their pile of useless applications, their old-school ways, their blind trust in chatbots. Light and funny, never cruel, and never about looks, gender, caste, religion or region. Do not mock or name other job sites or companies; say 'job boards' instead.",
+  "End on a punchline, then the call to action phrased naturally in the speaker's own voice (e.g. 'Link's in bio, Sir. Even you can click it.'). No flat or generic closing lines.",
+  "Only state facts that are in the brief: job titles, companies, places, how fresh a posting is, the stats and the product facts. Never invent salaries, perks, requirements, deadlines or numbers.",
+  "Say numbers the way people say them, rounded down honestly ('almost 2 million', 'over 400 thousand'), using only the numbers in the brief.",
+  "When a line talks about a specific job, set its job_id to that job's id. Every job in the brief must be mentioned.",
+  "Keep company names and job titles short when spoken (drop words in brackets).",
+  "The last line is the call to action: it names the platform (platform.cta says how) and says 'link in bio', phrased naturally in the speaker's own voice, not copied word for word. Never end on a catchphrase.",
+  "In a product pitch, one line says plainly what the platform is and does (platform.what), so a viewer knows what they get.",
+  "Use each stat only with its meaning from stats_meaning (e.g. posted_last_7_days is new jobs posted in the last 7 days, not jobs updated).",
+  "Each number stands alone with its own meaning: never add, compare or equate two different stats in one line or in a reply ('400 thousand new this week' is not 'almost 2 million live'), and never let a character react to a number as if it were a different one.",
+  "Don't say jobs come 'straight from employers' or 'from career pages' about remote_jobs or total_jobs; say that only about the jobs in the brief.",
+  "Do not say the product covers every job, is the biggest, or is better than a named competitor. 'Not LinkedIn or Indeed: straight from company career pages' is fine.",
+]
+# Shows the tone only (teasing, rhythm, ending). Its facts and numbers are not to be reused.
+example = """
+Bunty: I've applied to jobs like crazy on job boards. Zero replies. Why?
+Arjun: Because you're spamming the same place as everyone else, genius.
+Bunty: But ChatGPT said...
+Arjun: ChatGPT also said you'd be a CEO by now.
+Arjun: Apply where the company actually posts: its own career page.
+Bunty: Okay... that's actually smart.
+Arjun: I know. Link in bio, intern.
+"""

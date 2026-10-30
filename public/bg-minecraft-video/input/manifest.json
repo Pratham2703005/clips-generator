@@ -1,0 +1,54 @@
+{
+  "clips": [
+    {
+      "file": "clip1.mp4",
+      "source": "clip1.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30.0,
+      "duration": 1797.5,
+      "has_audio": false,
+      "size_mb": 583.3,
+      "processed_at": "2026-10-29T08:59:12+00:00",
+      "settings": {
+        "width": 1080,
+        "height": 1920,
+        "fit": "crop",
+        "pad_color": "black",
+        "fps": 30,
+        "crf": 28,
+        "preset": "medium",
+        "keep_audio": false,
+        "audio_bitrate": "128k",
+        "trim_start": 3.0,
+        "trim_end": 3.0,
+        "margin": 6
+      }
+    },
+    {
+      "file": "clip2.mp4",
+      "source": "clip2.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30.0,
+      "duration": 1815.77,
+      "has_audio": false,
+      "size_mb": 689.2,
+      "processed_at": "2026-10-29T15:39:45+00:00",
+      "settings": {
+        "width": 1080,
+        "height": 1920,
+        "fit": "crop",
+        "pad_color": "black",
+        "fps": 30,
+        "crf": 28,
+        "preset": "medium",
+        "keep_audio": false,
+        "audio_bitrate": "128k",
+        "trim_start": 3.0,
+        "trim_end": 3.0,
+        "margin": 6
+      }
+    }
+  ]
+}

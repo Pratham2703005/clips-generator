@@ -1,0 +1,5 @@
+# Python 3.11+. Also needed on the machine: FFmpeg (with libass) and Chrome/Chromium/Edge.
+faster-whisper>=1.2   # caption timing (the "small" model downloads once, ~460 MB)
+numpy                 # audio and pitch maths
+pillow                # character images
+websocket-client      # drives Chrome for page screenshots

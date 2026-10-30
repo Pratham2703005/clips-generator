@@ -1,0 +1,141 @@
+# composer settings. Relative paths are resolved from this file's folder.
+
+[paths]
+# Each day's folder needs script.json, voice.wav (voice-generator), timeline.json and captions.ass (caption-maker).
+content_dir = "../../content"
+# Normalised background clips (normalize-video output); one is picked at random, at a random point.
+backgrounds_dir = "../../public/bg-minecraft-video/input"
+packs_dir = "../../public/character-packs"
+# Full path to ffmpeg/ffprobe's folder if they aren't on PATH (empty = look on PATH).
+ffmpeg_dir = ""
+# Folder with extra .ttf/.otf fonts for the captions (empty = system fonts only).
+# Archivo Black (SIL OFL) ships in public/fonts, so the same font renders on Windows and the Linux runner.
+fonts_dir = "../../public/fonts"
+
+[video]
+width = 1080
+height = 1920
+fps = 30
+crf = 20
+preset = "medium"
+audio_bitrate = "192k"
+# Seconds of background after the last word, so the reel doesn't cut off mid-breath.
+tail = 0.8
+
+[background]
+# Stay this far from the clip's start and end, in seconds.
+margin = 5
+# Slight dim and desaturate, so the captions and characters stand out (0 and 1 = untouched).
+brightness = -0.05
+saturation = 0.9
+# Try this many random stretches and keep the one with the most movement, docking points for glare above
+# max_brightness (0-255). 2026-10-30: a still white wall was flat and bright behind the captions.
+candidates = 4
+# 150 still let a white quartz build through (145); clip2's stretches sit at 76-93.
+max_brightness = 115
+# Motion points lost per brightness point over max_brightness (0.5 still picked the white build: 53.7 - 15 > 30.5).
+glare_penalty = 1.0
+
+[characters]
+# Height on screen, in pixels (images are trimmed to the character first).
+# 2026-10-30: 760 reached the middle of the frame; 600 looked small with the figure kept to the outer ~36%, so 700.
+height = 700
+# Gap from the bottom edge, in pixels. The packs are half-body images cut at the bottom, so any gap leaves a torso
+# floating over the background (tried 120 on 2026-10-30).
+margin_bottom = 0
+# How far in the figure reaches, as a share of the width: the left one's right edge sits at 0.36, the right one's
+# left edge at 0.64 (user: left 0 -> 30-40%, right 60-70% -> 100%). Placement uses the idle image's figure, so a
+# waving arm in another expression sticks out past the outer edge instead of pushing the figure inward.
+inner_edge = 0.36
+# At most this share of the figure may be cut off by the outer frame edge; a wider figure is drawn smaller.
+# 0.15 drew Arjun at 471 px ("characters look small"); 0.3 lets the outer side of the figure (back, shoulder) go off-frame.
+bleed = 0.3
+# The first speaker is already on screen at frame 0 instead of sliding in (an empty first frame loses the viewer).
+first_in_place = true
+# Slide in/out time, and how early a character starts sliding in before its first word, in seconds.
+slide = 0.25
+lead = 0.12
+# Image per expression in the script (file names in the pack, without .png).
+normal = "talk"
+shocked = "shock"
+idle = "idle"
+
+# On-screen layer drawn over the captions (2026-10-30 review with the virality / ig-reel skills: "show, never just say").
+[overlay]
+enabled = true
+font = "Archivo Black"
+# Top of the hook card and job cards, in pixels (Instagram's top bar covers y < 230).
+top = 300
+# Hook card: script.json's hook_card, words landing one by one over hook_build s, shown at least hook_hold s.
+hook_size = 104
+# 1.9: the last words ("0 CALLS.") land at ~1.0-1.4 s (virality checklist: the claim lands at 1.2-1.6 s).
+hook_build = 1.9
+hook_hold = 2.8
+# A number at the start of the hook card counts up from 0 in count_steps over count_seconds; a later "0"/"ZERO"/"NO"
+# word and the ones after it slam in red with the stamp sound.
+count_steps = 14
+count_seconds = 1.0
+# Job card while a job's line is spoken: company, title (cut at card_title_max), city and freshness.
+# 64 read as a sticker on the phone (2026-10-30), so the card is near hook size.
+card_size = 100
+card_title_max = 28
+# Stamps: a spoken word slams a big rotated label onto the middle of the frame.
+stamp_size = 150
+stamp_color = "#E53935"
+stamp_y = 780
+stamp_angle = 12
+stamp_hold = 1.0
+
+[overlay.stamps]
+rejected = "REJECTED"
+
+# Screenshot panel for visual-capture's visuals.json (real pages: the job's apply page, the product pages).
+# Sits between the job card (top) and the captions; the page scrolls down slowly while it is on screen.
+[panel]
+enabled = true
+border = 6
+border_color = "white"
+# Top of the panel, in pixels (the job card sits above it).
+top = 530
+# Visible page window: nearly the full reel width, desktop captures (1280 css px wide) scaled down to it.
+width = 1040
+height = 600
+# Scroll speed in px/s of the 900-px-wide screenshot (40 felt slow, 2026-10-30).
+scroll = 90
+# Keep a panel up this many seconds into a following line that has no visual of its own.
+hold = 1.5
+
+# Sound. Files are optional: a missing one is skipped with a note. Royalty-free files go in these folders.
+[audio]
+sfx_dir = "../../public/sfx"
+music_dir = "../../public/music"
+sfx_gain_db = -8
+# A music bed (any file in music_dir, looped) far under the voice.
+music_gain_db = -24
+
+# Shocked lines get the "shock" sound, at most this many times per reel and this far apart (s), or it gets annoying.
+shock_max = 2
+shock_gap = 8
+
+# Defaults picked 2026-10-30 from public/sfx/candidates (Mixkit, free license, no attribution needed); swap freely.
+[audio.sfx]
+whoosh = "whoosh.mp3"
+pop = "pop.mp3"
+stamp = "stamp.mp3"
+shock = "shock.mp3"
+
+# Per-sound level in dB (sfx_gain_db otherwise). The whoosh plays on every turn, so it sits low.
+[audio.gain]
+whoosh = -16
+pop = -10
+stamp = -4
+shock = -10
+
+# Per pack. images: map an expression to another image of the pack. no_flip: images with baked-in text that must never
+# be mirrored. (Mouth flap was tried and dropped: the open/closed switching looked bad, 2026-10-29.)
+[packs.fresher]
+# fresher/shock.png (hands on cheeks) read as blushing, not shock (user, 2026-10-30): use talk for shocked lines.
+images = { shocked = "talk" }
+
+[packs.hr-aunty]
+no_flip = ["rejected"]

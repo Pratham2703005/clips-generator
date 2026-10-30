@@ -1,0 +1,138 @@
+{
+  "Achird": {
+    "median_hz": 143.5,
+    "p10_hz": 109,
+    "p90_hz": 215,
+    "frames": 164,
+    "match": 0.95,
+    "source": "Achird_Zephyr.wav"
+  },
+  "Algenib": {
+    "median_hz": 113.5,
+    "p10_hz": 76,
+    "p90_hz": 385,
+    "frames": 157,
+    "match": 0.89,
+    "source": "arjun_bunty.wav"
+  },
+  "Autonoe": {
+    "median_hz": 192.8,
+    "p10_hz": 154,
+    "p90_hz": 242,
+    "frames": 195,
+    "match": 0.95,
+    "source": "Sadachbia_Autonoe.wav"
+  },
+  "Charon": {
+    "median_hz": 123.1,
+    "p10_hz": 85,
+    "p90_hz": 219,
+    "frames": 157,
+    "match": 0.95,
+    "source": "Charon_Sulafat.wav"
+  },
+  "Despina": {
+    "median_hz": 235.3,
+    "p10_hz": 170,
+    "p90_hz": 297,
+    "frames": 159,
+    "match": 0.95,
+    "source": "Enceladus_Despina.wav"
+  },
+  "Enceladus": {
+    "median_hz": 120.8,
+    "p10_hz": 90,
+    "p90_hz": 188,
+    "frames": 142,
+    "match": 0.95,
+    "source": "Enceladus_Despina.wav"
+  },
+  "Fenrir": {
+    "median_hz": 137.9,
+    "p10_hz": 107,
+    "p90_hz": 178,
+    "frames": 159,
+    "match": 0.95,
+    "source": "Fenrir_Kore.wav"
+  },
+  "Gacrux": {
+    "median_hz": 122.1,
+    "p10_hz": 94,
+    "p90_hz": 173,
+    "frames": 235,
+    "match": 0.94,
+    "source": "riya_malhotra.wav"
+  },
+  "Kore": {
+    "median_hz": 228.6,
+    "p10_hz": 150,
+    "p90_hz": 320,
+    "frames": 195,
+    "match": 0.95,
+    "source": "Fenrir_Kore.wav"
+  },
+  "Leda": {
+    "median_hz": 258.1,
+    "p10_hz": 180,
+    "p90_hz": 381,
+    "frames": 201,
+    "match": 0.98,
+    "source": "riya_verma.wav"
+  },
+  "Orus": {
+    "median_hz": 145.5,
+    "p10_hz": 116,
+    "p90_hz": 187,
+    "frames": 166,
+    "match": 0.93,
+    "source": "Orus_Pulcherrima.wav"
+  },
+  "Puck": {
+    "median_hz": 121.2,
+    "p10_hz": 88,
+    "p90_hz": 198,
+    "frames": 228,
+    "match": 0.89,
+    "source": "arjun_bunty.wav"
+  },
+  "Pulcherrima": {
+    "median_hz": 146.8,
+    "p10_hz": 109,
+    "p90_hz": 230,
+    "frames": 194,
+    "match": 0.93,
+    "source": "Orus_Pulcherrima.wav"
+  },
+  "Rasalgethi": {
+    "median_hz": 132.2,
+    "p10_hz": 92,
+    "p90_hz": 226,
+    "frames": 220,
+    "match": 0.98,
+    "source": "riya_verma.wav"
+  },
+  "Sadachbia": {
+    "median_hz": 168.4,
+    "p10_hz": 110,
+    "p90_hz": 225,
+    "frames": 159,
+    "match": 0.95,
+    "source": "Sadachbia_Autonoe.wav"
+  },
+  "Sulafat": {
+    "median_hz": 205.1,
+    "p10_hz": 156,
+    "p90_hz": 276,
+    "frames": 159,
+    "match": 0.95,
+    "source": "Charon_Sulafat.wav"
+  },
+  "Zephyr": {
+    "median_hz": 205.2,
+    "p10_hz": 155,
+    "p90_hz": 262,
+    "frames": 164,
+    "match": 0.95,
+    "source": "Achird_Zephyr.wav"
+  }
+}

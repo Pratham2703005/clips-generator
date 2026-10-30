@@ -1,0 +1,22 @@
+# ATS mode: the daily ATS Jobs API reel, fully automatic. `python run.py ats`
+# Today's jobs and idea from the job feed -> an AI script -> voice -> captions -> screenshots -> reel.
+#
+# A mode file is the top layer: tool config < config.toml < this file. Any tool table from config.toml or a tool's
+# config.toml can be repeated here to change it only in this mode (e.g. [compose.panel] enabled = false).
+# modes/custom.toml starts as a copy of this file; copy settings across freely.
+
+[run]
+# Your own script (a text file, relative to this file). Empty = the AI writes one from today's brief.
+script_file = ""
+# Characters, by id or name (arjun, bunty, riya, verma, malhotra). Empty = picked for you (with your own script: the
+# first two speakers). left knows the answer, right learns.
+left = ""
+right = ""
+# On-screen hook card for your own script (6 words or fewer). Empty = none (an AI script brings its own).
+hook_card = ""
+# Screenshots of real pages (job pages, product pages, [show: URL] lines).
+visuals = true
+# Background clip in public/bg-minecraft-video/input. Empty = a random one.
+clip = ""
+# Output folder name for your own script (content/custom/<name>). Empty = the script file's name + today's date.
+name = ""

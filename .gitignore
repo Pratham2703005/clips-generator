@@ -1,0 +1,20 @@
+# secrets
+.env
+.env.*
+
+# large videos: raw recordings and processed backgrounds live outside git (processed ones go to a GitHub Release)
+public/bg-minecraft-video/raw/
+public/bg-minecraft-video/input/*.mp4
+*.part.mp4
+*.part.wav
+
+# generated reels and their files (history.json stays: it keeps reels from repeating)
+content/*
+!content/history.json
+
+# caches and local-only output
+public/visual-cache/
+tools/voice-generator/audition-audio/
+out/
+__pycache__/
+*.pyc
