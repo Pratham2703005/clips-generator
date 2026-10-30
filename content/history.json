@@ -16,6 +16,27 @@
       "premise": "ai-interviewer",
       "hook": "replacement",
       "dynamic": "learner-bites-back"
+    },
+    {
+      "date": "2026-10-31",
+      "track": "job_drop",
+      "format": "top-drop",
+      "niche": "marketing",
+      "platform": "api-market",
+      "cast": "arjun+bunty",
+      "job_ids": [
+        "c38798550561fd0ec49706e05e04146f",
+        "5607eb51175e017a602a552346d4bbfd",
+        "95ab12e82bcd06762c1d87a266dfc633"
+      ],
+      "companies": [
+        "Amazon",
+        "Accenture",
+        "Worldwide Clinical Trials Holdings"
+      ],
+      "premise": "data-science-hype",
+      "hook": "flop-record",
+      "dynamic": "expert-caught-out"
     }
   ]
 }
