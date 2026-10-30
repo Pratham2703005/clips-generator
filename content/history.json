@@ -1,25 +1,3 @@
 {
-  "days": [
-    {
-      "date": "2026-11-03",
-      "track": "job_drop",
-      "format": "company-spotlight",
-      "niche": "remote-india",
-      "platform": "api-market",
-      "cast": "malhotra+bunty",
-      "job_ids": [
-        "0750bfbd62edc7abc96b434c913dd8ef",
-        "7fea0d8def1db377a4a467a720ec2e90",
-        "954b43dfe1d2f555ec9431ef4c0e94fc"
-      ],
-      "companies": [
-        "Zscaler",
-        "Zscaler",
-        "Zscaler"
-      ],
-      "premise": "five-years-question",
-      "hook": "the-callout",
-      "dynamic": "flashback"
-    }
-  ]
+  "days": []
 }

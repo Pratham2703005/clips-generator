@@ -56,6 +56,10 @@ max_run = 2
 min_share = 0.35
 # Lines about a specific job (job_id set) take at most this share of the words: ~30% data, ~70% story (user's call).
 max_data_share = 0.4
+# Hinglish, not English: at least this share of the spoken words must be common Hindi words (hai, kya, nahi, tum...).
+# Our Hinglish reels measured 0.37-0.39, the English ones 0.02-0.08; on 2026-11-03 gpt-oss passed an English script
+# because only the prompt asked for Hinglish. 0 turns the check off.
+min_hindi_share = 0.15
 hashtags_min = 5
 hashtags_max = 10
 # Small numbers anyone may say without them being in the brief ("two jobs", "24 hours", "7 days").

@@ -35,7 +35,7 @@ def load_config(path: Path, section: str = SECTION) -> dict:
     run.py) on top. A path in an overlay is relative to that overlay file."""
     cfg = tomllib.loads(path.read_text(encoding="utf-8"))
     root = Path(__file__).resolve().parents[2]
-    for f in (os.environ.get("VG_MASTER") or root / "config.toml", os.environ.get("VG_MODE_FILE")):
+    for f in (os.environ.get("VG_MASTER") or root / "config.toml", os.environ.get("VG_MODE_FILE"), os.environ.get("VG_SET_FILE")):
         if f and Path(f).is_file():
             over = tomllib.loads(Path(f).read_text(encoding="utf-8")).get(section)
             if over:
@@ -222,6 +222,23 @@ def allowed_numbers(brief: dict, free: list[int]) -> set[str]:
     return out
 
 
+HINDI_WORDS = set("""
+hai hain ho hoon tha thi the hum tum aap main mai mujhe tujhe tumhe humein unhe use usko isko kya kyun kaise kahan kab
+kaun koi kuch sab bhi hi toh nahi nahin na mat aur ya pe ka ki ke ko se mein tak wala wali wale yeh ye woh wo yahan
+wahan ab abhi phir fir bas sirf bahut bohot accha acha theek thik chal chalo dekh dekho bol bolo kar karo karna karte
+karti kiya kiye raha rahi rahe gaya gayi gaye hota hoti hote hua hui jaata jaati jao ja de do dena le lo lena mil mila
+mili milta milegi apna apni apne mera meri mere tera teri tere uska uski unka unki yaar arre arey beta bhai matlab
+lekin magar kyunki agar warna jab tab jaise waise itna utna kitna kitne sakta sakti sakte chahiye pata hoga hogi lagta
+lagti samjho samjha naukri
+""".split())
+
+
+def hindi_share(text: str) -> float:
+    """Share of the words that are common Hindi words: Roman-script Hinglish scores ~0.35, English ~0.05."""
+    w = re.findall(r"[a-z']+", text.lower())
+    return sum(x in HINDI_WORDS for x in w) / max(len(w), 1)
+
+
 def check(script: dict, brief: dict, cfg: dict) -> list[str]:
     s, problems = cfg["script"], []
     lines = script.get("lines") or []
@@ -255,6 +272,10 @@ def check(script: dict, brief: dict, cfg: dict) -> list[str]:
             # a near miss (30% vs 35%) is style; a monologue is not
             style = "(style) " if share >= s["min_share"] - 0.1 else ""
             problems.append(f"{style}{sp} has only {share:.0%} of the lines; needs at least {s['min_share']:.0%}.")
+    share = hindi_share(" ".join(ln.get("text", "") for ln in lines))
+    if words and share < s.get("min_hindi_share", 0):
+        problems.append(f"the script is in English ({share:.0%} Hindi words, need {s['min_hindi_share']:.0%}+); write natural "
+                        "Hinglish in Roman script: 'Yaar, 200 jagah apply kiya, ek bhi call nahi aaya.'")
     data = sum(len(ln.get("text", "").split()) for ln in lines if ln.get("job_id"))
     if words and data / words > s["max_data_share"]:
         problems.append(f"job lines are {data / words:.0%} of the words; keep them under {s['max_data_share']:.0%} and give more room to story and banter.")

@@ -1,24 +1,82 @@
 # Daily reel: runs `python run.py ats` every morning and keeps the reel as a downloadable artifact.
+# Run it by hand from Actions -> Daily reel -> Run workflow: every choice is in that form (no file to upload).
 # Before the first run (see README.md, "GitHub setup"):
 #   - repository secrets: GEMINI_API_KEY, GROQ_API_KEY, JOB_FEED_API_KEY
-#   - a release tagged `backgrounds` with the processed clips (clip1.mp4, clip2.mp4, ... as named in
-#     public/bg-minecraft-video/input/manifest.json) attached as assets
+#   - a release tagged `backgrounds` with the processed clips (clip1.mp4, clip2.mp4) attached as assets
 name: Daily reel
 
 on:
   schedule:
-    - cron: "30 2 * * *"   # 08:00 IST
+    - cron: "30 2 * * *"   # 08:00 IST, ats mode with the repo's settings
   workflow_dispatch:
     inputs:
       mode:
-        description: "ats or custom"
-        default: "ats"
+        description: "Mode: ats = fully automatic; custom = your script and choices below"
+        type: choice
+        options: [ats, custom]
+        default: ats
       script:
-        description: "custom mode: path to a script file in the repo (optional)"
+        description: "Your script (custom). One line, lines split by ' | ', e.g.  hook: ZERO CALLS | Riya: Ma'am, call kyun nahi aata? | Malhotra (shocked): Kyunki... [show: https://...]   Empty = AI writes it"
+        type: string
         default: ""
+      hook:
+        description: "On-screen hook card for your script (6 words max; a 'hook:' line in the script wins)"
+        type: string
+        default: ""
+      left:
+        description: "Left character (the one who knows)"
+        type: choice
+        options: [auto, arjun, bunty, riya, verma, malhotra]
+        default: auto
+      right:
+        description: "Right character (the one who learns)"
+        type: choice
+        options: [auto, arjun, bunty, riya, verma, malhotra]
+        default: auto
+      visuals:
+        description: "Screenshots of real pages (job pages, product pages, [show: URL])"
+        type: boolean
+        default: true
+      clip:
+        description: "Background clip"
+        type: choice
+        options: [random, clip1.mp4, clip2.mp4]
+        default: random
+      track:
+        description: "AI script: track"
+        type: choice
+        options: [auto, job_drop, product_pitch]
+        default: auto
+      niche:
+        description: "AI script: job niche"
+        type: choice
+        options: [auto, india-freshers, remote-india, remote-worldwide, bangalore-tech, data-ai, design-ux, product-managers, sales-sdr, marketing, support-india, big-companies]
+        default: auto
+      format:
+        description: "AI script: format"
+        type: choice
+        options: [auto, top-drop, guess-the-company, company-spotlight, number-shock, using-ai-wrong, direct-link-myth, two-minute-setup]
+        default: auto
+      platform:
+        description: "AI script: where the CTA points"
+        type: choice
+        options: [auto, landing, apify, apify-mcp, n8n, make, rapidapi, api-market, zyla]
+        default: auto
+      settings:
+        description: "Any other setting, split by ';'  e.g.  voice.voice.target_wps=3.6; captions.captions.size=110; compose.panel.scroll=120; compose.overlay.enabled=false  (keys as in config.toml / tools/*/config.toml)"
+        type: string
+        default: ""
+      name:
+        description: "Output name for your script (default: custom-<date>)"
+        type: string
+        default: ""
+      save_history:
+        description: "Record this reel's jobs and ideas in content/history.json (so they don't repeat)"
+        type: boolean
+        default: true
 
 permissions:
-  contents: write   # to commit content/history.json (keeps reels from repeating)
+  contents: write   # to commit content/history.json
 
 concurrency:
   group: daily-reel
@@ -33,6 +91,21 @@ jobs:
       GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
       JOB_FEED_API_KEY: ${{ secrets.JOB_FEED_API_KEY }}
       HF_HUB_DISABLE_TELEMETRY: "1"
+      # the form's values reach the shell only as environment variables (never pasted into the script)
+      IN_MODE: ${{ inputs.mode || 'ats' }}
+      IN_SCRIPT: ${{ inputs.script }}
+      IN_HOOK: ${{ inputs.hook }}
+      IN_LEFT: ${{ inputs.left }}
+      IN_RIGHT: ${{ inputs.right }}
+      IN_VISUALS: ${{ inputs.visuals }}
+      IN_CLIP: ${{ inputs.clip }}
+      IN_TRACK: ${{ inputs.track }}
+      IN_NICHE: ${{ inputs.niche }}
+      IN_FORMAT: ${{ inputs.format }}
+      IN_PLATFORM: ${{ inputs.platform }}
+      IN_SETTINGS: ${{ inputs.settings }}
+      IN_NAME: ${{ inputs.name }}
+      IN_SAVE_HISTORY: ${{ github.event_name == 'schedule' || inputs.save_history }}
     steps:
       - uses: actions/checkout@v4
 
@@ -62,26 +135,39 @@ jobs:
         run: |
           DAY=$(TZ=Asia/Kolkata date +%F)
           echo "DAY=$DAY" >> "$GITHUB_ENV"
-          if [ "${{ inputs.mode || 'ats' }}" = "custom" ] && [ -n "${{ inputs.script }}" ]; then
-            python run.py custom "${{ inputs.script }}" --date "$DAY" --name "custom-$DAY"
-          else
-            python run.py "${{ inputs.mode || 'ats' }}" --date "$DAY"
+          args=("$IN_MODE" --date "$DAY")
+          if [ -n "$IN_SCRIPT" ]; then
+            name="${IN_NAME:-custom-$DAY}"
+            echo "NAME=$name" >> "$GITHUB_ENV"
+            if [[ "$IN_SCRIPT" == *.txt && -f "$IN_SCRIPT" ]]; then args+=("$IN_SCRIPT"); else args+=(--script-text "$IN_SCRIPT"); fi
+            args+=(--name "$name")
           fi
+          [ -n "$IN_HOOK" ] && args+=(--hook "$IN_HOOK")
+          for k in left right track niche format platform; do
+            v="IN_${k^^}"; v="${!v}"
+            [ -n "$v" ] && [ "$v" != auto ] && args+=("--$k" "$v")
+          done
+          [ -n "$IN_CLIP" ] && [ "$IN_CLIP" != random ] && args+=(--clip "$IN_CLIP")
+          [ "$IN_VISUALS" = false ] && args+=(--visuals off)
+          [ -n "$IN_SETTINGS" ] && args+=(--set "$IN_SETTINGS")
+          echo "python run.py ${args[*]}"
+          python run.py "${args[@]}"
 
       - name: Keep the reel
         uses: actions/upload-artifact@v4
         with:
-          name: reel-${{ env.DAY }}
+          name: reel-${{ env.DAY }}${{ env.NAME && format('-{0}', env.NAME) || '' }}
           path: |
             content/${{ env.DAY }}/reel.mp4
             content/${{ env.DAY }}/script.md
             content/${{ env.DAY }}/script.json
-            content/custom/custom-${{ env.DAY }}/reel.mp4
+            content/custom/${{ env.NAME }}/reel.mp4
+            content/custom/${{ env.NAME }}/script.md
           if-no-files-found: warn
           retention-days: 30
 
       - name: Save history
-        if: success()
+        if: success() && env.IN_SAVE_HISTORY == 'true'
         run: |
           git config user.name "reel-bot"
           git config user.email "reel-bot@users.noreply.github.com"

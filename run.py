@@ -12,9 +12,13 @@ Options (each one overrides the mode file's [run] setting):
     --clip clip2.mp4           background clip
     --name NAME                output folder name for your own script
     --date YYYY-MM-DD          the day (default: today)
+    --script-text "A: .. | B: .."   your script in one line instead of a file
+    --track / --niche / --format / --platform   AI script: pick these instead of the usual draw
+    --set KEY=VALUE            any setting for this run only: compose.panel.scroll=120; voice.voice.target_wps=3.6
 
-Settings layer up: each tool's own config.toml < config.toml (master) < the mode file. This script only runs the
-tools in order with the mode file in $VG_MODE_FILE; every tool still works on its own.
+Settings layer up: each tool's own config.toml < config.toml (master) < the mode file < --set. This script only runs
+the tools in order with the mode file in $VG_MODE_FILE and the --set values in $VG_SET_FILE; every tool still works
+on its own.
 """
 
 from __future__ import annotations
@@ -135,12 +139,75 @@ def build_custom(script_path: Path, opts: dict, day: str) -> Path:
     return folder
 
 
+SECTION_TOOL = {
+    "content": "content-data-preparation", "script": "script-writer", "voice": "voice-generator",
+    "captions": "caption-maker", "visuals": "visual-capture", "compose": "composer", "normalize": "normalize-video",
+}
+
+
+def toml_value(raw: str):
+    """'3.6' -> 3.6, 'true' -> True, '["a","b"]' -> list; anything else is a plain string."""
+    try:
+        return tomllib.loads(f"v = {raw}")["v"]
+    except tomllib.TOMLDecodeError:
+        return raw
+
+
+def parse_sets(items: list[str], run_opts: dict) -> tuple[dict, list[str]]:
+    """'compose.panel.scroll=120' style settings, checked against the tool configs so a typo fails the run.
+    Returns the [run] changes and the TOML lines for $VG_SET_FILE."""
+    run_changes, lines, problems = {}, [], []
+    for item in items:
+        if "=" not in item:
+            problems.append(f"{item!r}: expected key=value")
+            continue
+        key, raw = (x.strip() for x in item.split("=", 1))
+        parts = key.split(".")
+        if parts[0] == "run" and len(parts) == 2:
+            if parts[1] not in run_opts:
+                problems.append(f"{key}: no such run option (known: {', '.join(run_opts)})")
+            run_changes[parts[1]] = toml_value(raw)
+            continue
+        tool = SECTION_TOOL.get(parts[0])
+        if not tool or len(parts) < 2:
+            problems.append(f"{key}: start with one of {', '.join(['run', *SECTION_TOOL])}, e.g. compose.panel.scroll")
+            continue
+        node = tomllib.loads((TOOLS / tool / "config.toml").read_text(encoding="utf-8"))
+        for i, part in enumerate(parts[1:], 1):
+            if not isinstance(node, dict) or part not in node:
+                have = ", ".join(node) if isinstance(node, dict) else "(a value, not a table)"
+                problems.append(f"{key}: {'.'.join(parts[:i + 1])!r} not in tools/{tool}/config.toml (there: {have})")
+                break
+            node = node[part]
+        else:
+            value = toml_value(raw)
+            lines.append(f"{'.'.join(json.dumps(p) for p in parts)} = {json.dumps(value) if isinstance(value, str) else raw}")
+    if problems:
+        sys.exit("settings problems:\n  " + "\n  ".join(problems))
+    return run_changes, lines
+
+
+def script_from_text(text: str, name: str) -> Path:
+    """A script pasted in one line ('Riya: ... | Malhotra: ...', the GitHub form has no multi-line box) -> a file."""
+    body = "\n".join(x.strip() for x in re.split(r"\s\|\s|\\n", text) if x.strip())
+    path = ROOT / "content" / "custom" / f"{name}.txt"
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(body + "\n", encoding="utf-8")
+    return path
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description="Make a reel: python run.py ats | custom [SCRIPT.txt]")
     p.add_argument("mode", help="ats, custom, or a mode .toml file")
     p.add_argument("script", nargs="?", help="custom: your script file (overrides script_file)")
+    p.add_argument("--script-text", help="your script in one line, lines split by ' | ' (instead of a file)")
     p.add_argument("--left"); p.add_argument("--right"); p.add_argument("--hook")
     p.add_argument("--visuals", choices=["on", "off"]); p.add_argument("--clip"); p.add_argument("--name")
+    p.add_argument("--track", help="AI script: job_drop or product_pitch"); p.add_argument("--niche", help="AI script: a niche id")
+    p.add_argument("--format", help="AI script: a format id"); p.add_argument("--platform", help="AI script: a platform id")
+    p.add_argument("--set", action="append", default=[], metavar="KEY=VALUE",
+                   help="change any setting for this run: compose.panel.scroll=120, voice.voice.target_wps=3.6 (repeatable; "
+                        "several in one go split by ';')")
     p.add_argument("--date", default=date.today().isoformat())
     a = p.parse_args()
 
@@ -149,17 +216,28 @@ def main() -> None:
         sys.exit(f"no mode file {mode_file}")
     mode_file = mode_file.resolve()
     opts = tomllib.loads(mode_file.read_text(encoding="utf-8")).get("run", {})
-    for k in ("left", "right", "clip", "name"):
+    sets = [s for item in a.set for s in item.split(";") if s.strip()]
+    run_changes, set_lines = parse_sets(sets, opts)
+    opts.update(run_changes)
+    for k in ("left", "right", "clip", "name", "track", "niche", "format", "platform"):
         if getattr(a, k):
             opts[k] = getattr(a, k)
     if a.hook:
         opts["hook_card"] = a.hook
     if a.visuals:
         opts["visuals"] = a.visuals == "on"
-    script_file = Path(a.script).resolve() if a.script else ((mode_file.parent / opts["script_file"]).resolve() if opts.get("script_file") else None)
+    if a.script_text and a.script_text.strip():
+        script_file = script_from_text(a.script_text, opts.get("name") or f"script-{a.date}")
+    else:
+        script_file = Path(a.script).resolve() if a.script else ((mode_file.parent / opts["script_file"]).resolve() if opts.get("script_file") else None)
     os.environ["VG_MODE_FILE"] = str(mode_file)  # also for the character lookups done here
+    set_file = ROOT / ".run-settings.toml"  # paths in --set values are relative to the repo root
+    set_file.write_text("# written by run.py for this run (--set); safe to delete\n" + "\n".join(set_lines) + "\n", encoding="utf-8")
+    os.environ["VG_SET_FILE"] = str(set_file)
     env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
     print(f"mode: {mode_file.name}" + (f", script: {script_file.name}" if script_file else ", AI script") + f", visuals {'on' if opts.get('visuals', True) else 'off'}")
+    for line in set_lines:
+        print(f"  setting {line}")
 
     if script_file:
         if not script_file.is_file():
@@ -168,6 +246,9 @@ def main() -> None:
         target = ["--script", str(folder / "script.json")]
     else:
         brief_args = ["--date", a.date]
+        for k in ("track", "niche", "format", "platform"):
+            if opts.get(k):
+                brief_args += [f"--{k}", str(opts[k])]
         if opts.get("left") or opts.get("right"):
             if not (opts.get("left") and opts.get("right")):
                 sys.exit("give both --left and --right to pick the characters")

@@ -29,7 +29,13 @@ python run.py custom                      # your own script (modes/custom.toml) 
 python run.py custom my-script.txt --left malhotra --right riya --visuals off
 ```
 
-Options, each overriding the mode file: `--left` / `--right` (characters), `--hook "TEXT"`, `--visuals on|off`, `--clip clip2.mp4`, `--name`, `--date YYYY-MM-DD`.
+Options, each overriding the mode file:
+- `--left` / `--right`: the characters
+- `--hook "TEXT"`: the on-screen hook card
+- `--visuals on|off`, `--clip clip2.mp4`, `--name`, `--date YYYY-MM-DD`
+- `--script-text "Riya: ... | Malhotra: ..."`: your script in one line, instead of a file
+- `--track`, `--niche`, `--format`, `--platform`: for an AI script, instead of the usual draw
+- `--set "KEY=VALUE; KEY=VALUE"`: **any setting** for this run only, e.g. `voice.voice.target_wps=3.6; captions.captions.size=110; compose.overlay.enabled=false`. The key is `<section>.<table>.<key>`, as in the master config. A key that doesn't exist stops the run and lists the keys that do.
 
 ## Modes
 - **ats** ([modes/ats.toml](modes/ats.toml)): fully automatic. Fresh jobs, an AI script, fact checks, visuals of the real pages.
@@ -54,7 +60,7 @@ Another mode is just another `.toml` in `modes/`: `python run.py modes/my-mode.t
 Three layers, later ones win:
 
 ```
-tools/<tool>/config.toml   <   config.toml (master)   <   modes/<mode>.toml
+tools/<tool>/config.toml   <   config.toml (master)   <   modes/<mode>.toml   <   --set (this run only)
 ```
 - **Tool config**: every tool keeps a full set of values, so each one also runs on its own (`python tools/composer/compose.py --date ...`).
 - **Master [config.toml](config.toml)**: the values worth tuning from one place. A table like `[compose.panel]` overrides `[panel]` in the composer's config. A key the tool doesn't have is reported.
@@ -67,7 +73,15 @@ Paths in an override are relative to the file they are written in. Each tool rea
 - `content/history.json`: which jobs, premises, hooks and dynamics were used, so reels don't repeat. This is the only content file kept in git.
 
 ## GitHub Actions (daily)
-[.github/workflows/daily-reel.yml](.github/workflows/daily-reel.yml) runs `python run.py ats` at 08:00 IST and keeps the reel as a downloadable artifact for 30 days. It can also be started by hand (Actions → Daily reel → Run workflow) with mode `custom` and a script path in the repo.
+[.github/workflows/daily-reel.yml](.github/workflows/daily-reel.yml) runs `python run.py ats` at 08:00 IST and keeps the reel as a downloadable artifact for 30 days (Actions → the run → Artifacts).
+
+To make one by hand: Actions → Daily reel → Run workflow. Everything is in that form, nothing to upload:
+- **Mode**: ats or custom
+- **Script**: paste it in one line, lines split by ` | ` (`hook: ZERO CALLS | Riya: ... | Malhotra (shocked): ... [show: URL]`). Empty = the AI writes one.
+- **Hook**, **Left / Right** character, **Visuals** on/off, **Clip**
+- **Track / Niche / Format / Platform** for an AI script
+- **Settings**: any other setting, as for `--set`
+- **Save history**: untick for a test, so it doesn't use up today's jobs and ideas
 
 One-time setup:
 1. **Secrets** (Settings → Secrets and variables → Actions): `GEMINI_API_KEY`, `GROQ_API_KEY`, `JOB_FEED_API_KEY`.

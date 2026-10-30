@@ -16,5 +16,6 @@ content/*
 public/visual-cache/
 tools/voice-generator/audition-audio/
 out/
+.run-settings.toml
 __pycache__/
 *.pyc

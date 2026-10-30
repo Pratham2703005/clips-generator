@@ -16,7 +16,7 @@
 
 [run]
 # Your own script (relative to this file). Empty = the AI writes one from today's brief, like ATS mode.
-script_file = "example-script.txt"
+script_file = ""   # e.g. "example-script.txt"
 # Characters, by id or name (arjun, bunty, riya, verma, malhotra). Empty = from the script (first two speakers).
 left = ""
 right = ""
@@ -28,3 +28,8 @@ visuals = true
 clip = ""
 # Output folder name (content/custom/<name>). Empty = the script file's name + today's date.
 name = ""
+# AI script only (script_file empty): job_drop or product_pitch, and a niche id. Empty = the usual draw.
+track = ""
+niche = ""
+format = ""
+platform = ""

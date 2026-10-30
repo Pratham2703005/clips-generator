@@ -34,7 +34,7 @@ def load_config(path: Path, section: str = SECTION) -> dict:
     run.py) on top. A path in an overlay is relative to that overlay file."""
     cfg = tomllib.loads(path.read_text(encoding="utf-8"))
     root = Path(__file__).resolve().parents[2]
-    for f in (os.environ.get("VG_MASTER") or root / "config.toml", os.environ.get("VG_MODE_FILE")):
+    for f in (os.environ.get("VG_MASTER") or root / "config.toml", os.environ.get("VG_MODE_FILE"), os.environ.get("VG_SET_FILE")):
         if f and Path(f).is_file():
             over = tomllib.loads(Path(f).read_text(encoding="utf-8")).get(section)
             if over:
