@@ -37,6 +37,23 @@
       "premise": "data-science-hype",
       "hook": "flop-record",
       "dynamic": "expert-caught-out"
+    },
+    {
+      "date": "2026-11-01",
+      "track": "product_pitch",
+      "format": "using-ai-wrong",
+      "niche": "data-ai",
+      "platform": "make",
+      "cast": "malhotra+bunty",
+      "job_ids": [
+        "6a8c264775aa8d0f0f467f848e857a48"
+      ],
+      "companies": [
+        "Perficient"
+      ],
+      "premise": "chatgpt-job-list",
+      "hook": "the-steal",
+      "dynamic": "news-anchor"
     }
   ]
 }
