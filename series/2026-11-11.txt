@@ -23,6 +23,7 @@ Arjun: Tab tak Riya ke liye aaj ki job: {job1}. [job: 1]
 Bunty: Bhej diya. Job ka link description mein, roz nayi jobs ke liye link bio mein.
 
 --- description
+CTC vs in-hand salary for freshers | 6 LPA in-hand salary | Offer letter salary breakup
 Offer Tak | Din 11 💰
 6 LPA = 50k mahina? Nahi bhai. Variable 20% hata, PF aur tax kaat, toh in-hand chaalis se bhi thoda kam. Offer letter ka breakup pehle padho, khush baad mein ho.
 
@@ -32,4 +33,4 @@ Job in this episode:
 Din 12 kal: offer letter ke last page pe bond. 😳
 Fresh jobs from company career pages, every day: link in bio.
 
-#freshers #jobsearch #ctc #salary #fresherjobs #hinglish #offertak
+#offertak #fresherjobs #ctc #inhandsalary #salary

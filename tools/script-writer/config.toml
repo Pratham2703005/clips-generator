@@ -65,8 +65,10 @@ max_data_share = 0.4
 # Our Hinglish reels measured 0.37-0.39, the English ones 0.02-0.08; on 2026-11-03 gpt-oss passed an English script
 # because only the prompt asked for Hinglish. 0 turns the check off.
 min_hindi_share = 0.15
-hashtags_min = 5
-hashtags_max = 10
+# Instagram allows 5 hashtags per post (reported from 2025-12-18) and they help reach only at the margins; the
+# caption's first line carries the search keywords instead (search_line).
+hashtags_min = 3
+hashtags_max = 5
 # Small numbers anyone may say without them being in the brief ("two jobs", "24 hours", "7 days").
 # 0: "zero calls", "0 replies" is the running joke, not a stat.
 free_numbers = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 12, 24, 30, 60, 100]

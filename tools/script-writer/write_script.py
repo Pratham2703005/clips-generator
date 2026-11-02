@@ -93,10 +93,12 @@ def response_schema(brief: dict) -> dict:
                 },
             },
             "hook_card": {"type": "STRING", "description": "On-screen text for the first 3 seconds: the hook's claim in at most 6 words, e.g. 'THE JOB CLOSED 3 WEEKS AGO.'"},
+            "search_line": {"type": "STRING", "description": "The caption's first line: 2-4 phrases people type into Instagram search for this reel's topic, "
+                            "split by ' | ', in English, no emojis or hashtags, e.g. 'Fresher jobs 2026 | Off campus jobs India | Resume tips for freshers'"},
             "caption": {"type": "STRING", "description": "1-2 sentence Instagram caption hook, no hashtags"},
-            "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
+            "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}, "description": "most important first: the niche, then the topic"},
         },
-        "required": ["title", "lines", "hook_card", "caption", "hashtags"],
+        "required": ["title", "lines", "hook_card", "search_line", "caption", "hashtags"],
     }
 
 
@@ -322,7 +324,12 @@ def check(script: dict, brief: dict, cfg: dict) -> list[str]:
         problems.append(f"(style) {shocked} lines are marked shocked; at most 2, for the real shock moments.")
     tags = script.get("hashtags") or []
     if not (s["hashtags_min"] <= len(tags) <= s["hashtags_max"]):
-        problems.append(f"{len(tags)} hashtags; need {s['hashtags_min']}-{s['hashtags_max']}.")
+        problems.append(f"{len(tags)} hashtags; need {s['hashtags_min']}-{s['hashtags_max']} (Instagram counts 5 per post).")
+    # Instagram search matches caption words; a story line ("7 Din, 1 Offer | Din 2") matches nothing people type
+    search = (script.get("search_line") or "").strip()
+    if not search or len(search) > 100 or "#" in search or len(search.split("|")) < 2:
+        problems.append("search_line: 2-4 search phrases split by ' | ', under 100 characters, no hashtags "
+                        "(e.g. 'Fresher jobs 2026 | Off campus jobs India | Resume tips for freshers').")
     card = (script.get("hook_card") or "").split()
     if not card or len(card) > 6:
         problems.append(f"hook_card has {len(card)} words; it needs 1-6 (the hook's claim, read at a glance).")
@@ -617,7 +624,9 @@ def finish(script: dict, brief: dict, model: str) -> dict:
             tags.append(t)
     # the description carries every link (the bio has only the website): each job's apply page, then the product
     picks = "\n".join(f"- {j['title']} at {j['company']} ({j['where']}, posted {j['posted']})\n  Apply: {j['apply_url']}" for j in brief["jobs"])
-    caption = script["caption"].strip()
+    # first line = what people search for (Instagram search reads the caption), then the hook
+    search = re.sub(r"\s+", " ", (script.get("search_line") or brief["niche"].get("label", "")).replace("#", "")).strip()
+    caption = (search + "\n" if search else "") + script["caption"].strip()
     if picks:
         caption += f"\n\nJobs in this video:\n{picks}"
     platform = brief["platform"]
@@ -670,7 +679,7 @@ def main() -> None:
     p.add_argument("--brief", type=Path, help="a brief.json anywhere (output goes next to it)")
     p.add_argument("--model", help="use only this model")
     p.add_argument("--print", action="store_true", help="also print the script")
-    p.add_argument("--draft", type=Path, help="a hand-written script JSON (title, lines, hook_card, caption, hashtags): "
+    p.add_argument("--draft", type=Path, help="a hand-written script JSON (title, lines, hook_card, search_line, caption, hashtags): "
                                               "checked and finished like a model's, no model called (for testing)")
     args = p.parse_args()
 
