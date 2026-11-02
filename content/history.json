@@ -54,6 +54,25 @@
       "premise": "chatgpt-job-list",
       "hook": "the-steal",
       "dynamic": "news-anchor"
+    },
+    {
+      "date": "2026-11-02",
+      "track": "job_drop",
+      "format": "number-shock",
+      "niche": "india-freshers",
+      "platform": "zyla",
+      "cast": "arjun+bunty",
+      "job_ids": [
+        "e7019b4d45b7020ff4aca2eb002bfba3",
+        "0503a46849e6ec9e6574563acfca1d81"
+      ],
+      "companies": [
+        "ZoomInfo Technologies",
+        "Vecmocon"
+      ],
+      "premise": "weekend-applying",
+      "hook": "contrarian-flip",
+      "dynamic": "both-vs-system"
     }
   ]
 }
