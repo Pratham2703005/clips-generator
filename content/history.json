@@ -73,6 +73,25 @@
       "premise": "weekend-applying",
       "hook": "contrarian-flip",
       "dynamic": "both-vs-system"
+    },
+    {
+      "date": "2026-11-02",
+      "track": "job_drop",
+      "format": "guess-the-company",
+      "niche": "product-managers",
+      "platform": "n8n",
+      "cast": "riya+verma",
+      "job_ids": [
+        "d2e89fec03928bfe353e4ef6b1ab388a",
+        "a279a0184812ba057c374d7bd6c27cf4"
+      ],
+      "companies": [
+        "Ukg",
+        "Jll"
+      ],
+      "premise": "tell-me-about-yourself",
+      "hook": "nobody-tells-you",
+      "dynamic": "therapy-session"
     }
   ]
 }
