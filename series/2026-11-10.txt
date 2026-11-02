@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 10 "Rejection mail"
+# Riya's test result is a rejection; Bunty cleared his round. Reply for feedback, apply the same day.
+# Cliffhanger: Bunty is about to be happy about his CTC.
+title: Offer Tak | Din 10: Riya ka rejection mail
+cast: malhotra, riya
+jobs: india-freshers|remote-india|data-ai, 1
+hook: DIN 10: WE REGRET TO INFORM
+Riya: Ma'am, mail aaya. We regret to inform you.
+Malhotra: Test ka result?
+Riya: Haan. Itna padha tha, phir bhi.
+Malhotra: Riya, rejection mail sabse kam padha jaane wala mail hai. Par sabse kaam ka.
+Riya (shocked): Kaam ka? Ma'am, ye toh dil todne wala hai.
+Malhotra: Reply kar. Do line. Thank you, aur main kis cheez mein improve karun?
+Riya: Wo reply karenge?
+Malhotra: Har koi nahi. Par jo karte hain, wahi asli feedback hai.
+Riya: Aur Bunty ka round clear ho gaya. Wo naach raha hai.
+Malhotra: Aur tu ruk gayi, toh wo aage nikal jayega.
+Riya: Matlab aaj phir apply?
+Malhotra: Aaj hi. Rejection ke din apply karna sabse bada comeback hai. Le: {job1}. [job: 1]
+Riya: Posted {job1.posted}. Theek hai, pehle paanch mein main.
+Malhotra: Aur Bunty ko bol, CTC dekh ke itna khush na ho.
+Riya: Kyun, Ma'am?
+Malhotra: Kal Arjun samjhayega. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+
+--- description
+Offer Tak | Din 10 💌
+"We regret to inform you." Malhotra Ma'am ka jawab: do line ka reply (thank you + kahan improve karun), aur usi din nayi job pe apply. Rejection ke din apply karna sabse bada comeback hai.
+
+Job in this episode:
+{jobs}
+
+Din 11 kal: Bunty ka offer. Chhe lakh... ya nahi? 🤔
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #rejection #fresherjobs #jobhunt #hinglish #offertak

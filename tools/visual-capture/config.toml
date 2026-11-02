@@ -26,6 +26,9 @@ shot_height = 2000
 # (Workday job pages are skeletons at load and fill in a few seconds later).
 settle_ms = 2500
 wait_ms = 15000
+# A page with less text than this, or a bot check ("Performing security verification", "Just a moment...", CAPTCHA), is
+# not shown in the reel (2026-10-31: Orion's shot was Cloudflare's check page, Monks' a blank grey page).
+min_page_chars = 150
 # How long the page may load and run scripts before the shot (ms), and the hard limit per shot (s).
 budget_ms = 10000
 timeout = 60
@@ -87,3 +90,9 @@ make = "https://www.make.com/en/templates/20017-get-new-jobs-from-company-career
 rapidapi = "https://rapidapi.com/pk2732004/api/company-career-sites-jobs-api1"
 api-market = "https://api.market/store/pratham-org/career-site-jobs"
 zyla = "https://zylalabs.com/api-marketplace/other/career+site+job+listings+api/14345"
+
+# Saved screenshots (relative to this file) for product pages headless Chrome can't capture. make.com answers scripts
+# with Cloudflare's "Performing security verification" (checked 2026-11-01), so the Make template needs a shot taken in a
+# normal browser: a full-width PNG of the template page, saved at this path. Missing file = no visual for that page.
+[fallback_images]
+make = "../../public/product-shots/make.png"

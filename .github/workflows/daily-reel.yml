@@ -33,6 +33,10 @@ on:
         type: choice
         options: [auto, arjun, bunty, riya, verma, malhotra]
         default: auto
+      series:
+        description: "Use today's series episode (series/<date>.txt) when there is one; off = AI script"
+        type: boolean
+        default: true
       visuals:
         description: "Screenshots of real pages (job pages, product pages, [show: URL])"
         type: boolean
@@ -70,6 +74,10 @@ on:
         description: "Output name for your script (default: custom-<date>)"
         type: string
         default: ""
+      instagram:
+        description: "Post the reel to Instagram when it's made (the daily cron posts only when the repository variable AUTO_POST is true)"
+        type: boolean
+        default: false
       save_history:
         description: "Record this reel's jobs and ideas in content/history.json (so they don't repeat)"
         type: boolean
@@ -97,6 +105,7 @@ jobs:
       IN_HOOK: ${{ inputs.hook }}
       IN_LEFT: ${{ inputs.left }}
       IN_RIGHT: ${{ inputs.right }}
+      IN_SERIES: ${{ inputs.series }}
       IN_VISUALS: ${{ inputs.visuals }}
       IN_CLIP: ${{ inputs.clip }}
       IN_TRACK: ${{ inputs.track }}
@@ -149,6 +158,7 @@ jobs:
           done
           [ -n "$IN_CLIP" ] && [ "$IN_CLIP" != random ] && args+=(--clip "$IN_CLIP")
           [ "$IN_VISUALS" = false ] && args+=(--visuals off)
+          [ "$IN_SERIES" = false ] && args+=(--no-series)
           [ -n "$IN_SETTINGS" ] && args+=(--set "$IN_SETTINGS")
           echo "python run.py ${args[*]}"
           python run.py "${args[@]}"
@@ -156,15 +166,35 @@ jobs:
       - name: Keep the reel
         uses: actions/upload-artifact@v4
         with:
-          name: reel-${{ env.DAY }}${{ env.NAME && format('-{0}', env.NAME) || '' }}
+          # the run number tells two reels of one day apart (2026-10-31 had a manual run and the cron)
+          name: reel-${{ env.DAY }}${{ env.NAME && format('-{0}', env.NAME) || '' }}-run${{ github.run_number }}
+          # brief.json (premise, hook, dynamic, jobs) and visuals.json (which screenshots made it) let a reel be reviewed
           path: |
             content/${{ env.DAY }}/reel.mp4
             content/${{ env.DAY }}/script.md
             content/${{ env.DAY }}/script.json
+            content/${{ env.DAY }}/brief.json
+            content/${{ env.DAY }}/visuals.json
+            content/${{ env.DAY }}/description.txt
+            content/${{ env.DAY }}/posted.json
             content/custom/${{ env.NAME }}/reel.mp4
             content/custom/${{ env.NAME }}/script.md
+            content/custom/${{ env.NAME }}/script.json
+            content/custom/${{ env.NAME }}/visuals.json
           if-no-files-found: warn
           retention-days: 30
+
+      # after the artifact is kept, so a failed post never loses the reel
+      - name: Post to Instagram
+        if: success() && (inputs.instagram || (github.event_name == 'schedule' && vars.AUTO_POST == 'true'))
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          GH_TOKEN: ${{ github.token }}   # an Instagram Login token needs the reel on a release for a few minutes
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/instagram-publisher/publish.py --folder "$folder"
 
       - name: Save history
         if: success() && env.IN_SAVE_HISTORY == 'true'

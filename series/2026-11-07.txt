@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 1 finale - Din 7 "Interview"
+# Role reversal: Bunty (left, the one who knows now) uses Arjun's catchphrase on Verma Sir. Chai saved.
+# Cliffhanger: next round tomorrow, Season 2 "Offer Tak" starts.
+title: 7 Din, 1 Offer | Din 7: Interview day
+cast: bunty, verma
+jobs: india-freshers|bangalore-tech|remote-india, 1
+hook: DIN 7: INTERVIEW DAY
+Verma: Bunty, tie pehno, haath zor se milao, aur bolo, I am hardworking.
+Bunty: Verma Sir, interview video call pe hai.
+Verma (shocked): Toh haath kisse milaoge?
+Bunty: Kisi se nahi. Aur hardworking teen baar bolne se Arjun ne mana kiya hai.
+Verma: Hamare zamane mein boss ke pair chhoo ke naukri milti thi.
+Bunty: Sir, tab resume post se jaata tha. Aaj seedha company ki site pe.
+Verma: Phir bhi bol dena ki tum kuch bhi kar loge.
+Bunty: Bro, you're doing it wrong, Sir. Kuch bhi nahi, ek cheez achhe se.
+Verma (shocked): Tumne mujhe bro bola?
+Bunty: Interview ho gaya, Sir. Next round kal hai.
+Verma: Matlab Malhotra Ma'am ki chai bach gayi?
+Bunty: Bach gayi. Saat din, ek call, ek next round.
+Verma: Toh ab applications band?
+Bunty: Nahi, Sir. Offer tak pipeline chalti rahegi. Aaj ki: {job1}. [job: 1]
+Verma: Ye mere bhatije Pappu ko bhi bhej dena.
+Bunty: Link description mein hai. Season two kal se. Roz nayi jobs ke liye link bio mein.
+
+--- description
+7 Din, 1 Offer | Din 7 ☕✅
+Chai bach gayi! Saat din, ek call, ek next round. Aur Bunty ne Verma Sir ko bola: "Bro, you're doing it wrong." 😂
+
+Job in this episode:
+{jobs}
+
+Season 2 "Offer Tak" kal se: next round, offer letter, aur CTC ka sach.
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #interview #fresherjobs #interviewtips #hinglish #7din1offer

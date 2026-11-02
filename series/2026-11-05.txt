@@ -1,0 +1,34 @@
+# Series "7 Din, 1 Offer", Season 1 - Din 5 "Referral ki bheekh"
+# Carries forward: Bunty's "send to everyone" habit (now 50 LinkedIn DMs), the chai clock (2 days left).
+# Cliffhanger: Bunty's phone is on silent.
+title: 7 Din, 1 Offer | Din 5: Referral ki bheekh
+cast: arjun, bunty
+jobs: india-freshers|bangalore-tech|data-ai, 1
+hook: DIN 5: REFERRAL KI BHEEKH
+Bunty: Arjun, maine pachaas logon ko message kiya. Sir, referral please.
+Arjun: Aur kitne replies aaye?
+Bunty: Do. Ek ne block kiya, ek ne mujhe course bechne ki koshish ki.
+Arjun: Bro, you're doing it wrong. Referral bheekh nahi, ek chhota sa kaam hai.
+Bunty: Matlab?
+Arjun: Unka kaam aasaan kar. Job ka exact link, tera resume, aur do line ki tu kyun fit hai.
+Bunty: Aur bhejun kisko? Company ke CEO ko?
+Arjun: CEO ko nahi. Usi team mein, do saal pehle join karne wale ko.
+Bunty (shocked): Matlab pachaas nahi, sirf ek sahi insaan?
+Arjun: Haan. Aur job fresh honi chahiye, warna referral bhi line mein lagega.
+Arjun: Ye dekh: {job1}. [job: 1]
+Bunty: {job1.company} mein toh mera ek senior hai!
+Arjun: Toh aaj usko exact link bhej. Sir please nahi.
+Bunty: Bro, Malhotra Ma'am ki chai ke sirf do din bache hain.
+Arjun: Aur tera phone silent pe hai. Job ka link description mein, nayi jobs ke liye link bio mein.
+
+--- description
+7 Din, 1 Offer | Din 5 🙏
+50 DMs, "Sir referral please", 2 replies (ek block, ek course seller). Arjun ka rule: exact job link + resume + do line kyun fit ho, aur sirf usi team ke ek insaan ko.
+
+Job in this episode:
+{jobs}
+
+Din 6 kal: phone silent pe tha... 📱
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #referral #fresherjobs #linkedintips #hinglish #7din1offer

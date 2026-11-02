@@ -36,6 +36,9 @@ job_cooldown_days = 30
 company_cooldown_days = 7
 # Open every apply link before using it (closed Greenhouse jobs redirect with ?error=true).
 check_links = true
+# The audience is freshers: leave out senior / lead / principal / staff / director / head / VP / architect roles in every
+# niche (all three workflow reels of 2026-10-31/11-01 featured a "Senior ..." role). false = any level.
+fresher_audience = true
 # Jobs never to feature, with why. visual-capture warns when a job's own page shows a problem the API can't
 # (volunteer, unpaid, closed); add the id here.
 blocked_job_ids = [
@@ -198,63 +201,74 @@ audience = "anyone who wants a big-name company"
 filters = { company = "Google,Microsoft,Amazon,Apple,Meta,Netflix,Adobe,Salesforce,Oracle,IBM,Intel,NVIDIA,Uber,Airbnb,Stripe,Atlassian,Accenture,Deloitte,Goldman Sachs,JPMorgan Chase" }
 
 # ---- platforms the product pitch rotates through (and the CTA of the day) ----
+# Links (user, 2026-11-01): the Instagram bio holds only the website (landing); every other link, the jobs' apply links
+# and the product page (`url`), goes in the reel's description, so the spoken CTA points there.
 [platforms.landing]
 name = "the ATS Jobs API website"
 what = "the website that shows every way to get these jobs: the API, the MCP server, and the n8n and Make templates"
 for = "anyone curious"
-how_to_find = "link in bio"
-cta = "Link in bio."
+how_to_find = "website link in bio"
+cta = "Website ka link bio mein."
+url = "https://ats-jobs-api.pk2732004.workers.dev"
 
 [platforms.apify]
 name = "ATS Jobs API on Apify"
 what = "an Apify Actor: pick your filters, run it, get the jobs as a dataset; you pay per result"
 for = "developers and data people"
-how_to_find = "search 'ATS Jobs API' on Apify, or link in bio"
-cta = "Search ATS Jobs API on Apify. Link in bio."
+how_to_find = "search 'ATS Jobs API' on Apify, link in description"
+cta = "Apify ka link description mein."
+url = "https://apify.com/pk07007/ats-jobs-api"
 
 [platforms.apify-mcp]
 name = "the ATS Jobs API MCP server"
 what = "an MCP server, so Claude, Cursor or any MCP client can search these jobs for you"
 for = "people using Claude, Cursor or other AI agents"
-how_to_find = "add the ATS Jobs API MCP server from Apify, link in bio"
-cta = "Plug it into your AI as an MCP server. Link in bio."
+how_to_find = "add the ATS Jobs API MCP server from Apify, link in description"
+cta = "MCP server ka link description mein."
+url = "https://apify.com/pk07007/ats-jobs-api"
 
 [platforms.n8n]
 name = "the n8n daily job alert template"
 what = "a ready-made n8n workflow that checks these jobs every day, uses any AI model to pick the ones that fit you, and sends them to Telegram, Gmail or Discord"
 for = "n8n and automation people"
-how_to_find = "n8n template 21483, link in bio"
-cta = "Grab the n8n template. Link in bio."
+how_to_find = "n8n template 21483, link in description"
+cta = "n8n template ka link description mein."
+url = "https://n8n.io/workflows/21483"
 
 [platforms.make]
 name = "the Make.com job alert template"
 what = "a ready-made Make.com template that pulls fresh jobs from the API into your own scenario"
 for = "Make.com users"
-how_to_find = "Make template 20017, link in bio"
-cta = "Grab the Make template. Link in bio."
+how_to_find = "Make template 20017, link in description"
+cta = "Make template ka link description mein."
+url = "https://www.make.com/en/templates/20017-get-new-jobs-from-company-career-sites-into-google-sheets-every-day"
 
 [platforms.rapidapi]
 name = "Company Career Sites Jobs API on RapidAPI"
 what = "the same jobs API, for developers who already use RapidAPI"
 for = "developers"
-how_to_find = "search 'Company Career Sites Jobs API' on RapidAPI, link in bio"
-cta = "Find it on RapidAPI. Link in bio."
+how_to_find = "search 'Company Career Sites Jobs API' on RapidAPI, link in description"
+cta = "RapidAPI ka link description mein."
+url = "https://rapidapi.com/pk2732004/api/company-career-sites-jobs-api1"
 
 [platforms.api-market]
 name = "Career Site Jobs on api.market"
 what = "the same jobs API, for developers who already use api.market"
 for = "developers"
-how_to_find = "search 'Career Site Jobs' on api.market, link in bio"
-cta = "Find it on api.market. Link in bio."
+how_to_find = "search 'Career Site Jobs' on api.market, link in description"
+cta = "api.market ka link description mein."
+url = "https://api.market/store/pratham-org/career-site-jobs"
 
 [platforms.zyla]
 name = "Career Site Job Listings API on Zyla"
 what = "the same jobs API, for developers who already use Zyla API Hub"
 for = "developers"
-how_to_find = "Zyla API Hub, link in bio"
-cta = "Find it on Zyla. Link in bio."
+how_to_find = "Zyla API Hub, link in description"
+cta = "Zyla ka link description mein."
 
 # Things the script may say about the product. Numbers come live from /stats and are added to the brief separately.
+url = "https://zylalabs.com/api-marketplace/other/career+site+job+listings+api/14345"
+
 [facts]
 product = [
   "It reads company career sites (Workday, Greenhouse, Lever, Ashby, SmartRecruiters, Oracle and more) every day.",

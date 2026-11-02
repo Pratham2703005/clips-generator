@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 1 - Din 3 "Follow-up mail"
+# Carries forward: the old-resume blunder, Verma Sir's ancient templates, the chai clock.
+# Cliffhanger: halfway through the week, still no call.
+title: 7 Din, 1 Offer | Din 3: Follow-up mail
+cast: malhotra, bunty
+jobs: india-freshers|remote-india|bangalore-tech, 1
+hook: DIN 3: THE FOLLOW-UP MAIL
+Bunty: Ma'am, maine HR ko follow-up likha hai. Suniye.
+Bunty: Respected Sir slash Madam, kindly do the needful and revert ASAP.
+Malhotra (shocked): Bunty, ye mail hai ya court ka notice?
+Bunty: Verma Sir ka template hai. Unhe isi se naukri mili thi.
+Malhotra: Unhe naukri telegram se mili thi. HR din mein teen sau mail padhti hai.
+Bunty: Toh kitna lamba likhun?
+Malhotra: Teen line. Kaunsi job, tune kya bheja, aur ek naya proof. Bas.
+Bunty: Aur purane resume wala blunder?
+Malhotra: Wahi toh mauka hai. Updated resume attach kar, sorry mat bol.
+Bunty: Kab bhejun? Abhi? Raat ke do baje?
+Malhotra: Teen chaar din baad, office time mein. Raat do baje wala mail desperate lagta hai.
+Malhotra: Aaj ki fresh job bhi le: {job1}. [job: 1]
+Bunty: {job1.company} ko bhi Respected Sir slash Madam?
+Malhotra: Bilkul nahi. Naam dhoondh, seedha likh.
+Bunty: Ma'am, saat mein se teen din gaye.
+Malhotra: Chai abhi garam hai. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+
+--- description
+7 Din, 1 Offer | Din 3 ✉️
+"Kindly do the needful and revert ASAP" 💀 Malhotra Ma'am ka follow-up rule: teen line, office time, aur ek naya proof. Teen din gaye, call abhi bhi nahi.
+
+Job in this episode:
+{jobs}
+
+Din 4 kal: inbox mein sannata, par kisi aur ko reply aa gaya.
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #followupemail #fresherjobs #emailtips #hinglish #7din1offer

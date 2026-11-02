@@ -1,0 +1,34 @@
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 12 "Bond clause"
+# Three questions before signing; original certificates = red flag. Keep a backup pipeline.
+# Cliffhanger: tomorrow Bunty explains all this to Verma Sir.
+title: Offer Tak | Din 12: Offer letter ka bond
+cast: malhotra, bunty
+jobs: india-freshers|bangalore-tech|remote-india, 1
+hook: DIN 12: OFFER LETTER KA BOND
+Bunty: Ma'am, offer letter mein likha hai: do saal ka bond, do lakh penalty.
+Malhotra: Sign kiya?
+Bunty: Abhi nahi. Verma Sir bole, bina padhe sign karo, warna naukri haath se nikal jayegi.
+Malhotra (shocked): Bina padhe? Bunty, ye wala page sabse pehle padhte hain.
+Bunty: Toh bond wali company kharab hai?
+Malhotra: Hamesha nahi. Kuch training pe kharcha karti hain. Par teen cheezein pooch.
+Malhotra: Penalty kab lagti hai, training kitni hai, aur notice period kitna.
+Bunty: Aur original certificates jama karne ko bole toh?
+Malhotra: Wo red flag hai. Copy de, original nahi.
+Bunty: Ma'am, puchne se offer cancel toh nahi hoga?
+Malhotra: Sahi company sawaal pe naraz nahi hoti. Naraz ho, toh wahi jawab hai.
+Bunty: Theek hai. HR ko teen line ka mail. Aapka style.
+Malhotra: Aur backup ready rakh. Aaj ki: {job1}. [job: 1]
+Bunty: Par Verma Sir ko ye sab kaun samjhayega?
+Malhotra: Kal tu. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+
+--- description
+Offer Tak | Din 12 📜
+Do saal ka bond, do lakh penalty. Sign karne se pehle teen sawaal: penalty kab lagti hai, training kitni hai, notice period kitna. Original certificates maange toh red flag. 🚩
+
+Job in this episode:
+{jobs}
+
+Din 13 kal: Verma Sir vs offer letter. 😂
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #offerletter #servicebond #fresherjobs #hinglish #offertak

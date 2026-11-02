@@ -127,7 +127,7 @@ rules = [
   "Say numbers the way people say them, rounded down honestly ('almost 2 million', 'over 400 thousand'), using only the numbers in the brief.",
   "When a line talks about a specific job, set its job_id to that job's id. Every job in the brief must be mentioned.",
   "Keep company names and job titles short when spoken (drop words in brackets).",
-  "The last line is the call to action: it names the platform (platform.cta says how) and says 'link in bio', phrased naturally in the speaker's own voice, not copied word for word. Never end on a catchphrase.",
+  "The last line is the call to action, phrased naturally in the speaker's own voice, not copied word for word. The Instagram bio holds only the website; every other link is in the reel's description (user, 2026-11-01). So: when jobs are featured, say their links are in the description ('jobs ke links description mein'); in a product pitch, name the product and say its link is in the description (platform.cta); only the website itself is 'link in bio'. Never end on a catchphrase.",
   "In a product pitch, one line says plainly what the platform is and does (platform.what), so a viewer knows what they get.",
   "Use each stat only with its meaning from stats_meaning (e.g. posted_last_7_days is new jobs posted in the last 7 days, not jobs updated).",
   "Each number stands alone with its own meaning: never add, compare or equate two different stats in one line or in a reply ('400 thousand new this week' is not 'almost 2 million live'), and never let a character react to a number as if it were a different one.",

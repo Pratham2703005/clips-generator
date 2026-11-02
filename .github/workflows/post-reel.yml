@@ -1,0 +1,48 @@
+# Posts a reel that a Daily reel run already made, after you have watched it (the review step).
+# Actions -> Post reel -> Run workflow, with the run's number from its URL (.../actions/runs/<this number>).
+name: Post reel
+
+on:
+  workflow_dispatch:
+    inputs:
+      run_id:
+        description: "Daily reel run ID (the number in the run's URL: .../actions/runs/<run ID>)"
+        type: string
+        required: true
+
+permissions:
+  contents: write   # an Instagram Login token needs the reel on a release for a few minutes
+  actions: read     # to download the run's artifact
+
+jobs:
+  post:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Download the reel
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RUN_ID: ${{ inputs.run_id }}
+        run: |
+          [[ "$RUN_ID" =~ ^[0-9]+$ ]] || { echo "run_id must be a number"; exit 1; }
+          gh run download "$RUN_ID" -R "$GITHUB_REPOSITORY" --dir reel-download
+          reel=$(find reel-download -name reel.mp4 | head -n 1)
+          [ -n "$reel" ] || { echo "no reel.mp4 in run $RUN_ID's artifacts"; exit 1; }
+          echo "FOLDER=$(dirname "$reel")" >> "$GITHUB_ENV"
+          ls -la "$(dirname "$reel")"
+      - name: Post to Instagram
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/instagram-publisher/publish.py --folder "$FOLDER"
+      - name: Keep the post record
+        uses: actions/upload-artifact@v4
+        with:
+          name: posted-run${{ inputs.run_id }}
+          path: ${{ env.FOLDER }}/posted.json
+          if-no-files-found: warn

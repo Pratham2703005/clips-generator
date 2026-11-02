@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 13 "Verma Sir vs offer letter"
+# Payoff: asking about the bond worked. Verma's nephew Pappu repeats Bunty's old mistake; Bunty recaps the method.
+# Cliffhanger: joining day tomorrow.
+title: Offer Tak | Din 13: Verma Sir vs offer letter
+cast: bunty, verma
+jobs: india-freshers|remote-india|bangalore-tech, 1
+hook: DIN 13: VERMA SIR VS OFFER LETTER
+Verma: Bunty, offer letter laminate karwaya? Hamare zamane mein frame hota tha.
+Bunty: Sir, PDF hai. Laminate kaise karun?
+Verma: Print nikalo. Aur HR ko sawaal mat bhejo, bura maanenge.
+Bunty: Bhej diya, Sir. Bond ek saal ka ho gaya, aur penalty hata di.
+Verma (shocked): Sawaal puchne se penalty hat gayi?
+Bunty: Haan. Malhotra Ma'am ka rule: sahi company sawaal pe naraz nahi hoti.
+Verma: Hmm. Mere bhatije Pappu ka kya? Usne teen sau applications bheji hain.
+Bunty: Sir, wo meri purani galti kar raha hai. Teen hafte purani jobs, sau log aage.
+Verma: Toh kya kare?
+Bunty: Fresh job, din ke din apply, teen line ka follow-up. Jobs ek website se, jo career pages se roz laati hai.
+Verma: Uska link?
+Bunty: Bio mein. Aur Pappu ke liye aaj ki job: {job1}. [job: 1]
+Verma: Main print karke de deta hoon.
+Bunty: Bro, link bhejo, Sir. Description mein hai.
+Verma (shocked): Phir bro!
+Bunty: Kal joining hai, Sir. Roz nayi jobs ke liye link bio mein.
+
+--- description
+Offer Tak | Din 13 🖨️
+Verma Sir: "Offer letter laminate karwao, HR ko sawaal mat bhejo." Bunty ne sawaal bheja, aur penalty hat gayi. Ab Pappu ki 300 applications ka ilaaj. 😅
+
+Job in this episode:
+{jobs}
+
+Din 14 kal: joining day. Season finale.
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #offerletter #fresherjobs #jobhunt #hinglish #offertak

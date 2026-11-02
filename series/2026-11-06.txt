@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 1 - Din 6 "Phone baja"
+# Payoff: the call comes (after a loan spam call). Keeps applying ("one call is not a plan").
+# Cliffhanger: Verma Sir is coming over with a tie for interview advice.
+title: 7 Din, 1 Offer | Din 6: Phone baja
+cast: malhotra, bunty
+jobs: india-freshers|remote-india|bangalore-tech, 1
+hook: DIN 6: PHONE BAJA
+Bunty (shocked): Ma'am, phone baja! Unknown number!
+Malhotra: Utha, aur aawaz seedhi rakh.
+Bunty: Hello? Ji? Pre-approved loan? Paanch lakh?
+Malhotra: Kaat de. Wo HR nahi, loan wala hai.
+Bunty: Ma'am, chai ka countdown chal raha hai aur mujhe loan offer aa raha hai.
+Malhotra: Phone phir baja. Is baar screen pe company ka naam hai.
+Bunty (shocked): Ma'am! Din ke din wali job! Interview kal subah gyarah baje!
+Malhotra: Dekha? Fresh job, din ke din apply, aur teen line ka follow-up.
+Bunty: Matlab aapki chai bach gayi?
+Malhotra: Chai interview ke baad bachegi. Ab taiyaari kar.
+Bunty: Aur baaki applications band?
+Malhotra: Bilkul nahi. Ek call pe ruk gaya toh wahi purani galti. Aaj ki: {job1}. [job: 1]
+Bunty: Theek hai, apply karke hi soonga.
+Malhotra: Aur kal Verma Sir ki interview advice mat sunna.
+Bunty: Wo already aa rahe hain. Tie leke.
+Malhotra: Bhagwan bachaye. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+
+--- description
+7 Din, 1 Offer | Din 6 📞
+Pehli call: pre-approved loan. 🙃 Doosri call: interview! Fresh job, din ke din apply, teen line ka follow-up. Par Ma'am ka rule: ek call pe applications band nahi.
+
+Job in this episode:
+{jobs}
+
+Din 7 kal: interview day. Aur Verma Sir tie leke aa rahe hain. 👔
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #interviewcall #fresherjobs #hiring #hinglish #7din1offer

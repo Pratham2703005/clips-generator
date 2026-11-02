@@ -1,0 +1,42 @@
+# Series "7 Din, 1 Offer", Season 1 - Din 1 "Auto-reject folder" (posted by hand on 2026-11-01)
+# Starts the bet: 7 days, only fresh jobs from company career sites; no call -> Malhotra Ma'am gives up chai.
+# Cliffhanger: tomorrow Arjun opens Bunty's resume.
+#
+# Episode format (read by run.py on this date; the daily workflow finds it by the file name):
+#   title: / cast: LEFT, RIGHT / jobs: NICHE|FALLBACK-NICHE, COUNT
+#   {job1} = "Company, Title, City"; {job1.company} {job1.title} {job1.city} {job1.posted} {job1.url}
+#   [job: 1] on a line = that job's card on screen and its page in the background
+#   after "--- description": the post description; {jobs} = the job list with Apply links
+title: 7 Din, 1 Offer | Din 1: Auto-reject folder
+cast: malhotra, bunty
+jobs: india-freshers|bangalore-tech|remote-india, 1
+hook: DIN 1: 200 APPLICATIONS, 0 CALLS
+Bunty: Ma'am, two hundred applications bheje. Ek bhi call nahi aaya.
+Malhotra: Kahan bheje?
+Bunty: Har jagah. Jahan bhi Apply button dikha, daba diya.
+Malhotra: Isiliye. Teen hafte purani job pe tu sau logon ke peeche khada hai.
+Bunty (shocked): Toh meri applications gayi kahan?
+Malhotra: HR ke auto-reject folder mein. Wahan tera resume bhi chai pe hai.
+Bunty: Toh main kya karun, Ma'am?
+Malhotra: Deal. Saat din, sirf fresh jobs, seedha company ki career site se.
+Bunty: Aur call nahi aaya toh?
+Malhotra: Toh main chai chhod dungi.
+Bunty (shocked): Ma'am, itna bada risk?
+Malhotra: Risk nahi, meri secret list. Ek website jo company career pages se roz fresh jobs laati hai.
+Malhotra: Aaj ki pehli: {job1}. [job: 1]
+Bunty: Posted {job1.posted}? Matlab line abhi chhoti hai!
+Malhotra: Aaj hi apply kar. Kal Arjun tera resume kholega.
+Bunty: Uff. Link kahan hai, Ma'am?
+Malhotra: Job ka link description mein. Roz nayi jobs ke liye link bio mein.
+
+--- description
+7 Din, 1 Offer | Din 1 😬
+200 applications, 0 calls. Malhotra Ma'am ne deal kar li: 7 din, sirf fresh jobs, seedha company ki career site se. Call nahi aaya toh Ma'am chai chhod dengi. ☕
+
+Job in this episode:
+{jobs}
+
+Din 2 kal: Arjun kholega Bunty ka resume. Follow karo taaki miss na ho.
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #offcampus #fresherjobs #hiring #hinglish #7din1offer

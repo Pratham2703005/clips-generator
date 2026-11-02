@@ -1,0 +1,34 @@
+# Series "7 Din, 1 Offer", Season 1 - Din 2 "Resume post-mortem"
+# Carries forward: the chai bet, the 200 count (now 3 a day), Verma Sir's 1987 resume.
+# Cliffhanger: Bunty sent the OLD resume; tomorrow Malhotra Ma'am teaches the follow-up mail.
+title: 7 Din, 1 Offer | Din 2: Resume post-mortem
+cast: arjun, bunty
+jobs: india-freshers|bangalore-tech|data-ai, 2
+hook: DIN 2: RESUME POST-MORTEM
+Arjun: Bunty, tere resume mein hardworking teen baar likha hai!
+Bunty: Repetition se impact aata hai, bro.
+Arjun: Bro, you're doing it wrong. Recruiter sochega tu copy-paste karta hai.
+Bunty: Verma Sir bole typewriter wala font lagao, classy lagega.
+Arjun: Verma Sir ne resume post office se bheja tha. Nineteen eighty seven mein.
+Bunty (shocked): Toh ab kya? Poora resume delete?
+Arjun: Nahi. Har job ke liye chhota version. Job ki language, tera proof.
+Bunty: Matlab two hundred alag resume?
+Arjun: Isiliye two hundred nahi. Din ke sirf teen, par sahi wale.
+Bunty: Teen? Malhotra Ma'am ki chai ka kya hoga?
+Arjun: Ma'am ki list se aaj ki do. Pehli, {job1}. [job: 1]
+Bunty: Seedha {job1.company} ki career site se? Koi middleman nahi?
+Arjun: Doosri, {job2}. [job: 2]
+Bunty (shocked): Ek problem hai. Kal wali job pe maine purana resume bhej diya!
+Arjun: Kal Malhotra Ma'am follow-up mail sikhayengi. Dono jobs ke links description mein, nayi jobs ke liye link bio mein.
+
+--- description
+7 Din, 1 Offer | Din 2 📄
+Bunty ke resume mein "hardworking" teen baar. Arjun ka rule: din ke sirf 3 applications, har job ke liye resume ka chhota version. Malhotra Ma'am ki chai abhi bhi khatre mein. ☕
+
+Jobs in this episode:
+{jobs}
+
+Din 3 kal: follow-up mail. Pichhla episode miss kiya? Profile pe Din 1 dekho.
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #resume #fresherjobs #resumetips #hinglish #7din1offer

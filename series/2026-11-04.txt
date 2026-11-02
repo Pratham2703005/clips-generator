@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 1 - Din 4 "Ghost town"
+# Riya gets a reply because she applied the day the job went up (product proof: the website = Ma'am's list).
+# Cliffhanger: Bunty found Arjun's LinkedIn and wants referrals.
+title: 7 Din, 1 Offer | Din 4: Riya ko reply aaya
+cast: riya, bunty
+jobs: india-freshers|bangalore-tech|remote-india, 2
+hook: DIN 4: RIYA KO REPLY AAYA
+Bunty: Riya, chaar din ho gaye. Inbox mein sannata hai.
+Riya: Mujhe reply aa gaya. Kal ki application pe.
+Bunty (shocked): Kal ki? Meri toh mahine purani bhi pending hai!
+Riya: Wahi farak hai. Maine job post hone ke din hi apply kiya.
+Bunty: Tujhe kaise pata chala job usi din aayi?
+Riya: Malhotra Ma'am ki website. Company career pages se seedha, roz fresh.
+Bunty: Aur main portals pe teen hafte purani jobs dekh raha tha.
+Riya: Jab tak job wahan pahunchti hai, sau log apply kar chuke hote hain.
+Bunty: Toh tu pehle dus mein thi?
+Riya: Shayad pehle paanch mein. HR ne tab inbox khola hi tha.
+Bunty: Theek hai, aaj main bhi pehla banunga.
+Riya: Toh ye le, aaj ki pehli: {job1}. [job: 1]
+Bunty: Posted {job1.posted}. Ye toh ekdum garam hai!
+Riya: Aur doosri: {job2}. [job: 2]
+Bunty (shocked): Ruk, referral bhi chahiye. Arjun ka LinkedIn mil gaya!
+Riya: Uff. Dono jobs ke links description mein, roz nayi jobs ke liye link bio mein.
+
+--- description
+7 Din, 1 Offer | Din 4 👻
+Bunty ka inbox: sannata. Riya ka inbox: reply. Farak? Riya ne job post hone ke din hi apply kiya, seedha company ki career site se.
+
+Jobs in this episode:
+{jobs}
+
+Din 5 kal: Bunty maangega referral. Pachaas logon se. 😬
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #applyearly #fresherjobs #jobhunt #hinglish #7din1offer

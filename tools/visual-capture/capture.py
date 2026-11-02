@@ -86,6 +86,37 @@ CLEAN_JS = r"""
 """
 
 
+# Pages that are not the page (workflow reel of 2026-10-31: Orion Innovation's screenshot was Cloudflare's "Performing
+# security verification", Monks' a blank grey page with one "Apply Now" button).
+BOT_CHECK = re.compile(r"performing security verification|verify(ing)? you are (a )?human|just a moment\.\.\.|checking (if the site connection is secure|your browser)"
+                       r"|attention required|access denied|are you a robot|enable javascript and cookies to continue|captcha|request (was )?blocked"
+                       r"|403 forbidden|unusual traffic", re.I)
+
+
+def fallback_image(cfg: dict, key: str) -> Path | None:
+    """A saved screenshot for a product page that can't be shot live ([fallback_images] in the config), if it exists."""
+    rel = cfg.get("fallback_images", {}).get(key)
+    if not rel:
+        return None
+    p = Path(rel) if Path(rel).is_absolute() else (DEFAULT_CONFIG.parent / rel).resolve()
+    return p if p.is_file() else None
+
+
+class UnusablePage(Exception):
+    """A bot check or an empty page: retrying won't help, so the visual is dropped at once."""
+
+
+def unusable_page(text: str, min_chars: int = 150) -> str | None:
+    """Why a page's text says the screenshot is not worth showing (a bot check, or almost nothing on it), else None."""
+    t = (text or "").strip()
+    m = BOT_CHECK.search(t[:3000])
+    if m:
+        return f"bot check ({m.group(0)!r})"
+    if len(t) < min_chars:
+        return f"almost empty ({len(t)} characters of text)"
+    return None
+
+
 def shoot_cdp(chrome: str, url: str, out: Path, c: dict, log) -> bool:
     """Headless Chrome driven over the DevTools protocol: phone viewport at 2x, wait for the page, remove cookie
     popups, then capture a tall shot (shot_height css px) so the composer has something to scroll."""
@@ -141,6 +172,12 @@ def shoot_cdp(chrome: str, url: str, out: Path, c: dict, log) -> bool:
             call("Runtime.evaluate", expression=CLEAN_JS)
             text = call("Runtime.evaluate", expression="document.body ? document.body.innerText : ''").get("result", {}).get("value", "")
             out.with_suffix(".txt").write_text(text or "", encoding="utf-8")  # read by the job-page checks in main()
+            # local pages we build ourselves (the hook tracker) are never a bot check
+            why = None if url.startswith("file:") else unusable_page(text or "", c.get("min_page_chars", 150))
+            if why:
+                ws.close()
+                log(f"  skipped, the page is a {why}: {url}")
+                raise UnusablePage(why)
             time.sleep(0.4)
             shot = call("Page.captureScreenshot", format="png", captureBeyondViewport=True,
                         clip={"x": 0, "y": 0, "width": c["width"], "height": c.get("shot_height", c["height"]), "scale": 1})
@@ -165,6 +202,8 @@ def shoot(chrome: str, url: str, out: Path, c: dict, log) -> bool:
             try:
                 if shoot_cdp(chrome, url, out, c, log):
                     return True
+            except UnusablePage:
+                return False
             except Exception as e:  # a page that never settles, a dropped socket: retry or fall back below
                 log(f"  devtools shot failed ({e!r})"[:200])
             continue
@@ -292,11 +331,23 @@ def main() -> None:
         if v["kind"] == "page":
             cached = cache / f"{v['key']}-{hashlib.sha1(v['url'].encode()).hexdigest()[:8]}.png"
             fresh = cached.exists() and time.time() - cached.stat().st_mtime < cfg["paths"]["cache_days"] * 86400
+            # a cached shot from before the bot-check rule may itself be one
+            cached_txt = cached.with_suffix(".txt")
+            if fresh and cached_txt.exists() and unusable_page(cached_txt.read_text(encoding="utf-8"), cfg["chrome"].get("min_page_chars", 150)):
+                log(f"  {dst.name}: cached shot is a bot check or empty page, dropped")
+                cached.unlink(missing_ok=True)
+                continue
             if fresh and not args.fresh:
                 shutil.copyfile(cached, dst)
+                if cached_txt.exists():
+                    shutil.copyfile(cached_txt, dst.with_suffix(".txt"))
                 log(f"  {dst.name}: from cache")
             elif shoot(chrome, v["url"], cached, cfg["chrome"], log):
                 shutil.copyfile(cached, dst)
+            elif fallback_image(cfg, v["key"]):
+                # a product page that only answers real browsers (make.com sits behind Cloudflare's bot check): a saved shot
+                shutil.copyfile(fallback_image(cfg, v["key"]), dst)
+                log(f"  {dst.name}: live page unusable, using the saved shot {fallback_image(cfg, v['key']).name}")
             else:
                 continue
         elif not (dst.exists() and dst.stat().st_mtime > (folder / "script.json").stat().st_mtime) and not shoot(chrome, v["url"], dst, cfg["chrome"], log):

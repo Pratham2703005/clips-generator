@@ -5,7 +5,10 @@ content-data-preparation: decides what today's reel is about and gathers the rea
            [--track job_drop|product_pitch] [--niche ID] [--format ID] [--platform ID] [--reroll N] [--dry-run]
 
 Writes <output.dir>/<date>/brief.json and records the day in the history file (not with --dry-run).
-The same date always gives the same picks (the date seeds the random choices); --reroll N picks again.
+The date seeds the random choices. A second run for a date that already has a reel in the history picks something else
+(its picks count as used, and the seed moves on), so two reels of one day never share a format, cast, hook or jobs.
+--replace instead overwrites that day's entry and repeats its picks (for remaking the same reel); --reroll N moves the
+seed by hand.
 """
 
 from __future__ import annotations
@@ -79,9 +82,10 @@ def load_history(path: Path) -> list[dict]:
 
 
 def recent(history: list[dict], today: date, days: int) -> list[dict]:
-    """History entries from the `days` days before `today` (today itself excluded, so a rerun doesn't block itself)."""
+    """History entries from the `days` days up to and including `today`: an earlier reel of the same day counts too, so a
+    second run picks something else (--replace removes today's entry first when the same reel is wanted again)."""
     since = today - timedelta(days=days)
-    return [h for h in history if since <= date.fromisoformat(h["date"]) < today]
+    return [h for h in history if since <= date.fromisoformat(h["date"]) <= today]
 
 
 def pick(rng: random.Random, options: list[str], used_recently: set[str], last_used: dict[str, str], weights: dict[str, float] | None = None) -> str:
@@ -197,10 +201,38 @@ def posted_label(posted: str, today: date) -> str:
     return "today" if d <= 0 else "yesterday" if d == 1 else f"{d} days ago"
 
 
+LEGAL_SUFFIX = re.compile(r"[,\s]+(inc\.?|incorporated|llc|llp|ltd\.?|limited|plc|gmbh|ag|s\.?a\.?|b\.?v\.?|pvt\.? ltd\.?|private limited|private|pvt\.?|sdn\.? bhd\.?|sp\.? z ?o\.? ?o\.?|corp\.?|corporation|n\.\s?a\.)$", re.I)
+
+
 def clean_company(name: str) -> str:
+    """Board names as a person reads them, the same rules as PoolBox's companyDisplayName (2026-11-01: a job card read
+    "Xapads - Join Our Global AdTech Innovation Team")."""
     name = re.sub(r"\s+", " ", name).strip()
-    name = re.sub(r",?\s+(inc\.?|llc|ltd\.?|limited|gmbh|private limited|pvt\.? ltd\.?|corp\.?|corporation|s\.?a\.?|ag|b\.?v\.?)$", "", name, flags=re.I)
-    return re.sub(r"\s+\((india|usa|us|uk)\)$", "", name, flags=re.I).strip()
+    name = re.sub(r"^\(\d+\)\s*", "", name)  # "(0122) Sanofi"
+    # a recruiting tagline after a dash: "Xapads - Join Our Global AdTech Innovation Team", "Acme | We're Hiring"
+    name = re.sub(r"\s*[-–|:]\s*(join|we.?re hiring|careers?|jobs|work with|be part|open positions)\b.*$", "", name, flags=re.I) or name
+    for _ in range(3):  # brackets and legal suffixes peel off in turns: "Flextronics Technologies (India) Private"
+        name = LEGAL_SUFFIX.sub("", name).strip()
+        name = re.sub(r"\s*\([^()]*\)\s*$", "", name).strip() or name  # "(Abbottcareers2)", "(India)"
+    name = re.sub(r"\s+[1-3]$", "", name)  # "Appen 2"
+    if " " not in name:
+        name = re.sub(r"^([A-Za-z][A-Za-z&.-]{3,}?)[1-3]$", r"\1", name)  # "LinkedIn3", "Inetum2" (not KnowBe4)
+    letters = re.sub(r"[^A-Za-z]", "", name)
+    if " " in name and len(letters) > 5 and (letters.isupper() or letters.islower()):  # "ROUNDHOUSE COMMUNITIES"
+        name = " ".join(w if (len(w) <= 3 and w.isupper()) else w.capitalize() for w in name.split(" "))
+    elif name.islower():
+        name = name[:1].upper() + name[1:]
+    return name.strip(" -,&")
+
+
+# The audience is freshers (user, 2026-10-30): a senior role is no use to them, in any niche (all three workflow reels of
+# 2026-10-31/11-01 featured one: "Senior Medical Writer", "Senior Technical Writer", "Senior GCP Data Engineer").
+# "manager" stays: the product-managers niche and entry roles ("Account Manager", "Store Manager") need it.
+SENIOR_TITLE = re.compile(r"\b(senior|sr\.?|snr|lead(?!\s*gen)|principal|staff|director|head of|vice president|vp|chief|architect|iii|iv)\b", re.I)
+
+
+def too_senior(job: dict) -> bool:
+    return bool(SENIOR_TITLE.search(job.get("title", ""))) or str(job.get("experience") or "").lower().replace(" ", "") in ("senior", "staff-plus", "staff+", "staffplus")
 
 
 def clean_title(title: str) -> str:
@@ -242,6 +274,11 @@ def choose_jobs(cfg: dict, key: str, filters: dict, need: int, history: list[dic
     usable = [normalize(j, today) for j in raw if j.get("applyUrl") and j.get("title") and not bad.search(j.get("company", ""))]
     blocked = set(rules.get("blocked_job_ids", []))  # jobs whose own page showed they can't be featured (volunteer, closed)
     usable = [j for j in usable if j["id"] not in used_jobs and j["id"] not in blocked and j["company"].lower() not in used_cos and j["where"]]
+    if rules.get("fresher_audience", True):
+        senior = sum(1 for j in usable if too_senior(j))
+        usable = [j for j in usable if not too_senior(j)]
+        if senior:
+            log(f"  {senior} senior/lead/manager roles left out (fresher audience)")
     log(f"  {len(raw)} fetched, {len(usable)} usable after filters and history")
     chosen, seen, dead = [], set(), set()
     for j in usable:
@@ -270,7 +307,9 @@ def main() -> None:
     p.add_argument("--format")
     p.add_argument("--platform")
     p.add_argument("--cast", help="LEFT,RIGHT character ids (left knows, right learns), instead of picking a cast")
+    p.add_argument("--jobs", type=int, help="how many jobs to pick, instead of the format's count (a series episode's slots)")
     p.add_argument("--reroll", type=int, default=0, help="pick again for the same date (any number)")
+    p.add_argument("--replace", action="store_true", help="overwrite this date's history entry instead of adding a second reel")
     p.add_argument("--dry-run", action="store_true", help="print the brief, write nothing")
     args = p.parse_args()
 
@@ -284,8 +323,17 @@ def main() -> None:
     today = date.fromisoformat(args.date) if args.date else datetime.now(timezone.utc).date()
     out_dir = (base / cfg["output"]["dir"]).resolve()
     history_path = (base / cfg["output"]["history"]).resolve()
-    history = [h for h in load_history(history_path) if h["date"] != today.isoformat()]  # a rerun replaces its own day
-    rng = random.Random(f"{today.isoformat()}#{args.reroll}")
+    history = load_history(history_path)
+    same_day = [h for h in history if h["date"] == today.isoformat()]
+    if args.replace:
+        history = [h for h in history if h["date"] != today.isoformat()]
+        same_day = []
+    elif same_day:
+        # 2026-10-31 got two reels (a manual run and the cron) with the same track, format, cast and hook: the earlier
+        # run's entry now stays, counts as used, and moves the seed
+        log_ = f"{len(same_day)} reel(s) already made for {today.isoformat()}: picking different ones (--replace to redo that reel)"
+        print(log_, file=sys.stderr)
+    rng = random.Random(f"{today.isoformat()}#{args.reroll + len(same_day)}")
     rules, formats, niches, platforms, chars = cfg["rules"], cfg["formats"], cfg["niches"], cfg["platforms"], cfg["characters"]
     log = lambda m: print(m, file=sys.stderr)  # noqa: E731
 
@@ -314,7 +362,7 @@ def main() -> None:
     log(f"{today}: track={track} format={fmt} platform={platform} cast={cast_key}")
 
     # 2. niche and jobs: try niches in pick order until one has enough usable jobs
-    need = formats[fmt]["jobs"]
+    need = args.jobs or formats[fmt]["jobs"]
     # a job drop also needs the niche to be alive today (min_jobs live), even when the format shows fewer
     want = max(need, rules["min_jobs"]) if track == "job_drop" else max(need, 1)
     used_niches = {h.get("niche") for h in recent(history, today, rules["niche_cooldown_days"])}

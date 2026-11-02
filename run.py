@@ -94,11 +94,15 @@ def parse_script(path: Path, chars: dict) -> dict:
         if not cid:
             problems.append(f"line {n}: unknown character {m.group(1)!r} (known: {', '.join(c['name'] for c in chars.values())})")
             continue
-        text, show = m.group(4).strip(), None
+        text, show, job_ref = m.group(4).strip(), None, None
         s = re.search(r"\[show:\s*(\S+?)\s*\]", text)
         if s:
             show, text = s.group(1), (text[:s.start()] + text[s.end():]).strip()
-        lines.append({"speaker": cid, "text": text, "expression": "shocked" if (m.group(3) or "").lower() == "shocked" else "normal", "show": show})
+        j = re.search(r"\[job:\s*(\d+)\s*\]", text)  # a series script's job line: card overlay + the job's own page
+        if j:
+            job_ref, text = int(j.group(1)), (text[:j.start()] + text[j.end():]).strip()
+        lines.append({"speaker": cid, "text": text, "expression": "shocked" if (m.group(3) or "").lower() == "shocked" else "normal",
+                      "show": show, "job_ref": job_ref})
     if problems:
         sys.exit("the script has problems:\n  " + "\n  ".join(problems))
     if len({ln["speaker"] for ln in lines}) < 1:
@@ -106,8 +110,10 @@ def parse_script(path: Path, chars: dict) -> dict:
     return {"lines": lines, "hook_card": hook}
 
 
-def build_custom(script_path: Path, opts: dict, day: str) -> Path:
-    """Writes script.json for your own script into content/custom/<name>/ and returns that folder."""
+def build_custom(script_path: Path, opts: dict, day: str, folder: Path | None = None, jobs: list[dict] | None = None,
+                 title: str = "", track: str = "custom") -> Path:
+    """Writes script.json for your own script into content/custom/<name>/ (or `folder`) and returns that folder.
+    `jobs` (a series episode) gives "[job: N]" lines their job: the card overlay and the job's own page."""
     chars = characters()
     parsed = parse_script(script_path, chars)
     speakers = list(dict.fromkeys(ln["speaker"] for ln in parsed["lines"]))
@@ -122,12 +128,18 @@ def build_custom(script_path: Path, opts: dict, day: str) -> Path:
         cast.append({"id": cid, "position": pos, **{k: v for k, v in c.items() if k != "label"}})
     names = {c["id"]: c["name"] for c in cast}
     name = opts.get("name") or f"{script_path.stem}-{day}"
-    folder = ROOT / "content" / "custom" / name
+    folder = folder or ROOT / "content" / "custom" / name
     folder.mkdir(parents=True, exist_ok=True)
     words = sum(len(ln["text"].split()) for ln in parsed["lines"])
+
+    def job_of(ln: dict) -> dict | None:
+        n = ln.get("job_ref")
+        return (jobs or [])[n - 1] if n and jobs and n <= len(jobs) else None
+
     script = {
-        "date": day, "title": name, "track": "custom", "format": "custom", "cast": cast,
-        "lines": [{**ln, "name": names[ln["speaker"]], "job_id": None, "job": None} for ln in parsed["lines"]],
+        "date": day, "title": title or name, "track": track, "format": track, "cast": cast,
+        "lines": [{**{k: v for k, v in ln.items() if k != "job_ref"}, "name": names[ln["speaker"]],
+                   "job_id": (job_of(ln) or {}).get("id"), "job": job_of(ln)} for ln in parsed["lines"]],
         "hook_card": (parsed["hook_card"] or opts.get("hook_card") or "").strip(),
         "caption": "", "hashtags": [], "words": words, "model": "your script",
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
@@ -196,6 +208,93 @@ def script_from_text(text: str, name: str) -> Path:
     return path
 
 
+# ---- series: a hand-written episode for a date (series/<YYYY-MM-DD>.txt), with that day's fresh jobs filled in ----
+
+SERIES_DIR = ROOT / "series"
+SLOT = re.compile(r"\{job(\d)(?:\.(company|title|city|where|posted|url))?\}")
+ROMAN = {"I": "One", "II": "Two", "III": "Three"}
+
+
+def spoken_title(title: str) -> str:
+    """A job title as it is said aloud: no brackets, no second part ("QA Engineer I, Music Client QA" -> "QA Engineer One")."""
+    t = re.sub(r"\s*[\(\[].*?[\)\]]", "", title)
+    t = re.split(r"\s+[-–|/]\s+|,\s*", t)[0].strip()
+    return re.sub(r"\b(I|II|III)$", lambda m: ROMAN[m.group(1)], t)
+
+
+def parse_series(path: Path) -> dict:
+    """Header (title, cast, jobs), the dialogue, and the description after '--- description'."""
+    text = path.read_text(encoding="utf-8")
+    body, _, description = text.partition("\n--- description")
+    head, lines = {}, []
+    for raw in body.splitlines():
+        m = re.match(r"^\s*(title|cast|jobs)\s*:\s*(.+)$", raw, re.I)
+        if m:
+            head[m.group(1).lower()] = m.group(2).split("#")[0].strip()
+        elif not raw.strip().startswith("#"):  # notes may mention {job2}; only spoken lines count as slots
+            lines.append(raw)
+    niches, _, count = head.get("jobs", "india-freshers, 1").partition(",")
+    return {
+        "title": head.get("title", path.stem),
+        "cast": [c.strip() for c in head.get("cast", "").split(",") if c.strip()],
+        "niches": [n.strip() for n in niches.split("|") if n.strip()],
+        "count": int(count.strip() or 1),
+        "dialogue": "\n".join(lines),
+        "description": description.strip(),
+    }
+
+
+def fill_slots(text: str, jobs: list[dict]) -> str:
+    def one(m: re.Match) -> str:
+        n, field = int(m.group(1)), m.group(2)
+        j = jobs[n - 1]
+        city = (j.get("where") or "").split(",")[0].strip()
+        values = {"company": j["company"], "title": spoken_title(j["title"]), "city": city, "where": j.get("where", ""),
+                  "posted": j.get("posted", ""), "url": j.get("apply_url", "")}
+        return values[field] if field else f"{j['company']}, {values['title']}, {city}"
+    return SLOT.sub(one, text)
+
+
+def jobs_block(jobs: list[dict]) -> str:
+    return "\n".join(f"- {j['title']} at {j['company']} ({j.get('where', '')}, posted {j.get('posted', '')})\n  Apply: {j['apply_url']}" for j in jobs)
+
+
+def run_series(path: Path, day: str, opts: dict, env: dict) -> Path | None:
+    """Today's episode: fresh jobs from the brief tool (fresher filter, live links, cooldowns), slots filled, script.json
+    written to content/<day>. None when no niche gives enough jobs (the caller then runs the full AI pipeline)."""
+    ep = parse_series(path)
+    chars = characters()
+    cast = [find_char(c, chars) for c in ep["cast"]]
+    if len(cast) != 2 or not all(cast):
+        sys.exit(f"{path.name}: 'cast: LEFT, RIGHT' must name two characters (got {ep['cast']})")
+    folder = ROOT / "content" / day
+    needed = max([int(n) for n in re.findall(r"\{job(\d)", ep["dialogue"])] + [ep["count"], 0])
+    jobs: list[dict] = []
+    for niche in ep["niches"]:
+        print(f"\n== brief (series, niche {niche})", flush=True)
+        (folder / "brief.json").unlink(missing_ok=True)  # a failed niche writes none; never read an earlier run's
+        r = subprocess.run([sys.executable, "-u", str(STEP["brief"]), "--date", day, "--track", "job_drop", "--niche", niche,
+                            "--cast", ",".join(cast), "--jobs", str(needed), "--replace"], env=env)
+        if r.returncode == 0 and (folder / "brief.json").exists():
+            jobs = json.loads((folder / "brief.json").read_text(encoding="utf-8")).get("jobs", [])
+            if len(jobs) >= needed:
+                break
+        print(f"  {niche}: {len(jobs)} job(s), {needed} needed")
+    if len(jobs) < needed:
+        return None
+    filled = folder / "series-script.txt"
+    filled.write_text(fill_slots(ep["dialogue"], jobs), encoding="utf-8")
+    build_custom(filled, {**opts, "left": cast[0], "right": cast[1]}, day, folder=folder, jobs=jobs, title=ep["title"], track="series")
+    if ep["description"]:
+        desc = fill_slots(ep["description"].replace("{jobs}", jobs_block(jobs[:needed])), jobs)
+        (folder / "description.txt").write_text(desc + "\n", encoding="utf-8")
+        script = json.loads((folder / "script.json").read_text(encoding="utf-8"))
+        script["caption"] = desc  # the same place the AI pipeline keeps its caption
+        (folder / "script.json").write_text(json.dumps(script, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    print(f"series: {path.name} '{ep['title']}' with {needed} job(s): {', '.join(j['company'] for j in jobs[:needed])}")
+    return folder
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description="Make a reel: python run.py ats | custom [SCRIPT.txt]")
     p.add_argument("mode", help="ats, custom, or a mode .toml file")
@@ -209,6 +308,7 @@ def main() -> None:
                    help="change any setting for this run: compose.panel.scroll=120, voice.voice.target_wps=3.6 (repeatable; "
                         "several in one go split by ';')")
     p.add_argument("--date", default=date.today().isoformat())
+    p.add_argument("--no-series", action="store_true", help="ignore series/<date>.txt and run the AI pipeline")
     a = p.parse_args()
 
     mode_file = Path(a.mode) if a.mode.endswith(".toml") else ROOT / "modes" / f"{a.mode}.toml"
@@ -235,11 +335,21 @@ def main() -> None:
     set_file.write_text("# written by run.py for this run (--set); safe to delete\n" + "\n".join(set_lines) + "\n", encoding="utf-8")
     os.environ["VG_SET_FILE"] = str(set_file)
     env = {**os.environ, "PYTHONIOENCODING": "utf-8"}
-    print(f"mode: {mode_file.name}" + (f", script: {script_file.name}" if script_file else ", AI script") + f", visuals {'on' if opts.get('visuals', True) else 'off'}")
+    print(f"mode: {mode_file.name}" + (f", script: {script_file.name}" if script_file else ", series episode or AI script") + f", visuals {'on' if opts.get('visuals', True) else 'off'}")
     for line in set_lines:
         print(f"  setting {line}")
 
-    if script_file:
+    series_file = SERIES_DIR / f"{a.date}.txt"
+    series_folder = None
+    if not script_file and series_file.is_file() and not a.no_series:
+        print(f"series episode for {a.date}: {series_file.name}")
+        series_folder = run_series(series_file, a.date, opts, env)
+        if not series_folder:
+            print("not enough fresh jobs for the episode's slots: making today's reel with the AI pipeline instead")
+    if series_folder:
+        folder = series_folder
+        target = ["--script", str(folder / "script.json")]
+    elif script_file:
         if not script_file.is_file():
             sys.exit(f"script not found: {script_file}")
         folder = build_custom(script_file, opts, a.date)

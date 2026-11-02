@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 11 "CTC vs in-hand"
+# 6 LPA with 20% variable: fixed 4.8 L, about 40k a month before PF and tax.
+# Cliffhanger: a bond on the last page of the offer letter.
+title: Offer Tak | Din 11: CTC vs in-hand
+cast: arjun, bunty
+jobs: india-freshers|bangalore-tech|remote-india, 1
+hook: DIN 11: CHHE LAKH YA NAHI?
+Bunty: Arjun! Offer aaya! Chhe lakh CTC!
+Arjun: Badhai ho. In-hand kitna?
+Bunty: Chhe lakh baarah se divide. Pachaas hazaar mahina!
+Arjun: Bro, you're doing it wrong. CTC aur in-hand alag cheezein hain.
+Bunty (shocked): Matlab?
+Arjun: CTC mein PF, gratuity, insurance, variable bonus, sab juda hota hai.
+Bunty: Toh haath mein actually kitna aayega?
+Arjun: Offer letter ka breakup dekh. Fixed kitna, variable kitna.
+Bunty: Variable bees percent likha hai.
+Arjun: Wo poora milega, iski guarantee nahi. Hisaab fixed se laga.
+Bunty: Toh pachaas nahi, chaalis se bhi thoda kam?
+Arjun: Haan, PF aur tax ke baad. Phir bhi achha hai, bas sach jaan ke khush ho.
+Bunty: Aur offer letter ke last page pe kuch bond likha hai.
+Arjun (shocked): Bond? Wo kal Malhotra Ma'am ke saath padhna.
+Arjun: Tab tak Riya ke liye aaj ki job: {job1}. [job: 1]
+Bunty: Bhej diya. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+
+--- description
+Offer Tak | Din 11 💰
+6 LPA = 50k mahina? Nahi bhai. Variable 20% hata, PF aur tax kaat, toh in-hand chaalis se bhi thoda kam. Offer letter ka breakup pehle padho, khush baad mein ho.
+
+Job in this episode:
+{jobs}
+
+Din 12 kal: offer letter ke last page pe bond. 😳
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #ctc #salary #fresherjobs #hinglish #offertak

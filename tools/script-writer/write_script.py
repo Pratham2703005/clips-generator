@@ -92,7 +92,7 @@ def response_schema(brief: dict) -> dict:
                     "required": ["speaker", "text", "expression"],
                 },
             },
-            "hook_card": {"type": "STRING", "description": "On-screen text for the first 3 seconds: the hook's claim in at most 6 words, e.g. '200 APPLICATIONS. 0 CALLS.'"},
+            "hook_card": {"type": "STRING", "description": "On-screen text for the first 3 seconds: the hook's claim in at most 6 words, e.g. 'THE JOB CLOSED 3 WEEKS AGO.'"},
             "caption": {"type": "STRING", "description": "1-2 sentence Instagram caption hook, no hashtags"},
             "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}},
         },
@@ -239,6 +239,10 @@ def hindi_share(text: str) -> float:
     return sum(x in HINDI_WORDS for x in w) / max(len(w), 1)
 
 
+# Premises (content-data-preparation/banks.toml) about piling up applications, where the gag may open the reel.
+GAG_PREMISES = {"apply-everywhere", "spreadsheet-tracker", "hr-inside-view", "ghosted-after-apply"}
+
+
 def check(script: dict, brief: dict, cfg: dict) -> list[str]:
     s, problems = cfg["script"], []
     lines = script.get("lines") or []
@@ -275,7 +279,7 @@ def check(script: dict, brief: dict, cfg: dict) -> list[str]:
     share = hindi_share(" ".join(ln.get("text", "") for ln in lines))
     if words and share < s.get("min_hindi_share", 0):
         problems.append(f"the script is in English ({share:.0%} Hindi words, need {s['min_hindi_share']:.0%}+); write natural "
-                        "Hinglish in Roman script: 'Yaar, 200 jagah apply kiya, ek bhi call nahi aaya.'")
+                        "Hinglish in Roman script: 'Yaar, yeh job toh teen hafte pehle hi band ho gayi thi.'")
     data = sum(len(ln.get("text", "").split()) for ln in lines if ln.get("job_id"))
     if words and data / words > s["max_data_share"]:
         problems.append(f"job lines are {data / words:.0%} of the words; keep them under {s['max_data_share']:.0%} and give more room to story and banter.")
@@ -294,8 +298,11 @@ def check(script: dict, brief: dict, cfg: dict) -> list[str]:
     if lines:
         last = lines[-1].get("text", "").lower()
         cta = brief["platform"]["cta"].lower()
-        if "bio" in cta and "bio" not in last:
-            problems.append("the last line must be the call to action and say 'link in bio' (see platform.cta).")
+        # the bio holds only the website; job and product links are in the description (user, 2026-11-01)
+        where = "description" if brief["jobs"] or "description" in cta else "bio"
+        if where not in last:
+            problems.append(f"the last line must be the call to action and say the link is in the {where} "
+                            f"({'jobs ke links description mein' if brief['jobs'] else brief['platform']['cta']}).")
         knows = next((c["id"] for c in brief["cast"] if c.get("position") == "left"), None)
         if knows and lines[-1].get("speaker") != knows:
             problems.append(f"(style) the call to action (last line) must be said by {knows}, the one who knows.")
@@ -319,6 +326,14 @@ def check(script: dict, brief: dict, cfg: dict) -> list[str]:
     card = (script.get("hook_card") or "").split()
     if not card or len(card) > 6:
         problems.append(f"hook_card has {len(card)} words; it needs 1-6 (the hook's claim, read at a glance).")
+    # Bunty's "200 applications" running gag opened all three workflow reels of 2026-10-31/11-01 (and every reel before
+    # the idea banks). It may lead only when the premise is about piling up applications.
+    gag = re.compile(r"\b(200|two hundred|do sau)\b[^.?!]{0,30}\b(applications?|apply|applied|jagah)\b|\b(applications?|applied)\b[^.?!]{0,20}\b(200|two hundred)\b", re.I)
+    premise = (brief.get("premise") or {}).get("id", "")
+    opening = f"{script.get('hook_card', '')} {lines[0].get('text', '') if lines else ''}"
+    if gag.search(opening) and premise not in GAG_PREMISES:
+        problems.append("the hook uses the running gag (200 applications, zero calls); open on today's premise instead "
+                        f"({premise or 'see premise'}), the gag may come back once later.")
     if lines:
         problems += quality_checks(lines, cfg)
     return problems
@@ -600,11 +615,15 @@ def finish(script: dict, brief: dict, model: str) -> dict:
         t = re.sub(r"[^\w]", "", t.lstrip("#"))
         if t and t.lower() not in {x.lower() for x in tags}:
             tags.append(t)
-    picks = "\n".join(f"- {j['title']} at {j['company']} ({j['where']}, posted {j['posted']})" for j in brief["jobs"])
+    # the description carries every link (the bio has only the website): each job's apply page, then the product
+    picks = "\n".join(f"- {j['title']} at {j['company']} ({j['where']}, posted {j['posted']})\n  Apply: {j['apply_url']}" for j in brief["jobs"])
     caption = script["caption"].strip()
     if picks:
-        caption += f"\n\nIn this video:\n{picks}"
-    caption += f"\n\nFind it: {brief['platform']['how_to_find']}."
+        caption += f"\n\nJobs in this video:\n{picks}"
+    platform = brief["platform"]
+    if platform.get("url") and platform.get("id") != "landing":
+        caption += f"\n\n{platform['name'][:1].upper() + platform['name'][1:]}: {platform['url']}"
+    caption += "\n\nMore fresh jobs from company career pages: link in bio."
     caption += "\n\n" + " ".join(f"#{t}" for t in tags)
     return {
         "date": brief["date"],

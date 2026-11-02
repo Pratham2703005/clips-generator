@@ -1,0 +1,33 @@
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" finale - Din 14 "Joining day"
+# Bunty joins; Riya (kept applying after her rejection) gets an interview for Monday: the hook for a season 3.
+title: Offer Tak | Din 14: Joining day
+cast: riya, bunty
+jobs: india-freshers|bangalore-tech|remote-india, 2
+hook: DIN 14: JOINING DAY
+Bunty: Riya, aaj joining hai! Laptop mila, ID card mila, aur chai free hai!
+Riya: Malhotra Ma'am ki chai bhi bach gayi. Toh season khatam?
+Bunty: Mera haan. Do sau applications se ek offer tak.
+Riya: Aur mera? Rejection ke baad bhi maine roz apply kiya.
+Bunty: Toh?
+Riya: Aaj subah call aaya. Interview Monday ko.
+Bunty (shocked): Riya! Ye toh season three hai!
+Riya: Pehle bata, sabse badi seekh kya thi?
+Bunty: Do sau nahi, din ke teen sahi. Aur fresh job pe, din ke din apply.
+Riya: Aur Arjun ka bro, you're doing it wrong?
+Bunty: Ab main khud bolta hoon. Verma Sir ko bhi.
+Riya: Toh doston ke liye aaj ki do jobs. Pehli, {job1}. [job: 1]
+Riya: Aur doosri, {job2}. [job: 2]
+Bunty: Dono jobs ke links description mein.
+Riya: Aur roz nayi jobs ke liye, Ma'am ki website. Link bio mein. Monday ko milte hain.
+
+--- description
+Offer Tak | Din 14 🎉
+200 applications se ek offer tak. Bunty ki joining ho gayi, Malhotra Ma'am ki chai bach gayi. Aur Riya? Rejection ke baad bhi roz apply kiya, aur aaj subah call aaya. 👀
+
+Jobs in this episode:
+{jobs}
+
+Season 3 jaldi. Follow karo taaki Riya ka interview miss na ho.
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #firstjob #fresherjobs #joiningday #hinglish #offertak

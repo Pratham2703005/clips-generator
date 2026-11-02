@@ -1,0 +1,35 @@
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 8 "Tell me about yourself"
+# Carries forward: next round today, Malhotra's three-line rule (from the follow-up mail).
+# Cliffhanger: Riya's aptitude test is tomorrow.
+title: Offer Tak | Din 8: Tell me about yourself
+cast: malhotra, bunty
+jobs: india-freshers|bangalore-tech|remote-india, 1
+hook: DIN 8: TELL ME ABOUT YOURSELF
+Malhotra: Bunty, next round ka pehla sawaal: tell me about yourself. Bol.
+Bunty: Ma'am, main do hazaar teen mein paida hua. Bachpan se cricket ka shauk...
+Malhotra (shocked): Ruk! Ye interview hai ya teri biography?
+Bunty: Unhone khud pucha, Ma'am.
+Malhotra: Unhone tera kaam pucha. Janam ki kahani nahi.
+Bunty: Toh kya bolun?
+Malhotra: Teen line. Abhi kya hai, kya bana chuka hai, aur ye job kyun.
+Bunty: Abhi fresher hoon. Ek expense tracker app banaya, sau log use karte hain.
+Malhotra: Achha. Aur ye job kyun?
+Bunty: Kyunki aapne kaha tha?
+Malhotra: Bunty! Job description ki ek line utha, aur apne project se jod.
+Bunty: Ohh. Matlab har company ke liye teesri line badlegi.
+Malhotra: Bilkul. Practice ke liye aaj ki job le: {job1}. [job: 1]
+Bunty: {job1.company} ke liye teesri line abhi likhta hoon.
+Malhotra: Aur Riya ka aptitude test kal hai. Usko bhi bata.
+Bunty: Haan Ma'am. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+
+--- description
+Offer Tak | Din 8 🎤
+"Tell me about yourself" ka jawab teri biography nahi hai. Malhotra Ma'am ka formula: teen line. Abhi kya hai, kya bana chuka hai, aur ye job kyun.
+
+Job in this episode:
+{jobs}
+
+Season 2 shuru! Season 1 miss kiya? Profile pe Din 1 se dekho.
+Fresh jobs from company career pages, every day: link in bio.
+
+#freshers #jobsearch #interviewtips #tellmeaboutyourself #fresherjobs #hinglish #offertak
