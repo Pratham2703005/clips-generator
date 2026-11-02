@@ -10,7 +10,9 @@ Needs IG_ACCESS_TOKEN and IG_USER_ID (environment, or .env on the PC). The way i
   - an Instagram Login token (IGAA..., graph.instagram.com): Instagram downloads the video from a public URL, so the
     reel goes up as an asset of a GitHub Release (`gh release upload`; the repo is public) and the asset is deleted
     after the post, posted or not
-Then: wait until Instagram has processed the video (status_code FINISHED), publish, read the permalink.
+Then: wait until Instagram has processed the video (status_code FINISHED), publish, read the permalink. After the reel,
+the same video goes up as a story ([story] enabled; --no-story / --story-only). A story takes no caption, and the API
+has no stickers (poll, link).
 Caption: description.txt in the folder, else script.json's caption. Writes posted.json (media id, permalink).
 The token is never printed, and is sent in a header or the request body, not in a URL that could end up in a log.
 """
@@ -146,6 +148,8 @@ def main() -> None:
     p.add_argument("--folder", type=Path, help="the reel's folder (reel.mp4 + description.txt or script.json)")
     p.add_argument("--check", action="store_true", help="check the token and the account, post nothing")
     p.add_argument("--dry-run", action="store_true", help="check, then show what would be posted")
+    p.add_argument("--no-story", action="store_true", help="the reel only, no story")
+    p.add_argument("--story-only", action="store_true", help="the story only (the reel is already up)")
     p.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     a = p.parse_args()
 
@@ -179,11 +183,12 @@ def main() -> None:
         print("---\n" + caption + "\n---\n(dry run: nothing posted)")
         return
 
-    base = {"media_type": "REELS", "caption": caption}
-    hosted = None
+    hosted, hosted_url = None, None
 
     def host() -> str:
-        nonlocal hosted
+        nonlocal hosted, hosted_url
+        if hosted_url:  # the reel and the story share one hosted copy
+            return hosted_url
         hosted = f"{folder.name}-{datetime.now(timezone.utc):%Y%m%d%H%M%S}.mp4"
         staged = folder / hosted
         staged.write_bytes(video.read_bytes())  # a unique name, so a rerun never clashes with an old asset
@@ -192,41 +197,67 @@ def main() -> None:
         finally:
             staged.unlink(missing_ok=True)
         print(f"  hosted at {url}")
+        hosted_url = url
         return url
 
-    try:
+    def post(media_type: str, fields: dict) -> str:
+        """Container -> video in -> processed -> published; returns the media id."""
         if api.kind == "facebook":
-            # resumable upload: the container takes no share_to_feed ("other parameters are not supported")
-            made = api.call("POST", f"{user}/media", {**base, "upload_type": "resumable"})
+            # resumable upload: the container takes only the documented fields (2026-11-02: share_to_feed made the
+            # upload fail with a bare HTTP 400)
+            made = api.call("POST", f"{user}/media", {"media_type": media_type, **fields, "upload_type": "resumable"})
             container = made["id"]
             upload_url = made.get("uri") or f"https://rupload.facebook.com/ig-api-upload/{ig['api_version']}/{container}"
             try:
                 up = api.call("POST", "", url=upload_url, body=video.read_bytes(),
                               headers={"offset": "0", "file_size": str(size)})
             except RuntimeError as e:
-                # 2026-11-02: the first direct upload got a bare HTTP 400; the same container can instead be pointed
-                # at a public copy of the file (file_url), which Meta downloads itself
+                # the same container can instead be pointed at a public copy of the file, which Meta downloads itself
                 print(f"  direct upload failed ({e}); trying a hosted copy")
                 up = api.call("POST", "", url=upload_url, body=b"", headers={"file_url": host()})
             if not up.get("success"):
                 raise RuntimeError(f"upload refused: {up}")
         else:
-            container = api.call("POST", f"{user}/media", {
-                **base, "share_to_feed": str(ig["share_to_feed"]).lower(), "video_url": host()})["id"]
-        print(f"container {container}: uploaded, waiting for Instagram", flush=True)
+            extra = {"share_to_feed": str(ig["share_to_feed"]).lower()} if media_type == "REELS" else {}
+            container = api.call("POST", f"{user}/media", {"media_type": media_type, **fields, **extra,
+                                                           "video_url": host()})["id"]
+        print(f"{media_type.lower()} container {container}: uploaded, waiting for Instagram", flush=True)
         wait_until_ready(api, container, cfg["poll"])
-        media = api.call("POST", f"{user}/media_publish", {"creation_id": container})["id"]
+        return api.call("POST", f"{user}/media_publish", {"creation_id": container})["id"]
+
+    record_path = folder / "posted.json"
+    record = json.loads(record_path.read_text(encoding="utf-8")) if record_path.is_file() else {}
+    record.update({"account": acct.get("username"), "login": api.kind})
+    failed = None
+    try:
+        if not a.story_only:
+            # cover: the frame with the whole hook card (the composer's pick), not frame 0
+            comp = folder / "compose.json"
+            cover = json.loads(comp.read_text(encoding="utf-8")).get("cover_seconds") if comp.is_file() else None
+            cover = ig["cover_seconds"] if cover is None else cover
+            media = post("REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000))})
+            link = api.call("GET", media, {"fields": "permalink"}).get("permalink", "")
+            record.update({"media_id": media, "permalink": link,
+                           "posted_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+            record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+            print(f"posted: {link or media}")
+        if a.story_only or (cfg["story"]["enabled"] and not a.no_story):
+            # the same video as a story (stories take no caption, and no stickers through the API); a failed story
+            # never undoes the reel
+            try:
+                story = post("STORIES", {})
+                record.update({"story_id": story, "story_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+                record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+                print(f"story posted: {story}")
+            except RuntimeError as e:
+                failed = f"story not posted: {e}"
     finally:
         if hosted:
             r = gh("release", "delete-asset", cfg["hosting"]["release_tag"], hosted, "-y",
                    "-R", os.environ.get("GITHUB_REPOSITORY") or cfg["hosting"]["repo"])
             print(f"  release asset {hosted}: {'deleted' if r.returncode == 0 else 'NOT deleted: ' + r.stderr.strip()}")
-    link = api.call("GET", media, {"fields": "permalink"}).get("permalink", "")
-    (folder / "posted.json").write_text(json.dumps({
-        "media_id": media, "permalink": link, "account": acct.get("username"), "login": api.kind,
-        "posted_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-    }, indent=2) + "\n", encoding="utf-8")
-    print(f"posted: {link or media}")
+    if failed:
+        sys.exit(failed)
 
 
 if __name__ == "__main__":

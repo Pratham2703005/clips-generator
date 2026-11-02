@@ -9,6 +9,11 @@ on:
         description: "Daily reel run ID (the number in the run's URL: .../actions/runs/<run ID>)"
         type: string
         required: true
+      post:
+        description: "What to post"
+        type: choice
+        options: [reel + story, reel only, story only]
+        default: reel + story
 
 permissions:
   contents: write   # an Instagram Login token needs the reel on a release for a few minutes
@@ -28,6 +33,7 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ inputs.run_id }}
         run: |
+          RUN_ID="${RUN_ID//[[:space:]]/}"   # a pasted ID often carries a space (2026-11-02)
           [[ "$RUN_ID" =~ ^[0-9]+$ ]] || { echo "run_id must be a number"; exit 1; }
           gh run download "$RUN_ID" -R "$GITHUB_REPOSITORY" --dir reel-download
           reel=$(find reel-download -name reel.mp4 | head -n 1)
@@ -39,7 +45,12 @@ jobs:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           GH_TOKEN: ${{ github.token }}
-        run: python tools/instagram-publisher/publish.py --folder "$FOLDER"
+          WHAT: ${{ inputs.post }}
+        run: |
+          flags=()
+          [ "$WHAT" = "reel only" ] && flags+=(--no-story)
+          [ "$WHAT" = "story only" ] && flags+=(--story-only)
+          python tools/instagram-publisher/publish.py --folder "$FOLDER" "${flags[@]}"
       - name: Keep the post record
         uses: actions/upload-artifact@v4
         with:

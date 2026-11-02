@@ -510,8 +510,15 @@ def main() -> None:
             log(f"  {len(panels)} screenshot panel(s) from visuals.json")
         out = render(ffmpeg, folder, clip, offset, total, overlays, cfg, fonts_dir, log, sounds, overlay_ass, panels)
 
+    # the Instagram cover: a frame with the whole hook card on it (its words have landed, it hasn't faded yet); frame 0
+    # shows only the first word ("DIN", 2026-11-02 auto post)
+    o, cover = cfg.get("overlay", {}), 0.0
+    if overlay_ass and script.get("hook_card") and timeline.get("lines"):
+        hook_end = max(o["hook_hold"], timeline["lines"][0]["end"])
+        cover = round(max(0.0, min(o["hook_build"] + o.get("cover_after_build", 0.3), hook_end - 0.2)), 2)
     (folder / "compose.json").write_text(json.dumps({
-        "reel": out.name, "seconds": total, "background": {"clip": clip.name, "offset": offset, "reroll": args.reroll},
+        "reel": out.name, "seconds": total, "cover_seconds": cover,
+        "background": {"clip": clip.name, "offset": offset, "reroll": args.reroll},
         "turns": [{"speaker": t["speaker"], "in": round(t["in"], 3), "end": round(t["end"], 3), "lines": len(t["lines"])} for t in turns],
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }, indent=2) + "\n", encoding="utf-8")

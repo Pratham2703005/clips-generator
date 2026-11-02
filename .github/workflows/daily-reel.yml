@@ -177,9 +177,11 @@ jobs:
             content/${{ env.DAY }}/visuals.json
             content/${{ env.DAY }}/description.txt
             content/${{ env.DAY }}/posted.json
+            content/${{ env.DAY }}/compose.json
             content/custom/${{ env.NAME }}/reel.mp4
             content/custom/${{ env.NAME }}/script.md
             content/custom/${{ env.NAME }}/script.json
+            content/custom/${{ env.NAME }}/compose.json
             content/custom/${{ env.NAME }}/visuals.json
           if-no-files-found: warn
           retention-days: 30

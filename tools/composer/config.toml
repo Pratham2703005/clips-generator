@@ -71,6 +71,8 @@ hook_size = 104
 # 1.9: the last words ("0 CALLS.") land at ~1.0-1.4 s (virality checklist: the claim lands at 1.2-1.6 s).
 hook_build = 1.9
 hook_hold = 2.8
+# Instagram cover frame: this long after hook_build (every hook word has landed), written to compose.json
+cover_after_build = 0.3
 # A number at the start of the hook card counts up from 0 in count_steps over count_seconds; a later "0"/"ZERO"/"NO"
 # word and the ones after it slam in red with the stamp sound.
 count_steps = 14
