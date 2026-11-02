@@ -153,6 +153,13 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int) -
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
     out = {k: os.environ.get(f"OUT_{k.upper()}", "") for k in ("make", "instagram", "youtube")}
     title = script.get("title") or day
+    if not posted.get("youtube_url"):
+        # put up by an earlier run whose record wasn't kept (2026-11-02: a Post reel run with YouTube unticked showed
+        # "skipped" for a Short that was live): the channel's recent uploads, by title
+        same = [v for v in yt.get("videos") or [] if v["title"].replace("#Shorts", "").strip() == title.strip()]
+        if same:
+            posted["youtube_url"] = f"https://youtube.com/shorts/{same[0]['id']}"
+
     def state(done: bool, step: str) -> str:
         """posted.json says what went up; the step's outcome says why not (a successful step that posted nothing
         means that part was switched off)."""
@@ -164,7 +171,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int) -
         ("Instagram story", state(bool(posted.get("story_id")), out["instagram"]), posted.get("story_id", "")),
         ("YouTube Short", state(bool(posted.get("youtube_url")), out["youtube"]), posted.get("youtube_url", "")),
     ]
-    ok = all(r[1] == "success" for r in rows)
+    ok = rows[0][1] == "success" and all(r[1] in ("success", "skipped") for r in rows)  # skipped = switched off
     subject = f"{'✅' if ok else '⚠️'} Job Shorts {day}: {title}"
 
     def link(v: str) -> str:
