@@ -1,25 +1,14 @@
-# instagram-publisher: posts the day's reel as an Instagram Reel. See publish.py for how it gets the video to Instagram.
+# instagram-publisher: posts the day's reel to Instagram as a Reel and/or a story. See publish.py.
 
 [instagram]
 api_version = "v26.0"
-token_env = "IG_ACCESS_TOKEN"     # never printed
+token_env = "IG_ACCESS_TOKEN"     # the Meta app's system-user token (Unified login configuration); never printed
 user_env = "IG_USER_ID"           # the Instagram account ID (17841...), shown on the Meta app's API setup page
 env_files = ["../../.env"]        # for runs on the PC; the workflow passes repository secrets instead
-share_to_feed = true              # the reel also shows in the profile grid
 caption_max = 2200                # Instagram's limit
 hashtags_max = 30                 # Instagram's limit; extra ones are dropped from the end
 cover_seconds = 2.2               # the reel's cover frame when compose.json has no cover_seconds (the full hook card)
 
-[story]
-enabled = true                    # after the reel, the same video goes up as a story (no stickers: the API has none)
-
 [poll]
 every_seconds = 10                # Instagram processes the video before it can be published
 max_minutes = 10
-
-[hosting]
-# Only for an Instagram Login token (IGAA...): Instagram fetches the video from a public URL, so the reel goes up as
-# an asset of this GitHub Release (public repo) and is deleted after the post. A Facebook Login for Business token
-# uploads the file straight to Instagram and needs none of this.
-repo = "Pratham2703005/clips-generator"   # $GITHUB_REPOSITORY wins in the workflow
-release_tag = "reel-uploads"

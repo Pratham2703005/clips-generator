@@ -9,14 +9,21 @@ on:
         description: "Daily reel run ID (the number in the run's URL: .../actions/runs/<run ID>)"
         type: string
         required: true
-      post:
-        description: "What to post"
-        type: choice
-        options: [reel + story, reel only, story only]
-        default: reel + story
+      instagram_reel:
+        description: "Instagram: post the reel"
+        type: boolean
+        default: true
+      instagram_story:
+        description: "Instagram: post the same video as a story"
+        type: boolean
+        default: true
+      youtube:
+        description: "YouTube: upload as a Short"
+        type: boolean
+        default: true
 
 permissions:
-  contents: write   # an Instagram Login token needs the reel on a release for a few minutes
+  contents: read
   actions: read     # to download the run's artifact
 
 jobs:
@@ -41,17 +48,27 @@ jobs:
           echo "FOLDER=$(dirname "$reel")" >> "$GITHUB_ENV"
           ls -la "$(dirname "$reel")"
       - name: Post to Instagram
+        id: instagram
+        if: inputs.instagram_reel || inputs.instagram_story
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          GH_TOKEN: ${{ github.token }}
-          WHAT: ${{ inputs.post }}
+          IN_IG_REEL: ${{ inputs.instagram_reel }}
+          IN_IG_STORY: ${{ inputs.instagram_story }}
         run: |
           flags=()
-          [ "$WHAT" = "reel only" ] && flags+=(--no-story)
-          [ "$WHAT" = "story only" ] && flags+=(--story-only)
+          [ "$IN_IG_REEL" = true ] || flags+=(--no-reel)
+          [ "$IN_IG_STORY" = true ] || flags+=(--no-story)
           python tools/instagram-publisher/publish.py --folder "$FOLDER" "${flags[@]}"
+      - name: Post to YouTube
+        if: always() && env.FOLDER != '' && inputs.youtube
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python tools/youtube-publisher/publish.py --folder "$FOLDER"
       - name: Keep the post record
+        if: always() && env.FOLDER != ''
         uses: actions/upload-artifact@v4
         with:
           name: posted-run${{ inputs.run_id }}

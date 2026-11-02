@@ -1,0 +1,18 @@
+# youtube-publisher: uploads the day's reel to YouTube as a Short. See publish.py; authorize.py makes the refresh token.
+
+[youtube]
+client_id_env = "YT_CLIENT_ID"          # OAuth client (Desktop app) of the Google Cloud project
+client_secret_env = "YT_CLIENT_SECRET"
+refresh_token_env = "YT_REFRESH_TOKEN"  # from authorize.py; the OAuth app must be "In production" or it dies in 7 days
+env_files = ["../../.env"]              # for runs on the PC; the workflow passes repository secrets instead
+repo = "Pratham2703005/clips-generator" # where authorize.py saves the three secrets
+
+[video]
+privacy = "public"                      # public | unlisted | private
+category_id = "27"                      # Education (22 = People & Blogs)
+language = "hi"                         # title/description and audio language (Hinglish)
+made_for_kids = false
+synthetic_media = false                 # cartoon characters: not "realistic altered or synthetic" content
+title_max = 100                         # YouTube's limit
+description_max = 5000                  # YouTube's limit
+shorts_tag = true                       # adds #Shorts to the title when it fits

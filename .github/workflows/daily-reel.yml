@@ -74,8 +74,16 @@ on:
         description: "Output name for your script (default: custom-<date>)"
         type: string
         default: ""
-      instagram:
-        description: "Post the reel to Instagram when it's made (the daily cron posts only when the repository variable AUTO_POST is true)"
+      instagram_reel:
+        description: "Instagram: post the reel (the daily cron posts reel + story only when the repository variable AUTO_POST is true)"
+        type: boolean
+        default: true
+      instagram_story:
+        description: "Instagram: post the same video as a story"
+        type: boolean
+        default: true
+      youtube:
+        description: "YouTube: upload as a Short (the daily cron uploads only when the repository variable AUTO_POST_YOUTUBE is true)"
         type: boolean
         default: true
       save_history:
@@ -141,6 +149,7 @@ jobs:
         run: gh release download backgrounds --pattern "*.mp4" --dir public/bg-minecraft-video/input --skip-existing
 
       - name: Make the reel
+        id: make
         run: |
           DAY=$(TZ=Asia/Kolkata date +%F)
           echo "DAY=$DAY" >> "$GITHUB_ENV"
@@ -188,18 +197,35 @@ jobs:
 
       # after the artifact is kept, so a failed post never loses the reel
       - name: Post to Instagram
-        if: success() && (inputs.instagram || (github.event_name == 'schedule' && vars.AUTO_POST == 'true'))
+        if: success() && (inputs.instagram_reel || inputs.instagram_story || (github.event_name == 'schedule' && vars.AUTO_POST == 'true'))
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
-          GH_TOKEN: ${{ github.token }}   # an Instagram Login token needs the reel on a release for a few minutes
+          # the cron (no inputs) posts both
+          IN_IG_REEL: ${{ github.event_name == 'schedule' || inputs.instagram_reel }}
+          IN_IG_STORY: ${{ github.event_name == 'schedule' || inputs.instagram_story }}
         run: |
           folder="content/$DAY"
           [ -n "$NAME" ] && folder="content/custom/$NAME"
-          python tools/instagram-publisher/publish.py --folder "$folder"
+          flags=()
+          [ "$IN_IG_REEL" = true ] || flags+=(--no-reel)
+          [ "$IN_IG_STORY" = true ] || flags+=(--no-story)
+          python tools/instagram-publisher/publish.py --folder "$folder" "${flags[@]}"
+
+      # each platform on its own: a failed Instagram post doesn't stop the YouTube upload or the history
+      - name: Post to YouTube
+        if: always() && steps.make.outcome == 'success' && (inputs.youtube || (github.event_name == 'schedule' && vars.AUTO_POST_YOUTUBE == 'true'))
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/youtube-publisher/publish.py --folder "$folder"
 
       - name: Save history
-        if: success() && env.IN_SAVE_HISTORY == 'true'
+        if: always() && steps.make.outcome == 'success' && env.IN_SAVE_HISTORY == 'true'
         run: |
           git config user.name "reel-bot"
           git config user.email "reel-bot@users.noreply.github.com"
