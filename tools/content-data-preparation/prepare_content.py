@@ -401,7 +401,15 @@ def main() -> None:
                 break
             log(f"  spotlight: {company} has {count} roles but only {len(roles)} open, trying the next company")
         if spotlight is None:
-            sys.exit("company-spotlight: no company with 2+ open roles in this niche today; try another format or niche")
+            if args.format:
+                sys.exit("company-spotlight: no company with 2+ open roles in this niche today; try another format or niche")
+            # 2026-11-02: a random pick of company-spotlight + product-managers stopped the whole run; the niche's jobs
+            # are already in hand (at least min_jobs), so another job-drop format uses them instead
+            others = [f for f in track_formats if f != "company-spotlight"]
+            fmt = pick(rng, others, {h.get("format") for h in recent(history, today, rules["format_cooldown_days"])}, last_used_map(history, "format"))
+            need = formats[fmt]["jobs"]
+            jobs = jobs[:need]
+            log(f"  company-spotlight: no company with 2+ open roles here; format {fmt} instead")
 
     stats = api_get(cfg, "/stats")
     # live jobs in the niche's category or subcategory (all countries), for "number" lines; None when the niche has neither
