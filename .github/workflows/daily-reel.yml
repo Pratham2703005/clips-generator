@@ -228,6 +228,17 @@ jobs:
           [ -n "$NAME" ] && folder="content/custom/$NAME"
           python tools/youtube-publisher/publish.py --folder "$folder"
 
+      # what went up where, for a later Post reel run of this reel (so it never posts the same thing twice)
+      - name: Keep the post record
+        if: always() && steps.make.outcome == 'success'
+        uses: actions/upload-artifact@v4
+        with:
+          name: posted-${{ env.DAY }}-run${{ github.run_number }}
+          path: |
+            content/${{ env.DAY }}/posted.json
+            content/custom/${{ env.NAME }}/posted.json
+          if-no-files-found: ignore
+
       - name: Save history
         if: always() && steps.make.outcome == 'success' && env.IN_SAVE_HISTORY == 'true'
         run: |

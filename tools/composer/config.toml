@@ -17,6 +17,9 @@ width = 1080
 height = 1920
 fps = 30
 crf = 20
+# Ceiling on the CRF's bitrate: busy backgrounds made a 47 s reel 30.9 MB (5.3 Mbps), which Instagram's upload refused
+# (2026-11-02); 23.8 MB ones (4.2 Mbps) went through. Instagram re-encodes to about 3.5 Mbps anyway. "" = no ceiling.
+max_bitrate = "4M"
 preset = "medium"
 audio_bitrate = "192k"
 # Seconds of background after the last word, so the reel doesn't cut off mid-breath.

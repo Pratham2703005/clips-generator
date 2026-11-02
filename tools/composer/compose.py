@@ -425,6 +425,7 @@ def render(ffmpeg: str, folder: Path, clip: Path, offset: float, total: float, o
     part = folder / "reel.part.mp4"
     cmd += ["-filter_complex", ";".join(chain), "-map", "[vout]", "-map", "[aout]", "-t", f"{total:.3f}",
             "-c:v", "libx264", "-preset", v["preset"], "-crf", str(v["crf"]), "-r", str(v["fps"]),
+            *(["-maxrate", v["max_bitrate"], "-bufsize", f"{2 * int(v['max_bitrate'].rstrip('Mm'))}M"] if v.get("max_bitrate") else []),
             "-c:a", "aac", "-b:a", v["audio_bitrate"], "-ac", "2", "-movflags", "+faststart", str(part)]
     t = time.time()
     r = subprocess.run(cmd, cwd=folder, capture_output=True, text=True)  # cwd: the subtitles filter gets a bare file name

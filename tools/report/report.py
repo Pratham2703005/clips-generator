@@ -159,7 +159,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int) -
         return "success" if done else ("skipped" if step in ("success", "") else step)
 
     rows = [
-        ("Reel made", out["make"], title),
+        ("Reel ready", out["make"], title),
         ("Instagram reel", state(bool(posted.get("permalink")), out["instagram"]), posted.get("permalink", "")),
         ("Instagram story", state(bool(posted.get("story_id")), out["instagram"]), posted.get("story_id", "")),
         ("YouTube Short", state(bool(posted.get("youtube_url")), out["youtube"]), posted.get("youtube_url", "")),

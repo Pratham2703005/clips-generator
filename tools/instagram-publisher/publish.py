@@ -116,16 +116,32 @@ def wait_until_ready(api: Api, container: str, poll: dict) -> None:
         time.sleep(poll["every_seconds"])
 
 
-def post(api: Api, user: str, video: Path, media_type: str, fields: dict, poll: dict) -> str:
+def post(api: Api, user: str, video: Path, media_type: str, fields: dict, poll: dict, chunk_mb: int = 8) -> str:
     """Container -> upload -> processed -> published; returns the media id. The container takes only the documented
     fields (2026-11-02: share_to_feed made the upload fail with a bare HTTP 400)."""
-    made = api.call("POST", f"{user}/media", {"media_type": media_type, **fields, "upload_type": "resumable"})
-    container = made["id"]
-    upload_url = made.get("uri") or f"https://rupload.facebook.com/ig-api-upload/{api.version}/{container}"
     data = video.read_bytes()
-    up = api.call("POST", "", url=upload_url, body=data, headers={"offset": "0", "file_size": str(len(data))})
-    if not up.get("success"):
-        raise RuntimeError(f"upload refused: {up}")
+
+    def container_and_upload(chunk: int) -> str:
+        made = api.call("POST", f"{user}/media", {"media_type": media_type, **fields, "upload_type": "resumable"})
+        container = made["id"]
+        upload_url = made.get("uri") or f"https://rupload.facebook.com/ig-api-upload/{api.version}/{container}"
+        up: dict = {}
+        for off in range(0, len(data), chunk or len(data)):  # the offset header resumes where the last piece ended
+            up = api.call("POST", "", url=upload_url, body=data[off: off + (chunk or len(data))],
+                          headers={"offset": str(off), "file_size": str(len(data))})
+        if not up.get("success"):
+            raise RuntimeError(f"upload refused: {up}")
+        return container
+
+    try:
+        container = container_and_upload(0)
+    except RuntimeError as e:
+        # 2026-11-02: a 30.9 MB reel got ProcessingFailedError twice in one piece (23.8 MB ones went through); a new
+        # container with the file in pieces
+        if "ProcessingFailedError" not in str(e):
+            raise
+        print(f"  one-piece upload failed ({e}); again in {chunk_mb} MB pieces", flush=True)
+        container = container_and_upload(chunk_mb * 1024 * 1024)
     print(f"{media_type.lower()} container {container}: uploaded, waiting for Instagram", flush=True)
     wait_until_ready(api, container, poll)
     return api.call("POST", f"{user}/media_publish", {"creation_id": container})["id"]
@@ -174,15 +190,23 @@ def main() -> None:
     record = json.loads(record_path.read_text(encoding="utf-8")) if record_path.is_file() else {}
     record["account"] = acct.get("username")
     now = lambda: datetime.now(timezone.utc).isoformat(timespec="seconds")  # noqa: E731
+    # posted.json already has it (a Post reel run of a reel that is partly up): never post the same thing twice
+    if not a.no_reel and record.get("permalink"):
+        print(f"reel already posted: {record['permalink']}")
+        a.no_reel = True
+    if not a.no_story and record.get("story_id"):
+        print(f"story already posted: {record['story_id']}")
+        a.no_story = True
     if not a.no_reel:
-        media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000))}, cfg["poll"])
+        media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000))}, cfg["poll"],
+                     ig.get("chunk_mb", 8))
         link = api.call("GET", media, {"fields": "permalink"}).get("permalink", "")
         record.update({"media_id": media, "permalink": link, "posted_at": now()})
         record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
         print(f"reel posted: {link or media}")
     if not a.no_story:
         try:  # a failed story never undoes the reel; the step still fails so it shows
-            story = post(api, user, video, "STORIES", {}, cfg["poll"])
+            story = post(api, user, video, "STORIES", {}, cfg["poll"], ig.get("chunk_mb", 8))
         except RuntimeError as e:
             sys.exit(f"story not posted: {e}")
         record.update({"story_id": story, "story_at": now()})

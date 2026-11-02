@@ -105,6 +105,11 @@ def main() -> None:
     video = folder / "reel.mp4"
     if not video.is_file():
         sys.exit(f"no reel at {video}")
+    done = folder / "posted.json"
+    if done.is_file() and json.loads(done.read_text(encoding="utf-8")).get("youtube_url"):
+        # a Post reel run of a reel that is partly up: never upload the same Short twice
+        print(f"already on YouTube: {json.loads(done.read_text(encoding='utf-8'))['youtube_url']}")
+        return
     meta = metadata(folder, v)
     token = access_token(yt)
     print(f"short: {video} ({video.stat().st_size / 1e6:.1f} MB), title {meta['snippet']['title']!r}, "

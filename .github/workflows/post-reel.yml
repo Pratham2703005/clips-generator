@@ -1,5 +1,6 @@
-# Posts a reel that a Daily reel run already made, after you have watched it (the review step).
+# Posts a reel that a Daily reel run already made, after you have watched it (the review step), then emails the report.
 # Actions -> Post reel -> Run workflow, with the run's number from its URL (.../actions/runs/<this number>).
+# Whatever that run already posted (its posted.json) is skipped, so ticking everything never posts twice.
 name: Post reel
 
 on:
@@ -36,6 +37,7 @@ jobs:
         with:
           python-version: "3.12"
       - name: Download the reel
+        id: download
         env:
           GH_TOKEN: ${{ github.token }}
           RUN_ID: ${{ inputs.run_id }}
@@ -43,10 +45,15 @@ jobs:
           RUN_ID="${RUN_ID//[[:space:]]/}"   # a pasted ID often carries a space (2026-11-02)
           [[ "$RUN_ID" =~ ^[0-9]+$ ]] || { echo "run_id must be a number"; exit 1; }
           gh run download "$RUN_ID" -R "$GITHUB_REPOSITORY" --dir reel-download
-          reel=$(find reel-download -name reel.mp4 | head -n 1)
+          reel=$(find reel-download -path '*reel-*' -name reel.mp4 | head -n 1)
           [ -n "$reel" ] || { echo "no reel.mp4 in run $RUN_ID's artifacts"; exit 1; }
-          echo "FOLDER=$(dirname "$reel")" >> "$GITHUB_ENV"
-          ls -la "$(dirname "$reel")"
+          folder=$(dirname "$reel")
+          # the run's own post record (Daily reel keeps it as a separate artifact, after posting)
+          record=$(find reel-download -path '*posted-*' -name posted.json | head -n 1)
+          if [ -n "$record" ]; then cp "$record" "$folder/posted.json"; echo "already posted:"; cat "$folder/posted.json"; fi
+          echo "FOLDER=$folder" >> "$GITHUB_ENV"
+          echo "DAY=$(basename "$folder")" >> "$GITHUB_ENV"
+          ls -la "$folder"
       - name: Post to Instagram
         id: instagram
         if: inputs.instagram_reel || inputs.instagram_story
@@ -61,16 +68,38 @@ jobs:
           [ "$IN_IG_STORY" = true ] || flags+=(--no-story)
           python tools/instagram-publisher/publish.py --folder "$FOLDER" "${flags[@]}"
       - name: Post to YouTube
-        if: always() && env.FOLDER != '' && inputs.youtube
+        id: youtube
+        if: always() && steps.download.outcome == 'success' && inputs.youtube
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: python tools/youtube-publisher/publish.py --folder "$FOLDER"
       - name: Keep the post record
-        if: always() && env.FOLDER != ''
+        if: always() && steps.download.outcome == 'success'
         uses: actions/upload-artifact@v4
         with:
-          name: posted-run${{ inputs.run_id }}
+          name: posted-run${{ inputs.run_id }}-repost${{ github.run_number }}
           path: ${{ env.FOLDER }}/posted.json
           if-no-files-found: warn
+
+      # last, and always: what is up where, plus the last 60 days of Instagram and YouTube stats
+      - name: Email report
+        if: always()
+        continue-on-error: true
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          OUT_MAKE: ${{ steps.download.outcome }}
+          OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
+          OUT_YOUTUBE: ${{ steps.youtube.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          [ -n "$FOLDER" ] || { echo "no reel downloaded"; FOLDER="reel-download/none"; mkdir -p "$FOLDER"; }
+          python tools/report/report.py --folder "$FOLDER"

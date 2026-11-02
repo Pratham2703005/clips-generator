@@ -7,6 +7,7 @@ user_env = "IG_USER_ID"           # the Instagram account ID (17841...), shown o
 env_files = ["../../.env"]        # for runs on the PC; the workflow passes repository secrets instead
 caption_max = 2200                # Instagram's limit
 hashtags_max = 30                 # Instagram's limit; extra ones are dropped from the end
+chunk_mb = 8                      # a one-piece upload that fails is retried in pieces of this size
 cover_seconds = 2.2               # the reel's cover frame when compose.json has no cover_seconds (the full hook card)
 
 [poll]
