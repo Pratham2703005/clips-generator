@@ -1,4 +1,5 @@
-# Daily reel: runs `python run.py ats` every morning and keeps the reel as a downloadable artifact.
+# Daily reel: runs `python run.py ats` every night at 00:00 IST, keeps the reel as a downloadable artifact, posts it
+# (Instagram reel + story, YouTube Short) and emails a report.
 # Run it by hand from Actions -> Daily reel -> Run workflow: every choice is in that form (no file to upload).
 # Before the first run (see README.md, "GitHub setup"):
 #   - repository secrets: GEMINI_API_KEY, GROQ_API_KEY, JOB_FEED_API_KEY
@@ -7,7 +8,8 @@ name: Daily reel
 
 on:
   schedule:
-    - cron: "30 2 * * *"   # 08:00 IST, ats mode with the repo's settings
+    - cron: "30 18 * * *"  # 00:00 IST (18:30 UTC), ats mode with the repo's settings; posts everywhere. GitHub often
+                           # starts scheduled runs hours late; DAY is taken when the run starts, so it stays that day
   workflow_dispatch:
     inputs:
       mode:
@@ -75,7 +77,7 @@ on:
         type: string
         default: ""
       instagram_reel:
-        description: "Instagram: post the reel (the daily cron posts reel + story only when the repository variable AUTO_POST is true)"
+        description: "Instagram: post the reel (the nightly cron always posts reel, story and Short)"
         type: boolean
         default: true
       instagram_story:
@@ -83,7 +85,7 @@ on:
         type: boolean
         default: true
       youtube:
-        description: "YouTube: upload as a Short (the daily cron uploads only when the repository variable AUTO_POST_YOUTUBE is true)"
+        description: "YouTube: upload as a Short"
         type: boolean
         default: true
       save_history:
@@ -197,7 +199,8 @@ jobs:
 
       # after the artifact is kept, so a failed post never loses the reel
       - name: Post to Instagram
-        if: success() && (inputs.instagram_reel || inputs.instagram_story || (github.event_name == 'schedule' && vars.AUTO_POST == 'true'))
+        id: instagram
+        if: success() && (github.event_name == 'schedule' || inputs.instagram_reel || inputs.instagram_story)
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
@@ -214,7 +217,8 @@ jobs:
 
       # each platform on its own: a failed Instagram post doesn't stop the YouTube upload or the history
       - name: Post to YouTube
-        if: always() && steps.make.outcome == 'success' && (inputs.youtube || (github.event_name == 'schedule' && vars.AUTO_POST_YOUTUBE == 'true'))
+        id: youtube
+        if: always() && steps.make.outcome == 'success' && (github.event_name == 'schedule' || inputs.youtube)
         env:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
@@ -231,3 +235,26 @@ jobs:
           git config user.email "reel-bot@users.noreply.github.com"
           git add content/history.json
           git diff --cached --quiet || (git commit -m "history: reel for ${DAY}" && git push)
+
+      # last, and always: what got made and posted, plus the last 60 days of Instagram and YouTube stats
+      - name: Email report
+        if: always()
+        continue-on-error: true   # a mail problem never marks the reel's run as failed
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          OUT_MAKE: ${{ steps.make.outcome }}
+          OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
+          OUT_YOUTUBE: ${{ steps.youtube.outcome }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          DAY="${DAY:-$(TZ=Asia/Kolkata date +%F)}"
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/report/report.py --folder "$folder"

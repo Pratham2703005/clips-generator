@@ -8,7 +8,7 @@ Needs YT_CLIENT_ID, YT_CLIENT_SECRET and YT_REFRESH_TOKEN (environment, or .env 
   - description: description.txt (else script.json's caption); its #hashtags also become tags. Links in a Shorts
     description are not clickable, so the description says "link in bio"/channel as it is
   - a vertical video up to 3 minutes is a Short by itself; the API cannot set a Shorts thumbnail
-Upload: resumable (one PUT), then reads the video's status. Adds youtube_id/youtube_url to posted.json.
+Upload: resumable (one PUT); the answer carries the video's status. Adds youtube_id/youtube_url to posted.json.
 Nothing secret is printed.
 """
 
@@ -28,7 +28,6 @@ from pathlib import Path
 
 DEFAULT_CONFIG = Path(__file__).resolve().parent / "config.toml"
 UPLOAD = "https://www.googleapis.com/upload/youtube/v3/videos"
-API = "https://www.googleapis.com/youtube/v3"
 
 
 def load_env_files(paths: list[Path]) -> None:
@@ -121,11 +120,11 @@ def main() -> None:
         "X-Upload-Content-Type": "video/mp4", "X-Upload-Content-Length": str(len(data)),
     }) as r:
         session = r.headers["Location"]
+    # the upload's answer is the video (snippet + status): no read-back call, which would need a read scope on top of
+    # youtube.upload (2026-11-02: videos.list answered 403 "insufficient authentication scopes" after a good upload)
     with request(session, data, {**auth, "Content-Type": "video/mp4"}, method="PUT") as r:
-        vid = json.loads(r.read())["id"]
-    with request(f"{API}/videos?part=status&id={vid}", headers=auth) as r:
-        items = json.loads(r.read()).get("items", [])
-    status = items[0]["status"] if items else {}
+        uploaded = json.loads(r.read())
+    vid, status = uploaded["id"], uploaded.get("status", {})
     url = f"https://youtube.com/shorts/{vid}"
     print(f"uploaded: {url} (upload {status.get('uploadStatus')}, {status.get('privacyStatus')})")
     if status.get("privacyStatus") and status["privacyStatus"] != v["privacy"]:

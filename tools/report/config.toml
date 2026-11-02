@@ -1,0 +1,23 @@
+# report: the email sent after each Daily reel run. See report.py.
+
+[report]
+days = 60                         # the stats window (posts published in the last N days)
+to_env = "REPORT_TO"              # recipient; empty = the sender's own address
+smtp_user_env = "SMTP_USER"       # a Gmail address
+smtp_password_env = "SMTP_PASSWORD"  # a Gmail app password (Google account -> Security -> App passwords), not the login
+smtp_host = "smtp.gmail.com"
+smtp_port = 465
+env_files = ["../../.env"]
+
+[instagram]
+api_version = "v26.0"
+token_env = "IG_ACCESS_TOKEN"
+user_env = "IG_USER_ID"
+# needs the Meta configuration's instagram_manage_insights permission; without it, likes and comments only
+media_metrics = ["views", "reach", "saved", "shares"]
+
+[youtube]
+# needs the youtube.readonly scope (authorize.py); without it the email says so
+client_id_env = "YT_CLIENT_ID"
+client_secret_env = "YT_CLIENT_SECRET"
+refresh_token_env = "YT_REFRESH_TOKEN"

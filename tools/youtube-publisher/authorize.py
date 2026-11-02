@@ -27,6 +27,8 @@ import webbrowser
 from pathlib import Path
 
 SCOPE = "https://www.googleapis.com/auth/youtube.upload"
+# read-only too, for the stats in the run report (tools/report): channel and video view/like/comment counts
+SCOPES = [SCOPE, "https://www.googleapis.com/auth/youtube.readonly"]
 DEFAULT_CONFIG = Path(__file__).resolve().parent / "config.toml"
 
 
@@ -63,7 +65,7 @@ def main() -> None:
     challenge = base64.urlsafe_b64encode(hashlib.sha256(verifier.encode()).digest()).rstrip(b"=").decode()
     state = secrets.token_urlsafe(16)
     url = "https://accounts.google.com/o/oauth2/v2/auth?" + urllib.parse.urlencode({
-        "client_id": client["client_id"], "redirect_uri": redirect, "response_type": "code", "scope": SCOPE,
+        "client_id": client["client_id"], "redirect_uri": redirect, "response_type": "code", "scope": " ".join(SCOPES),
         "access_type": "offline", "prompt": "consent", "state": state,
         "code_challenge": challenge, "code_challenge_method": "S256",
     })
@@ -87,6 +89,8 @@ def main() -> None:
         sys.exit("Google gave no refresh token: remove the app's access at myaccount.google.com/permissions and run again")
     if SCOPE not in tokens.get("scope", ""):
         sys.exit("the upload permission was not granted: run again and tick 'Manage your YouTube videos'")
+    if SCOPES[1] not in tokens.get("scope", ""):
+        print("note: read access ('View your YouTube account') was not granted: uploads work, the report has no YouTube stats")
 
     for name, value in ((cfg["client_id_env"], client["client_id"]), (cfg["client_secret_env"], client["client_secret"]),
                         (cfg["refresh_token_env"], tokens["refresh_token"])):
