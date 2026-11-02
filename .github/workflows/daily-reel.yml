@@ -77,7 +77,7 @@ on:
       instagram:
         description: "Post the reel to Instagram when it's made (the daily cron posts only when the repository variable AUTO_POST is true)"
         type: boolean
-        default: false
+        default: true
       save_history:
         description: "Record this reel's jobs and ideas in content/history.json (so they don't repeat)"
         type: boolean

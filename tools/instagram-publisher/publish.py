@@ -56,7 +56,8 @@ def load_env_files(paths: list[Path]) -> None:
 class Api:
     def __init__(self, token: str, version: str):
         self.token, self.version = token, version
-        # Instagram Login tokens start with IG (IGAA..., IGQV...); everything else is a Facebook token
+        # Instagram Login tokens start with IG (IGAA..., IGQV...); everything else is a Facebook token (the Unified
+        # login system-user token of 2026-11-02 starts with neither IG nor EAA and works on graph.facebook.com)
         self.kind = "instagram" if token.startswith("IG") else "facebook"
         self.base = f"https://graph.{'instagram' if self.kind == 'instagram' else 'facebook'}.com/{version}"
 
@@ -80,10 +81,13 @@ class Api:
         except urllib.error.HTTPError as e:
             raw = e.read().decode("utf-8", "replace")
             try:
-                err = json.loads(raw).get("error", {})
-                msg = f"{err.get('message')} (code {err.get('code')}, subcode {err.get('error_subcode')})"
+                body_json = json.loads(raw)
+                err = body_json.get("error")
+                # the upload host answers with {"debug_info": {"retriable": ..., "type": ..., "message": ...}}
+                msg = (f"{err.get('message')} (code {err.get('code')}, subcode {err.get('error_subcode')})" if err
+                       else json.dumps(body_json.get("debug_info") or body_json)[:600])
             except (ValueError, AttributeError):
-                msg = raw[:300]
+                msg = raw[:600]
             raise RuntimeError(f"{method} {path or 'upload'}: HTTP {e.code}: {msg}") from None
 
 
@@ -153,8 +157,6 @@ def main() -> None:
     if not token or not user:
         sys.exit(f"set {ig['token_env']} and {ig['user_env']} (repository secrets in the workflow, .env on the PC)")
     api = Api(token, ig["api_version"])
-    if not token.startswith(("IG", "EAA")):
-        print(f"warning: the token starts with neither IG nor EAA ({len(token)} characters); is it the access token?")
     try:
         acct = api.call("GET", user, {"fields": "username"})
     except RuntimeError as e:
@@ -177,25 +179,40 @@ def main() -> None:
         print("---\n" + caption + "\n---\n(dry run: nothing posted)")
         return
 
-    base = {"media_type": "REELS", "caption": caption, "share_to_feed": str(ig["share_to_feed"]).lower()}
+    base = {"media_type": "REELS", "caption": caption}
     hosted = None
+
+    def host() -> str:
+        nonlocal hosted
+        hosted = f"{folder.name}-{datetime.now(timezone.utc):%Y%m%d%H%M%S}.mp4"
+        staged = folder / hosted
+        staged.write_bytes(video.read_bytes())  # a unique name, so a rerun never clashes with an old asset
+        try:
+            url = host_on_release(staged, cfg["hosting"])
+        finally:
+            staged.unlink(missing_ok=True)
+        print(f"  hosted at {url}")
+        return url
+
     try:
         if api.kind == "facebook":
-            container = api.call("POST", f"{user}/media", {**base, "upload_type": "resumable"})["id"]
-            up = api.call("POST", "", url=f"https://rupload.facebook.com/ig-api-upload/{ig['api_version']}/{container}",
-                          body=video.read_bytes(), headers={"offset": "0", "file_size": str(size)})
+            # resumable upload: the container takes no share_to_feed ("other parameters are not supported")
+            made = api.call("POST", f"{user}/media", {**base, "upload_type": "resumable"})
+            container = made["id"]
+            upload_url = made.get("uri") or f"https://rupload.facebook.com/ig-api-upload/{ig['api_version']}/{container}"
+            try:
+                up = api.call("POST", "", url=upload_url, body=video.read_bytes(),
+                              headers={"offset": "0", "file_size": str(size)})
+            except RuntimeError as e:
+                # 2026-11-02: the first direct upload got a bare HTTP 400; the same container can instead be pointed
+                # at a public copy of the file (file_url), which Meta downloads itself
+                print(f"  direct upload failed ({e}); trying a hosted copy")
+                up = api.call("POST", "", url=upload_url, body=b"", headers={"file_url": host()})
             if not up.get("success"):
                 raise RuntimeError(f"upload refused: {up}")
         else:
-            hosted = f"{folder.name}-{datetime.now(timezone.utc):%Y%m%d%H%M%S}.mp4"
-            staged = folder / hosted
-            staged.write_bytes(video.read_bytes())  # a unique name, so a rerun never clashes with an old asset
-            try:
-                url = host_on_release(staged, cfg["hosting"])
-            finally:
-                staged.unlink(missing_ok=True)
-            print(f"  hosted at {url}")
-            container = api.call("POST", f"{user}/media", {**base, "video_url": url})["id"]
+            container = api.call("POST", f"{user}/media", {
+                **base, "share_to_feed": str(ig["share_to_feed"]).lower(), "video_url": host()})["id"]
         print(f"container {container}: uploaded, waiting for Instagram", flush=True)
         wait_until_ready(api, container, cfg["poll"])
         media = api.call("POST", f"{user}/media_publish", {"creation_id": container})["id"]
