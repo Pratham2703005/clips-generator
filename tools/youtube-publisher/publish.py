@@ -5,8 +5,8 @@ youtube-publisher: uploads a reel to YouTube as a Short.
 
 Needs YT_CLIENT_ID, YT_CLIENT_SECRET and YT_REFRESH_TOKEN (environment, or .env on the PC; authorize.py makes them).
   - title: script.json's title (a series episode: "7 Din, 1 Offer | Din 2: Resume post-mortem"), + #Shorts if it fits
-  - description: description.txt (else script.json's caption); its #hashtags also become tags. Links in a Shorts
-    description are not clickable, so the description says "link in bio"/channel as it is
+  - description: description.txt (else script.json's caption); its #hashtags also become tags. "link in bio" becomes
+    the website's URL ([video] site_url): a Short has no bio link next to it
   - a vertical video up to 3 minutes is a Short by itself; the API cannot set a Shorts thumbnail
 Upload: resumable (one PUT); the answer carries the video's status. Adds youtube_id/youtube_url to posted.json.
 Nothing secret is printed.
@@ -82,6 +82,12 @@ def metadata(folder: Path, v: dict) -> dict:
     if v["shorts_tag"] and "#shorts" not in title.lower() and len(title) + 8 <= v["title_max"]:
         title += " #Shorts"
     tags = list(dict.fromkeys(t.lstrip("#") for t in re.findall(r"#\w+", description)))
+    # YouTube has no "bio" link next to a Short: the website's URL goes in the description itself (user, 2026-11-03)
+    if v.get("site_url"):
+        description, hits = re.subn(r":?\s*link in bio\.?", f": {v['site_url']}", description, flags=re.I)
+        if not hits:
+            description = re.sub(r"(\n\n(#\w+\s*)+)?$", lambda m: f"\n\nFresh jobs from company career pages, every day: {v['site_url']}" + (m.group(0) or ""),
+                                 description, count=1)
     return {
         "snippet": {"title": title[: v["title_max"]], "description": clean(description)[: v["description_max"]],
                     "tags": tags[:30], "categoryId": v["category_id"],

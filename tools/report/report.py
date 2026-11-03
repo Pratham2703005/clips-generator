@@ -109,7 +109,8 @@ def instagram_stats(cfg: dict, since: datetime) -> dict:
 
 # ---------- YouTube ----------
 
-def youtube_stats(cfg: dict, since: datetime) -> dict:
+def youtube_stats(cfg: dict, since: datetime, extra: list[str] | None = None) -> dict:
+    """`extra`: video ids to include even if the channel's uploads list doesn't show them yet (it lags after an upload)."""
     ids = {k: os.environ.get(cfg[f"{k}_env"], "") for k in ("client_id", "client_secret", "refresh_token")}
     if not all(ids.values()):
         return {"note": "YT_* secrets not set"}
@@ -124,6 +125,7 @@ def youtube_stats(cfg: dict, since: datetime) -> dict:
         items = get_json(f"{api}/playlistItems?part=contentDetails&maxResults=50&playlistId={uploads}", headers=auth).get("items", [])
         recent = [i["contentDetails"]["videoId"] for i in items
                   if datetime.fromisoformat(i["contentDetails"]["videoPublishedAt"].replace("Z", "+00:00")) >= since]
+        recent += [v for v in (extra or []) if v and v not in recent]
         videos = []
         if recent:
             got = get_json(f"{api}/videos?part=snippet,statistics&id={','.join(recent)}", headers=auth).get("items", [])
@@ -235,6 +237,11 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int) -
     return subject, "\n".join(t) + "\n", "<html><body style=\"font-family:sans-serif\">" + "\n".join(h) + "</body></html>"
 
 
+def posted_youtube_id(folder: Path) -> str:
+    f = folder / "posted.json"
+    return json.loads(f.read_text(encoding="utf-8")).get("youtube_id", "") if f.is_file() else ""
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--folder", type=Path, required=True)
@@ -247,7 +254,7 @@ def main() -> None:
     since = datetime.now(timezone.utc) - timedelta(days=rep["days"])
     day = os.environ.get("DAY") or a.folder.name
     subject, text, body = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""),
-                                instagram_stats(cfg["instagram"], since), youtube_stats(cfg["youtube"], since), rep["days"])
+                                instagram_stats(cfg["instagram"], since), youtube_stats(cfg["youtube"], since, [posted_youtube_id(a.folder)]), rep["days"])
     if a.dry_run:
         print(f"Subject: {subject}\n\n{text}")
         return
