@@ -92,6 +92,23 @@
       "premise": "tell-me-about-yourself",
       "hook": "nobody-tells-you",
       "dynamic": "therapy-session"
+    },
+    {
+      "date": "2026-11-03",
+      "track": "job_drop",
+      "format": "top-drop",
+      "niche": "india-freshers",
+      "platform": "apify-mcp",
+      "cast": "malhotra+bunty",
+      "job_ids": [
+        "dd97be0da3e28882232802afa2327ece"
+      ],
+      "companies": [
+        "HG Conn Merchants"
+      ],
+      "premise": "company-career-page-secret",
+      "hook": "the-statistic",
+      "dynamic": "quiz-show"
     }
   ]
 }
