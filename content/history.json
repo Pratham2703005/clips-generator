@@ -109,6 +109,25 @@
       "premise": "company-career-page-secret",
       "hook": "the-statistic",
       "dynamic": "quiz-show"
+    },
+    {
+      "date": "2026-11-04",
+      "track": "job_drop",
+      "format": "company-spotlight",
+      "niche": "india-freshers",
+      "platform": "apify",
+      "cast": "riya+bunty",
+      "job_ids": [
+        "9508b0cf89331f0f25e6fc7020459971",
+        "97d0f9d62bfed72fba8cb2bd59d79b0e"
+      ],
+      "companies": [
+        "Pwc",
+        "Pwc"
+      ],
+      "premise": "sales-hesitation",
+      "hook": "numbered-favourite",
+      "dynamic": "learner-bites-back"
     }
   ]
 }
