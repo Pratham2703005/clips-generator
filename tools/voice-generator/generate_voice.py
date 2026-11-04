@@ -130,9 +130,51 @@ def build_prompt(script: dict, cast: dict, cfg: dict) -> str:
 
 def per_line(model: str, cfg: dict | None) -> bool:
     """The gemini-3.x TTS models take one part per line (speaker in speechMetadata, style as an inline [tag]) and
-    reject director notes; gemini-2.5 takes the whole transcript with notes as one text."""
+    reject director notes; gemini-2.5 takes the whole transcript with notes as one text. A newer generation found by
+    resolve_models (gemini-4...) is assumed to work like 3.x."""
     pats = (cfg or {}).get("tts", {}).get("per_line_models", ["gemini-3"])
-    return any(model.startswith(p) for p in pats)
+    return any(model.startswith(p) for p in pats) or not model.startswith(("gemini-2", "gemini-1"))
+
+
+GEMINI_TTS = re.compile(r"^gemini-(\d+(?:\.\d+)?)-flash(-lite)?(?:-preview)?-tts(?:-preview)?$")
+
+
+def resolve_models(models: list[str], key: str, cfg: dict, log, specs: dict | None = None, trail: list | None = None) -> list[str]:
+    """Meant to run for years untouched (user, 2026-11-04), while Google retires models: configured TTS models no longer
+    listed are dropped, and up to tts.discover_newer flash TTS models newer than the newest configured one are added at
+    the end. If the listing fails, the configured list is used as is. specs gets model -> specs (for the report),
+    trail a {model, outcome} for each dropped model."""
+    try:
+        names, token = {}, ""
+        while True:
+            req = urllib.request.Request(
+                "https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000" + (f"&pageToken={token}" if token else ""),
+                headers={"x-goog-api-key": key, "User-Agent": "video-generator/1.0 (voice-generator)"})
+            data = with_deadline(lambda: json.loads(urllib.request.urlopen(req, timeout=30).read().decode("utf-8")), 40)
+            names |= {m["name"].split("/")[-1]: {"provider": "Google Gemini", "name": m.get("displayName"), "version": m.get("version"),
+                                                  "input_tokens": m.get("inputTokenLimit"), "output_tokens": m.get("outputTokenLimit")}
+                      for m in data.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])}
+            token = data.get("nextPageToken")
+            if not token:
+                break
+    except Exception as e:
+        log(f"model list failed ({e!r}"[:150] + "); using the configured TTS models")
+        return models
+    if specs is not None:
+        specs.update({n: {k: v for k, v in s.items() if v is not None} for n, s in names.items()})
+    out = [m for m in models if m in names]
+    for m in models:
+        if m not in names:
+            log(f"{m}: no longer offered, skipped (update the config)")
+            if trail is not None:
+                trail.append({"model": m, "outcome": "no longer offered by the provider"})
+    version = lambda n: (tuple(int(x) for x in GEMINI_TTS.match(n).group(1).split(".")), not GEMINI_TTS.match(n).group(2))  # noqa: E731
+    newest = max((version(m) for m in models if GEMINI_TTS.match(m)), default=((0,), False))
+    newer = sorted((n for n in names if GEMINI_TTS.match(n) and n not in out and version(n) > newest),
+                   key=version, reverse=True)[: cfg["tts"].get("discover_newer", 2)]
+    if newer:
+        log(f"newer TTS models found, added as fallbacks: {', '.join(newer)}")
+    return out + newer
 
 
 def call_tts(model: str, key: str, prompt: str, cast: dict, timeout: int, lines: list[tuple[str, str]] | None = None,
@@ -210,7 +252,9 @@ def heartbeat(stop: threading.Event, log, label: str) -> None:
         log(f"{label}: still waiting, {time.time() - start:.0f} s")
 
 
-def generate(script: dict, cast: dict, cfg: dict, key: str, models: list[str], log) -> tuple[bytes, str]:
+def generate(script: dict, cast: dict, cfg: dict, key: str, models: list[str], log, trail: list | None = None) -> tuple[bytes, str]:
+    """trail gets one {model, outcome} per model tried (why it was passed over, or 'used'), for the report."""
+    trail = [] if trail is None else trail
     t = cfg["tts"]
     prompt = build_prompt(script, cast, cfg)
     words = sum(len(ln["text"].split()) for ln in script["lines"])
@@ -219,6 +263,7 @@ def generate(script: dict, cast: dict, cfg: dict, key: str, models: list[str], l
                " ".join(x for x in [cast[ln["speaker"]].get("tag", ""), cfg["voice"].get("shocked_tag", "") if ln.get("expression") == "shocked" else ""] if x)
                + " " + ln["text"]) for ln in script["lines"]]
     for model in models:
+        outcome = ""  # why this model was passed over; the last reason wins
         for attempt in range(1, t["attempts"] + 1):
             label = f"{model} attempt {attempt}"
             log(f"{label}: asking for {words} words (usually ~3 min)")
@@ -230,8 +275,11 @@ def generate(script: dict, cast: dict, cfg: dict, key: str, models: list[str], l
             except urllib.error.HTTPError as e:
                 detail = e.read()[:600].decode("utf-8", "replace")
                 log(f"{label}: HTTP {e.code} {detail.strip()[:200]}")
+                outcome = {404: "not found (HTTP 404): retired or not open to this key", 429: "rate limited (HTTP 429)",
+                           500: "server error (HTTP 500) after retries", 503: "overloaded (HTTP 503) after retries"}.get(e.code, f"HTTP {e.code}")
                 if e.code == 429 and re.search(r"PerDay|per day", detail, re.I):
                     log(f"{label}: daily quota used up, trying the next model")  # each TTS model has its own quota
+                    outcome = "free daily quota used up (HTTP 429)"
                     break
                 if e.code in (429, 500, 503) and attempt < t["attempts"]:
                     time.sleep(20 * attempt)
@@ -239,6 +287,7 @@ def generate(script: dict, cast: dict, cfg: dict, key: str, models: list[str], l
                 break  # 404 (no such model), 400, or out of retries: next model
             except Exception as e:  # no audio, dropped connections, timeouts
                 log(f"{label}: failed: {e!r}"[:300])
+                outcome = "no audio in the reply" if isinstance(e, ValueError) else f"failed: {type(e).__name__}"
                 time.sleep(5)
                 continue
             finally:
@@ -247,9 +296,12 @@ def generate(script: dict, cast: dict, cfg: dict, key: str, models: list[str], l
             wps = words / seconds if seconds else 0
             if not (t["min_words_per_second"] <= wps <= t["max_words_per_second"]):
                 log(f"{label}: {seconds:.1f} s for {words} words ({wps:.1f}/s) looks cut off or garbled, retrying")
+                outcome = "audio cut off or garbled"
                 continue
             log(f"{label}: ok, {seconds:.1f} s of audio in {time.time() - started:.0f} s")
+            trail.append({"model": model, "outcome": f"used (attempt {attempt})"})
             return pcm, model
+        trail.append({"model": model, "outcome": outcome or "out of attempts"})
     sys.exit("no model returned usable audio")
 
 
@@ -351,15 +403,19 @@ def main() -> None:
     log(f"script: {script_path} ({len(script['lines'])} lines, " + ", ".join(f"{c['label']}={c['voice']}" for c in cast.values()) + ")")
 
     reuse = not args.new and raw_path.exists() and old.get("hash") == digest
+    specs, trail = {}, []
     if reuse:
         log("voice.raw.wav already matches this script; reusing it (use --new to ask Gemini again)")
         model = old.get("model")
+        specs, trail = {model: old.get("spec", {})}, old.get("tried", [])
     else:
         load_env_files([(base / f).resolve() for f in cfg["tts"].get("env_files", [])])
         key = os.environ.get(cfg["tts"]["key_env"], "").strip()
         if not key:
             sys.exit(f"API key missing: set {cfg['tts']['key_env']} in the environment or in {cfg['tts'].get('env_files')}")
-        pcm, model = generate(script, cast, cfg, key, models, log)
+        # after the hash, so a changed model listing never forces a new (3 min) voice for an unchanged script
+        tried = models if args.model else resolve_models(models, key, cfg, log, specs, trail)
+        pcm, model = generate(script, cast, cfg, key, tried, log, trail)
         write_wav(raw_path, pcm)
 
     speed = pick_speed(cfg["voice"], sum(len(ln["text"].split()) for ln in script["lines"]), wav_seconds(raw_path))
@@ -367,6 +423,9 @@ def main() -> None:
     meta = {
         "script": script_path.name,
         "model": model,
+        # for the email report: the model's specs and why earlier models were passed over
+        "spec": specs.get(model) or {"provider": "Google Gemini"},
+        "tried": trail,
         "voices": {sid: {"label": c["label"], "voice": c["voice"]} for sid, c in cast.items()},
         "speed": speed,
         "loudness_lufs": cfg["voice"].get("loudness_lufs") or None,

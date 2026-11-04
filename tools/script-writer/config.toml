@@ -12,6 +12,10 @@ env_files = ["../../.env"]
 # The daily run writes one script a day, which fits Gemini's free quota; gemini-3.5-flash wrote the best free scripts.
 # Groq gpt-oss is the fast fallback (3-10 s; free tier 8000 tokens/min), flash-lite the last resort (3 s, writes short).
 models = ["gemini-3.5-flash", "gemini-3.6-flash", "groq:openai/gpt-oss-120b", "gemini-3.5-flash-lite"]
+# Before each run the providers' model lists are read: a model above that is no longer offered is skipped, and up to
+# this many stable Gemini flash models newer than the newest one above are tried after the list (0 = never add).
+# So the daily run keeps working when Google retires models (user, 2026-11-04: should run 1-2 years untouched).
+discover_newer = 2
 temperature = 1.0
 # The whole call, not per read. 2026-10-29 evening: even "Say OK." took 171 s on the free tier, so 90 s was too short.
 # 2026-10-30 on GitHub: the script step sat 24+ min on gemini-3.5-flash (503s, then quota 429s), so calls are capped

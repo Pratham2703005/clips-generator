@@ -8,6 +8,10 @@ smtp_password_env = "SMTP_PASSWORD"  # a Gmail app password (Google account -> S
 smtp_host = "smtp.gmail.com"
 smtp_port = 465
 env_files = ["../../.env"]
+# Every Daily reel report adds its numbers here (--save-stats); the next reports show the growth since the report
+# ~24 h and ~7 days ago. Snapshots older than keep_stats_days are dropped.
+stats_file = "../../content/stats-history.json"
+keep_stats_days = 120
 
 [instagram]
 api_version = "v26.0"

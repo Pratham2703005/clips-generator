@@ -11,6 +11,8 @@ public/bg-minecraft-video/input/*.mp4
 # generated reels and their files (history.json stays: it keeps reels from repeating)
 content/*
 !content/history.json
+# stats snapshots of every Daily reel report, so the next report can show growth in the last 24 h / 7 days
+!content/stats-history.json
 
 # caches and local-only output
 public/visual-cache/

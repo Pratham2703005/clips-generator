@@ -95,10 +95,10 @@ def pick_background(folder: Path, ffprobe: str, need: float, margin: float, rng:
             usable.append((c, length))
     if not usable:
         sys.exit(f"no background clip in {folder} is longer than {need + 2 * margin:.0f} s; run normalize-video first")
-    picks = []
-    for _ in range(max(1, bg_cfg.get("candidates", 1))):
-        clip, length = rng.choice(usable)
-        picks.append((clip, round(rng.uniform(margin, length - need - margin), 2)))
+    # 2026-11-04: the clip is chosen first and only its stretches compete. Comparing across clips made bright,
+    # busy clip1 beat darker clip2 in 4 of 5 reels.
+    clip, length = rng.choice(usable)
+    picks = [(clip, round(rng.uniform(margin, length - need - margin), 2)) for _ in range(max(1, bg_cfg.get("candidates", 1)))]
     if len(picks) == 1 or not ffmpeg:
         return picks[0]
     # 2026-10-30: one stretch was a still white wall, flat and bright behind the captions. Prefer movement, not glare.

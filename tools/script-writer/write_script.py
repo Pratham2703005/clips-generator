@@ -512,22 +512,92 @@ def call_model(spec: str, keys: dict, system: str, messages: list[dict], schema:
     return call_openai_compatible(p["base_url"], model, keys[provider], system, messages, schema, cfg, p.get("extra"))
 
 
-def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tuple[dict, str]:
+def list_models(spec_provider: str, keys: dict, cfg: dict) -> dict[str, dict]:
+    """Model id -> specs, for the models the provider serves right now (Gemini: ListModels with generateContent;
+    others: GET <base_url>/models). The specs go into script.json for the report."""
+    if spec_provider == "gemini":
+        names, token = {}, ""
+        while True:
+            req = urllib.request.Request(
+                "https://generativelanguage.googleapis.com/v1beta/models?pageSize=1000" + (f"&pageToken={token}" if token else ""),
+                headers={"x-goog-api-key": keys["gemini"], "User-Agent": "video-generator/1.0 (script-writer)"})
+            data = with_deadline(lambda: json.loads(urllib.request.urlopen(req, timeout=30).read().decode("utf-8")), 40)
+            names |= {m["name"].split("/")[-1]: {"provider": "Google Gemini", "name": m.get("displayName"), "version": m.get("version"),
+                                                  "input_tokens": m.get("inputTokenLimit"), "output_tokens": m.get("outputTokenLimit")}
+                      for m in data.get("models", []) if "generateContent" in m.get("supportedGenerationMethods", [])}
+            token = data.get("nextPageToken")
+            if not token:
+                return names
+    p = cfg["llm"]["providers"][spec_provider]
+    req = urllib.request.Request(p["base_url"].rstrip("/") + "/models",
+                                 headers={"Authorization": f"Bearer {keys[spec_provider]}", "User-Agent": "video-generator/1.0 (script-writer)"})
+    return {m["id"]: {"provider": spec_provider.capitalize(), "owner": m.get("owned_by"), "context_tokens": m.get("context_window"),
+                      "output_tokens": m.get("max_completion_tokens")}
+            for m in with_deadline(lambda: json.loads(urllib.request.urlopen(req, timeout=30).read().decode("utf-8")), 40).get("data", [])}
+
+
+def spec_of(spec: str, served: dict) -> dict:
+    prov, _, name = spec.partition(":") if ":" in spec else ("gemini", "", spec)
+    return {k: v for k, v in ((served.get(prov) or {}).get(name) or {"provider": prov}).items() if v is not None}
+
+
+GEMINI_TEXT = re.compile(r"^gemini-(\d+(?:\.\d+)?)-flash(-lite)?$")
+
+
+def resolve_models(models: list[str], keys: dict, cfg: dict, log, served: dict, trail: list | None = None) -> list[str]:
+    """Meant to run for years untouched (user, 2026-11-04), while Gemini retires models every few months: configured
+    models the provider no longer lists are dropped, and up to llm.discover_newer stable Gemini flash models newer than
+    the newest configured one are added at the end. If a listing fails, that provider's models are kept as they are.
+    served caches the listings between calls (writer and judge lists)."""
+    for prov in {(m.partition(":")[0] if ":" in m else "gemini") for m in models} | {"gemini"}:
+        if not keys.get(prov) or prov in served:
+            continue
+        try:
+            served[prov] = list_models(prov, keys, cfg)
+        except Exception as e:
+            log(f"model list for {prov} failed ({e!r}"[:150] + "); keeping its configured models")
+            served[prov] = None
+    out = []
+    for m in models:
+        prov, _, name = m.partition(":") if ":" in m else ("gemini", "", m)
+        if served.get(prov) is not None and name not in served[prov]:
+            log(f"{m}: no longer offered, skipped (update the config)")
+            if trail is not None:
+                trail.append({"model": m, "outcome": "no longer offered by the provider"})
+            continue
+        out.append(m)
+    # (3, 8) flash > (3, 8) lite > (3, 7) flash; versions as int tuples so a future 3.10 sorts above 3.9
+    version = lambda n: (tuple(int(x) for x in GEMINI_TEXT.match(n).group(1).split(".")), not GEMINI_TEXT.match(n).group(2))  # noqa: E731
+    newest = max((version(m) for m in models if ":" not in m and GEMINI_TEXT.match(m)), default=((0,), False))
+    newer = sorted((n for n in served.get("gemini") or () if GEMINI_TEXT.match(n) and n not in out and version(n) > newest),
+                   key=version, reverse=True)[: cfg["llm"].get("discover_newer", 2)]
+    if newer:
+        log(f"newer Gemini models found, added as fallbacks: {', '.join(newer)}")
+    return out + newer
+
+
+def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log, trail: list | None = None) -> tuple[dict, str]:
+    """trail gets one {model, outcome} per model tried (why it was passed over, or 'used'), for the report."""
+    trail = [] if trail is None else trail
     system, user = build_prompt(brief, cfg)
     schema = response_schema(brief)
     best = None  # (script, model, problems): the best draft whose problems are all style-only
+    judges: dict[str, str] = {}
     # the whole step has a budget: on GitHub (2026-10-30) Gemini sat 24+ min between 503s and quota 429s
     deadline = time.time() + cfg["llm"].get("max_minutes", 12) * 60
     for model in models:
         if time.time() > deadline:
             log(f"out of time ({cfg['llm'].get('max_minutes', 12)} min); not trying {model} and the rest")
+            trail.append({"model": model, "outcome": f"not tried: the {cfg['llm'].get('max_minutes', 12)} min budget was used up"})
             break
         provider = model.partition(":")[0] if ":" in model else "gemini"
         if not keys.get(provider):
             log(f"{model}: skipped, no API key for {provider}")
+            trail.append({"model": model, "outcome": f"skipped: no API key for {provider}"})
             continue
         messages = [{"role": "user", "parts": [{"text": user}]}]
         attempt, waits, busy = 0, 0, 0
+        outcome = ""  # why this model was passed over; the last reason wins
         # fast models get more tries (flash-lite answers in ~3 s, gpt-oss in ~10 s)
         tries = cfg["llm"].get("attempts_per_model", {}).get(model, cfg["llm"]["attempts"])
         while attempt < tries and time.time() < deadline:
@@ -539,8 +609,10 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
             except urllib.error.HTTPError as e:
                 detail = e.read()[:4000].decode("utf-8", "replace")  # Gemini names the quota (…PerDay…) far down the body
                 log(f"{model}: HTTP {e.code} {detail.strip()[:200]}")
+                outcome = f"HTTP {e.code}"
                 if e.code == 429 and re.search(r"PerDay|per day|daily", detail, re.I):
                     log(f"{model}: daily quota used up, trying the next model")
+                    outcome = "free daily quota used up (HTTP 429)"
                     break
                 if e.code in (500, 503) and busy < len(cfg["llm"].get("busy_backoff", [2, 4, 8])):
                     # "high demand" (Gemini's free tier at Indian peak hours): back off 2 -> 4 -> 8 s without spending
@@ -552,7 +624,12 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
                     time.sleep(delay)
                     continue
                 if e.code in (500, 503):
+                    outcome = f"overloaded (HTTP {e.code}) after retries"
                     break
+                if e.code == 429:
+                    outcome = "rate limited (HTTP 429, per minute)"
+                if e.code == 404:
+                    outcome = "not found (HTTP 404): retired or not open to this key"
                 if e.code == 429 and waits < cfg["llm"].get("rate_limit_waits", 2):
                     # per-minute limit (Groq free: 8000 tokens/min on gpt-oss-120b); wait as told, without using up an attempt
                     waits += 1
@@ -568,6 +645,7 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
                 break  # 404 (no such model), 400, or out of retries: next model
             except TimeoutError as e:  # a hung model tends to stay hung: next model
                 log(f"{model}: attempt {attempt}: {e}")
+                outcome = f"timed out ({e})"
                 break
             except Exception as e:  # dropped connections (RemoteDisconnected, resets), timeouts, malformed replies
                 # this network resets ~40% of TLS connections for a moment (curl and Python alike, 2026-10-30):
@@ -579,9 +657,11 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
                     time.sleep(1)
                     continue
                 log(f"{model}: attempt {attempt} failed: {e!r}")
+                outcome = f"failed: {type(e).__name__}"
                 time.sleep(5)
                 continue
             problems = check(script, brief, cfg)
+            outcome = f"{attempt} draft(s) didn't pass the checks or the judge"
             log(f"{model}: attempt {attempt} ({time.time() - started:.0f} s), {len(problems)} problem(s)" + (": " + " | ".join(problems) if problems else ""))
             # style-only misses (hook score, beat timing) are kept as a fallback; any fact, number, length or job
             # problem never is (2026-10-30: every model missed the hook score on a Riya + Verma brief and the run died)
@@ -590,6 +670,8 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
                 # times", the learner giving the CTA; the user scored it 3/10), so another model judges it
                 verdict = judge(script, brief, cfg, keys, model, log)
                 score = verdict["score"] if verdict else None
+                if verdict and verdict.get("by"):
+                    judges[model] = verdict["by"]  # which model judged this writer's drafts, for the report
                 if score is not None:
                     log(f"{model}: judge {score}/10" + (": " + " | ".join(verdict.get("issues", [])[:4]) if verdict.get("issues") else ""))
                 rank = (score if score is not None else 0, -len(problems))
@@ -597,6 +679,8 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
                     best = (script, model, problems, rank)
                 if not problems and (score is None or score >= cfg.get("judge", {}).get("min_score", 7)):
                     log(f"{model}: accepted on attempt {attempt}")
+                    trail.append({"model": model, "outcome": f"used (attempt {attempt}" + (f", judge {score}/10)" if score is not None else ")"),
+                                  "judge": judges.get(model)})
                     return script, model
                 if verdict and score is not None and score < cfg.get("judge", {}).get("min_score", 7):
                     problems += [f"(judge) {i}" for i in verdict.get("issues", [])[:5]] or ["(judge) make it funnier and more coherent"]
@@ -604,9 +688,12 @@ def generate(brief: dict, cfg: dict, keys: dict, models: list[str], log) -> tupl
                 {"role": "model", "parts": [{"text": json.dumps(script, ensure_ascii=False)}]},
                 {"role": "user", "parts": [{"text": "Fix these problems and return the whole script again:\n- " + "\n- ".join(problems)}]},
             ]
+        trail.append({"model": model, "outcome": outcome or "out of attempts"})
     if best:
         log(f"WARNING: no script passed everything; using the best judged draft ({best[1]}, judge {best[3][0]}/10)"
             + (", style misses: " + " | ".join(best[2]) if best[2] else ""))
+        trail.append({"model": best[1], "outcome": f"used: best draft when none passed everything (judge {best[3][0]}/10)",
+                      "judge": judges.get(best[1])})
         return best[0], best[1]
     sys.exit("no model produced a script that passed the checks")
 
@@ -717,8 +804,19 @@ def main() -> None:
         if hard:
             sys.exit("the draft breaks hard rules; fix it first")
     else:
-        script, model = generate(brief, cfg, keys, [args.model] if args.model else cfg["llm"]["models"], log)
+        models, served, trail = [args.model], {}, []
+        if not args.model:
+            models = resolve_models(cfg["llm"]["models"], keys, cfg, log, served, trail)
+            if cfg.get("judge", {}).get("models"):
+                cfg["judge"]["models"] = resolve_models(cfg["judge"]["models"], keys, cfg, log, served)
+        script, model = generate(brief, cfg, keys, models, log, trail)
     final = finish(script, brief, model)
+    if not args.draft:
+        # for the email report: which models wrote and judged, their specs, and why earlier ones were passed over
+        judge_by = next((t.get("judge") for t in reversed(trail) if t.get("judge")), None)
+        final["ai"] = {"script": {"model": model, "spec": spec_of(model, served), "tried": trail}}
+        if judge_by:
+            final["ai"]["judge"] = {"model": judge_by, "spec": spec_of(judge_by, served)}
     (brief_path.parent / "script.json").write_text(json.dumps(final, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     md = as_markdown(final)
     (brief_path.parent / "script.md").write_text(md, encoding="utf-8")

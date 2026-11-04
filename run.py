@@ -259,6 +259,18 @@ def jobs_block(jobs: list[dict]) -> str:
     return "\n".join(f"- {j['title']} at {j['company']} ({j.get('where', '')}, posted {j.get('posted', '')})\n  Apply: {j['apply_url']}" for j in jobs)
 
 
+def with_platform_link(desc: str, platform: dict) -> str:
+    """Adds the day's platform (picked by the brief tool, with its cooldown) and its link above the hashtag line, so the
+    description points to n8n / api.market / Zyla ... and not only to the website in the bio (user, 2026-11-04)."""
+    if not platform.get("url") or platform["url"] in desc:
+        return desc
+    name = platform.get("name", platform.get("id", ""))
+    line = f"{name[:1].upper() + name[1:]}: {platform['url']}"
+    lines = desc.rstrip().splitlines()
+    at = len(lines) - 1 if lines and lines[-1].lstrip().startswith("#") else len(lines)
+    return "\n".join(lines[:at]).rstrip() + f"\n\n{line}\n\n" + "\n".join(lines[at:])
+
+
 def run_series(path: Path, day: str, opts: dict, env: dict) -> Path | None:
     """Today's episode: fresh jobs from the brief tool (fresher filter, live links, cooldowns), slots filled, script.json
     written to content/<day>. None when no niche gives enough jobs (the caller then runs the full AI pipeline)."""
@@ -270,13 +282,15 @@ def run_series(path: Path, day: str, opts: dict, env: dict) -> Path | None:
     folder = ROOT / "content" / day
     needed = max([int(n) for n in re.findall(r"\{job(\d)", ep["dialogue"])] + [ep["count"], 0])
     jobs: list[dict] = []
+    platform: dict = {}
     for niche in ep["niches"]:
         print(f"\n== brief (series, niche {niche})", flush=True)
         (folder / "brief.json").unlink(missing_ok=True)  # a failed niche writes none; never read an earlier run's
         r = subprocess.run([sys.executable, "-u", str(STEP["brief"]), "--date", day, "--track", "job_drop", "--niche", niche,
                             "--cast", ",".join(cast), "--jobs", str(needed), "--replace"], env=env)
         if r.returncode == 0 and (folder / "brief.json").exists():
-            jobs = json.loads((folder / "brief.json").read_text(encoding="utf-8")).get("jobs", [])
+            brief = json.loads((folder / "brief.json").read_text(encoding="utf-8"))
+            jobs, platform = brief.get("jobs", []), brief.get("platform") or {}
             if len(jobs) >= needed:
                 break
         print(f"  {niche}: {len(jobs)} job(s), {needed} needed")
@@ -286,7 +300,7 @@ def run_series(path: Path, day: str, opts: dict, env: dict) -> Path | None:
     filled.write_text(fill_slots(ep["dialogue"], jobs), encoding="utf-8")
     build_custom(filled, {**opts, "left": cast[0], "right": cast[1]}, day, folder=folder, jobs=jobs, title=ep["title"], track="series")
     if ep["description"]:
-        desc = fill_slots(ep["description"].replace("{jobs}", jobs_block(jobs[:needed])), jobs)
+        desc = with_platform_link(fill_slots(ep["description"].replace("{jobs}", jobs_block(jobs[:needed])), jobs), platform)
         (folder / "description.txt").write_text(desc + "\n", encoding="utf-8")
         script = json.loads((folder / "script.json").read_text(encoding="utf-8"))
         script["caption"] = desc  # the same place the AI pipeline keeps its caption

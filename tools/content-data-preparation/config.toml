@@ -265,10 +265,9 @@ what = "the same jobs API, for developers who already use Zyla API Hub"
 for = "developers"
 how_to_find = "Zyla API Hub, link in description"
 cta = "Zyla ka link description mein."
-
-# Things the script may say about the product. Numbers come live from /stats and are added to the brief separately.
 url = "https://zylalabs.com/api-marketplace/other/career+site+job+listings+api/14345"
 
+# Things the script may say about the product. Numbers come live from /stats and are added to the brief separately.
 [facts]
 product = [
   "It reads company career sites (Workday, Greenhouse, Lever, Ashby, SmartRecruiters, Oracle and more) every day.",

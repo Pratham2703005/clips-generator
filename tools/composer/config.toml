@@ -31,7 +31,7 @@ margin = 5
 # Slight dim and desaturate, so the captions and characters stand out (0 and 1 = untouched).
 brightness = -0.05
 saturation = 0.9
-# Try this many random stretches and keep the one with the most movement, docking points for glare above
+# The clip is picked at random first; then try this many random stretches of it and keep the one with the most movement, docking points for glare above
 # max_brightness (0-255). 2026-10-30: a still white wall was flat and bright behind the captions.
 candidates = 4
 # 150 still let a white quartz build through (145); clip2's stretches sit at 76-93.
