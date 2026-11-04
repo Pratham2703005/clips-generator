@@ -133,15 +133,22 @@ def post(api: Api, user: str, video: Path, media_type: str, fields: dict, poll: 
             raise RuntimeError(f"upload refused: {up}")
         return container
 
-    try:
-        container = container_and_upload(0)
-    except RuntimeError as e:
-        # 2026-11-02: a 30.9 MB reel got ProcessingFailedError twice in one piece (23.8 MB ones went through); a new
-        # container with the file in pieces
-        if "ProcessingFailedError" not in str(e):
-            raise
-        print(f"  one-piece upload failed ({e}); again in {chunk_mb} MB pieces", flush=True)
-        container = container_and_upload(chunk_mb * 1024 * 1024)
+    # Meta's upload host answers ProcessingFailedError now and then, for files of any size: 2026-11-02 twice in a row
+    # and then fine for the same file; 2026-11-04 the nightly run failed in one piece AND in 8 MB pieces, and a rerun 6 h
+    # later went through in pieces. So: one piece, then pieces, then pieces again after a pause, each in a new container.
+    attempts = [(0, 0), (chunk_mb, 0), (chunk_mb, 90), (max(1, chunk_mb // 2), 180)]
+    for i, (mb, pause) in enumerate(attempts):
+        if pause:
+            print(f"  waiting {pause} s before trying again", flush=True)
+            time.sleep(pause)
+        try:
+            container = container_and_upload(mb * 1024 * 1024)
+            break
+        except RuntimeError as e:
+            if "ProcessingFailedError" not in str(e) or i == len(attempts) - 1:
+                raise
+            nxt = attempts[i + 1][0]
+            print(f"  upload failed ({'one piece' if not mb else f'{mb} MB pieces'}): {e}; next: {nxt} MB pieces", flush=True)
     print(f"{media_type.lower()} container {container}: uploaded, waiting for Instagram", flush=True)
     wait_until_ready(api, container, poll)
     return api.call("POST", f"{user}/media_publish", {"creation_id": container})["id"]
