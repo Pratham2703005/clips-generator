@@ -1,0 +1,37 @@
+# Special (not part of a season): "Forwarded many times" - a fake job alert from a group chat vs a fresh job from the
+# company's own career page. Test of the whole pipeline (2026-11-04): fresh job in the slot, job card, description with
+# the apply link and the day's platform link, Instagram reel + story, YouTube Short, email report.
+# Run it: Daily reel -> mode custom, script = series/specials/forwarded-many-times.txt, name = special-forwarded.
+title: Forwarded many times | Fake job alert
+cast: malhotra, riya
+jobs: india-freshers|bangalore-tech|data-ai, 1
+hook: FORWARDED MANY TIMES. JOB GONE.
+Riya: Ma'am! Group pe job aayi hai, urgent hiring, freshers apply!
+Malhotra: Message ke upar chhota sa kya likha hai?
+Riya: Forwarded many times.
+Malhotra: Matlab ye job utni hi purani hai jitni chacha ji ki good morning wali photo.
+Riya (shocked): Par link toh khul raha hai!
+Malhotra: Link ek form ka hai. Last line padho.
+Riya: Registration fee, sirf four ninety nine.
+Malhotra: Rule number one. Asli company job ke liye kabhi paise nahi maangti.
+Riya: Toh fresh job milegi kahan se?
+Malhotra: Seedha company ki career site se. Aur aaj ki.
+Malhotra: Ye dekho: {job1}. [job: 1]
+Riya: Posted {job1.posted}? Aur koi fee nahi?
+Malhotra: Na fee, na form, na forward. Company ka apna apply page.
+Riya: Toh main group mute kar doon?
+Malhotra: Mute nahi, exit. Aur jaane se pehle ye reel usi group mein bhej do.
+Riya: Taaki baaki log bhi four ninety nine na bharein!
+Malhotra: Job ka link description mein. Roz nayi jobs ke liye, link bio mein.
+
+--- description
+Fake job alert for freshers | Job scam registration fee | Fresher jobs 2026
+"Forwarded many times" + "registration fee 499" = scam. Rule number one: a real company never asks you to pay for a job. Fresh jobs come straight from the company's own career page.
+
+Job in this video:
+{jobs}
+
+Send this to that one group that forwards everything. 🚩
+Fresh jobs from company career pages, every day: link in bio.
+
+#fresherjobs #jobscam #fakejobalert #offcampusjobs #jobsearchtips

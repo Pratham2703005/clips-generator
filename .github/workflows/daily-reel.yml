@@ -197,6 +197,10 @@ jobs:
             content/custom/${{ env.NAME }}/script.json
             content/custom/${{ env.NAME }}/compose.json
             content/custom/${{ env.NAME }}/visuals.json
+            content/custom/${{ env.NAME }}/description.txt
+            content/custom/${{ env.NAME }}/brief.json
+            content/custom/${{ env.NAME }}/voice.json
+            content/custom/${{ env.NAME }}/timeline.json
           if-no-files-found: warn
           retention-days: 30
 

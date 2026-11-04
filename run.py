@@ -27,6 +27,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tomllib
@@ -271,31 +272,43 @@ def with_platform_link(desc: str, platform: dict) -> str:
     return "\n".join(lines[:at]).rstrip() + f"\n\n{line}\n\n" + "\n".join(lines[at:])
 
 
-def run_series(path: Path, day: str, opts: dict, env: dict) -> Path | None:
+def is_series_format(path: Path) -> bool:
+    """A custom script written like an episode (a 'jobs:' header or a '--- description' part) is made like one."""
+    text = path.read_text(encoding="utf-8")
+    return bool(re.search(r"(?mi)^\s*jobs\s*:", text) or "\n--- description" in text)
+
+
+def run_series(path: Path, day: str, opts: dict, env: dict, out: Path | None = None) -> Path | None:
     """Today's episode: fresh jobs from the brief tool (fresher filter, live links, cooldowns), slots filled, script.json
-    written to content/<day>. None when no niche gives enough jobs (the caller then runs the full AI pipeline)."""
+    written to content/<day>. None when no niche gives enough jobs (the caller then runs the full AI pipeline).
+    out: a custom script in episode form goes to its own folder, and its jobs are a new entry in today's history
+    (no --replace), so the day's real episode keeps its record."""
     ep = parse_series(path)
     chars = characters()
     cast = [find_char(c, chars) for c in ep["cast"]]
     if len(cast) != 2 or not all(cast):
         sys.exit(f"{path.name}: 'cast: LEFT, RIGHT' must name two characters (got {ep['cast']})")
-    folder = ROOT / "content" / day
+    brief_dir = ROOT / "content" / day  # where the brief tool writes
+    folder = out or brief_dir
+    folder.mkdir(parents=True, exist_ok=True)
     needed = max([int(n) for n in re.findall(r"\{job(\d)", ep["dialogue"])] + [ep["count"], 0])
     jobs: list[dict] = []
     platform: dict = {}
     for niche in ep["niches"]:
         print(f"\n== brief (series, niche {niche})", flush=True)
-        (folder / "brief.json").unlink(missing_ok=True)  # a failed niche writes none; never read an earlier run's
+        (brief_dir / "brief.json").unlink(missing_ok=True)  # a failed niche writes none; never read an earlier run's
         r = subprocess.run([sys.executable, "-u", str(STEP["brief"]), "--date", day, "--track", "job_drop", "--niche", niche,
-                            "--cast", ",".join(cast), "--jobs", str(needed), "--replace"], env=env)
-        if r.returncode == 0 and (folder / "brief.json").exists():
-            brief = json.loads((folder / "brief.json").read_text(encoding="utf-8"))
+                            "--cast", ",".join(cast), "--jobs", str(needed)] + ([] if out else ["--replace"]), env=env)
+        if r.returncode == 0 and (brief_dir / "brief.json").exists():
+            brief = json.loads((brief_dir / "brief.json").read_text(encoding="utf-8"))
             jobs, platform = brief.get("jobs", []), brief.get("platform") or {}
             if len(jobs) >= needed:
                 break
         print(f"  {niche}: {len(jobs)} job(s), {needed} needed")
     if len(jobs) < needed:
         return None
+    if folder != brief_dir:
+        shutil.copy2(brief_dir / "brief.json", folder / "brief.json")
     filled = folder / "series-script.txt"
     filled.write_text(fill_slots(ep["dialogue"], jobs), encoding="utf-8")
     build_custom(filled, {**opts, "left": cast[0], "right": cast[1]}, day, folder=folder, jobs=jobs, title=ep["title"], track="series")
@@ -366,7 +379,13 @@ def main() -> None:
     elif script_file:
         if not script_file.is_file():
             sys.exit(f"script not found: {script_file}")
-        folder = build_custom(script_file, opts, a.date)
+        if is_series_format(script_file):
+            # fresh jobs in the slots, job cards, description with apply + platform links, like a series episode
+            folder = run_series(script_file, a.date, opts, env, out=ROOT / "content" / "custom" / (opts.get("name") or f"{script_file.stem}-{a.date}"))
+            if not folder:
+                sys.exit("not enough fresh jobs for the script's job slots")
+        else:
+            folder = build_custom(script_file, opts, a.date)
         target = ["--script", str(folder / "script.json")]
     else:
         brief_args = ["--date", a.date]
