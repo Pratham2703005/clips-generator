@@ -128,6 +128,23 @@
       "premise": "sales-hesitation",
       "hook": "numbered-favourite",
       "dynamic": "learner-bites-back"
+    },
+    {
+      "date": "2026-11-04",
+      "track": "job_drop",
+      "format": "guess-the-company",
+      "niche": "india-freshers",
+      "platform": "landing",
+      "cast": "malhotra+riya",
+      "job_ids": [
+        "47b02709eacd6bbff14a51bb875a8726"
+      ],
+      "companies": [
+        "Zono"
+      ],
+      "premise": "wfh-family",
+      "hook": "if-this-then-watch",
+      "dynamic": "detective"
     }
   ]
 }
