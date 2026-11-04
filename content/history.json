@@ -145,6 +145,23 @@
       "premise": "wfh-family",
       "hook": "if-this-then-watch",
       "dynamic": "detective"
+    },
+    {
+      "date": "2026-11-05",
+      "track": "job_drop",
+      "format": "number-shock",
+      "niche": "india-freshers",
+      "platform": "api-market",
+      "cast": "arjun+bunty",
+      "job_ids": [
+        "c6ba4537ce79b0458044ab2193f6a28c"
+      ],
+      "companies": [
+        "Zeni"
+      ],
+      "premise": "chatgpt-cover-letter",
+      "hook": "cost-confession",
+      "dynamic": "classic-roast"
     }
   ]
 }
