@@ -78,9 +78,32 @@ def probe_seconds(ffprobe: str, f: Path) -> float:
 
 # ---- background ----
 
+def free_offset(rng: random.Random, clip: str, length: float, need: float, margin: float, used: list[dict], gap: float) -> float | None:
+    """A random start whose stretch doesn't overlap (within `gap` s) any used stretch of this clip: the free gaps between
+    used stretches are worked out and a start is drawn evenly over all of them (random tries miss the last few gaps)."""
+    taken = sorted((u["start"] - gap, u["end"] + gap) for u in used if u.get("clip") == clip)
+    starts, pos = [], margin  # (first start, last start) ranges that fit
+    for a, b in taken + [(length - margin, length)]:
+        if a - pos >= need:
+            starts.append((pos, a - need))
+        pos = max(pos, b)
+    total = sum(hi - lo for lo, hi in starts)
+    if not starts:
+        return None
+    x = rng.uniform(0, total)
+    for lo, hi in starts:
+        if x <= hi - lo:
+            return round(lo + x, 2)
+        x -= hi - lo
+    return round(starts[-1][1], 2)
+
+
 def pick_background(folder: Path, ffprobe: str, need: float, margin: float, rng: random.Random, only: str | None,
-                    ffmpeg: str = "", bg_cfg: dict | None = None, log=print) -> tuple[Path, float]:
+                    ffmpeg: str = "", bg_cfg: dict | None = None, log=print, used: list[dict] | None = None) -> tuple[Path, float]:
+    """used: recent picks ({clip, start, end}); their stretches are avoided, so the footage rotates instead of the same
+    high-motion part winning every time (2026-11-05: Din 3, the special and Din 5 all sat in clip1 1137-1240 s)."""
     bg_cfg = bg_cfg or {}
+    used = used or []
     known = {}
     manifest = folder / "manifest.json"
     if manifest.exists():
@@ -97,8 +120,24 @@ def pick_background(folder: Path, ffprobe: str, need: float, margin: float, rng:
         sys.exit(f"no background clip in {folder} is longer than {need + 2 * margin:.0f} s; run normalize-video first")
     # 2026-11-04: the clip is chosen first and only its stretches compete. Comparing across clips made bright,
     # busy clip1 beat darker clip2 in 4 of 5 reels.
-    clip, length = rng.choice(usable)
-    picks = [(clip, round(rng.uniform(margin, length - need - margin), 2)) for _ in range(max(1, bg_cfg.get("candidates", 1)))]
+    gap = bg_cfg.get("gap", 10)
+    order = usable[:]
+    rng.shuffle(order)
+    picks = []
+    recent = used
+    while not picks:
+        for clip, length in order:  # the other clip only when this one has no unused stretch left
+            offs = [free_offset(rng, clip.name, length, need, margin, recent, gap) for _ in range(max(1, bg_cfg.get("candidates", 1)))]
+            picks = [(clip, o) for o in offs if o is not None]
+            if picks:
+                break
+        if not picks:  # the clips are full: forget the older half of the picks and look again (oldest footage comes back first)
+            if not recent:
+                clip, length = order[0]
+                picks = [(clip, round(rng.uniform(margin, length - need - margin), 2))]
+                break
+            recent = recent[len(recent) // 2 + 1:]
+            log(f"  no unused background stretch; avoiding only the last {len(recent)} picks")
     if len(picks) == 1 or not ffmpeg:
         return picks[0]
     # 2026-10-30: one stretch was a still white wall, flat and bright behind the captions. Prefer movement, not glare.
@@ -473,8 +512,14 @@ def main() -> None:
 
     # date + title: a rerun of the same script gives the same reel, a new script on the same day gets a new stretch
     rng = random.Random(f"{script['date']}/{script.get('title', '')}/{args.reroll}")
-    clip, offset = pick_background((base / paths["backgrounds_dir"]).resolve(), ffprobe, total, cfg["background"]["margin"], rng, args.clip,
-                                   ffmpeg, cfg["background"], log)
+    bg = cfg["background"]
+    history_path = (base / bg["history_file"]).resolve() if bg.get("history_file") else None
+    try:
+        bg_history = json.loads(history_path.read_text(encoding="utf-8")).get("picks", []) if history_path and history_path.is_file() else []
+    except ValueError:
+        bg_history = []
+    clip, offset = pick_background((base / paths["backgrounds_dir"]).resolve(), ffprobe, total, bg["margin"], rng, args.clip,
+                                   ffmpeg, bg, log, bg_history[-bg.get("avoid_last", 60):])
     log(f"folder: {folder}; {total:.1f} s; background {clip.name} from {offset:.1f} s")
 
     cast = {c["id"]: c for c in script["cast"]}
@@ -523,6 +568,11 @@ def main() -> None:
         "turns": [{"speaker": t["speaker"], "in": round(t["in"], 3), "end": round(t["end"], 3), "lines": len(t["lines"])} for t in turns],
         "generated_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }, indent=2) + "\n", encoding="utf-8")
+    if history_path:
+        # committed with content/history.json by the Daily reel run, so the next reels skip this stretch
+        bg_history.append({"date": script["date"], "title": script.get("title", ""), "clip": clip.name,
+                           "start": offset, "end": round(offset + total, 2)})
+        history_path.write_text(json.dumps({"picks": bg_history[-200:]}, indent=1) + "\n", encoding="utf-8")
     log(f"wrote {out} and compose.json")
 
 

@@ -93,6 +93,9 @@ jobs:
           REPORT_TO: ${{ secrets.REPORT_TO }}
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          # optional: with both, the report shows when the Instagram token expires (debug_token needs an app token)
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          IG_APP_SECRET: ${{ secrets.IG_APP_SECRET }}
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}

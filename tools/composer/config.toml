@@ -38,6 +38,13 @@ candidates = 4
 max_brightness = 115
 # Motion points lost per brightness point over max_brightness (0.5 still picked the white build: 53.7 - 15 > 30.5).
 glare_penalty = 1.0
+# Every pick is recorded here; candidates overlapping (within `gap` s) one of the last `avoid_last` picks are skipped, so
+# the footage rotates. 2026-11-05: picking the most movement out of 4 random stretches kept landing on clip1's
+# 1100-1250 s (Din 3, the special and Din 5). Two 30-min clips hold ~80 separate 45-s stretches. "" = no memory.
+# 150 so the rotation grows with more clips (~20 reels per 30-min clip); with fewer clips the oldest picks are let go.
+history_file = "../../content/background-history.json"
+avoid_last = 150
+gap = 10
 
 [characters]
 # Height on screen, in pixels (images are trimmed to the character first).

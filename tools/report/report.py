@@ -93,6 +93,8 @@ def instagram_stats(cfg: dict, since: datetime) -> dict:
                 break
             page = get_json(nxt)
     except RuntimeError as e:
+        if not out.get("username"):  # even the account call failed: most likely the token itself
+            out["token"] = {"line": f"Instagram token may have stopped working ({e}): make a new one and update IG_ACCESS_TOKEN", "warn": True}
         return {**out, "note": f"Instagram stats failed: {e}"}
     insights_ok = True
     for m in posts:
@@ -111,10 +113,17 @@ def instagram_stats(cfg: dict, since: datetime) -> dict:
 
 
 def token_info(base: str, token: str) -> dict:
-    """When the Instagram token stops working (debug_token, asked with the token itself). expires_at 0 = never; the
-    data-access window is separate (a user token loses data access ~90 days after the user last used the app)."""
+    """When the Instagram token stops working (debug_token). expires_at 0 = never; the data-access window is separate (a
+    user token loses data access ~90 days after the user last used the app). debug_token needs an app token
+    (META_APP_ID|IG_APP_SECRET): 2026-11-05 the system-user token asking about itself got "(#100) You must provide an app
+    access token". Without those two secrets the report only says whether the token still works."""
+    app_id, secret = os.environ.get("META_APP_ID", "").strip(), os.environ.get("IG_APP_SECRET", "").strip()
+    if not (app_id and secret):
+        return {"line": "Instagram token works (the stats below come through it). Its expiry date needs an app token: add "
+                        "the repository secrets META_APP_ID and IG_APP_SECRET (Meta app -> App settings -> Basic) to see it here.",
+                "warn": False}
     try:
-        d = get_json(f"{base}/debug_token?" + urllib.parse.urlencode({"input_token": token, "access_token": token})).get("data", {})
+        d = get_json(f"{base}/debug_token?" + urllib.parse.urlencode({"input_token": token, "access_token": f"{app_id}|{secret}"})).get("data", {})
     except RuntimeError as e:
         return {"line": f"Instagram token check failed: {e}", "warn": False}
     now = datetime.now(timezone.utc)

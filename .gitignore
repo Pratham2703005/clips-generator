@@ -13,6 +13,8 @@ content/*
 !content/history.json
 # stats snapshots of every Daily reel report, so the next report can show growth in the last 24 h / 7 days
 !content/stats-history.json
+# background stretches already used, so the composer rotates through the clips
+!content/background-history.json
 
 # caches and local-only output
 public/visual-cache/
