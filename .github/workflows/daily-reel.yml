@@ -3,7 +3,7 @@
 # Run it by hand from Actions -> Daily reel -> Run workflow: every choice is in that form (no file to upload).
 # Before the first run (see README.md, "GitHub setup"):
 #   - repository secrets: GEMINI_API_KEY, GROQ_API_KEY, JOB_FEED_API_KEY
-#   - a release tagged `backgrounds` with the processed clips (clip1.mp4, clip2.mp4) attached as assets
+#   - a release tagged `backgrounds` with the processed clips (clip1.mp4, clip2.mp4, clip3.mp4) attached as assets
 name: Daily reel
 
 on:
@@ -46,7 +46,7 @@ on:
       clip:
         description: "Background clip"
         type: choice
-        options: [random, clip1.mp4, clip2.mp4]
+        options: [random, clip1.mp4, clip2.mp4, clip3.mp4]
         default: random
       track:
         description: "AI script: track"
