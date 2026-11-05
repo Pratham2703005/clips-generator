@@ -99,6 +99,118 @@
      }
     }
    }
+  },
+  {
+   "at": "2026-11-04T23:59:59+00:00",
+   "models": {
+    "script": {
+     "model": "hand-written series episode",
+     "tried": []
+    },
+    "voice": {
+     "model": "gemini-2.5-flash-preview-tts",
+     "tried": [
+      {
+       "model": "gemini-2.5-flash-preview-tts",
+       "outcome": "used (attempt 1)"
+      }
+     ]
+    },
+    "captions": {
+     "model": "faster-whisper small",
+     "tried": []
+    }
+   },
+   "ig": {
+    "followers": 4,
+    "posts": {
+     "18075778169781025": {
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "saves": 0,
+      "shares": 0
+     },
+     "17996714184106909": {
+      "views": 272,
+      "likes": 1,
+      "comments": 0,
+      "saves": 0,
+      "shares": 0
+     },
+     "18141225574712113": {
+      "views": 2389,
+      "likes": 13,
+      "comments": 0,
+      "saves": 25,
+      "shares": 18
+     },
+     "18073160561784749": {
+      "views": 2512,
+      "likes": 21,
+      "comments": 4,
+      "saves": 5,
+      "shares": 5
+     },
+     "18179808415446295": {
+      "views": 230,
+      "likes": 2,
+      "comments": 0,
+      "saves": 0,
+      "shares": 0
+     },
+     "18641299453051210": {
+      "views": 504,
+      "likes": 5,
+      "comments": 0,
+      "saves": 1,
+      "shares": 2
+     },
+     "17913754989504721": {
+      "views": 269,
+      "likes": 3,
+      "comments": 1,
+      "saves": 2,
+      "shares": 1
+     }
+    }
+   },
+   "yt": {
+    "subscribers": "17",
+    "views": "749",
+    "videos": {
+     "VJQu3ZM5knw": {
+      "views": "0",
+      "likes": "0",
+      "comments": "0"
+     },
+     "JypkfLU368Y": {
+      "views": "3",
+      "likes": "0",
+      "comments": "0"
+     },
+     "feqtVXfUZV8": {
+      "views": "99",
+      "likes": "2",
+      "comments": "0"
+     },
+     "cDzHgV9nFWg": {
+      "views": "40",
+      "likes": "0",
+      "comments": "0"
+     },
+     "9z8lXO9QHuM": {
+      "views": "17",
+      "likes": "0",
+      "comments": "0"
+     },
+     "xG0c4aXaNxo": {
+      "views": "18",
+      "likes": "1",
+      "comments": "0"
+     }
+    }
+   }
   }
  ]
 }
