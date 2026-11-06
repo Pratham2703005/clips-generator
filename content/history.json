@@ -179,6 +179,23 @@
       "premise": "five-years-question",
       "hook": "insider-leak",
       "dynamic": "flashback"
+    },
+    {
+      "date": "2026-11-07",
+      "track": "job_drop",
+      "format": "company-spotlight",
+      "niche": "india-freshers",
+      "platform": "rapidapi",
+      "cast": "bunty+verma",
+      "job_ids": [
+        "8e02e267f4de73063b61dbf758019eae"
+      ],
+      "companies": [
+        "Q-Med Uppsala"
+      ],
+      "premise": "intern-coffee",
+      "hook": "receipt",
+      "dynamic": "news-anchor"
     }
   ]
 }
