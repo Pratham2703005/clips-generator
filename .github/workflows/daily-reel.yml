@@ -293,7 +293,9 @@ jobs:
           git add content/stats-history.json
           git diff --cached --quiet && exit 0
           git commit -m "stats: report for ${DAY:-$(TZ=Asia/Kolkata date +%F)}"
-          git pull --rebase -q && git push
+          # --autostash: on a failed reel "Save history" is skipped and content/history.json stays changed, which made a
+          # plain pull refuse ("You have unstaged changes", 2026-11-06), so the stats were lost
+          git pull --rebase --autostash -q && git push
 
       # GitHub turns off a public repo's schedule after 60 days without repository activity, and it isn't documented
       # whether this bot's commits count. Re-enabling the workflow every run resets that clock (user, 2026-11-04: it

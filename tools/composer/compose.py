@@ -414,7 +414,10 @@ def panel_filter(k: int, pnl: dict, cfg: dict) -> str:
     w, h = p["width"], p["height"]
     a, e = pnl["start"], pnl["end"]
     speed = pnl.get("scroll", p["scroll"])
-    scroll = f"[{k}:v]scale={w}:-2,crop={w}:{h}:0:'min(ih-{h},max(0,(t-{a:.3f})*{speed}))',format=rgba,"
+    # "cover": at least the panel's width AND height. 2026-11-06: the saved make.png (1918x936, a desktop shot) scaled to
+    # 1040 wide was 507 tall, and cropping 600 rows out of it killed the render. Tall phone shots still fit the width.
+    scroll = (f"[{k}:v]scale={w}:{h}:force_original_aspect_ratio=increase:force_divisible_by=2,"
+              f"crop={w}:{h}:'(iw-{w})/2':'min(ih-{h},max(0,(t-{a:.3f})*{speed}))',format=rgba,")
     # no fade-in on a panel that starts the reel: frame 0 must already show it
     fade = (f"fade=t=in:st={a:.3f}:d=0.2:alpha=1," if a > 0.05 else "") + f"fade=t=out:st={max(a, e - 0.2):.3f}:d=0.2:alpha=1"
     b = p["border"]
@@ -554,7 +557,14 @@ def main() -> None:
         panels = plan_panels(folder, timeline, total, cfg)
         if panels:
             log(f"  {len(panels)} screenshot panel(s) from visuals.json")
-        out = render(ffmpeg, folder, clip, offset, total, overlays, cfg, fonts_dir, log, sounds, overlay_ass, panels)
+        try:
+            out = render(ffmpeg, folder, clip, offset, total, overlays, cfg, fonts_dir, log, sounds, overlay_ass, panels)
+        except SystemExit as e:
+            if not panels:
+                raise
+            # a screenshot must never cost the night's reel (2026-11-06: an odd-sized saved shot broke the render, no post)
+            log(f"WARNING: render with screenshots failed ({str(e)[:300]}); rendering again without them")
+            out = render(ffmpeg, folder, clip, offset, total, overlays, cfg, fonts_dir, log, sounds, overlay_ass, [])
 
     # the Instagram cover: a frame with the whole hook card on it (its words have landed, it hasn't faded yet); frame 0
     # shows only the first word ("DIN", 2026-11-02 auto post)
