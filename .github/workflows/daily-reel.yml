@@ -134,8 +134,18 @@ jobs:
           python-version: "3.12"
           cache: pip
 
+      # Usually ~15 s. 2026-11-06 the Ubuntu mirror hung and this step sat 23+ min, so apt gets 3 min and then a static
+      # build from GitHub (BtbN, with libass for the captions) is used instead.
       - name: FFmpeg
-        run: sudo apt-get update -q && sudo apt-get install -y -q ffmpeg
+        timeout-minutes: 8
+        run: |
+          if ! timeout 180 bash -c 'sudo apt-get update -q -o Acquire::Retries=3 -o Acquire::http::Timeout=20 && sudo apt-get install -y -q -o Acquire::Retries=3 ffmpeg'; then
+            echo "::warning::apt was slow or failed; using a static ffmpeg build"
+            curl -fsSL --retry 3 -o /tmp/ffmpeg.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz
+            sudo tar -xJf /tmp/ffmpeg.tar.xz -C /opt
+            sudo ln -sf /opt/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg /opt/ffmpeg-master-latest-linux64-gpl/bin/ffprobe /usr/local/bin/
+          fi
+          ffmpeg -version | head -1
 
       - name: Python packages
         run: pip install -r requirements.txt
