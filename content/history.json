@@ -162,6 +162,23 @@
       "premise": "chatgpt-cover-letter",
       "hook": "cost-confession",
       "dynamic": "classic-roast"
+    },
+    {
+      "date": "2026-11-06",
+      "track": "job_drop",
+      "format": "top-drop",
+      "niche": "india-freshers",
+      "platform": "make",
+      "cast": "malhotra+bunty",
+      "job_ids": [
+        "4879776441a0f661521eded4cdc4cc6e"
+      ],
+      "companies": [
+        "Carl Zeiss Meditec"
+      ],
+      "premise": "five-years-question",
+      "hook": "insider-leak",
+      "dynamic": "flashback"
     }
   ]
 }
