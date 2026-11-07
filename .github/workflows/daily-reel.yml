@@ -8,8 +8,9 @@ name: Daily reel
 
 on:
   schedule:
-    - cron: "30 18 * * *"  # 00:00 IST (18:30 UTC), ats mode with the repo's settings; posts everywhere. GitHub often
-                           # starts scheduled runs hours late; DAY is taken when the run starts, so it stays that day
+    - cron: "30 18 * * *"  # 00:00 IST (18:30 UTC), ats mode with the repo's settings; posts everywhere. GitHub starts
+                           # scheduled runs 5-7 hours late (18:30 UTC cron -> 23:25-23:53 UTC, 2026-11-03..07), so the
+                           # reel goes up around 05:00 IST; DAY is taken when the run starts, so it stays that day
   workflow_dispatch:
     inputs:
       mode:

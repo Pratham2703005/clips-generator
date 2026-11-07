@@ -16,4 +16,7 @@ synthetic_media = false                 # cartoon characters: not "realistic alt
 title_max = 100                         # YouTube's limit
 description_max = 5000                  # YouTube's limit
 shorts_tag = true                       # adds #Shorts to the title when it fits
+publish_at = "18:00"                    # IST, same day: the 00:00 upload stays private (scheduled) until then; "" = at once
+thumbnail = true                        # try the Instagram cover frame as thumbnail (needs a Partner Program channel today)
+cover_seconds = 2.2                     # the cover frame when compose.json has no cover_seconds (as [instagram])
 site_url = "https://ats-jobs-api.pk2732004.workers.dev"  # replaces "link in bio" in the description ("" = keep the text)

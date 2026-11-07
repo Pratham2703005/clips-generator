@@ -294,7 +294,9 @@ def run_series(path: Path, day: str, opts: dict, env: dict, out: Path | None = N
     needed = max([int(n) for n in re.findall(r"\{job(\d)", ep["dialogue"])] + [ep["count"], 0])
     jobs: list[dict] = []
     platform: dict = {}
-    for niche in ep["niches"]:
+    # "jobs: ..., 0" and no {job} slot = a pure value episode: no brief, no jobs, no platform link. Only 2-3 reels in
+    # 10 promote anything (user, 2026-11-07)
+    for niche in ep["niches"] if needed else []:
         print(f"\n== brief (series, niche {niche})", flush=True)
         (brief_dir / "brief.json").unlink(missing_ok=True)  # a failed niche writes none; never read an earlier run's
         r = subprocess.run([sys.executable, "-u", str(STEP["brief"]), "--date", day, "--track", "job_drop", "--niche", niche,
@@ -307,7 +309,7 @@ def run_series(path: Path, day: str, opts: dict, env: dict, out: Path | None = N
         print(f"  {niche}: {len(jobs)} job(s), {needed} needed")
     if len(jobs) < needed:
         return None
-    if folder != brief_dir:
+    if folder != brief_dir and needed:
         shutil.copy2(brief_dir / "brief.json", folder / "brief.json")
     filled = folder / "series-script.txt"
     filled.write_text(fill_slots(ep["dialogue"], jobs), encoding="utf-8")
@@ -318,7 +320,7 @@ def run_series(path: Path, day: str, opts: dict, env: dict, out: Path | None = N
         script = json.loads((folder / "script.json").read_text(encoding="utf-8"))
         script["caption"] = desc  # the same place the AI pipeline keeps its caption
         (folder / "script.json").write_text(json.dumps(script, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
-    print(f"series: {path.name} '{ep['title']}' with {needed} job(s): {', '.join(j['company'] for j in jobs[:needed])}")
+    print(f"series: {path.name} '{ep['title']}' with {needed} job(s)" + (f": {', '.join(j['company'] for j in jobs[:needed])}" if needed else " (value episode)"))
     return folder
 
 

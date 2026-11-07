@@ -27,8 +27,10 @@ import webbrowser
 from pathlib import Path
 
 SCOPE = "https://www.googleapis.com/auth/youtube.upload"
-# read-only too, for the stats in the run report (tools/report): channel and video view/like/comment counts
-SCOPES = [SCOPE, "https://www.googleapis.com/auth/youtube.readonly"]
+# read-only too, for the stats in the run report (tools/report): channel and video view/like/comment counts, and
+# YouTube Analytics (how much of each Short people watched, where the views came from; the project needs the
+# "YouTube Analytics API" enabled and this scope added under Google Auth Platform -> Data Access)
+SCOPES = [SCOPE, "https://www.googleapis.com/auth/youtube.readonly", "https://www.googleapis.com/auth/yt-analytics.readonly"]
 DEFAULT_CONFIG = Path(__file__).resolve().parent / "config.toml"
 
 
@@ -91,6 +93,8 @@ def main() -> None:
         sys.exit("the upload permission was not granted: run again and tick 'Manage your YouTube videos'")
     if SCOPES[1] not in tokens.get("scope", ""):
         print("note: read access ('View your YouTube account') was not granted: uploads work, the report has no YouTube stats")
+    if SCOPES[2] not in tokens.get("scope", ""):
+        print("note: YouTube Analytics access was not granted: the report has no watch time / traffic sources")
 
     for name, value in ((cfg["client_id_env"], client["client_id"]), (cfg["client_secret_env"], client["client_secret"]),
                         (cfg["refresh_token_env"], tokens["refresh_token"])):

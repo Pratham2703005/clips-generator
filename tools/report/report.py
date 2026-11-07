@@ -9,7 +9,8 @@ OUT_MAKE, OUT_INSTAGRAM, OUT_YOUTUBE, plus RUN_URL and DAY. The links come from 
 Stats (each part is skipped with a note when its permission is missing, never failing the report):
   - Instagram: followers and posts (instagram_basic); per post likes and comments, and views/reach/saves/shares when
     the token has instagram_manage_insights
-  - YouTube: subscribers, total views, and per Short views/likes/comments when the refresh token has youtube.readonly
+  - YouTube: subscribers, total views, and per Short views/likes/comments when the refresh token has youtube.readonly;
+    with yt-analytics.readonly also the share of each Short watched and where the views came from
   - Growth: the change since the report ~24 h and ~7 days ago, from content/stats-history.json (--save-stats adds
     this report's numbers to it; the Daily reel run does, and commits the file)
   - when the Instagram token expires (subject turns ⚠️ under 14 days)
@@ -280,15 +281,18 @@ def youtube_stats(cfg: dict, since: datetime, extra: list[str] | None = None) ->
         out = {"channel": ch["snippet"]["title"], **{k: ch["statistics"].get(k) for k in ("subscriberCount", "viewCount", "videoCount")}}
         uploads = ch["contentDetails"]["relatedPlaylists"]["uploads"]
         items = get_json(f"{api}/playlistItems?part=contentDetails&maxResults=50&playlistId={uploads}", headers=auth).get("items", [])
-        recent = [i["contentDetails"]["videoId"] for i in items
-                  if datetime.fromisoformat(i["contentDetails"]["videoPublishedAt"].replace("Z", "+00:00")) >= since]
+        # a Short scheduled for later (private until publishAt) has no videoPublishedAt yet: it counts as recent
+        recent = [i["contentDetails"]["videoId"] for i in items if not i["contentDetails"].get("videoPublishedAt")
+                  or datetime.fromisoformat(i["contentDetails"]["videoPublishedAt"].replace("Z", "+00:00")) >= since]
         recent += [v for v in (extra or []) if v and v not in recent]
         videos = []
         if recent:
-            got = get_json(f"{api}/videos?part=snippet,statistics&id={','.join(recent)}", headers=auth).get("items", [])
+            got = get_json(f"{api}/videos?part=snippet,statistics,status&id={','.join(recent)}", headers=auth).get("items", [])
             videos = [{"id": v["id"], "title": v["snippet"]["title"], "published": v["snippet"]["publishedAt"][:10],
+                       "public_at": v.get("status", {}).get("publishAt", "") if v.get("status", {}).get("privacyStatus") == "private" else "",
                        **{k: v["statistics"].get(k) for k in ("viewCount", "likeCount", "commentCount")}} for v in got]
         out["videos"] = videos
+        out.update(youtube_analytics(auth, since, videos))
         return out
     except RuntimeError as e:
         hint = (" Run tools/youtube-publisher/authorize.py again (it now asks for youtube.readonly too) after adding "
@@ -296,6 +300,37 @@ def youtube_stats(cfg: dict, since: datetime, extra: list[str] | None = None) ->
         return {"note": f"YouTube stats failed: {e}.{hint}"}
     except (KeyError, IndexError) as e:
         return {"note": f"YouTube stats: unexpected answer ({e})"}
+
+
+SOURCES = {"SHORTS": "Shorts feed", "YT_SEARCH": "YouTube search", "SUBSCRIBER": "subscribers", "YT_CHANNEL": "channel page",
+           "RELATED_VIDEO": "suggested", "YT_OTHER_PAGE": "other YouTube pages", "EXT_URL": "outside links",
+           "NO_LINK_OTHER": "direct / unknown", "NOTIFICATION": "notifications", "PLAYLIST": "playlists",
+           "HASHTAGS": "hashtag pages", "SOUND_PAGE": "sound pages", "END_SCREEN": "end screens"}
+
+
+def youtube_analytics(auth: dict, since: datetime, videos: list[dict]) -> dict:
+    """YouTube Analytics (yt-analytics.readonly): per Short the average share watched and seconds watched, and where the
+    channel's views came from. Answers the question the counts can't: are people swiping away, and is the Shorts feed
+    showing the Shorts at all (2026-11-07: YouTube got ~6% of Instagram's views for the same reels). The data lags 1-2
+    days. Without the scope it adds only a note."""
+    base = "https://youtubeanalytics.googleapis.com/v2/reports?" + urllib.parse.urlencode({
+        "ids": "channel==MINE", "startDate": f"{since:%Y-%m-%d}", "endDate": f"{datetime.now(timezone.utc):%Y-%m-%d}"})
+    try:
+        per = get_json(base + "&metrics=views,averageViewDuration,averageViewPercentage&dimensions=video&sort=-views&maxResults=50",
+                       headers=auth)
+        src = get_json(base + "&metrics=views&dimensions=insightTrafficSourceType&sort=-views", headers=auth)
+    except RuntimeError as e:
+        hint = (" Run tools/youtube-publisher/authorize.py again: it now asks for YouTube Analytics too (enable the "
+                "YouTube Analytics API in the Google Cloud project and add the yt-analytics.readonly scope under Google "
+                "Auth Platform -> Data Access first)." if "403" in str(e) or "scope" in str(e).lower() else "")
+        return {"analytics_note": f"YouTube Analytics not available ({e}).{hint}"}
+    rows = {r[0]: r for r in per.get("rows") or []}
+    for v in videos:
+        if v["id"] in rows:
+            v["avg_seconds"], v["avg_percent"] = rows[v["id"]][2], rows[v["id"]][3]
+    total = sum(r[1] for r in src.get("rows") or []) or 0
+    sources = [(SOURCES.get(r[0], r[0].replace("_", " ").lower()), r[1], 100 * r[1] / total) for r in src.get("rows") or [] if total]
+    return {"sources": sources}
 
 
 # ---------- the email ----------
@@ -318,7 +353,8 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     if not posted.get("youtube_url"):
         # put up by an earlier run whose record wasn't kept (2026-11-02: a Post reel run with YouTube unticked showed
         # "skipped" for a Short that was live): the channel's recent uploads, by title
-        same = [v for v in yt.get("videos") or [] if v["title"].replace("#Shorts", "").strip() == title.strip()]
+        # (since 2026-11-07 the YouTube title is "<search line> | <episode title>", so: contains)
+        same = [v for v in yt.get("videos") or [] if title.strip() and title.strip() in v["title"]]
         if same:
             posted["youtube_url"] = f"https://youtube.com/shorts/{same[0]['id']}"
 
@@ -439,16 +475,32 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         t.append(line)
     if yt.get("videos"):
         h.append('<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Views</th>'
-                 '<th>Likes</th><th>Comments</th><th align="left">Short</th></tr>')
+                 '<th>Likes</th><th>Comments</th><th>Watched</th><th align="left">Short</th></tr>')
         for v in sorted(yt["videos"], key=lambda v: v["published"], reverse=True):
-            cells = [v["published"], with_day(v.get("viewCount"), v["id"], day_yt, "views"), num(v.get("likeCount")), num(v.get("commentCount"))]
+            watched = f"{v['avg_percent']:.0f}% ({v['avg_seconds']:.0f} s)" if v.get("avg_percent") is not None else "-"
+            cells = [v["published"], with_day(v.get("viewCount"), v["id"], day_yt, "views"), num(v.get("likeCount")),
+                     num(v.get("commentCount")), watched]
+            name = v["title"][:60]
+            if v.get("public_at"):
+                when = datetime.fromisoformat(v["public_at"].replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=5, minutes=30)))
+                name += f" (scheduled: public {when:%d %b %H:%M} IST)"
             h.append("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
-                     + f'<td><a href="https://youtube.com/shorts/{v["id"]}">{html.escape(v["title"][:60])}</a></td></tr>')
-            t.append(" | ".join(cells) + f" | {v['title'][:60]}")
+                     + f'<td><a href="https://youtube.com/shorts/{v["id"]}">{html.escape(name)}</a></td></tr>')
+            t.append(" | ".join(cells) + f" | {name}")
         h.append("</table>")
-    if yt.get("note"):
-        h.append(f"<p><i>{html.escape(yt['note'])}</i></p>")
-        t.append(f"Note: {yt['note']}")
+        if any(v.get("avg_percent") is not None for v in yt["videos"]):
+            line = "Watched = average share of the Short people watched (seconds); YouTube Analytics lags 1-2 days."
+            h.append(f"<p><i>{line}</i></p>")
+            t.append(line)
+    if yt.get("sources"):
+        line = (f"Where the YouTube views came from (last {days} days): "
+                + ", ".join(f"{name} {pct:.0f}% ({num(n)})" for name, n, pct in yt["sources"][:6]))
+        h.append(f"<p>{html.escape(line)}</p>")
+        t.append(line)
+    for key in ("note", "analytics_note"):
+        if yt.get(key):
+            h.append(f"<p><i>{html.escape(yt[key])}</i></p>")
+            t.append(f"Note: {yt[key]}")
     return subject, "\n".join(t) + "\n", "<html><body style=\"font-family:sans-serif\">" + "\n".join(h) + "</body></html>"
 
 
