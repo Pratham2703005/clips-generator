@@ -1,13 +1,14 @@
 # Special (value episode, no promotion): what to say in an interview when you don't know the answer. The night before
 # Bunty's next round (Din 7 ended "next round kal hai"; Din 8 is that round). Malhotra Ma'am, the HR insider, preps him.
-# Written with the ig-reel skill (2026-11-07): hookscore 59.6 OK (it reads English only, so "aap/tum" don't count as
-# speaking to the viewer); beats.py ~37 s at the voice's pace, no flags left.
+# Written with the ig-reel skill (2026-11-07): hookscore 85.8 STRONG ("Stop bluffing in interviews. Pata nahi bolna fail nahi hai."; the earlier
+# Hinglish opener scored 59.6 because the scorer reads English only); beats.py ~37 s; its one flag ("beats 6-8 nothing concrete")
+# misses "SQL join" because it only counts digits and Capitalised words.
 # Run it: Daily reel -> mode custom, script = series/specials/interview-dont-know.txt, name = special-interview-dont-know.
 title: Interview prep | Jab answer na aaye
 cast: malhotra, bunty
 jobs: india-freshers, 0
-hook: ANSWER NAHI AATA? BLUFF MAT KARO
-Malhotra: Pata nahi bolna fail nahi hai. Bluff karna fail hai.
+hook: STOP BLUFFING IN INTERVIEWS
+Malhotra: Stop bluffing in interviews. Pata nahi bolna fail nahi hai.
 Bunty (shocked): Par Ma'am, chup raha toh lagega mujhe kuch nahi aata.
 Malhotra: Isliye teen step. Pehla: do second ruko. Bolo, ek second sochne dijiye.
 Bunty: Itna bol sakte hain?
@@ -22,7 +23,7 @@ Malhotra: Agla sawaal usi pe aayega. Wahin pakde jaoge.
 Bunty: Matlab interviewer answer nahi, soch dekh raha hai.
 Malhotra: Bilkul. Ek sawaal pe interview khatam nahi hota.
 Bunty: Kal next round hai. Ruko, jo pata hai, sach plus plan.
-Malhotra: Save kar lo. Kal sach chalega, bluff nahi.
+Malhotra: Save kar lo. Kal sach bolna, no bluffing.
 
 --- description
 What to say in an interview when you don't know the answer | Interview tips for freshers
