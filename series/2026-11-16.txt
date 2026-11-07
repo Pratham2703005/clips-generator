@@ -1,0 +1,36 @@
+# Season 3 "Layoff se API" - Ep 2 "Public API" (value, no promotion)
+# AI interviews and no replies -> Arjun finds that many career pages run on ATS systems with public job-board APIs
+# (Greenhouse, Lever, Ashby: no login), writes a script, ~10k jobs the first night, builds filters, shares on the
+# friends' WhatsApp group. Lesson: your own problem is your first product.
+# Written with the ig-reel skill: hookscore 78.8 STRONG.
+title: Layoff se API | Ep 2: Public API mil gayi
+cast: arjun, bunty
+jobs: india-freshers, 0
+hook: JOBS KI PUBLIC API HOTI HAI
+Arjun: Stop waiting for replies. Companies ki jobs public API pe hain.
+Bunty: Arjun, aaj kitne interview hue?
+Arjun: Teen. Teeno AI bot ne liye. Aur reply zero.
+Bunty (shocked): Bot interview le raha hai?
+Arjun: Haan. Toh socha, job seedha company se kyun na dhoondhun.
+Bunty: Matlab har company ki site alag se kholega?
+Arjun: Nahi. Bahut career pages Greenhouse, Lever jaise systems pe chalte hain.
+Arjun: Unki job list ek public API se aati hai. Bina login.
+Bunty: Toh tune kya kiya?
+Arjun: Ek script likhi. Pehli raat, das hazaar jobs.
+Bunty: Das hazaar mein dhoondhega kaise?
+Arjun: Filters banaye. City, experience, aur job kitni fresh hai.
+Bunty: Bhai, dosto ke group pe daal.
+Arjun: Daal diya. Reactions bhi aaye.
+Bunty: Toh sab use karne lage?
+Arjun: Seekh: apni problem solve karo, wahi pehla product. Replies ka wait mat karo.
+
+--- description
+Public job APIs | How company career pages work | Build in public
+Layoff se API | Ep 2 🛠️
+AI interviews, zero replies. Phir pata chala: bahut companies ke career pages Greenhouse, Lever, Ashby jaise ATS pe chalte hain, aur unki job list ek public API se aati hai, bina login.
+Pehli raat: ek script, 10,000 jobs, aur filters (city, experience, freshness).
+Seekh: apni problem solve karo, wahi pehla product hai.
+
+Ep 3 kal: dosto ne react kiya... par kholi kisne? 👀
+
+#layoffseapi #buildinpublic #api #softwareengineer #sideproject

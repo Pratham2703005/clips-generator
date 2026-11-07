@@ -1,0 +1,37 @@
+# Season 3 "Layoff se API" - Ep 3 "Reactions vs clicks" (value, no promotion)
+# Jobs grow 16.5k -> 50k -> 95k -> 2.98 lakh; the friends' group reacts (3 reactions on "51000, updated ui", 25 Sep)
+# but analytics show almost nobody opens the link; Bunty was one of them (Season 1 callback). GitHub as the database
+# gets heavy. Screenshot: series/season3/assets/ep3-whatsapp-51k.png (the user's own message, no other names).
+# Written with the ig-reel skill: hookscore 94.8 STRONG.
+title: Layoff se API | Ep 3: React kiya, khola nahi
+cast: arjun, bunty
+jobs: india-freshers, 0
+hook: 3 REACTIONS. 0 CLICKS.
+Arjun: Stop counting likes. Three reactions, but nobody opened it.
+Bunty: Par bhai, group pe sab ne react kiya tha! Dil, fire, sab.
+Arjun: Haan. Aur jobs badh rahi thi. Saadhe solah hazaar, phir pachaas hazaar. [show: series/season3/assets/ep3-whatsapp-51k.png]
+Bunty: Toh sab use kar rahe the?
+Arjun: Maine analytics dekha. Link kholne wale? Lagbhag koi nahi.
+Bunty (shocked): Matlab maine bhi nahi khola?
+Arjun: Tune bhi nahi khola, Bunty.
+Bunty: Isliye main do sau applications bhej raha tha!
+Arjun: Phir bhi jobs badhti gayi. Pachaanve hazaar. Phir do lakh athaanve hazaar.
+Bunty: Itna data rakha kahan?
+Arjun: GitHub mein. Files mein. Har raat ek commit.
+Bunty: GitHub database hai kya?
+Arjun: Nahi. Isliye har refresh dheema, har file bhaari.
+Bunty: Toh ab?
+Arjun: Seekh: reactions vanity hain, clicks sach. Like nahi, click gino.
+Bunty: Aur database?
+Arjun: Kal. Tab tak likes mat gino.
+
+--- description
+Build in public | Side project analytics | Likes vs real users
+Layoff se API | Ep 3 📊
+16.5k → 50k → 95k → 2.98 lakh jobs. Dosto ke group pe har update pe reactions... par analytics ne dikhaya ki link lagbhag kisi ne nahi khola. (Bunty ne bhi nahi. Isliye Season 1 mein 200 applications. 😅)
+Aur data GitHub ki files mein tha: har refresh dheema, har file bhaari.
+Seekh: likes vanity hain, clicks sach. Like nahi, click gino.
+
+Ep 4 kal: asli database. 🗄️
+
+#layoffseapi #buildinpublic #analytics #sideproject #softwareengineer

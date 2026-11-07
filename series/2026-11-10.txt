@@ -1,36 +1,36 @@
-# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 10 "Rejection mail"
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 10 "Rejection mail" (value episode, no promotion)
+# Rewritten 2026-11-07 with the ig-reel skill: hookscore 84.4 STRONG, beats.py ~39 s.
 # Riya's test result is a rejection; Bunty cleared his round. Reply for feedback, apply the same day.
 # Cliffhanger: Bunty is about to be happy about his CTC.
 title: Offer Tak | Din 10: Riya ka rejection mail
 cast: malhotra, riya
-jobs: india-freshers|remote-india|data-ai, 1
-hook: DIN 10: WE REGRET TO INFORM
-Riya: Ma'am, mail aaya. We regret to inform you.
-Malhotra: Test ka result?
-Riya: Haan. Itna padha tha, phir bhi.
-Malhotra: Riya, rejection mail sabse kam padha jaane wala mail hai. Par sabse kaam ka.
-Riya (shocked): Kaam ka? Ma'am, ye toh dil todne wala hai.
-Malhotra: Reply kar. Do line. Thank you, aur main kis cheez mein improve karun?
+jobs: india-freshers, 0
+hook: REJECTION MAIL? 2 LINE REPLY
+Malhotra: Never ignore a rejection mail. Usme free feedback chhupa hai.
+Riya: Ma'am, we regret to inform you. Itna padha tha, phir bhi.
+Malhotra: Bura lagna normal hai. Ek ghanta le.
+Riya (shocked): Phir?
+Malhotra: Phir reply. Do line. Pehli: opportunity ke liye thank you.
+Riya: Aur doosri?
+Malhotra: Next time ke liye main kis cheez mein improve karun?
 Riya: Wo reply karenge?
 Malhotra: Har koi nahi. Par jo karte hain, wahi asli feedback hai.
+Riya: Aur polite reply se kya milega?
+Malhotra: Naam yaad rehta hai. Agli opening pe wahi kaam aata hai.
 Riya: Aur Bunty ka round clear ho gaya. Wo naach raha hai.
-Malhotra: Aur tu ruk gayi, toh wo aage nikal jayega.
-Riya: Matlab aaj phir apply?
-Malhotra: Aaj hi. Rejection ke din apply karna sabse bada comeback hai. Le: {job1}. [job: 1]
-Riya: Posted {job1.posted}. Theek hai, pehle paanch mein main.
-Malhotra: Aur Bunty ko bol, CTC dekh ke itna khush na ho.
-Riya: Kyun, Ma'am?
-Malhotra: Kal Arjun samjhayega. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+Malhotra: Toh tu bhi ruk mat. Aaj hi agla apply.
+Riya: Thank you, aur kahan improve karun. Do line.
+Malhotra: Save kar le. Rejection mail ignore nahi, reply.
+Riya: Aur Bunty ko CTC pe itna khush kyun nahi hona?
+Malhotra: Kal Arjun batayega. Pehle mail ka reply bhej.
 
 --- description
-Rejection email reply for freshers | What to do after rejection | Fresher jobs 2026
+Rejection email reply for freshers | What to do after rejection | Job rejection reply sample
 Offer Tak | Din 10 💌
-"We regret to inform you." Malhotra Ma'am ka jawab: do line ka reply (thank you + kahan improve karun), aur usi din nayi job pe apply. Rejection ke din apply karna sabse bada comeback hai.
+"We regret to inform you." Ignore mat karo. 2 line ka reply:
+"Thank you for the opportunity. Could you share one thing I can improve for next time?"
+Har koi reply nahi karta, par jo karta hai wahi asli feedback hai. Aur usi din agla apply.
 
-Job in this episode:
-{jobs}
+Din 11 kal: Bunty ka offer. 6 lakh... ya nahi? 🤔
 
-Din 11 kal: Bunty ka offer. Chhe lakh... ya nahi? 🤔
-Fresh jobs from company career pages, every day: link in bio.
-
-#offertak #fresherjobs #rejection #jobsearchtips #offcampusjobs
+#offertak #rejection #jobsearchtips #fresherjobs #interviewtips

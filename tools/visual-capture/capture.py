@@ -259,7 +259,9 @@ def plan(script: dict, brief: dict, cfg: dict) -> list[dict]:
     out = []
     for i, ln in enumerate(script["lines"]):
         if ln.get("show"):  # a custom script's own "[show: URL]" for this line
-            out.append({"line": i, "kind": "page", "key": f"show-{i}", "url": ln["show"]})
+            # or "[show: series/season3/assets/x.png]": an image in the repo (a screenshot no page can give, 2026-11-07)
+            local = not re.match(r"(?i)^(https?|file):", ln["show"])
+            out.append({"line": i, "kind": "image" if local else "page", "key": f"show-{i}", "url": ln["show"]})
             continue
         if r.get("job_pages") and ln.get("job_id") in jobs:
             out.append({"line": i, "kind": "job", "key": f"job-{ln['job_id'][:10]}", "url": jobs[ln["job_id"]]["apply_url"]})
@@ -328,7 +330,15 @@ def main() -> None:
     log(f"{folder.name}: {len(todo) + len(done)} visual(s) for {len(script['lines'])} lines")
     for v in todo:
         dst = out_dir / f"{v['key']}.png"
-        if v["kind"] == "page":
+        if v["kind"] == "image":
+            src = (base.parent.parent / v["url"]).resolve()  # repo-relative
+            if not src.is_file() or src.suffix.lower() not in (".png", ".jpg", ".jpeg", ".webp"):
+                log(f"  {dst.name}: no image at {v['url']}, skipped")
+                continue
+            dst = out_dir / f"{v['key']}{src.suffix.lower()}"
+            shutil.copyfile(src, dst)
+            log(f"  {dst.name}: from {v['url']}")
+        elif v["kind"] == "page":
             cached = cache / f"{v['key']}-{hashlib.sha1(v['url'].encode()).hexdigest()[:8]}.png"
             fresh = cached.exists() and time.time() - cached.stat().st_mtime < cfg["paths"]["cache_days"] * 86400
             # a cached shot from before the bot-check rule may itself be one

@@ -1,0 +1,36 @@
+# Season 3 "Layoff se API" (build in public, 10 episodes, 15-24 Nov) - Ep 1 "Ek din, saare stack" (value, no promotion)
+# A flashback before Season 1: Arjun (the one who always had "the right tool") is the builder. Verma Sir is his old-school
+# senior. Bunty is the friend who reacts but never opens the link (why he sent 200 applications in Season 1).
+# Promotion only in Ep 5 (Apify launch), Ep 9 (landing page) and Ep 10 (finale). The user's story (2026-11-07): AI made
+# the work fast, but they wanted every tech stack understood in one day; laid off after five months. No Outlier arc.
+# Written with the ig-reel skill: hookscore 83.1 STRONG.
+title: Layoff se API | Ep 1: Ek din, saare stack
+cast: arjun, verma
+jobs: india-freshers, 0
+hook: 5 MAHINE KI JOB. PHIR LAYOFF.
+Arjun: Your first job can end in five months. Don't let it end you.
+Verma: Arjun, kal tak React, Node, Docker, Kubernetes. Sab samajh ke aana.
+Arjun (shocked): Sir, ek din mein chaar stack?
+Verma: Hamare zamane mein ek raat mein poora manual padh lete the.
+Arjun: Main AI ke saath kaam karta tha. Ticket subah aata, shaam tak done.
+Verma: Speed achhi hai. Par har stack andar tak samjha?
+Arjun: Samajh raha tha, Sir. Bas ek din mein nahi.
+Verma: Company ko ek din mein sab chahiye.
+Arjun: Paanchve mahine mail aaya. Restructuring. Mera naam list mein.
+Verma (shocked): Beta, main kuch nahi kar saka.
+Arjun: Seekh ek thi. AI speed deta hai. Depth ko time chahiye.
+Arjun: Aur ek layoff mail kisi ki value nahi batata.
+Verma: Toh ab?
+Arjun: Ab job search. AI interviews, aur zero replies.
+Verma: Phir?
+Arjun: Job end hui, main nahi. Kal dikhata hoon maine kya banaya.
+
+--- description
+Layoff after 5 months | First job layoff | Learning a new tech stack fast
+Layoff se API | Ep 1 💼
+5 mahine ki pehli job. AI ke saath kaam tez tha, par expectation thi: har tech stack ek din mein andar tak samjho. Phir "restructuring" mail.
+Seekh: AI speed deta hai, depth ko time chahiye. Aur ek layoff tumhari value nahi batata.
+
+Ep 2 kal: job search se thak ke, Arjun ne kya banaya? 🛠️
+
+#layoffseapi #buildinpublic #layoff #softwareengineer #techjobs

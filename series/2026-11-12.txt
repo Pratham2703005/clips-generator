@@ -1,35 +1,38 @@
-# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 12 "Bond clause"
-# Three questions before signing; original certificates = red flag. Keep a backup pipeline.
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 12 "Bond clause" (value episode, no promotion)
+# Rewritten 2026-11-07 with the ig-reel skill: hookscore 85.8 STRONG, beats.py ~40 s.
+# Three questions before signing; original certificates = red flag.
 # Cliffhanger: tomorrow Bunty explains all this to Verma Sir.
 title: Offer Tak | Din 12: Offer letter ka bond
 cast: malhotra, bunty
-jobs: india-freshers|bangalore-tech|remote-india, 1
-hook: DIN 12: OFFER LETTER KA BOND
-Bunty: Ma'am, offer letter mein likha hai: do saal ka bond, do lakh penalty.
+jobs: india-freshers, 0
+hook: BOND? SIGN SE PEHLE 3 SAWAAL
+Malhotra: Don't sign a bond before these three questions.
+Bunty: Ma'am, last page pe likha hai: do saal ka bond, do lakh penalty.
 Malhotra: Sign kiya?
-Bunty: Abhi nahi. Verma Sir bole, bina padhe sign karo, warna naukri haath se nikal jayegi.
-Malhotra (shocked): Bina padhe? Bunty, ye wala page sabse pehle padhte hain.
+Bunty: Abhi nahi. Verma Sir bole, jaldi sign karo, warna offer chala jayega.
+Malhotra (shocked): Jaldi mein? Ye page sabse pehle padhte hain.
 Bunty: Toh bond wali company kharab hai?
-Malhotra: Hamesha nahi. Kuch training pe kharcha karti hain. Par teen cheezein pooch.
-Malhotra: Penalty kab lagti hai, training kitni hai, aur notice period kitna.
+Malhotra: Hamesha nahi. Kuch training pe kharcha karti hain. Par pooch.
+Malhotra: Pehla: penalty kab lagti hai, aur kitni?
+Malhotra: Doosra: training kitni hai. Teesra: notice period kitna.
 Bunty: Aur original certificates jama karne ko bole toh?
 Malhotra: Wo red flag hai. Copy de, original nahi.
-Bunty: Ma'am, puchne se offer cancel toh nahi hoga?
+Bunty: Puchne se offer cancel toh nahi hoga?
 Malhotra: Sahi company sawaal pe naraz nahi hoti. Naraz ho, toh wahi jawab hai.
-Bunty: Theek hai. HR ko teen line ka mail. Aapka style.
-Malhotra: Aur backup ready rakh. Aaj ki: {job1}. [job: 1]
-Bunty: Par Verma Sir ko ye sab kaun samjhayega?
-Malhotra: Kal tu. Job ka link description mein, roz nayi jobs ke liye link bio mein.
+Bunty: Penalty, training, notice. Aur original nahi.
+Malhotra: Save kar le. Bond sign karne se pehle teen sawaal.
+Bunty: Par Verma Sir ko kaun samjhayega?
+Malhotra: Kal tu. Bond aur three questions ke saath.
 
 --- description
-Service bond in offer letter | Offer letter red flags for freshers | Fresher jobs 2026
+Service bond in offer letter | Offer letter red flags for freshers | Should I sign a bond
 Offer Tak | Din 12 📜
-Do saal ka bond, do lakh penalty. Sign karne se pehle teen sawaal: penalty kab lagti hai, training kitni hai, notice period kitna. Original certificates maange toh red flag. 🚩
-
-Job in this episode:
-{jobs}
+Do saal ka bond, do lakh penalty. Sign se pehle 3 sawaal:
+1. Penalty kab lagti hai, aur kitni?
+2. Training kitni hai?
+3. Notice period kitna?
+Original certificates jama karne ko bole toh red flag 🚩: copy do, original nahi.
 
 Din 13 kal: Verma Sir vs offer letter. 😂
-Fresh jobs from company career pages, every day: link in bio.
 
-#offertak #fresherjobs #offerletter #servicebond #jobsearchtips
+#offertak #offerletter #servicebond #fresherjobs #jobsearchtips

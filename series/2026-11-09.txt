@@ -1,36 +1,38 @@
-# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 9 "Aptitude test"
-# New pairing: Arjun + Riya. Carries forward: "keep the pipeline full", Arjun's catchphrase.
-# Cliffhanger: "a test is not a career" sets up tomorrow's rejection mail.
+# Series "7 Din, 1 Offer", Season 2 "Offer Tak" - Din 9 "Aptitude test" (value episode, no promotion)
+# Rewritten 2026-11-07 with the ig-reel skill: hookscore 83.2 STRONG, beats.py ~39 s.
+# New pairing: Arjun + Riya. Arjun's catchphrase flips: "you're doing it right".
+# Cliffhanger: the result comes tomorrow.
 title: Offer Tak | Din 9: Aptitude test panic
 cast: arjun, riya
-jobs: india-freshers|data-ai|bangalore-tech, 2
-hook: DIN 9: APTITUDE TEST PANIC
-Riya: Arjun, aptitude test ka link aaya hai. Tees sawaal, tees minute.
-Arjun: Achha hai. Ek minute, ek sawaal.
-Riya: Practice mein pehla sawaal tha train A, train B. Main abhi bhi wahi atki hoon.
-Arjun: Bro, you're doing it wrong. Atakna hi asli galti hai.
-Riya: Matlab chhod doon?
-Arjun: Haan. Do minute mein nahi bana, toh skip. Pehle aasaan wale, phir mushkil.
-Riya (shocked): Aur negative marking?
-Arjun: Instructions padh. Wo test ka nahi, tera pehla sawaal hai.
-Riya: Aur practice? Mere paas sirf ek din hai.
-Arjun: Aaj bees sawaal, timer ke saath. Bas.
+jobs: india-freshers, 0
+hook: QUESTION 1 PE MAT ATKO
+Arjun: Never spend five minutes on question one. Tees sawaal hain.
+Riya (shocked): Par main toh train A, train B pe hi atki hoon!
+Arjun: Tees sawaal, tees minute. Matlab ek sawaal, ek minute.
+Riya: Toh mushkil wala chhod doon?
+Arjun: Do minute mein nahi bana, toh mark kar aur aage badh.
+Riya: Wapas kab aaun?
+Arjun: Pehle saare aasaan. Last ke paanch minute mein marked wale.
+Riya: Aur negative marking?
+Arjun: Instructions padh. Negative hai, toh andha guess mat kar.
+Riya: Aur practice? Sirf ek din bacha hai.
+Arjun: Aaj bees sawaal, timer laga ke. Galat wale dobara.
 Riya: Aur agar fail ho gayi toh?
-Arjun: Toh ek test gaya, career nahi. Pipeline bhar ke rakh.
-Arjun: Ye do fresh hain. Pehli, {job1}. [job: 1]
-Arjun: Aur doosri, {job2}. [job: 2]
-Riya: Dono pe aaj hi apply. Test ke baad nahi, pehle.
-Arjun: Sahi. Dono jobs ke links description mein, roz nayi jobs ke liye link bio mein.
+Arjun: Toh ek test gaya, career nahi.
+Riya: Do minute, mark, aasaan pehle, instructions.
+Arjun: Bro, ab you're doing it right. Save kar le.
+Riya: Kal question one pe nahi atkungi. Result kal aayega.
 
 --- description
-Aptitude test tips for placements | Placement preparation | Fresher jobs 2026
+Aptitude test tips for placements | Placement preparation | Aptitude test strategy
 Offer Tak | Din 9 🧮
-Train A, train B, aur Riya wahi atki hai. Arjun ka rule: do minute mein nahi bana toh skip, pehle aasaan wale. Aur test se pehle pipeline bhar ke rakh.
-
-Jobs in this episode:
-{jobs}
+30 sawaal, 30 minute, aur Riya pehle sawaal pe atki hai. Arjun ke rules:
+1. 2 minute mein nahi bana toh mark karo, aage badho
+2. Pehle saare aasaan, last 5 minute marked wale
+3. Instructions padho: negative marking hai toh andha guess nahi
+4. Aaj 20 sawaal, timer ke saath
+Save karo, test se pehle ek baar dekh lena.
 
 Din 10 kal: result aaya. 😶
-Fresh jobs from company career pages, every day: link in bio.
 
-#offertak #fresherjobs #aptitudetest #placementpreparation #offcampusjobs
+#offertak #aptitudetest #placementpreparation #fresherjobs #campusplacement
