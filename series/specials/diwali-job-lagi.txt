@@ -1,0 +1,38 @@
+# Special (value episode, no promotion): Diwali 2026 (8 Nov). "Beta, job lagi?" from relatives: Bunty answers with
+# Din 8's three-line formula (where I am, what I built, what's next), no long story, no lie, then turns the question.
+# Story moves: Bunty's round happened today (Din 8), result after Diwali (Din 10 reveals he cleared it); Riya's
+# aptitude test is tomorrow (Din 9). Share CTA aimed at the one cousin who gets asked; follow CTA for Din 9.
+# Also the first ~30 s test (pole 2): our other reels are ~37-41 s.
+# Written with the ig-reel skill (2026-11-08): hookscore 93.8 STRONG, beats.py ~29 s.
+# Run it: Daily reel -> mode custom, script = series/specials/diwali-job-lagi.txt, name = special-diwali.
+title: Diwali special | Beta, job lagi?
+cast: verma, bunty
+jobs: india-freshers, 0
+hook: DIWALI PE "BETA, JOB LAGI?"
+Bunty: Don't lie to relatives about your job this Diwali. Three lines bolo.
+Verma: Bunty beta, Happy Diwali! Job lagi ki nahi?
+Bunty (shocked): Sir, aaj bhi wahi sawaal?
+Verma: Sharma ji ka Arjun toh Bangalore mein hai. Tum?
+Bunty: Teen line, Sir. Pehli: abhi interview rounds chal rahe hain.
+Bunty: Doosri: ek app banaya, sau log use karte hain.
+Bunty: Teesri: result Diwali ke baad aayega.
+Verma: Arre waah. Itna seedha jawab?
+Bunty: Na lambi kahani, na jhooth. Aur phir sawaal palat do.
+Verma: Matlab?
+Bunty: Aap batao Sir, is baar mithai kaunsi laaye?
+Verma: Kaju katli! Le, kha.
+Bunty: Ye reel us cousin ko bhejo, jisse aaj ye sawaal puchha jayega.
+Bunty: Happy Diwali! Follow karo, kal Riya ka aptitude test.
+
+--- description
+How to answer relatives asking about your job | Diwali 2026 | Freshers
+Diwali special 🪔 "Beta, job lagi?" Na lambi kahani, na jhooth. 3 line:
+1. Abhi kahan ho (interview rounds, final year, ya job search)
+2. Kya bana chuke ho, number ke saath
+3. Aage kya (result kab, next step)
+Phir sawaal palat do: "Aap batao, mithai kaunsi laaye?" 😄
+
+Us cousin ko bhejo jisse aaj ye sawaal puchha jayega. Happy Diwali! 🪔
+Kal Din 9: Riya ka aptitude test.
+
+#diwali #happydiwali #fresherjobs #relatives #jobsearch

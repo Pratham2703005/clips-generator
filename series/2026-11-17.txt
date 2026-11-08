@@ -23,7 +23,7 @@ Arjun: Nahi. Isliye har refresh dheema, har file bhaari.
 Bunty: Toh ab?
 Arjun: Seekh: reactions vanity hain, clicks sach. Like nahi, click gino.
 Bunty: Aur database?
-Arjun: Kal. Tab tak likes mat gino.
+Arjun: Kal. Follow karo, aur likes mat gino.
 
 --- description
 Build in public | Side project analytics | Likes vs real users

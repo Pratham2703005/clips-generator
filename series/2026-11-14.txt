@@ -22,7 +22,8 @@ Riya: Matlab Arjun ko pata hai. Season three?
 Bunty: Season three. Tab tak doston ke liye aaj ki do jobs.
 Riya: Pehli, {job1}. [job: 1]
 Riya: Aur doosri, {job2}. [job: 2]
-Bunty: Links description mein, roz nayi jobs bio mein. Applications mat gino.
+Bunty: Links description mein. Applications mat gino.
+Riya: Follow karo, Season three mein website ka sach.
 
 --- description
 Fresher first job joining day | Fresher jobs 2026 | Off campus jobs India
