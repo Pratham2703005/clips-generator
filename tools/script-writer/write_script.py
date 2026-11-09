@@ -95,10 +95,15 @@ def response_schema(brief: dict) -> dict:
             "hook_card": {"type": "STRING", "description": "On-screen text for the first 3 seconds: the hook's claim in at most 6 words, e.g. 'THE JOB CLOSED 3 WEEKS AGO.'"},
             "search_line": {"type": "STRING", "description": "The caption's first line: 2-4 phrases people type into Instagram search for this reel's topic, "
                             "split by ' | ', in English, no emojis or hashtags, e.g. 'Fresher jobs 2026 | Off campus jobs India | Resume tips for freshers'"},
+            "alt_first_line": {"type": "STRING", "description": "A second version of line 1 for a test reel shown only to people "
+                               "who don't follow the account: the same speaker and the same point, but a different hook angle "
+                               "(e.g. a mistake, a number, a question, a contrarian claim), as short as line 1; the rest of the "
+                               "script must still follow from it"},
+            "alt_hook_card": {"type": "STRING", "description": "On-screen text for alt_first_line, at most 6 words"},
             "caption": {"type": "STRING", "description": "1-2 sentence Instagram caption hook, no hashtags"},
             "hashtags": {"type": "ARRAY", "items": {"type": "STRING"}, "description": "most important first: the niche, then the topic"},
         },
-        "required": ["title", "lines", "hook_card", "search_line", "caption", "hashtags"],
+        "required": ["title", "lines", "hook_card", "search_line", "alt_first_line", "alt_hook_card", "caption", "hashtags"],
     }
 
 
@@ -739,6 +744,9 @@ def finish(script: dict, brief: dict, model: str) -> dict:
             for ln in script["lines"]
         ],
         "hook_card": (script.get("hook_card") or "").strip(),
+        # the trial reel's opening (run.py make_variants); missing from an older or fallback draft = no trial reel
+        **({"alt_hook": {"text": script["alt_first_line"].strip(), "hook_card": (script.get("alt_hook_card") or "").strip()}}
+           if (script.get("alt_first_line") or "").strip() else {}),
         "caption": caption,
         "hashtags": tags,
         "words": sum(len(ln["text"].split()) for ln in script["lines"]),

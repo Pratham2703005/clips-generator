@@ -2,6 +2,8 @@
 # Rewritten 2026-11-07 with the ig-reel skill: hookscore 84.4 STRONG, beats.py ~39 s.
 # Riya's test result is a rejection; Bunty cleared his round. Reply for feedback, apply the same day.
 # Cliffhanger: Bunty is about to be happy about his CTC.
+# Trial reel (non-followers only): the stand-alone version in '--- trial' (no Bunty / Arjun / Din references), for
+# people who never saw the series; it ends asking them to follow it.
 title: Offer Tak | Din 10: Riya ka rejection mail
 cast: malhotra, riya
 jobs: india-freshers, 0
@@ -34,3 +36,32 @@ Har koi reply nahi karta, par jo karta hai wahi asli feedback hai. Aur usi din a
 Din 11 kal: Bunty ka offer. 6 lakh... ya nahi? 🤔
 
 #offertak #rejection #jobsearchtips #fresherjobs #interviewtips
+
+--- trial
+hook: REJECTION MAIL? YE REPLY KARO
+Malhotra: Never ignore a rejection mail. Usme free feedback chhupa hai.
+Riya: Ma'am, we regret to inform you. Itna padha tha, phir bhi.
+Malhotra: Bura lagna normal hai. Ek ghanta le. Phir reply.
+Riya (shocked): Reply? Rejection pe?
+Malhotra: Do line. Pehli: opportunity ke liye thank you.
+Riya: Aur doosri?
+Malhotra: Next time ke liye main kis cheez mein improve karun?
+Riya: Wo reply karenge?
+Malhotra: Har koi nahi. Par jo karte hain, wahi asli feedback hai.
+Riya: Aur polite reply se kya milega?
+Malhotra: Naam yaad rehta hai. Agli opening pe wahi kaam aata hai.
+Riya: Aur aaj kya karun?
+Malhotra: Aaj hi agla apply. Rejection ke din sabse zaroori.
+Riya: Ye us dost ko bhejti hoon jisko aaj mail aaya.
+Malhotra: Aur follow karo. Ye series hai, rejection mail se offer tak.
+
+--- trial description
+Rejection email reply for freshers | What to do after rejection | Job rejection reply sample
+"We regret to inform you." Ignore mat karo. 2 line ka reply:
+"Thank you for the opportunity. Could you share one thing I can improve for next time?"
+Har koi reply nahi karta, par jo karta hai wahi asli feedback hai. Aur usi din agla apply.
+
+Us dost ko bhejo jisko aaj ye mail aaya. Follow karo: rejection mail se offer tak, poori series profile pe.
+
+#rejection #jobsearchtips #fresherjobs #interviewtips #jobrejection
+

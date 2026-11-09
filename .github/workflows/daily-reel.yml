@@ -212,6 +212,12 @@ jobs:
             content/custom/${{ env.NAME }}/brief.json
             content/custom/${{ env.NAME }}/voice.json
             content/custom/${{ env.NAME }}/timeline.json
+            content/${{ env.DAY }}/variants/*/reel.mp4
+            content/${{ env.DAY }}/variants/*/script.json
+            content/${{ env.DAY }}/variants/*/description.txt
+            content/custom/${{ env.NAME }}/variants/*/reel.mp4
+            content/custom/${{ env.NAME }}/variants/*/script.json
+            content/custom/${{ env.NAME }}/variants/*/description.txt
           if-no-files-found: warn
           retention-days: 30
 
@@ -232,6 +238,20 @@ jobs:
           [ "$IN_IG_REEL" = true ] || flags+=(--no-reel)
           [ "$IN_IG_STORY" = true ] || flags+=(--no-story)
           python tools/instagram-publisher/publish.py --folder "$folder" "${flags[@]}"
+
+      # the trial variant (run.py make_variants) as an Instagram trial reel: shown only to non-followers, never a story.
+      # A failure here shows in the report but doesn't fail the run (2026-11-08: first use of trial_params).
+      - name: Post trial reel
+        id: trial
+        if: always() && steps.make.outcome == 'success' && (github.event_name == 'schedule' || inputs.instagram_reel)
+        continue-on-error: true
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/instagram-publisher/publish.py --folder "$folder" --trial
 
       # each platform on its own: a failed Instagram post doesn't stop the YouTube upload or the history
       - name: Post to YouTube
@@ -286,6 +306,7 @@ jobs:
           OUT_MAKE: ${{ steps.make.outcome }}
           OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
           OUT_YOUTUBE: ${{ steps.youtube.outcome }}
+          OUT_TRIAL: ${{ steps.trial.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           DAY="${DAY:-$(TZ=Asia/Kolkata date +%F)}"

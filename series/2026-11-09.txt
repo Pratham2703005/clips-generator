@@ -6,6 +6,8 @@ title: Offer Tak | Din 9: Aptitude test panic
 cast: arjun, riya
 jobs: india-freshers, 0
 hook: QUESTION 1 PE MAT ATKO
+trial_hook: Never get stuck on one aptitude question. Thirty questions, thirty minutes.
+trial_card: 30 QUESTIONS. 30 MINUTES.
 Arjun: Never spend five minutes on question one. Tees sawaal hain.
 Riya (shocked): Par main toh train A, train B pe hi atki hoon!
 Arjun: Tees sawaal, tees minute. Matlab ek sawaal, ek minute.

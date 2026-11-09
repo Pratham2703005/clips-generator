@@ -4,10 +4,13 @@
 # Promotion only in Ep 5 (Apify launch), Ep 9 (landing page) and Ep 10 (finale). The user's story (2026-11-07): AI made
 # the work fast, but they wanted every tech stack understood in one day; laid off after five months. No Outlier arc.
 # Written with the ig-reel skill: hookscore 83.1 STRONG.
+# Trial reel (non-followers only): the same reel with trial_hook as line 1 and trial_card on screen.
 title: Layoff se API | Ep 1: Ek din, saare stack
 cast: arjun, verma
 jobs: india-freshers, 0
 hook: 5 MAHINE KI JOB. PHIR LAYOFF.
+trial_hook: Laid off after five months? Don't let one mail decide your worth.
+trial_card: 5 MAHINE. 1 MAIL.
 Arjun: Your first job can end in five months. Don't let it end you.
 Verma: Arjun, kal tak React, Node, Docker, Kubernetes. Sab samajh ke aana.
 Arjun (shocked): Sir, ek din mein chaar stack?

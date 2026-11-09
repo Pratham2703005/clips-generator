@@ -107,9 +107,9 @@ def make_title(episode: str, first_line: str, limit: int) -> str:
     return first_line[:limit]
 
 
-def metadata(folder: Path, v: dict) -> dict:
+def metadata(folder: Path, v: dict, desc_folder: Path | None = None) -> dict:
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
-    desc_file = folder / "description.txt"
+    desc_file = (desc_folder or folder) / "description.txt"
     description = desc_file.read_text(encoding="utf-8").strip() if desc_file.is_file() else script.get("caption", "")
     room = v["title_max"] - (8 if v["shorts_tag"] else 0)
     title = clean(make_title(script.get("title", ""), (description.splitlines() or [""])[0], room) or folder.name).strip()
@@ -183,12 +183,18 @@ def main() -> None:
     video = folder / "reel.mp4"
     if not video.is_file():
         sys.exit(f"no reel at {video}")
+    # the YouTube variant (run.py make_variants): the same reel saying "subscribe" where it says "follow"
+    yt = folder / "variants" / "youtube"
+    media_folder = yt if (yt / "reel.mp4").is_file() else folder
+    if media_folder is yt:
+        video = yt / "reel.mp4"
+        print(f"YouTube variant: {video}")
     done = folder / "posted.json"
     if done.is_file() and json.loads(done.read_text(encoding="utf-8")).get("youtube_url"):
         # a Post reel run of a reel that is partly up: never upload the same Short twice
         print(f"already on YouTube: {json.loads(done.read_text(encoding='utf-8'))['youtube_url']}")
         return
-    meta = metadata(folder, v)
+    meta = metadata(folder, v, media_folder if (media_folder / "description.txt").is_file() else None)
     when = None if a.now or v["privacy"] != "public" else publish_time(v.get("publish_at", ""))
     if when:  # YouTube's scheduled publishing: private until publishAt
         meta["status"].update({"privacyStatus": "private", "publishAt": when.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")})
@@ -227,7 +233,7 @@ def main() -> None:
     record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")  # before the thumbnail: the Short is up
 
     if v.get("thumbnail", True):
-        thumb = set_thumbnail(token, vid, folder, video, v.get("cover_seconds", 2.2))
+        thumb = set_thumbnail(token, vid, media_folder, video, v.get("cover_seconds", 2.2))
         print(f"thumbnail: {thumb}" if thumb == "set" else f"warning: thumbnail {thumb}; YouTube picks a frame itself")
         record["youtube_thumbnail"] = thumb[:200]
         record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")

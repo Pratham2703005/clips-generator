@@ -3,10 +3,13 @@
 # (Greenhouse, Lever, Ashby: no login), writes a script, ~10k jobs the first night, builds filters, shares on the
 # friends' WhatsApp group. Lesson: your own problem is your first product.
 # Written with the ig-reel skill: hookscore 78.8 STRONG.
+# Trial reel (non-followers only): the same reel with trial_hook as line 1 and trial_card on screen.
 title: Layoff se API | Ep 2: Public API mil gayi
 cast: arjun, bunty
 jobs: india-freshers, 0
 hook: JOBS KI PUBLIC API HOTI HAI
+trial_hook: Stop waiting for replies. Company jobs are on a public API.
+trial_card: JOBS KI PUBLIC API
 Arjun: Stop waiting for replies. Companies ki jobs public API pe hain.
 Bunty: Arjun, aaj kitne interview hue?
 Arjun: Teen. Teeno AI bot ne liye. Aur reply zero.

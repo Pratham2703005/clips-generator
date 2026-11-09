@@ -19,7 +19,11 @@ on:
         type: boolean
         default: true
       youtube:
-        description: "YouTube: upload as a Short"
+        description: "YouTube: upload as a Short (its 'subscribe' version when the run made one)"
+        type: boolean
+        default: true
+      instagram_trial:
+        description: "Instagram: post the run's trial reel (only non-followers see it), if it made one"
         type: boolean
         default: true
 
@@ -45,7 +49,8 @@ jobs:
           RUN_ID="${RUN_ID//[[:space:]]/}"   # a pasted ID often carries a space (2026-11-02)
           [[ "$RUN_ID" =~ ^[0-9]+$ ]] || { echo "run_id must be a number"; exit 1; }
           gh run download "$RUN_ID" -R "$GITHUB_REPOSITORY" --dir reel-download
-          reel=$(find reel-download -path '*reel-*' -name reel.mp4 | head -n 1)
+          # the reel itself, not one of its variants (variants/trial, variants/youtube sit in the same artifact)
+          reel=$(find reel-download -path '*reel-*' -name reel.mp4 -not -path '*/variants/*' | head -n 1)
           [ -n "$reel" ] || { echo "no reel.mp4 in run $RUN_ID's artifacts"; exit 1; }
           folder=$(dirname "$reel")
           # the run's own post record (Daily reel keeps it as a separate artifact, after posting)
@@ -67,6 +72,14 @@ jobs:
           [ "$IN_IG_REEL" = true ] || flags+=(--no-reel)
           [ "$IN_IG_STORY" = true ] || flags+=(--no-story)
           python tools/instagram-publisher/publish.py --folder "$FOLDER" "${flags[@]}"
+      - name: Post trial reel
+        id: trial
+        if: always() && steps.download.outcome == 'success' && inputs.instagram_trial
+        continue-on-error: true
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: python tools/instagram-publisher/publish.py --folder "$FOLDER" --trial
       - name: Post to YouTube
         id: youtube
         if: always() && steps.download.outcome == 'success' && inputs.youtube
@@ -102,6 +115,7 @@ jobs:
           OUT_MAKE: ${{ steps.download.outcome }}
           OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
           OUT_YOUTUBE: ${{ steps.youtube.outcome }}
+          OUT_TRIAL: ${{ steps.trial.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$FOLDER" ] || { echo "no reel downloaded"; FOLDER="reel-download/none"; mkdir -p "$FOLDER"; }

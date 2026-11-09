@@ -6,6 +6,8 @@ title: Offer Tak | Din 12: Offer letter ka bond
 cast: malhotra, bunty
 jobs: india-freshers, 0
 hook: BOND? SIGN SE PEHLE 3 SAWAAL
+trial_hook: Two lakh penalty in your offer letter? Don't sign yet.
+trial_card: 2 LAKH PENALTY? RUKO.
 Malhotra: Don't sign a bond before these three questions.
 Bunty: Ma'am, last page pe likha hai: do saal ka bond, do lakh penalty.
 Malhotra: Sign kiya?

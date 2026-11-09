@@ -223,17 +223,37 @@ def spoken_title(title: str) -> str:
     return re.sub(r"\b(I|II|III)$", lambda m: ROMAN[m.group(1)], t)
 
 
-def parse_series(path: Path) -> dict:
-    """Header (title, cast, jobs), the dialogue, and the description after '--- description'."""
-    text = path.read_text(encoding="utf-8")
-    body, _, description = text.partition("\n--- description")
-    head, lines = {}, []
-    for raw in body.splitlines():
-        m = re.match(r"^\s*(title|cast|jobs)\s*:\s*(.+)$", raw, re.I)
+def split_sections(text: str) -> dict:
+    """'body' plus the parts after '--- description', '--- trial' and '--- trial description' lines."""
+    parts, cur = {"body": []}, "body"
+    for raw in text.splitlines():
+        m = re.match(r"^---\s*(description|trial description|trial)\s*$", raw.strip(), re.I)
         if m:
-            head[m.group(1).lower()] = m.group(2).split("#")[0].strip()
-        elif not raw.strip().startswith("#"):  # notes may mention {job2}; only spoken lines count as slots
+            cur = m.group(1).lower()
+            parts[cur] = []
+            continue
+        parts.setdefault(cur, []).append(raw)
+    return {k: "\n".join(v).strip() for k, v in parts.items()}
+
+
+def dialogue_lines(body: str) -> list[str]:
+    """Spoken lines and 'hook:' of a script body; notes ('# ...') are dropped (they may mention {job2})."""
+    return [raw for raw in body.splitlines() if not raw.strip().startswith("#")]
+
+
+def parse_series(path: Path) -> dict:
+    """Header (title, cast, jobs, and the variant lines trial_hook / trial_card / yt_last), the dialogue, the
+    description after '--- description', and an optional stand-alone trial version after '--- trial' (with its own
+    '--- trial description')."""
+    sec = split_sections(path.read_text(encoding="utf-8"))
+    head, lines = {}, []
+    for raw in dialogue_lines(sec["body"]):
+        m = re.match(r"^\s*(title|cast|jobs|trial_hook|trial_card|yt_last)\s*:\s*(.+)$", raw, re.I)
+        if m:
+            head[m.group(1).lower()] = m.group(2).split("#")[0].strip() if m.group(1).lower() in ("title", "cast", "jobs") else m.group(2).strip()
+        else:
             lines.append(raw)
+    description = sec.get("description", "")
     niches, _, count = head.get("jobs", "india-freshers, 1").partition(",")
     return {
         "title": head.get("title", path.stem),
@@ -242,6 +262,9 @@ def parse_series(path: Path) -> dict:
         "count": int(count.strip() or 1),
         "dialogue": "\n".join(lines),
         "description": description.strip(),
+        "trial_hook": head.get("trial_hook", ""), "trial_card": head.get("trial_card", ""), "yt_last": head.get("yt_last", ""),
+        "trial_dialogue": "\n".join(dialogue_lines(sec.get("trial", ""))).strip(),
+        "trial_description": sec.get("trial description", ""),
     }
 
 
@@ -320,8 +343,106 @@ def run_series(path: Path, day: str, opts: dict, env: dict, out: Path | None = N
         script = json.loads((folder / "script.json").read_text(encoding="utf-8"))
         script["caption"] = desc  # the same place the AI pipeline keeps its caption
         (folder / "script.json").write_text(json.dumps(script, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # the variants the episode asks for (made after the reel by make_variants)
+    spec: dict = {}
+    fill = lambda t: fill_slots(t, jobs) if t else ""  # noqa: E731
+    if ep["trial_dialogue"]:
+        tdesc = ep["trial_description"]
+        spec["trial"] = {"kind": "standalone", "dialogue": fill(ep["trial_dialogue"]),
+                         "description": with_platform_link(fill(tdesc.replace("{jobs}", jobs_block(jobs[:needed]))), platform) if tdesc else ""}
+    elif ep["trial_hook"]:
+        spec["trial"] = {"kind": "hook", "first_line": fill(ep["trial_hook"]), "hook_card": ep["trial_card"]}
+    if ep["yt_last"]:
+        spec["youtube"] = {"last_line": fill(ep["yt_last"])}
+    (folder / "variants.json").unlink(missing_ok=True)
+    if spec:
+        (folder / "variants.json").write_text(json.dumps(spec, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     print(f"series: {path.name} '{ep['title']}' with {needed} job(s)" + (f": {', '.join(j['company'] for j in jobs[:needed])}" if needed else " (value episode)"))
     return folder
+
+
+# ---- variants: extra versions of the finished reel, in <folder>/variants/<kind>/ (user, 2026-11-08) ----
+# trial    an Instagram trial reel (shown only to non-followers): the same reel with a second opening line and hook card,
+#          or a stand-alone version written for people who never saw the series. From the episode's trial_hook /
+#          trial_card or "--- trial" part, or an AI script's alt_hook.
+# youtube  the reel saying "subscribe" where it says "follow" (or the episode's yt_last as the last line).
+# Each one is a whole new voice + captions + render on the reel's own background stretch. A failed variant is only a
+# warning: the reel itself is already made.
+
+def for_youtube(lines: list[dict], last_line: str = "") -> list[dict] | None:
+    """The lines with the call to follow turned into one to subscribe (only in the last two lines, so a story line
+    like "follow-up mail" stays), or None when nothing changes."""
+    out = [dict(ln) for ln in lines]
+    if last_line:
+        out[-1]["text"] = last_line
+    for ln in out[-2:]:
+        ln["text"] = re.sub(r"\b([Ff])ollow\b(?!-)", lambda m: "Subscribe" if m.group(1) == "F" else "subscribe", ln["text"])
+    return out if [ln["text"] for ln in out] != [ln["text"] for ln in lines] else None
+
+
+def make_variants(folder: Path, opts: dict, day: str, env: dict) -> list[str]:
+    if not opts.get("variants", True):
+        return []
+    script = json.loads((folder / "script.json").read_text(encoding="utf-8"))
+    vfile = folder / "variants.json"
+    spec = json.loads(vfile.read_text(encoding="utf-8")) if vfile.is_file() else {}
+    alt = script.get("alt_hook") or {}
+    if "trial" not in spec and alt.get("text"):
+        spec["trial"] = {"kind": "hook", "first_line": alt["text"], "hook_card": alt.get("hook_card", "")}
+    yt_lines = for_youtube(script["lines"], (spec.get("youtube") or {}).get("last_line", ""))
+    spec.pop("youtube", None)
+    if yt_lines:
+        spec["youtube"] = {"kind": "lines", "lines": yt_lines}
+    if not spec:
+        return []
+    comp = json.loads((folder / "compose.json").read_text(encoding="utf-8"))
+    background = f"{comp['background']['clip']}@{comp['background']['offset']}"
+    main_desc = (folder / "description.txt").read_text(encoding="utf-8") if (folder / "description.txt").is_file() else ""
+    made = []
+    for kind, v in spec.items():
+        vf = folder / "variants" / kind
+        shutil.rmtree(vf, ignore_errors=True)
+        vf.mkdir(parents=True)
+        print(f"\n==== variant: {kind} ({v.get('kind')})", flush=True)
+        try:
+            if v.get("kind") == "standalone":
+                src = vf / "variant-script.txt"
+                src.write_text(v["dialogue"] + "\n", encoding="utf-8")
+                brief = json.loads((folder / "brief.json").read_text(encoding="utf-8")) if (folder / "brief.json").is_file() else {}
+                cast = {c["position"]: c["id"] for c in script["cast"]}
+                build_custom(src, {**opts, "left": cast.get("left"), "right": cast.get("right")}, day, folder=vf,
+                             jobs=brief.get("jobs") or [], title=script.get("title", ""), track=script.get("track", "custom"))
+                if (folder / "brief.json").is_file():
+                    shutil.copy2(folder / "brief.json", vf / "brief.json")
+            else:
+                s = json.loads(json.dumps(script))
+                if v.get("kind") == "hook":
+                    s["lines"][0]["text"] = v["first_line"]
+                    if v.get("hook_card"):
+                        s["hook_card"] = v["hook_card"]
+                else:
+                    s["lines"] = v["lines"]
+                (vf / "script.json").write_text(json.dumps(s, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                if (folder / "visuals.json").is_file():  # same lines in the same places: the reel's own screenshots
+                    shutil.copy2(folder / "visuals.json", vf / "visuals.json")
+                    if (folder / "visuals").is_dir():
+                        shutil.copytree(folder / "visuals", vf / "visuals")
+            desc = v.get("description") or main_desc
+            if kind == "youtube":
+                desc = re.sub(r"\b([Ff])ollow karo\b", lambda m: ("S" if m.group(1) == "F" else "s") + "ubscribe karo", desc)
+            if desc:
+                (vf / "description.txt").write_text(desc, encoding="utf-8")
+            target = ["--script", str(vf / "script.json")]
+            run("voice", target, env)
+            run("captions", target, env)
+            if v.get("kind") == "standalone" and opts.get("visuals", True):
+                run("visuals", ["--folder", str(vf)], env)
+            run("compose", ["--folder", str(vf), "--background", background], env)
+            made.append(kind)
+            print(f"variant {kind}: {vf / 'reel.mp4'}")
+        except SystemExit as e:
+            print(f"WARNING: variant {kind} not made ({e}); the reel itself is fine", flush=True)
+    return made
 
 
 def main() -> None:
@@ -415,6 +536,9 @@ def main() -> None:
         (folder / "visuals.json").unlink(missing_ok=True)  # the composer shows whatever visuals.json lists
     run("compose", ["--folder", str(folder)] + (["--clip", opts["clip"]] if opts.get("clip") else []), env)
     print(f"\nreel: {folder / 'reel.mp4'}")
+    made = make_variants(folder, opts, a.date, env)
+    if made:
+        print(f"variants: {', '.join(made)} (in {folder / 'variants'})")
 
 
 if __name__ == "__main__":

@@ -7,6 +7,8 @@ title: Offer Tak | Din 14: Joining day
 cast: riya, bunty
 jobs: india-freshers|bangalore-tech|remote-india, 2
 hook: 200 APPLICATIONS SE 1 OFFER
+trial_hook: Stop sending two hundred applications. Send three a day.
+trial_card: 200 NAHI. ROZ 3.
 Bunty: Stop counting applications. Two hundred se one offer ka sach.
 Riya: Aaj joining hai na? Laptop mila?
 Bunty: Laptop, ID card, aur free chai. Malhotra Ma'am ki chai bhi bach gayi.

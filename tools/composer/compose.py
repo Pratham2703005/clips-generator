@@ -487,6 +487,9 @@ def main() -> None:
     p.add_argument("--folder", type=Path, help="a day's folder anywhere")
     p.add_argument("--reroll", type=int, default=0, help="pick another background stretch (1, 2, ...)")
     p.add_argument("--clip", help="use only this background clip (file name in backgrounds_dir)")
+    p.add_argument("--background", metavar="CLIP@SECONDS",
+                   help="use exactly this stretch, e.g. clip2.mp4@1075.6 (a variant of a reel keeps the reel's background); "
+                        "not added to the background history")
     args = p.parse_args()
 
     cfg = load_config(args.config)
@@ -521,8 +524,17 @@ def main() -> None:
         bg_history = json.loads(history_path.read_text(encoding="utf-8")).get("picks", []) if history_path and history_path.is_file() else []
     except ValueError:
         bg_history = []
-    clip, offset = pick_background((base / paths["backgrounds_dir"]).resolve(), ffprobe, total, bg["margin"], rng, args.clip,
-                                   ffmpeg, bg, log, bg_history[-bg.get("avoid_last", 60):])
+    if args.background:
+        name, _, at = args.background.rpartition("@")
+        clip = (base / paths["backgrounds_dir"]).resolve() / name
+        if not clip.is_file():
+            sys.exit(f"--background: {clip} not found")
+        # the variant may run a few seconds longer than the reel it copies: keep the stretch inside the clip
+        offset = round(max(0.0, min(float(at), probe_seconds(ffprobe, clip) - total - bg["margin"])), 2)
+        history_path = None  # the stretch is the reel's own, already in the history
+    else:
+        clip, offset = pick_background((base / paths["backgrounds_dir"]).resolve(), ffprobe, total, bg["margin"], rng, args.clip,
+                                       ffmpeg, bg, log, bg_history[-bg.get("avoid_last", 60):])
     log(f"folder: {folder}; {total:.1f} s; background {clip.name} from {offset:.1f} s")
 
     cast = {c["id"]: c for c in script["cast"]}

@@ -10,7 +10,11 @@ Each post: container -> upload -> wait until processed (status_code FINISHED) ->
   - reel: caption from description.txt (else script.json's caption); cover = compose.json's cover_seconds (the frame
     with the whole hook card), else [instagram] cover_seconds
   - story: the same video; a story takes no caption, and the API has no stickers (poll, link)
-Writes posted.json (reel id and permalink, story id). The token is never printed and never put in a URL.
+  - --trial: the folder's variants/trial/reel.mp4 as a trial reel (shown only to non-followers; trial_params with
+    graduation_strategy [instagram] trial_graduation, MANUAL = never moved to the main feed by itself), caption from
+    variants/trial/description.txt. No story. Nothing to do when there is no trial variant.
+Writes posted.json (reel id and permalink, story id; trial_media_id / trial_permalink). The token is never printed and
+never put in a URL.
 """
 
 from __future__ import annotations
@@ -154,14 +158,47 @@ def post(api: Api, user: str, video: Path, media_type: str, fields: dict, poll: 
     return api.call("POST", f"{user}/media_publish", {"creation_id": container})["id"]
 
 
+def post_trial(api: Api, user: str, folder: Path, ig: dict, cfg: dict, dry_run: bool) -> None:
+    """The trial variant as a trial reel (Meta's content publishing API, trial_params; 2026-11-08: first use)."""
+    vf = folder / "variants" / "trial"
+    video = vf / "reel.mp4"
+    caption = caption_for(vf if (vf / "description.txt").is_file() else folder, ig)
+    comp = vf / "compose.json"
+    cover = json.loads(comp.read_text(encoding="utf-8")).get("cover_seconds") if comp.is_file() else None
+    cover = ig["cover_seconds"] if cover is None else cover
+    strategy = ig.get("trial_graduation", "MANUAL")
+    print(f"trial reel: {video} ({video.stat().st_size / 1e6:.1f} MB), caption {len(caption)} characters, cover at {cover} s, "
+          f"graduation {strategy}")
+    if dry_run:
+        print("---\n" + caption + "\n---\n(dry run: nothing posted)")
+        return
+    record_path = folder / "posted.json"
+    record = json.loads(record_path.read_text(encoding="utf-8")) if record_path.is_file() else {}
+    if record.get("trial_media_id"):
+        print(f"trial reel already posted: {record.get('trial_permalink') or record['trial_media_id']}")
+        return
+    media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000)),
+                                              "trial_params": json.dumps({"graduation_strategy": strategy})},
+                 cfg["poll"], ig.get("chunk_mb", 8))
+    link = api.call("GET", media, {"fields": "permalink"}).get("permalink", "")
+    record.update({"trial_media_id": media, "trial_permalink": link,
+                   "trial_posted_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+    record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    print(f"trial reel posted: {link or media}")
+
+
 def main() -> None:
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     p.add_argument("--folder", type=Path, required=True, help="the reel's folder (reel.mp4 + description.txt or script.json)")
     p.add_argument("--no-reel", action="store_true", help="skip the reel (e.g. it is already up)")
     p.add_argument("--no-story", action="store_true", help="skip the story")
     p.add_argument("--dry-run", action="store_true", help="check the token, then show what would be posted")
+    p.add_argument("--trial", action="store_true", help="post the trial variant (variants/trial) as a trial reel")
     p.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     a = p.parse_args()
+    if a.trial and not (a.folder / "variants" / "trial" / "reel.mp4").is_file():
+        print(f"no trial variant in {a.folder}: nothing to post")
+        return
 
     cfg = load_config(a.config)
     ig = cfg["instagram"]
@@ -180,6 +217,9 @@ def main() -> None:
     print(f"account: @{acct.get('username')}")
 
     folder = a.folder.resolve()
+    if a.trial:
+        post_trial(api, user, folder, ig, cfg, a.dry_run)
+        return
     video = folder / "reel.mp4"
     if not video.is_file():
         sys.exit(f"no reel at {video}")

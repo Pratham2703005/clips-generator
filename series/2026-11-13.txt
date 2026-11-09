@@ -7,6 +7,8 @@ title: Offer Tak | Din 13: Verma Sir vs offer letter
 cast: bunty, verma
 jobs: india-freshers|remote-india|bangalore-tech, 1
 hook: 1 EMAIL. 1 LAKH BACHE.
+trial_hook: Don't be scared to email HR. One question saved one lakh.
+trial_card: 1 SAWAAL. 1 LAKH BACHA.
 Bunty: Don't fear HR. One email ne ek lakh bachaye.
 Verma (shocked): HR se sawaal? Hamare zamane mein toh bas sign karte the!
 Bunty: Sir, teen sawaal puche. Penalty do lakh se ek lakh ho gayi.

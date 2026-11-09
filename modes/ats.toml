@@ -25,3 +25,6 @@ track = ""
 niche = ""
 format = ""
 platform = ""
+# Extra versions of the reel (variants/ in its folder): an Instagram trial reel (a second opening, or a stand-alone
+# version from the episode's "--- trial" part) and a YouTube cut that says "subscribe" where the reel says "follow".
+variants = true

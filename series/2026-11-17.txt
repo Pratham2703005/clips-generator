@@ -3,10 +3,13 @@
 # but analytics show almost nobody opens the link; Bunty was one of them (Season 1 callback). GitHub as the database
 # gets heavy. Screenshot: series/season3/assets/ep3-whatsapp-51k.png (the user's own message, no other names).
 # Written with the ig-reel skill: hookscore 94.8 STRONG.
+# Trial reel (non-followers only): the same reel with trial_hook as line 1 and trial_card on screen.
 title: Layoff se API | Ep 3: React kiya, khola nahi
 cast: arjun, bunty
 jobs: india-freshers, 0
 hook: 3 REACTIONS. 0 CLICKS.
+trial_hook: Nobody opened my link. Three reactions, zero clicks.
+trial_card: KISI NE LINK NAHI KHOLA
 Arjun: Stop counting likes. Three reactions, but nobody opened it.
 Bunty: Par bhai, group pe sab ne react kiya tha! Dil, fire, sab.
 Arjun: Haan. Aur jobs badh rahi thi. Saadhe solah hazaar, phir pachaas hazaar. [show: series/season3/assets/ep3-whatsapp-51k.png]

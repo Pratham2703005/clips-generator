@@ -113,6 +113,40 @@ def instagram_stats(cfg: dict, since: datetime) -> dict:
     return out
 
 
+def media_numbers(cfg: dict, mid: str) -> dict:
+    """One post's numbers: likes, comments, the insights in media_metrics, and the average watch time (s) of a reel."""
+    token = os.environ.get(cfg["token_env"], "")
+    base = f"https://graph.facebook.com/{cfg['api_version']}"
+    q = lambda path, **p: get_json(f"{base}/{path}?" + urllib.parse.urlencode({**p, "access_token": token}))  # noqa: E731
+    out = {k: v for k, v in q(mid, fields="like_count,comments_count,permalink").items() if k != "id"}
+    for metric in (",".join(cfg["media_metrics"]), "ig_reels_avg_watch_time"):
+        try:
+            for d in q(f"{mid}/insights", metric=metric).get("data", []):
+                out[d["name"]] = (d.get("values") or [{}])[0].get("value", d.get("total_value", {}).get("value"))
+        except RuntimeError:
+            pass  # a metric this post (or this API version) doesn't have
+    return out
+
+
+def trial_pairs(cfg: dict, history: list[dict], current: dict | None, days: int = 10) -> list[dict]:
+    """Main reel vs its trial reel (variants/trial, shown only to non-followers), newest first: which opening or
+    framing works better with people who don't know the account (user, 2026-11-08)."""
+    cutoff = datetime.now(timezone.utc) - timedelta(days=days)
+    seen, pairs = set(), []
+    for p in ([current] if current else []) + [s["pair"] for s in reversed(history)
+                                                if s.get("pair") and datetime.fromisoformat(s["at"]) >= cutoff]:
+        if not p or not p.get("main") or not p.get("trial") or p["trial"] in seen:
+            continue
+        seen.add(p["trial"])
+        try:
+            pairs.append({**p, "main_n": media_numbers(cfg, p["main"]), "trial_n": media_numbers(cfg, p["trial"])})
+        except RuntimeError as e:
+            pairs.append({**p, "error": str(e)})
+        if len(pairs) >= 7:
+            break
+    return pairs
+
+
 def token_info(base: str, token: str) -> dict:
     """When the Instagram token stops working (debug_token). expires_at 0 = never; the data-access window is separate (a
     user token loses data access ~90 days after the user last used the app). debug_token needs an app token
@@ -196,8 +230,10 @@ def change_reason(role: str, cur: dict, prev: dict) -> str:
 
 # ---------- growth: snapshots of every report, compared with ~24 h and ~7 days ago ----------
 
-def snapshot(ig: dict, yt: dict, models: dict | None = None) -> dict:
+def snapshot(ig: dict, yt: dict, models: dict | None = None, pair: dict | None = None) -> dict:
     s: dict = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    if pair:
+        s["pair"] = pair
     if models:
         s["models"] = {r: {"model": v["model"], "tried": v.get("tried", [])} for r, v in models.items()}
     if ig.get("username"):
@@ -345,10 +381,11 @@ def num(v) -> str:
 WINDOWS = [("24 h", 24, 16, 40), ("7 days", 168, 120, 240)]  # label, target age, accepted ages (hours)
 
 
-def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, history: list[dict]) -> tuple[str, str, str]:
+def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, history: list[dict],
+          pairs: list[dict] | None = None) -> tuple[str, str, str]:
     posted = json.loads((folder / "posted.json").read_text(encoding="utf-8")) if (folder / "posted.json").is_file() else {}
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
-    out = {k: os.environ.get(f"OUT_{k.upper()}", "") for k in ("make", "instagram", "youtube")}
+    out = {k: os.environ.get(f"OUT_{k.upper()}", "") for k in ("make", "instagram", "youtube", "trial")}
     title = script.get("title") or day
     if not posted.get("youtube_url"):
         # put up by an earlier run whose record wasn't kept (2026-11-02: a Post reel run with YouTube unticked showed
@@ -367,8 +404,12 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         ("Reel ready", out["make"], title),
         ("Instagram reel", state(bool(posted.get("permalink")), out["instagram"]), posted.get("permalink", "")),
         ("Instagram story", state(bool(posted.get("story_id")), out["instagram"]), posted.get("story_id", "")),
-        ("YouTube Short", state(bool(posted.get("youtube_url")), out["youtube"]), posted.get("youtube_url", "")),
+        ("YouTube Short" + (" ('subscribe' version)" if (folder / "variants" / "youtube" / "reel.mp4").is_file() else ""),
+         state(bool(posted.get("youtube_url")), out["youtube"]), posted.get("youtube_url", "")),
     ]
+    if (folder / "variants" / "trial" / "reel.mp4").is_file() or posted.get("trial_media_id") or out["trial"]:
+        rows.append(("Instagram trial reel", state(bool(posted.get("trial_media_id")), out["trial"]),
+                     posted.get("trial_permalink") or posted.get("trial_media_id", "")))
     ok = rows[0][1] == "success" and all(r[1] in ("success", "skipped") for r in rows)  # skipped = switched off
     token = ig.get("token") or {}
     subject = f"{'✅' if ok and not token.get('warn') else '⚠️'} Job Shorts {day}: {title}"
@@ -438,6 +479,28 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         if pid not in old:
             return f"{num(value)} (new)"
         return f"{num(value)} ({signed(change(value, old[pid].get(key)))})"
+
+    if pairs:
+        h += ["<h3>Main reel vs trial reel</h3>",
+              "<p><i>The trial reel goes only to people who don't follow the account. Compare the two openings: watch time "
+              "and shares say which one holds strangers.</i></p>",
+              '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th align="left">Reel</th>'
+              "<th></th><th>Views</th><th>Reach</th><th>Avg watch</th><th>Likes</th><th>Shares</th><th>Saves</th></tr>"]
+        t += ["", "Main reel vs trial reel (views | reach | avg watch s | likes | shares | saves)"]
+        for p in pairs:
+            if p.get("error"):
+                h.append(f"<tr><td>{html.escape(p.get('date', ''))}</td><td colspan=8>{html.escape(p['error'][:200])}</td></tr>")
+                continue
+            for label, n in (("main", p["main_n"]), ("trial", p["trial_n"])):
+                watch = n.get("ig_reels_avg_watch_time")
+                cells = [num(n.get("views")), num(n.get("reach")), f"{watch / 1000:.1f} s" if isinstance(watch, (int, float)) else "-",
+                         num(n.get("like_count")), num(n.get("shares")), num(n.get("saved"))]
+                first = label == "main"
+                h.append("<tr>" + (f"<td rowspan=2>{html.escape(p.get('date', ''))}</td><td rowspan=2>{html.escape(p.get('title', '')[:50])}</td>" if first else "")
+                         + f'<td><a href="{html.escape(n.get("permalink", ""))}">{label}</a></td>'
+                         + "".join(f'<td align="center">{c}</td>' for c in cells) + "</tr>")
+                t.append(f"{p.get('date', '')} {label}: " + " | ".join(cells) + (f" | {p.get('title', '')[:50]}" if first else ""))
+        h.append("</table>")
 
     h.append(f"<h3>Instagram, last {days} days</h3>")
     t += ["", f"Instagram, last {days} days"]
@@ -527,10 +590,15 @@ def main() -> None:
     except ValueError:
         history = []
     ig, yt = instagram_stats(cfg["instagram"], since), youtube_stats(cfg["youtube"], since, [posted_youtube_id(a.folder)])
-    subject, text, body = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""), ig, yt, rep["days"], history)
+    posted = read_json(a.folder.resolve() / "posted.json")
+    script = read_json(a.folder.resolve() / "script.json")
+    pair = ({"date": day, "title": script.get("title", ""), "main": posted["media_id"], "trial": posted["trial_media_id"]}
+            if posted.get("media_id") and posted.get("trial_media_id") else None)
+    pairs = trial_pairs(cfg["instagram"], history, pair) if ig.get("username") else []
+    subject, text, body = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""), ig, yt, rep["days"], history, pairs)
     if a.save_stats:
         cutoff = datetime.now(timezone.utc) - timedelta(days=rep.get("keep_stats_days", 120))
-        history = [s for s in history if datetime.fromisoformat(s["at"]) >= cutoff] + [snapshot(ig, yt, models_used(a.folder.resolve()))]
+        history = [s for s in history if datetime.fromisoformat(s["at"]) >= cutoff] + [snapshot(ig, yt, models_used(a.folder.resolve()), pair)]
         stats_file.write_text(json.dumps({"snapshots": history}, indent=1) + "\n", encoding="utf-8")
         print(f"stats saved to {stats_file} ({len(history)} snapshots)")
     if a.dry_run:

@@ -8,6 +8,8 @@ title: Offer Tak | Din 11: CTC vs in-hand
 cast: arjun, bunty
 jobs: india-freshers, 0
 hook: 6 LPA MATLAB 50K NAHI
+trial_hook: Six LPA offer? Your in-hand is not fifty thousand.
+trial_card: 6 LPA. 50K NAHI.
 Arjun: Stop dividing your six LPA by twelve. In-hand alag hai.
 Bunty: Par Arjun, chhe lakh baarah se divide, pachaas hazaar mahina!
 Arjun: Bro, you're doing it wrong. CTC aur in-hand alag cheezein hain.
