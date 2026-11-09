@@ -13,7 +13,10 @@ Stats (each part is skipped with a note when its permission is missing, never fa
     with yt-analytics.readonly also the share of each Short watched and where the views came from
   - Growth: the change since the report ~24 h and ~7 days ago, from content/stats-history.json (--save-stats adds
     this report's numbers to it; the Daily reel run does, and commits the file)
-  - when the Instagram token expires (subject turns ⚠️ under 14 days)
+  - when the Instagram token expires (subject turns ⚠️ under 14 days), and the Threads token (from its config)
+  - Facebook Page (followers; per reel plays, reach, average watch, reactions, comments, shares), Threads (followers;
+    per post views, likes, replies, reposts, shares), Telegram (subscribers only: the Bot API has no post views)
+  - each platform's list shows its newest [report] rows_in_mail posts; longer lists come in full as an attached HTML file
 Sent with Gmail SMTP (SMTP_USER + an app password in SMTP_PASSWORD) to REPORT_TO (default: SMTP_USER).
 --dry-run prints the email instead of sending it.
 """
@@ -57,8 +60,10 @@ def get_json(url: str, data: bytes | None = None, headers: dict | None = None) -
     except urllib.error.HTTPError as e:
         raw = e.read().decode("utf-8", "replace")
         try:
-            err = json.loads(raw).get("error")
-            msg = err.get("message", raw[:200]) if isinstance(err, dict) else str(err)
+            j = json.loads(raw)
+            err = j.get("error")
+            # Graph: {"error": {"message"}}; Google: {"error": "..."}; Telegram: {"ok": false, "description"}
+            msg = err.get("message", raw[:200]) if isinstance(err, dict) else (str(err) if err else j.get("description", raw[:200]))
         except (ValueError, AttributeError):
             msg = raw[:200]
         raise RuntimeError(f"HTTP {e.code}: {msg}") from None
@@ -173,6 +178,138 @@ def token_info(base: str, token: str) -> dict:
     return {"line": line + (": make a new one and update IG_ACCESS_TOKEN" if left < 14 else ""), "warn": left < 14}
 
 
+# ---------- Facebook Page, Threads, Telegram (2026-11-09) ----------
+
+def _list_since(first: dict, since: datetime, ts_key: str) -> list[dict]:
+    """Walk a newest-first Graph-style list (data + paging.next) until it reaches past `since`."""
+    out, page = [], first
+    while True:
+        older = False
+        for m in page.get("data", []):
+            ts = datetime.fromisoformat(m[ts_key].replace("+0000", "+00:00"))
+            if ts >= since:
+                out.append({**m, "ts": ts})
+            else:
+                older = True
+        nxt = page.get("paging", {}).get("next")
+        if not nxt or older:
+            return out
+        page = get_json(nxt)
+
+
+def _first_value(d: dict):
+    return (d.get("values") or [{}])[0].get("value", (d.get("total_value") or {}).get("value"))
+
+
+def facebook_stats(cfg: dict, since: datetime) -> dict:
+    """The Page's followers and, per reel of the window, plays / reach / average watch / reactions / comments / shares
+    (video_insights; each metric that the token or the API version refuses is left out, with a note)."""
+    token, page = os.environ.get(cfg["token_env"], ""), os.environ.get(cfg["page_env"], "")
+    if not token or not page:
+        return {}
+    base = f"https://graph.facebook.com/{cfg['api_version']}"
+
+    def q(path: str, tok: str, **params) -> dict:
+        return get_json(f"{base}/{path}?" + urllib.parse.urlencode({**params, "access_token": tok}))
+
+    try:
+        try:
+            pg = q(page, token, fields="id,name,followers_count,fan_count,access_token")
+        except RuntimeError:  # a Page token may not be allowed to read its own access_token field
+            pg = q(page, token, fields="id,name,followers_count,fan_count")
+        tok = pg.get("access_token") or token
+        out = {"name": pg.get("name"), "followers": pg.get("followers_count", pg.get("fan_count"))}
+        reels = _list_since(q(f"{pg.get('id', page)}/video_reels", tok, fields="id,description,created_time,permalink_url",
+                              limit=50), since, "created_time")
+    except RuntimeError as e:
+        return {"note": f"Facebook stats failed: {e}"}
+    missing = set()
+    for r in reels:
+        vals: dict = {}
+        try:
+            data = q(f"{r['id']}/video_insights", tok, metric=",".join(cfg["reel_metrics"])).get("data", [])
+        except RuntimeError:
+            data = []
+            for m in cfg["reel_metrics"]:
+                try:
+                    data += q(f"{r['id']}/video_insights", tok, metric=m).get("data", [])
+                except RuntimeError:
+                    missing.add(m)
+        for d in data:
+            vals[d["name"]] = _first_value(d)
+        social = vals.get("post_video_social_actions") if isinstance(vals.get("post_video_social_actions"), dict) else {}
+        reactions = vals.get("post_video_likes_by_reaction_type")
+        r.update({"plays": vals.get("blue_reels_play_count"), "reach": vals.get("post_impressions_unique"),
+                  "avg_ms": vals.get("post_video_avg_time_watched"),
+                  "likes": sum(reactions.values()) if isinstance(reactions, dict) else None,
+                  "comments": social.get("COMMENT"), "shares": social.get("SHARE")})
+        if (r.get("permalink_url") or "").startswith("/"):
+            r["permalink_url"] = "https://www.facebook.com" + r["permalink_url"]
+    out["posts"] = reels
+    if missing:
+        out["note"] = (f"Facebook did not give {', '.join(sorted(missing))}: the Page token may need the read_insights "
+                       "permission (Graph API Explorer: add it, extend, take the Page token again)")
+    return out
+
+
+def threads_stats(cfg: dict, since: datetime) -> dict:
+    """Followers (threads_insights) and, per post of the window, views / likes / replies / reposts / quotes / shares
+    (threads_manage_insights)."""
+    token, user = os.environ.get(cfg["token_env"], ""), os.environ.get(cfg["user_env"], "")
+    if not token or not user:
+        return {}
+    base = "https://graph.threads.net/v1.0"
+
+    def q(path: str, **params) -> dict:
+        return get_json(f"{base}/{path}?" + urllib.parse.urlencode({**params, "access_token": token}))
+
+    try:
+        out = {"username": q("me", fields="username").get("username")}
+        posts = _list_since(q(f"{user}/threads", fields="id,text,timestamp,permalink,media_type", limit=50), since, "timestamp")
+    except RuntimeError as e:
+        return {"note": f"Threads stats failed: {e}"}
+    try:
+        out["followers"] = _first_value((q(f"{user}/threads_insights", metric="followers_count").get("data") or [{}])[0])
+    except RuntimeError as e:
+        out["note"] = f"Threads followers not available ({e})"
+    for m in posts:
+        try:
+            m.update({d["name"]: _first_value(d) for d in q(f"{m['id']}/insights", metric=",".join(cfg["post_metrics"])).get("data", [])})
+        except RuntimeError as e:
+            out["note"] = f"Threads post numbers not available ({e}): the app needs threads_manage_insights"
+            break
+    out["posts"] = posts
+    return out
+
+
+def telegram_stats(cfg: dict) -> dict:
+    """Subscribers only: the Bot API has no view counts for channel posts."""
+    token, chan = os.environ.get(cfg["token_env"], ""), os.environ.get(cfg["channel_env"], "")
+    if not token or not chan:
+        return {}
+    chan = chan if chan.startswith(("@", "-")) else "@" + chan
+    try:  # the bot token is part of the URL: get_json's errors carry the response text only, never the URL
+        n = get_json(f"https://api.telegram.org/bot{token}/getChatMemberCount?" + urllib.parse.urlencode({"chat_id": chan}))
+    except RuntimeError as e:
+        return {"note": f"Telegram stats failed: {e}"}
+    return {"channel": chan, "subscribers": n.get("result")}
+
+
+def threads_token_line() -> dict:
+    """The Threads token lasts 60 days; get_token.py writes its expiry into the threads-publisher config."""
+    path = Path(__file__).resolve().parent.parent / "threads-publisher" / "config.toml"
+    try:
+        exp = tomllib.loads(path.read_text(encoding="utf-8"))["threads"]["token_expires"]
+        left = (datetime.fromisoformat(exp).date() - datetime.now(timezone.utc).date()).days
+    except (OSError, KeyError, ValueError):
+        return {}
+    line = f"Threads token: expires {exp} ({left} days)"
+    if left < 14:
+        line += (": generate a new one (Threads app -> Use cases -> Customize -> Settings -> Generate access token), "
+                 "run tools/threads-publisher/get_token.py --long, push config.toml")
+    return {"line": line, "warn": left < 14}
+
+
 # ---------- AI models: which ones made this reel, their specs, and what changed since the last run ----------
 
 ROLES = [("script", "Script writer"), ("judge", "Script judge"), ("voice", "Voice (TTS)"), ("captions", "Caption timing")]
@@ -230,8 +367,18 @@ def change_reason(role: str, cur: dict, prev: dict) -> str:
 
 # ---------- growth: snapshots of every report, compared with ~24 h and ~7 days ago ----------
 
-def snapshot(ig: dict, yt: dict, models: dict | None = None, pair: dict | None = None) -> dict:
+def snapshot(ig: dict, yt: dict, models: dict | None = None, pair: dict | None = None,
+             others: dict | None = None) -> dict:
     s: dict = {"at": datetime.now(timezone.utc).isoformat(timespec="seconds")}
+    o = others or {}
+    if o.get("fb", {}).get("posts") is not None:
+        s["fb"] = {"followers": o["fb"].get("followers"), "posts": {
+            r["id"]: {"views": r.get("plays"), "likes": r.get("likes")} for r in o["fb"]["posts"]}}
+    if o.get("th", {}).get("posts") is not None:
+        s["th"] = {"followers": o["th"].get("followers"), "posts": {
+            m["id"]: {"views": m.get("views"), "likes": m.get("likes")} for m in o["th"]["posts"]}}
+    if o.get("tg", {}).get("subscribers") is not None:
+        s["tg"] = {"subscribers": o["tg"]["subscribers"]}
     if pair:
         s["pair"] = pair
     if models:
@@ -298,6 +445,18 @@ def growth_rows(cur: dict, bases: list[dict | None]) -> list[tuple[str, str, lis
         for key in ("likes", "comments"):
             rows.append((f"YouTube {key} (last 60 days' Shorts)", num(sum(int(v[key]) for v in vids.values() if v.get(key) is not None)),
                          [signed(gained(vids, b["yt"]["videos"], key)) if b and b.get("yt") else "-" for b in bases]))
+    for k, name, follow in (("fb", "Facebook", "followers"), ("th", "Threads", "followers"), ("tg", "Telegram", "subscribers")):
+        c = cur.get(k)
+        if not c:
+            continue
+        rows.append((f"{name} {follow}", num(c.get(follow)),
+                     [signed(change(c.get(follow), b[k].get(follow))) if b and b.get(k) else "-" for b in bases]))
+        if "posts" in c:
+            for key in ("views", "likes"):
+                label = "plays" if k == "fb" and key == "views" else key
+                rows.append((f"{name} {label} (last 60 days' posts)",
+                             num(sum(int(m[key]) for m in c["posts"].values() if m.get(key) is not None)),
+                             [signed(gained(c["posts"], b[k]["posts"], key)) if b and b.get(k) else "-" for b in bases]))
     return rows
 
 
@@ -382,10 +541,31 @@ WINDOWS = [("24 h", 24, 16, 40), ("7 days", 168, 120, 240)]  # label, target age
 
 
 def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, history: list[dict],
-          pairs: list[dict] | None = None) -> tuple[str, str, str]:
+          pairs: list[dict] | None = None, others: dict | None = None, limit: int = 10) -> tuple[str, str, str, str]:
+    """(subject, text, html, attachment html). Each platform's list shows its newest `limit` posts in the mail; when a
+    list is longer, the attachment (all-posts-<day>.html) has every list in full ("" when none is longer). Mail apps
+    can't run a "show more" button (Gmail drops scripts and <details>), so the rest goes in the attachment."""
+    others = others or {}
+    full: list[str] = []      # the attachment's body
+    longer = False
+
+    def long_table(h: list[str], t: list[str], heading: str, header: str, rows: list[tuple[str, str]]) -> None:
+        nonlocal longer
+        h.append(header)
+        h += [r[0] for r in rows[:limit]]
+        h.append("</table>")
+        t += [r[1] for r in rows[:limit]]
+        if len(rows) > limit:
+            longer = True
+            more = f"+{len(rows) - limit} older: the full list is in the attached all-posts-{day}.html"
+            h.append(f"<p><i>{html.escape(more)}</i></p>")
+            t.append(more)
+        full.extend([f"<h3>{html.escape(heading)}</h3>", header] + [r[0] for r in rows] + ["</table>"])
+
     posted = json.loads((folder / "posted.json").read_text(encoding="utf-8")) if (folder / "posted.json").is_file() else {}
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
-    out = {k: os.environ.get(f"OUT_{k.upper()}", "") for k in ("make", "instagram", "youtube", "trial")}
+    out = {k: os.environ.get(f"OUT_{k.upper()}", "")
+           for k in ("make", "instagram", "youtube", "trial", "facebook", "threads", "telegram")}
     title = script.get("title") or day
     if not posted.get("youtube_url"):
         # put up by an earlier run whose record wasn't kept (2026-11-02: a Post reel run with YouTube unticked showed
@@ -410,9 +590,18 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     if (folder / "variants" / "trial" / "reel.mp4").is_file() or posted.get("trial_media_id") or out["trial"]:
         rows.append(("Instagram trial reel", state(bool(posted.get("trial_media_id")), out["trial"]),
                      posted.get("trial_permalink") or posted.get("trial_media_id", "")))
+    # Facebook Page / Threads / Telegram (2026-11-09): a row once the workflow has the step or posted.json has the post
+    for label, key, ids in (("Facebook reel", "facebook", ("facebook_url", "facebook_video_id")),
+                            ("Threads post", "threads", ("threads_url", "threads_id")),
+                            ("Telegram post", "telegram", ("telegram_url", "telegram_message_id"))):
+        done = next((str(posted[i]) for i in ids if posted.get(i)), "")
+        if out[key] or done:
+            rows.append((label, state(bool(done), out[key]), done))
     ok = rows[0][1] == "success" and all(r[1] in ("success", "skipped") for r in rows)  # skipped = switched off
     token = ig.get("token") or {}
-    subject = f"{'✅' if ok and not token.get('warn') else '⚠️'} Job Shorts {day}: {title}"
+    threads_token = threads_token_line()
+    subject = (f"{'✅' if ok and not token.get('warn') and not threads_token.get('warn') else '⚠️'} "
+               f"Job Shorts {day}: {title}")
 
     def link(v: str) -> str:
         return f'<a href="{html.escape(v)}">{html.escape(v)}</a>' if v.startswith("http") else html.escape(v)
@@ -426,9 +615,10 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     if run_url:
         h.append(f'<p>Run: <a href="{run_url}">{run_url}</a></p>')
         t.append(f"Run: {run_url}")
-    if token.get("line"):
-        h.append(f"<p>{'⚠️ <b>' if token.get('warn') else ''}{html.escape(token['line'])}{'</b>' if token.get('warn') else ''}</p>")
-        t.append(token["line"])
+    for tk in (token, threads_token):
+        if tk.get("line"):
+            h.append(f"<p>{'⚠️ <b>' if tk.get('warn') else ''}{html.escape(tk['line'])}{'</b>' if tk.get('warn') else ''}</p>")
+            t.append(tk["line"])
 
     # the AI models behind this reel, and what changed since the last run (red, with the reason)
     models = models_used(folder)
@@ -451,7 +641,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         h.append("</table>")
 
     # growth since the reports ~24 h and ~7 days ago (stats-history.json, one snapshot per Daily reel run)
-    cur = snapshot(ig, yt)
+    cur = snapshot(ig, yt, others=others)
     bases = [baseline(history, *w[1:]) for w in WINDOWS]
     growth = growth_rows(cur, bases)
     if growth:
@@ -510,17 +700,19 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         t.append(line)
     posts = ig.get("posts") or []
     if posts:
-        h.append('<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Type</th>'
-                 "<th>Views</th><th>Reach</th><th>Likes</th><th>Comments</th><th>Saves</th><th>Shares</th><th align=\"left\">Post</th></tr>")
+        rows_ig = []
         for m in posts:
             cap = (m.get("caption") or "").split("\n")[0][:50]
             cells = [m["ts"].strftime("%d %b"), m.get("media_product_type", ""), with_day(m.get("views"), m["id"], day_ig, "views"),
                      num(m.get("reach")), with_day(m.get("like_count"), m["id"], day_ig, "likes"), num(m.get("comments_count")),
                      num(m.get("saved")), num(m.get("shares"))]
-            h.append("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
-                     + f'<td><a href="{html.escape(m.get("permalink", ""))}">{html.escape(cap)}</a></td></tr>')
-            t.append(" | ".join(cells) + f" | {cap}")
-        h.append("</table>")
+            rows_ig.append(("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
+                            + f'<td><a href="{html.escape(m.get("permalink", ""))}">{html.escape(cap)}</a></td></tr>',
+                            " | ".join(cells) + f" | {cap}"))
+        long_table(h, t, f"Instagram, last {days} days",
+                   '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Type</th>'
+                   "<th>Views</th><th>Reach</th><th>Likes</th><th>Comments</th><th>Saves</th><th>Shares</th><th align=\"left\">Post</th></tr>",
+                   rows_ig)
         totals = {k: sum(int(m.get(k) or 0) for m in posts) for k in ("views", "like_count", "comments_count")}
         line = f"Totals: {num(totals['views'])} views, {num(totals['like_count'])} likes, {num(totals['comments_count'])} comments"
         h.append(f"<p>{line}</p>")
@@ -537,8 +729,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         h.append(f"<p>{html.escape(line)}</p>")
         t.append(line)
     if yt.get("videos"):
-        h.append('<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Views</th>'
-                 '<th>Likes</th><th>Comments</th><th>Watched</th><th align="left">Short</th></tr>')
+        rows_yt = []
         for v in sorted(yt["videos"], key=lambda v: v["published"], reverse=True):
             watched = f"{v['avg_percent']:.0f}% ({v['avg_seconds']:.0f} s)" if v.get("avg_percent") is not None else "-"
             cells = [v["published"], with_day(v.get("viewCount"), v["id"], day_yt, "views"), num(v.get("likeCount")),
@@ -547,10 +738,12 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
             if v.get("public_at"):
                 when = datetime.fromisoformat(v["public_at"].replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=5, minutes=30)))
                 name += f" (scheduled: public {when:%d %b %H:%M} IST)"
-            h.append("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
-                     + f'<td><a href="https://youtube.com/shorts/{v["id"]}">{html.escape(name)}</a></td></tr>')
-            t.append(" | ".join(cells) + f" | {name}")
-        h.append("</table>")
+            rows_yt.append(("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
+                            + f'<td><a href="https://youtube.com/shorts/{v["id"]}">{html.escape(name)}</a></td></tr>',
+                            " | ".join(cells) + f" | {name}"))
+        long_table(h, t, f"YouTube, last {days} days",
+                   '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Views</th>'
+                   '<th>Likes</th><th>Comments</th><th>Watched</th><th align="left">Short</th></tr>', rows_yt)
         if any(v.get("avg_percent") is not None for v in yt["videos"]):
             line = "Watched = average share of the Short people watched (seconds); YouTube Analytics lags 1-2 days."
             h.append(f"<p><i>{line}</i></p>")
@@ -564,7 +757,68 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         if yt.get(key):
             h.append(f"<p><i>{html.escape(yt[key])}</i></p>")
             t.append(f"Note: {yt[key]}")
-    return subject, "\n".join(t) + "\n", "<html><body style=\"font-family:sans-serif\">" + "\n".join(h) + "</body></html>"
+
+    def ago(prev_key: str) -> dict | None:  # yesterday's per-post numbers of one platform, for the "(+N)" next to views
+        return (((bases[0] or {}).get(prev_key) or {}).get("posts"))
+
+    fb, th, tg = others.get("fb") or {}, others.get("th") or {}, others.get("tg") or {}
+    if fb:
+        h.append(f"<h3>Facebook, last {days} days</h3>")
+        t += ["", f"Facebook, last {days} days"]
+        if fb.get("name"):
+            line = f"{fb['name']}: {num(fb.get('followers'))} followers"
+            h.append(f"<p>{html.escape(line)}</p>")
+            t.append(line)
+        if fb.get("posts"):
+            day_fb, rows_fb = ago("fb"), []
+            for r in fb["posts"]:
+                cap = (r.get("description") or "").split("\n")[0][:50] or r["id"]
+                avg = r.get("avg_ms")
+                cells = [r["ts"].strftime("%d %b"), with_day(r.get("plays"), r["id"], day_fb, "views"), num(r.get("reach")),
+                         f"{avg / 1000:.1f} s" if isinstance(avg, (int, float)) else "-", num(r.get("likes")),
+                         num(r.get("comments")), num(r.get("shares"))]
+                rows_fb.append(("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
+                                + f'<td><a href="{html.escape(r.get("permalink_url", ""))}">{html.escape(cap)}</a></td></tr>',
+                                " | ".join(cells) + f" | {cap}"))
+            long_table(h, t, f"Facebook, last {days} days",
+                       '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Plays</th>'
+                       '<th>Reach</th><th>Avg watch</th><th>Reactions</th><th>Comments</th><th>Shares</th><th align="left">Reel</th></tr>',
+                       rows_fb)
+    if th:
+        h.append(f"<h3>Threads, last {days} days</h3>")
+        t += ["", f"Threads, last {days} days"]
+        if th.get("username"):
+            line = f"@{th['username']}: {num(th.get('followers'))} followers"
+            h.append(f"<p>{html.escape(line)}</p>")
+            t.append(line)
+        if th.get("posts"):
+            day_th, rows_th = ago("th"), []
+            for m in th["posts"]:
+                cap = (m.get("text") or "").split("\n")[0][:50] or m["id"]
+                cells = [m["ts"].strftime("%d %b"), with_day(m.get("views"), m["id"], day_th, "views"), num(m.get("likes")),
+                         num(m.get("replies")), num(m.get("reposts")), num(m.get("shares"))]
+                rows_th.append(("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
+                                + f'<td><a href="{html.escape(m.get("permalink", ""))}">{html.escape(cap)}</a></td></tr>',
+                                " | ".join(cells) + f" | {cap}"))
+            long_table(h, t, f"Threads, last {days} days",
+                       '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Views</th>'
+                       '<th>Likes</th><th>Replies</th><th>Reposts</th><th>Shares</th><th align="left">Post</th></tr>', rows_th)
+    if tg:
+        h.append("<h3>Telegram</h3>")
+        t += ["", "Telegram"]
+        if tg.get("channel"):
+            line = (f"{tg['channel']}: {num(tg.get('subscribers'))} subscribers "
+                    "(the Bot API gives no views per post; Telegram shows them under each post in the channel)")
+            h.append(f"<p>{html.escape(line)}</p>")
+            t.append(line)
+    for name, o in (("Facebook", fb), ("Threads", th), ("Telegram", tg)):
+        if o.get("note"):
+            h.append(f"<p><i>{html.escape(o['note'])}</i></p>")
+            t.append(f"Note ({name}): {o['note']}")
+
+    page = lambda parts: "<html><body style=\"font-family:sans-serif\">" + "\n".join(parts) + "</body></html>"  # noqa: E731
+    attachment = page([f"<h2>{html.escape(f'Job Shorts {day}: every post of the last {days} days')}</h2>"] + full) if longer else ""
+    return subject, "\n".join(t) + "\n", page(h), attachment
 
 
 def posted_youtube_id(folder: Path) -> str:
@@ -595,10 +849,15 @@ def main() -> None:
     pair = ({"date": day, "title": script.get("title", ""), "main": posted["media_id"], "trial": posted["trial_media_id"]}
             if posted.get("media_id") and posted.get("trial_media_id") else None)
     pairs = trial_pairs(cfg["instagram"], history, pair) if ig.get("username") else []
-    subject, text, body = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""), ig, yt, rep["days"], history, pairs)
+    others = {"fb": facebook_stats(cfg.get("facebook", {}), since) if cfg.get("facebook") else {},
+              "th": threads_stats(cfg.get("threads", {}), since) if cfg.get("threads") else {},
+              "tg": telegram_stats(cfg["telegram"]) if cfg.get("telegram") else {}}
+    subject, text, body, attachment = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""), ig, yt, rep["days"],
+                                            history, pairs, others, rep.get("rows_in_mail", 10))
     if a.save_stats:
         cutoff = datetime.now(timezone.utc) - timedelta(days=rep.get("keep_stats_days", 120))
-        history = [s for s in history if datetime.fromisoformat(s["at"]) >= cutoff] + [snapshot(ig, yt, models_used(a.folder.resolve()), pair)]
+        history = [s for s in history if datetime.fromisoformat(s["at"]) >= cutoff] + [
+            snapshot(ig, yt, models_used(a.folder.resolve()), pair, others)]
         stats_file.write_text(json.dumps({"snapshots": history}, indent=1) + "\n", encoding="utf-8")
         print(f"stats saved to {stats_file} ({len(history)} snapshots)")
     if a.dry_run:
@@ -611,6 +870,8 @@ def main() -> None:
     msg["Subject"], msg["From"], msg["To"] = subject, user, os.environ.get(rep["to_env"]) or user
     msg.set_content(text)
     msg.add_alternative(body, subtype="html")
+    if attachment:  # the full lists, when a platform has more posts than the mail shows
+        msg.add_attachment(attachment.encode("utf-8"), maintype="text", subtype="html", filename=f"all-posts-{day}.html")
     with smtplib.SMTP_SSL(rep["smtp_host"], rep["smtp_port"], timeout=60) as s:
         s.login(user, password)
         s.send_message(msg)

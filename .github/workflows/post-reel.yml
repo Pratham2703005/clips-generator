@@ -26,9 +26,21 @@ on:
         description: "Instagram: post the run's trial reel (only non-followers see it), if it made one"
         type: boolean
         default: true
+      facebook:
+        description: "Facebook: post as a Reel on the Page"
+        type: boolean
+        default: true
+      threads:
+        description: "Threads: post as a video"
+        type: boolean
+        default: true
+      telegram:
+        description: "Telegram: post to the channel"
+        type: boolean
+        default: true
 
 permissions:
-  contents: read
+  contents: write   # Threads fetches the reel from a temporary asset on the release "reel-uploads"
   actions: read     # to download the run's artifact
 
 jobs:
@@ -88,6 +100,33 @@ jobs:
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
         run: python tools/youtube-publisher/publish.py --folder "$FOLDER"
+      - name: Post to Facebook
+        id: facebook
+        if: always() && steps.download.outcome == 'success' && inputs.facebook
+        continue-on-error: true
+        env:
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          IG_APP_SECRET: ${{ secrets.IG_APP_SECRET }}
+        run: python tools/facebook-publisher/publish.py --folder "$FOLDER"
+      - name: Post to Threads
+        id: threads
+        if: always() && steps.download.outcome == 'success' && inputs.threads
+        continue-on-error: true
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          GH_TOKEN: ${{ github.token }}
+        run: python tools/threads-publisher/publish.py --folder "$FOLDER"
+      - name: Post to Telegram
+        id: telegram
+        if: always() && steps.download.outcome == 'success' && inputs.telegram
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+        run: python tools/telegram-publisher/publish.py --folder "$FOLDER"
       - name: Keep the post record
         if: always() && steps.download.outcome == 'success'
         uses: actions/upload-artifact@v4
@@ -112,10 +151,19 @@ jobs:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
           OUT_MAKE: ${{ steps.download.outcome }}
           OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
           OUT_YOUTUBE: ${{ steps.youtube.outcome }}
           OUT_TRIAL: ${{ steps.trial.outcome }}
+          OUT_FACEBOOK: ${{ steps.facebook.outcome }}
+          OUT_THREADS: ${{ steps.threads.outcome }}
+          OUT_TELEGRAM: ${{ steps.telegram.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$FOLDER" ] || { echo "no reel downloaded"; FOLDER="reel-download/none"; mkdir -p "$FOLDER"; }

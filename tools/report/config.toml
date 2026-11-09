@@ -12,6 +12,8 @@ env_files = ["../../.env"]
 # ~24 h and ~7 days ago. Snapshots older than keep_stats_days are dropped.
 stats_file = "../../content/stats-history.json"
 keep_stats_days = 120
+# per platform, the newest N posts go in the mail; the full lists of the window come as an attached HTML file
+rows_in_mail = 10
 
 [instagram]
 api_version = "v26.0"
@@ -19,6 +21,23 @@ token_env = "IG_ACCESS_TOKEN"
 user_env = "IG_USER_ID"
 # needs the Meta configuration's instagram_manage_insights permission; without it, likes and comments only
 media_metrics = ["views", "reach", "saved", "shares"]
+
+[facebook]
+api_version = "v26.0"
+token_env = "FB_PAGE_TOKEN"
+page_env = "FB_PAGE_ID"
+# video_insights of a Page reel; any the token can't read are left out (with a note in the mail)
+reel_metrics = ["blue_reels_play_count", "post_impressions_unique", "post_video_avg_time_watched",
+                "post_video_likes_by_reaction_type", "post_video_social_actions"]
+
+[threads]
+token_env = "THREADS_ACCESS_TOKEN"
+user_env = "THREADS_USER_ID"
+post_metrics = ["views", "likes", "replies", "reposts", "quotes", "shares"]   # needs threads_manage_insights
+
+[telegram]
+token_env = "TELEGRAM_BOT_TOKEN"
+channel_env = "TELEGRAM_CHANNEL"
 
 [youtube]
 # needs the youtube.readonly scope (authorize.py); without it the email says so

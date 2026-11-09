@@ -1,0 +1,12 @@
+# telegram-publisher: posts the day's reel to the Telegram channel @fresherjobs_isha. See publish.py.
+
+[telegram]
+token_env = "TELEGRAM_BOT_TOKEN"  # BotFather token of @pk07007_bot (admin of the channel); never printed
+channel_env = "TELEGRAM_CHANNEL"  # "@fresherjobs_isha"
+env_files = ["../../.env"]        # for runs on the PC; the workflow passes repository secrets instead
+caption_max = 1024                # Telegram's limit for a video caption; the rest follows as a message
+message_max = 4096                # Telegram's limit for a text message
+max_mb = 50                       # Bot API upload limit
+width = 1080                      # the reel's size, so the player shows it vertical
+height = 1920
+cover_seconds = 2.2               # thumbnail frame when compose.json has no cover_seconds

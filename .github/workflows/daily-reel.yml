@@ -89,6 +89,18 @@ on:
         description: "YouTube: upload as a Short"
         type: boolean
         default: true
+      facebook:
+        description: "Facebook: post as a Reel on the Page"
+        type: boolean
+        default: true
+      threads:
+        description: "Threads: post as a video"
+        type: boolean
+        default: true
+      telegram:
+        description: "Telegram: post to the channel"
+        type: boolean
+        default: true
       save_history:
         description: "Record this reel's jobs and ideas in content/history.json (so they don't repeat)"
         type: boolean
@@ -266,6 +278,48 @@ jobs:
           [ -n "$NAME" ] && folder="content/custom/$NAME"
           python tools/youtube-publisher/publish.py --folder "$folder"
 
+      # Facebook Page, Threads, Telegram (2026-11-09): the main reel as it is. Each on its own, and a failure shows in
+      # the report without failing the run.
+      - name: Post to Facebook
+        id: facebook
+        if: always() && steps.make.outcome == 'success' && (github.event_name == 'schedule' || inputs.facebook)
+        continue-on-error: true
+        env:
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          # optional: with both, the log shows whether the Page token expires
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          IG_APP_SECRET: ${{ secrets.IG_APP_SECRET }}
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/facebook-publisher/publish.py --folder "$folder"
+
+      - name: Post to Threads
+        id: threads
+        if: always() && steps.make.outcome == 'success' && (github.event_name == 'schedule' || inputs.threads)
+        continue-on-error: true
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          GH_TOKEN: ${{ github.token }}   # the reel sits a few minutes on the release "reel-uploads" for Threads to fetch
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/threads-publisher/publish.py --folder "$folder"
+
+      - name: Post to Telegram
+        id: telegram
+        if: always() && steps.make.outcome == 'success' && (github.event_name == 'schedule' || inputs.telegram)
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/telegram-publisher/publish.py --folder "$folder"
+
       # what went up where, for a later Post reel run of this reel (so it never posts the same thing twice)
       - name: Keep the post record
         if: always() && steps.make.outcome == 'success'
@@ -303,10 +357,20 @@ jobs:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          # Facebook Page / Threads / Telegram numbers (each part is left out with a note when its token is missing)
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
           OUT_MAKE: ${{ steps.make.outcome }}
           OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
           OUT_YOUTUBE: ${{ steps.youtube.outcome }}
           OUT_TRIAL: ${{ steps.trial.outcome }}
+          OUT_FACEBOOK: ${{ steps.facebook.outcome }}
+          OUT_THREADS: ${{ steps.threads.outcome }}
+          OUT_TELEGRAM: ${{ steps.telegram.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           DAY="${DAY:-$(TZ=Asia/Kolkata date +%F)}"

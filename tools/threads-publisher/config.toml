@@ -1,0 +1,15 @@
+# threads-publisher: posts the day's reel to Threads (@isha.07007). See publish.py; the token comes from get_token.py.
+
+[threads]
+token_env = "THREADS_ACCESS_TOKEN"   # 60-day token; never printed
+user_env = "THREADS_USER_ID"
+env_files = ["../../.env"]           # for runs on the PC; the workflow passes repository secrets instead
+token_expires = "2027-01-08"         # written by get_token.py (60 days from 2026-11-09); the report warns 14 days before
+text_max = 500                       # Threads' limit for a post's text
+site_url = "https://ats-jobs-api.pk2732004.workers.dev"  # replaces "link in bio" ("" = keep the text)
+repo = "Pratham2703005/clips-generator"   # when GITHUB_REPOSITORY isn't set (runs on the PC)
+release_tag = "reel-uploads"         # public release that holds a reel for a few minutes while Threads fetches it
+
+[poll]
+every_seconds = 10
+max_minutes = 10
