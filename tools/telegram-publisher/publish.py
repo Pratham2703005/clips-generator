@@ -190,7 +190,8 @@ def main() -> None:
     if thumb:
         shutil.rmtree(thumb.parent, ignore_errors=True)
     mid = msg["message_id"]
-    link = f"https://t.me/{channel[1:]}/{mid}" if channel.startswith("@") else ""
+    # telegram.me, not t.me: some Indian ISPs block t.me at DNS (2026-11-09)
+    link = f"https://telegram.me/{channel[1:]}/{mid}" if channel.startswith("@") else ""
     record.update({"telegram_message_id": mid, "telegram_url": link,
                    "telegram_posted_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
     record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
