@@ -76,7 +76,33 @@ def call(method: str, url: str, token: str, fields: dict | None = None, body: by
         raise RuntimeError(f"{method} {where}: HTTP {e.code}: {msg}") from None
 
 
-def caption_for(folder: Path, limit: int, site_url: str = "") -> str:
+URL = re.compile(r"https?://\S+")
+
+
+def without_links(text: str, note: str) -> str:
+    """The caption with no links (user, 2026-11-10: Facebook reach is ~0 and link-heavy posts are said to be shown
+    less): "  Apply: <url>" lines, "<Name>: <url>" lines and the "...: link in bio." line go, and a URL inside other
+    text is cut out. When anything went, `note` (where the links are instead) comes in above the hashtags."""
+    kept, cut = [], False
+    for line in text.splitlines():
+        if URL.search(line):
+            cut = True
+            if re.fullmatch(r"\s*Apply:\s*\S+\s*", line) or re.fullmatch(r"\s*[^:\n]{1,80}:\s*https?://\S+\s*", line):
+                continue
+            line = URL.sub("", line).rstrip(" :-")
+        if re.search(r"link in bio", line, flags=re.I):  # the whole "...: link in bio." line: links_note replaces it
+            cut = True
+            continue
+        kept.append(line)
+    out = re.sub(r"\n{3,}", "\n\n", "\n".join(kept)).strip()
+    if cut and note:
+        lines = out.splitlines()
+        at = len(lines) - 1 if lines and lines[-1].lstrip().startswith("#") else len(lines)
+        out = "\n".join(lines[:at]).rstrip() + f"\n\n{note}" + ("\n\n" + "\n".join(lines[at:]) if lines[at:] else "")
+    return out
+
+
+def caption_for(folder: Path, limit: int, site_url: str = "", links: bool = True, links_note: str = "") -> str:
     desc, script = folder / "description.txt", folder / "script.json"
     if desc.is_file():
         text = desc.read_text(encoding="utf-8").strip()
@@ -86,6 +112,8 @@ def caption_for(folder: Path, limit: int, site_url: str = "") -> str:
         text = ""
     if not text:
         print("warning: no description.txt or script.json caption: posting without a caption")
+    if not links:
+        return without_links(text, links_note)[:limit].rstrip()
     if site_url:  # as on YouTube: the link itself, clickable here, instead of "link in bio"
         text = re.sub(r":?\s*link in bio\.?", f": {site_url}", text, flags=re.I)
     return text[:limit].rstrip()
@@ -184,7 +212,7 @@ def main() -> None:
     except RuntimeError as e:
         sys.exit(f"token/Page check failed ({len(token)}-character token): {e}")
     print(f"page: {name} (id {page_id}); {token_expiry(base, ptoken) or 'token expiry not checked'}")
-    caption = caption_for(folder, fb["caption_max"], fb.get("site_url", ""))
+    caption = caption_for(folder, fb["caption_max"], fb.get("site_url", ""), fb.get("links", True), fb.get("links_note", ""))
     print(f"reel: {video} ({video.stat().st_size / 1e6:.1f} MB), caption {len(caption)} characters")
     if a.dry_run:
         print("---\n" + caption + "\n---\n(dry run: nothing posted)")

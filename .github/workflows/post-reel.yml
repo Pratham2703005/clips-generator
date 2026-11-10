@@ -52,6 +52,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
+      # for the cover frames: the YouTube thumbnail and the Telegram preview (both are skipped without it)
+      - name: FFmpeg
+        continue-on-error: true
+        timeout-minutes: 4
+        run: timeout 180 bash -c 'sudo apt-get update -q && sudo apt-get install -y -q ffmpeg' && ffmpeg -version | head -1
       - name: Download the reel
         id: download
         env:

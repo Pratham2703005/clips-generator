@@ -24,6 +24,7 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -143,6 +144,9 @@ def publish_time(at: str, now: datetime | None = None) -> datetime | None:
 def cover_frame(folder: Path, video: Path, seconds: float) -> Path | None:
     """The Instagram cover (the frame with the whole hook card) as a JPEG under YouTube's 2 MB thumbnail limit."""
     out = Path(tempfile.gettempdir()) / f"yt-cover-{folder.name}.jpg"
+    if not shutil.which("ffmpeg"):  # 2026-11-10: the Post reel runner had none and the Short's step failed after upload
+        print("warning: no ffmpeg here, so no cover frame")
+        return None
     for q in (3, 6, 10):
         r = subprocess.run(["ffmpeg", "-y", "-loglevel", "error", "-ss", f"{seconds:.2f}", "-i", str(video), "-frames:v", "1",
                             "-q:v", str(q), str(out)], capture_output=True, text=True)

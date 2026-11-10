@@ -6,7 +6,11 @@ token_env = "FB_PAGE_TOKEN"       # the Page token (Graph API Explorer, clip-gen
 page_env = "FB_PAGE_ID"           # the Page's ID (Business settings shows 1458085487385755)
 env_files = ["../../.env"]        # for runs on the PC; the workflow passes repository secrets instead
 caption_max = 5000                # Facebook takes far more; the description is ~500-1500 characters
-site_url = "https://ats-jobs-api.pk2732004.workers.dev"  # replaces "link in bio" (links are clickable here; "" = keep the text)
+site_url = "https://ats-jobs-api.pk2732004.workers.dev"  # replaces "link in bio" when links = true ("" = keep the text)
+# 2026-11-10: no links in the Facebook caption (reach ~0; link-heavy posts are said to be shown less). The jobs stay
+# named; their apply links live on Telegram, which links_note points to (by name, not as a link).
+links = false
+links_note = "Apply links aur roz ki fresh jobs: Telegram pe fresherjobs_isha channel search karo."
 
 [poll]
 every_seconds = 10                # Facebook processes the reel, then publishes it
