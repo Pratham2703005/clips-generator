@@ -223,7 +223,7 @@ def facebook_stats(cfg: dict, since: datetime) -> dict:
                               limit=50), since, "created_time")
     except RuntimeError as e:
         return {"note": f"Facebook stats failed: {e}"}
-    missing = set()
+    missing, why = set(), ""
     for r in reels:
         vals: dict = {}
         try:
@@ -233,8 +233,9 @@ def facebook_stats(cfg: dict, since: datetime) -> dict:
             for m in cfg["reel_metrics"]:
                 try:
                     data += q(f"{r['id']}/video_insights", tok, metric=m).get("data", [])
-                except RuntimeError:
+                except RuntimeError as e:
                     missing.add(m)
+                    why = why or str(e)  # Meta's own words, so the mail says what is wrong (no token in it)
         for d in data:
             vals[d["name"]] = _first_value(d)
         social = vals.get("post_video_social_actions") if isinstance(vals.get("post_video_social_actions"), dict) else {}
@@ -247,8 +248,9 @@ def facebook_stats(cfg: dict, since: datetime) -> dict:
             r["permalink_url"] = "https://www.facebook.com" + r["permalink_url"]
     out["posts"] = reels
     if missing:
-        out["note"] = (f"Facebook did not give {', '.join(sorted(missing))}: the Page token may need the read_insights "
-                       "permission (Graph API Explorer: add it, extend, take the Page token again)")
+        out["note"] = (f"Facebook did not give {', '.join(sorted(missing))} ({why[:300]}). If it is a permission, the "
+                       "Page token needs read_insights (Graph API Explorer: add it, extend, take the Page token again)")
+        print(f"Facebook insights: {out['note']}")  # in the run log too
     return out
 
 

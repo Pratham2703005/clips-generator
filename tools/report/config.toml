@@ -26,8 +26,9 @@ media_metrics = ["views", "reach", "saved", "shares"]
 api_version = "v26.0"
 token_env = "FB_PAGE_TOKEN"
 page_env = "FB_PAGE_ID"
-# video_insights of a Page reel; any the token can't read are left out (with a note in the mail)
-reel_metrics = ["blue_reels_play_count", "post_impressions_unique", "post_video_avg_time_watched",
+# video_insights of a Page reel; any the token can't read are left out (with a note in the mail). Needs read_insights
+# on the Page token. post_impressions_unique (reach) was dropped 2026-11-10: refused for reels even with read_insights.
+reel_metrics = ["blue_reels_play_count", "post_video_avg_time_watched",
                 "post_video_likes_by_reaction_type", "post_video_social_actions"]
 
 [threads]
