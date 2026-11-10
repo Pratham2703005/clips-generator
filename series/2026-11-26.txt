@@ -1,0 +1,41 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 12/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Internship se full-time offer
+cast: arjun, bunty
+jobs: india-freshers, 1
+hook: INTERNSHIP = 2 MAHINE KA INTERVIEW
+trial_hook: Don't waste your internship. Three habits turn it into an offer.
+trial_card: INTERNSHIP = INTERVIEW
+Bunty: Internship mil gayi! Do mahine kaam karo, certificate lo, bas.
+Arjun: Bas nahi. Ye do mahine ka interview hai. Kaam ke saath teen cheezein.
+Bunty: Kaunsi?
+Arjun: Pehli: har hafte manager ko teen line. Kya kiya, kahan atka, aage kya.
+Arjun: Doosri: ek kaam poora apne naam ka. Chhota sahi.
+Arjun: Teesri: last do hafte mein seedha poocho, full-time ka chance hai?
+Bunty: Poochna bura nahi lagega?
+Arjun: Nahi poocha, toh wo maan lenge tumhe interest nahi.
+Bunty: Internship mile kahan?
+Arjun: Company ki career site pe. Ek website roz fresh roles ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
+Bunty: Update, apna kaam, seedha sawaal.
+Arjun: Do mahine ka interview. Follow karo, kal coding round.
+
+--- description
+How to convert internship into full time job | PPO tips for interns | Fresher jobs India
+Interview prep 🧑‍💻
+Internship certificate nahi, 2 mahine ka interview hai. 3 kaam:
+1. Har hafte manager ko 3 line: kya kiya, kahan atka, aage kya
+2. Ek kaam poora apne naam ka
+3. Last 2 hafte mein seedha poocho: full-time ka chance hai?
+
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: coding round mein chup kyun nahi rehna.
+
+#internship #ppo #fresherjobs #jobsearchtips #careeradvice

@@ -1,0 +1,35 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 25/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Final round ke baad ghost
+cast: malhotra, riya
+jobs: india-freshers, 0
+hook: FINAL KE BAAD GHOST? DAY 5
+trial_hook: Don't wait forever after a final round. Mail on day five.
+trial_card: GHOSTED? DAY 5 MAIL
+Riya: Ma'am, final round ko ek hafta ho gaya. Koi reply nahi. Bas wait kar rahi hoon.
+Malhotra: Wait nahi. Paanchve working din ek mail. Teen line.
+Riya: Kya likhun?
+Malhotra: Final round ke liye dhanyavaad. Result ka koi update hai? Main abhi bhi interested hoon.
+Riya: Phir bhi reply nahi aaya toh?
+Malhotra: Ek hafte baad ek aur. Uske baad bas.
+Riya: Aur tab tak?
+Malhotra: Apply karna mat roko. Ek company ke liye sab pause nahi.
+Riya: Paanch din, teen line, aur apply chalu.
+Malhotra: Follow karo, kal background verification.
+
+--- description
+No response after final interview | Follow up email after final round | Interview result waiting
+Interview prep ⏳
+Final round ke baad reply nahi aaya?
+Day 5 (working day): 3 line ka mail: dhanyavaad, update?, abhi bhi interested
+1 hafte baad: ek aur
+Uske baad: bas
+Aur tab tak apply karna mat roko.
+
+Save karo. Kal: background verification mein kya check hota hai.
+
+#interviewresult #followupemail #fresherjobs #jobsearchtips #hrinterview

@@ -1,40 +1,36 @@
-# Season 3 "Layoff se API" - Ep 3 "Reactions vs clicks" (value, no promotion)
-# Jobs grow 16.5k -> 50k -> 95k -> 2.98 lakh; the friends' group reacts (3 reactions on "51000, updated ui", 25 Sep)
-# but analytics show almost nobody opens the link; Bunty was one of them (Season 1 callback). GitHub as the database
-# gets heavy. Screenshot: series/season3/assets/ep3-whatsapp-51k.png (the user's own message, no other names).
-# Written with the ig-reel skill: hookscore 94.8 STRONG.
-# Trial reel (non-followers only): the same reel with trial_hook as line 1 and trial_card on screen.
-title: Layoff se API | Ep 3: React kiya, khola nahi
-cast: arjun, bunty
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 3/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Expected salary as a fresher
+cast: arjun, riya
 jobs: india-freshers, 0
-hook: 3 REACTIONS. 0 CLICKS.
-trial_hook: Nobody opened my link. Three reactions, zero clicks.
-trial_card: KISI NE LINK NAHI KHOLA
-Arjun: Stop counting likes. Three reactions, but nobody opened it.
-Bunty: Par bhai, group pe sab ne react kiya tha! Dil, fire, sab.
-Arjun: Haan. Aur jobs badh rahi thi. Saadhe solah hazaar, phir pachaas hazaar. [show: series/season3/assets/ep3-whatsapp-51k.png]
-Bunty: Toh sab use kar rahe the?
-Arjun: Maine analytics dekha. Link kholne wale? Lagbhag koi nahi.
-Bunty (shocked): Matlab maine bhi nahi khola?
-Arjun: Tune bhi nahi khola, Bunty.
-Bunty: Isliye main do sau applications bhej raha tha!
-Arjun: Phir bhi jobs badhti gayi. Pachaanve hazaar. Phir do lakh athaanve hazaar.
-Bunty: Itna data rakha kahan?
-Arjun: GitHub mein. Files mein. Har raat ek commit.
-Bunty: GitHub database hai kya?
-Arjun: Nahi. Isliye har refresh dheema, har file bhaari.
-Bunty: Toh ab?
-Arjun: Seekh: reactions vanity hain, clicks sach. Like nahi, click gino.
-Bunty: Aur database?
-Arjun: Kal. Follow karo, aur likes mat gino.
+hook: SALARY? NUMBER NAHI, RANGE
+trial_hook: Never tell HR to pay whatever they want. Say a range.
+trial_card: 'JO DE DO' = KAM MILEGA
+Riya: HR ne expected salary poochi. Maine bola, jo aap de do.
+Arjun: Matlab sabse neeche wala number. Ek number nahi, range bolo. Research wali.
+Riya: Research kahan se?
+Arjun: Same role, same shehar, fresher ki salary. Do teen jagah se dekh lo.
+Arjun: Phir bolo: is role ki jo range maine dekhi, main usi mein expect karti hoon, aur flexible hoon.
+Riya: Agar wo current CTC poochein?
+Arjun: Seedha bolo: ye meri pehli job hai.
+Riya: Aur range zyada boli toh?
+Arjun: Range hai, toh baat hogi. Jo de do bola, toh sabse neeche wala milega.
+Riya: Range, research, flexible.
+Arjun: Follow karo, kal off-campus drive ki checklist.
 
 --- description
-Build in public | Side project analytics | Likes vs real users
-Layoff se API | Ep 3 📊
-16.5k → 50k → 95k → 2.98 lakh jobs. Dosto ke group pe har update pe reactions... par analytics ne dikhaya ki link lagbhag kisi ne nahi khola. (Bunty ne bhi nahi. Isliye Season 1 mein 200 applications. 😅)
-Aur data GitHub ki files mein tha: har refresh dheema, har file bhaari.
-Seekh: likes vanity hain, clicks sach. Like nahi, click gino.
+Expected salary answer for freshers | How to answer salary expectation | HR interview tips
+Interview prep 💰
+"Jo aap de do" bola, toh sabse neeche wala number milega.
+1. Same role, same city ki fresher salary 2-3 jagah se dekho
+2. Ek number nahi, range bolo
+3. "Main flexible hoon" saath mein
+Current CTC poochein? "Ye meri pehli job hai."
 
-Ep 4 kal: asli database. 🗄️
+Save karo. Kal: off-campus drive ki checklist.
 
-#layoffseapi #buildinpublic #analytics #sideproject #softwareengineer
+#salarynegotiation #hrinterview #fresherjobs #interviewtips #offerletter

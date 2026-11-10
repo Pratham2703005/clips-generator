@@ -1,0 +1,41 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 26/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Background verification
+cast: arjun, bunty
+jobs: india-freshers, 0
+hook: OFFER KE BAAD BHI CHECK HOTA HAI
+trial_hook: Don't lie on your resume. They check it after the offer.
+trial_card: OFFER KE BAAD CHECK
+Bunty: Offer aa gaya! Ab resume mein jo thoda badhaya tha, koi check nahi karega.
+Arjun: Karega. Background verification offer ke baad hota hai.
+Arjun: Kai companies joining se pehle ya baad mein verification karwati hain.
+Bunty: Kya check hota hai?
+Arjun: Degree, marksheets, internship, address, kabhi kabhi ID.
+Bunty: Internship ki date thodi badhayi thi.
+Arjun: Wahi pakdi jaati hai. Offer cancel ho sakta hai, join karne ke baad bhi.
+Bunty: Ab kya karun?
+Arjun: HR ko verification se pehle khud sach bata do.
+Bunty: Documents?
+Arjun: Ek folder: degree, saari marksheets, internship letter, ID, address proof. PDF mein.
+Bunty: Aur original?
+Arjun: Dikhane ke liye, jama karne ke liye nahi.
+Bunty: Sach, folder, original nahi.
+Arjun: Follow karo, kal do offers mein se kaunsa.
+
+--- description
+Background verification for freshers | BGV documents list | Fake experience in resume
+Interview prep 🗂️
+Offer ke baad bhi check hota hai. Ek folder (PDF) ready rakho:
+1. Degree + saari marksheets
+2. Internship letter
+3. ID + address proof
+Resume pe galat date ya fake internship? Verification se pehle HR ko khud sach batao.
+Originals dikhane ke liye, jama karne ke liye nahi.
+
+Save karo. Kal: 2 offers mein se kaunsa chunein.
+
+#backgroundverification #offerletter #fresherjobs #joiningdocuments #hrtips

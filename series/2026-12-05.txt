@@ -1,0 +1,35 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 21/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Interview ke pehle 30 second
+cast: malhotra, bunty
+jobs: india-freshers, 0
+hook: PEHLE 30 SECOND = IMPRESSION
+trial_hook: Your interview starts before your first answer. Thirty seconds.
+trial_card: PEHLE 30 SECOND
+Bunty: Ma'am, interview pehle sawaal se shuru hota hai na?
+Malhotra: Nahi. Pehle tees second se. Tum andar kaise aaye, kaise baithe, kya bole.
+Malhotra: Online ho toh camera aankh ki height pe, chehra roshni ki taraf.
+Bunty: Aur offline?
+Malhotra: Muskurao, good morning bolo, aur baithne ka ishaara hone do.
+Bunty: Haath milana?
+Malhotra: Wo badhaayein toh. Pakad normal, na dheeli, na kas ke.
+Bunty: Phone?
+Malhotra: Silent nahi, band. Vibrate bhi sunai deta hai.
+Malhotra: Pehle tees second. Follow karo, kal, aur koi offer hai?
+
+--- description
+First impression in interview tips | Interview body language for freshers | Online interview setup
+Interview prep 🤝
+Pehla jawab dene se pehle hi interview shuru ho jata hai:
+Online: camera aankh ki height pe, chehra roshni ki taraf
+Offline: muskurao, "Good morning", baithne ka ishaara hone do
+Handshake: wo badhaayein toh, normal pakad
+Phone: silent nahi, band
+
+Save karo. Kal: "Aur koi offer hai?" ka jawab.
+
+#interviewtips #bodylanguage #fresherjobs #onlineinterview #firstimpression

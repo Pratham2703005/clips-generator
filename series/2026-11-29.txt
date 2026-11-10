@@ -1,0 +1,38 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 15/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Interview ke baad 3 line ka mail
+cast: arjun, riya
+jobs: india-freshers, 0
+hook: INTERVIEW KE BAAD 3 LINE
+trial_hook: Send three lines after every interview. Same day, never longer.
+trial_card: 3 LINE, SAME DAY
+Riya: Interview achha gaya. Ab bas result ka wait.
+Arjun: Wait se pehle ek kaam. Same din, teen line ka mail.
+Riya: Thank you mail? Ye toh chamchagiri lagegi.
+Arjun: Lambi ho toh haan. Teen line ho toh professional.
+Riya: Kya likhun?
+Arjun: Pehli: dhanyavaad, role ke naam ke saath.
+Arjun: Doosri: interview ki ek baat jo yaad rahi. Jaise unka naya project.
+Arjun: Teesri: is role mein kaam karne ka intezaar hai.
+Riya: Bas?
+Arjun: Bas. Na resume dobara, na please select me.
+Riya: Kisko bhejun?
+Arjun: Jisne interview liya, ya HR ko, jis mail se invite aaya tha.
+Arjun: Teen line, same din. Follow karo, kal remote jobs ka sach.
+
+--- description
+Thank you email after interview for freshers | Follow up email after interview | Interview tips
+Interview prep ✉️
+Same din, 3 line:
+1. Dhanyavaad + role ka naam
+2. Interview ki ek baat jo yaad rahi
+3. "Is role mein kaam karne ka intezaar hai."
+Na resume dobara, na "please select me".
+
+Save karo. Kal: remote job ka scam kaise pehchanein.
+
+#interviewtips #emailtips #fresherjobs #jobsearchtips #hrinterview

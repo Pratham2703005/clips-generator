@@ -1,0 +1,39 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 6/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Explain your project in 3 lines
+cast: arjun, bunty
+jobs: india-freshers, 0
+hook: PROJECT: SIRF 3 LINE
+trial_hook: Don't list every feature of your project. Interviewers remember three lines.
+trial_card: PROJECT = 3 LINES
+Bunty: Project mein login, dashboard, chatbot, sab samjhaya. Interviewer ne beech mein rok diya.
+Arjun: Kyunki tumne syllabus suna diya. Sab bologe toh kuch yaad nahi rahega.
+Arjun: Format: problem, tumhara hissa, result. Teen line.
+Bunty: Problem?
+Arjun: Hostel complaints register mein likhte the, aur hafton kuch nahi hota tha.
+Bunty: Mera hissa?
+Arjun: Sirf jo tumne kiya. Maine backend aur database banaya. Team ka kaam apna mat bolo.
+Bunty: Result?
+Arjun: Ek number, agar sach hai. Kitne students ne use kiya, kitna time bacha.
+Bunty: Aur chatbot?
+Arjun: Wo tab, jab wo poochein. Agla sawaal tumhari teen line se hi aayega.
+Bunty: Matlab main decide kar raha hoon wo kya poochenge.
+Arjun: Exactly. Problem, hissa, result. Syllabus nahi.
+Arjun: Follow karo, kal gap year ka sawaal.
+
+--- description
+How to explain your project in interview | Final year project interview questions | Interview tips for freshers
+Interview prep 🛠️
+Project ka poora syllabus mat sunao. 3 line:
+1. Problem: kis ki dikkat solve ki
+2. Tumhara hissa: sirf jo tumne kiya
+3. Result: ek number, agar sach hai
+Baaki features tab, jab wo poochein. Agla sawaal tumhari 3 line se hi aata hai.
+
+Save karo. Kal: gap year kaise explain karein.
+
+#interviewtips #projectinterview #fresherjobs #placementpreparation #technicalinterview

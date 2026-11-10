@@ -1,0 +1,37 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 10/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Group discussion ke 3 rule
+cast: arjun, riya
+jobs: india-freshers, 0
+hook: GD: 3 RULE, CHILLANA NAHI
+trial_hook: Never shout in a group discussion. Three rules win it instead.
+trial_card: GD: CHILLAO MAT
+Riya: Kal GD hai. Plan hai, sabse pehle bolungi, sabse zor se.
+Arjun: Pehle bolna tab achha, jab point ho. Aur zor se bolna kabhi nahi.
+Riya: Toh rule kya hain?
+Arjun: Pehla: ek point, ek example. Lambi speech nahi.
+Arjun: Doosra: kisi ka naam lo. Jaise Rahul ne kaha, main usme jodti hoon.
+Riya: Isse kya hoga?
+Arjun: Dikhta hai tum sun rahi ho. GD mein sunna bhi check hota hai.
+Arjun: Teesra: end mein summary do, ya summary ka offer karo.
+Riya: Aur koi chillaye toh?
+Arjun: Tum mat chillao. Ruko, phir shaant awaaz mein point.
+Riya: Point, naam, summary.
+Arjun: Aur chillana nahi. Follow karo, kal paanch saal baad wala sawaal.
+
+--- description
+Group discussion tips for freshers | GD rules for placements | Campus placement GD
+Interview prep 🗣️
+GD mein jeet chillane se nahi hoti. 3 rule:
+1. Ek point, ek example (lambi speech nahi)
+2. Kisi ka naam lo: "Jaise Rahul ne kaha, main usme jodti hoon" (dikhta hai tum sun rahe ho)
+3. End mein summary do ya offer karo
+Koi chillaye? Tum shaant awaaz mein point rakho.
+
+Save karo. Kal: "5 saal baad khud ko kahan dekhte ho?"
+
+#groupdiscussion #gdtips #placementpreparation #fresherjobs #campusplacement

@@ -1,0 +1,38 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 14/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Why this company? 10 minute research
+cast: malhotra, bunty
+jobs: india-freshers, 0
+hook: WHY US? 10 MINUTE RESEARCH
+trial_hook: Never say big brand when they ask why this company. Ten minutes fixes it.
+trial_card: 'BIG BRAND' = WEAK
+Bunty: Why this company? Mera jawab ready hai. Big brand hai!
+Malhotra: Unhe pata hai. Wo dekh rahe hain tumne das minute bhi diye ya nahi.
+Bunty: Das minute mein kya hoga?
+Malhotra: Teen cheezein dhoondo. Company kya bechti hai, kisko, aur haal ki ek khabar.
+Bunty: Khabar kahan milegi?
+Malhotra: Company ki website pe, unka blog ya news section.
+Malhotra: Phir jodo: aapka product chhote dukaandaron ke liye hai. Mera project bhi billing pe tha.
+Bunty: Matlab apni kahani unki kahani se jodni hai.
+Malhotra: Haan. Aur salary ya location ko reason mat banao.
+Bunty: Brand bolna mana hai?
+Malhotra: Bol sakte ho, akela nahi. Brand plus tumhara connection.
+Bunty: Das minute, teen cheez, ek connection.
+Malhotra: Follow karo, kal interview ke baad wala mail.
+
+--- description
+Why do you want to join this company answer | Why this company interview question | Interview tips for freshers
+Interview prep 🔍
+"Big brand hai" akela kamzor jawab hai. 10 minute research:
+1. Company kya bechti hai
+2. Kisko bechti hai
+3. Haal ki ek khabar (website, blog, news)
+Phir apni kahani jodo: "Aapka product chhote dukaandaron ke liye hai, mera project bhi billing pe tha."
+
+Save karo. Kal: interview ke baad 3 line ka mail.
+
+#interviewtips #hrinterview #fresherjobs #interviewquestions #placementpreparation

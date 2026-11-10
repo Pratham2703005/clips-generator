@@ -1,0 +1,46 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 24/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | HR ko 5 line ka email
+cast: arjun, riya
+jobs: india-freshers|remote-india, 1
+hook: HR EMAIL: SIRF 5 LINE
+trial_hook: Stop sending long emails to HR. Five lines are enough.
+trial_card: HR EMAIL = 5 LINES
+Riya: HR ko das line ka email likha. Apni poori kahani.
+Arjun: Paanch line kaafi hain. Kahani interview mein.
+Riya: Paanch line mein kya aayega?
+Arjun: Pehli: kaunsa role, job ID ke saath.
+Arjun: Doosri: tum kaun ho. Degree aur saal.
+Arjun: Teesri: ek proof. Project ka naam aur result.
+Arjun: Chauthi: resume attached, PDF, apne naam se.
+Arjun: Paanchvi: kya hum is role pe aage baat kar sakte hain?
+Riya: Subject line?
+Arjun: Role ka naam aur tumhara naam. Bas.
+Riya: Role kahan dhoondhun?
+Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
+Riya: Paanch line, ek proof, PDF.
+Arjun: Follow karo, kal final round ke baad ghost.
+
+--- description
+Cold email to HR for job as a fresher | How to email HR for job opening | Job application email
+Interview prep 📧
+HR ko lambi kahani nahi, 5 line:
+1. Kaunsa role (job ID ke saath)
+2. Tum kaun ho: degree, saal
+3. Ek proof: project + result
+4. Resume attached (PDF, apne naam se)
+5. "Kya hum is role pe aage baat kar sakte hain?"
+Subject: role + tumhara naam.
+
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: final round ke baad reply nahi aaya toh.
+
+#coldemail #hremail #fresherjobs #jobsearchtips #offcampusjobs

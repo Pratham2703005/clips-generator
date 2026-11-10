@@ -1,39 +1,36 @@
-# Season 3 "Layoff se API" (build in public, 10 episodes, 15-24 Nov) - Ep 1 "Ek din, saare stack" (value, no promotion)
-# A flashback before Season 1: Arjun (the one who always had "the right tool") is the builder. Verma Sir is his old-school
-# senior. Bunty is the friend who reacts but never opens the link (why he sent 200 applications in Season 1).
-# Promotion only in Ep 5 (Apify launch), Ep 9 (landing page) and Ep 10 (finale). The user's story (2026-11-07): AI made
-# the work fast, but they wanted every tech stack understood in one day; laid off after five months. No Outlier arc.
-# Written with the ig-reel skill: hookscore 83.1 STRONG.
-# Trial reel (non-followers only): the same reel with trial_hook as line 1 and trial_card on screen.
-title: Layoff se API | Ep 1: Ek din, saare stack
-cast: arjun, verma
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 1/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Why should we hire you?
+cast: arjun, riya
 jobs: india-freshers, 0
-hook: 5 MAHINE KI JOB. PHIR LAYOFF.
-trial_hook: Laid off after five months? Don't let one mail decide your worth.
-trial_card: 5 MAHINE. 1 MAIL.
-Arjun: Your first job can end in five months. Don't let it end you.
-Verma: Arjun, kal tak React, Node, Docker, Kubernetes. Sab samajh ke aana.
-Arjun (shocked): Sir, ek din mein chaar stack?
-Verma: Hamare zamane mein ek raat mein poora manual padh lete the.
-Arjun: Main AI ke saath kaam karta tha. Ticket subah aata, shaam tak done.
-Verma: Speed achhi hai. Par har stack andar tak samjha?
-Arjun: Samajh raha tha, Sir. Bas ek din mein nahi.
-Verma: Company ko ek din mein sab chahiye.
-Arjun: Paanchve mahine mail aaya. Restructuring. Mera naam list mein.
-Verma (shocked): Beta, main kuch nahi kar saka.
-Arjun: Seekh ek thi. AI speed deta hai. Depth ko time chahiye.
-Arjun: Aur ek layoff mail kisi ki value nahi batata.
-Verma: Toh ab?
-Arjun: Ab job search. AI interviews, aur zero replies.
-Verma: Phir?
-Arjun: Job end hui, main nahi. Follow karo, kal dikhata hoon kya banaya.
+hook: WHY HIRE YOU? 3 PART JAWAB
+trial_hook: Never say hardworking in an interview. Use these three parts instead.
+trial_card: HARDWORKING SE HIRE NAHI
+Riya: Why should we hire you pe maine bola, I am hardworking.
+Arjun: Reject, Kyunki sab yahi bolte hain. Isliye tum yaad nahi rahi.
+Riya: Toh kya bolun?
+Arjun: Teen part. Pehla: job ki ek zaroorat, description se.
+Arjun: Doosra: tumhara ek proof. Project, internship, ya result.
+Arjun: Teesra: pehle mahine mein tum kya karogi.
+Riya: Example do.
+Arjun: Aapko SQL reporting chahiye. Maine fest ka data SQL mein saaf kiya. Pehle mahine dashboards samjhungi.
+Riya: Tees second mein ho gaya!
+Arjun: Zaroorat, proof, plan. Hardworking nahi.
+Arjun: Follow karo, kal weakness ka sahi jawab.
 
 --- description
-Layoff after 5 months | First job layoff | Learning a new tech stack fast
-Layoff se API | Ep 1 💼
-5 mahine ki pehli job. AI ke saath kaam tez tha, par expectation thi: har tech stack ek din mein andar tak samjho. Phir "restructuring" mail.
-Seekh: AI speed deta hai, depth ko time chahiye. Aur ek layoff tumhari value nahi batata.
+Why should we hire you answer for freshers | HR interview questions | Interview tips
+Interview prep 🎯
+"I am hardworking" sab bolte hain, isliye yaad nahi rehta. 3 part ka jawab:
+1. Zaroorat: job description se ek cheez
+2. Proof: project, internship ya result
+3. Plan: pehle mahine mein kya karoge
+Example: "Aapko SQL reporting chahiye. Maine fest ka data SQL mein saaf kiya. Pehle mahine dashboards samjhungi."
 
-Ep 2 kal: job search se thak ke, Arjun ne kya banaya? 🛠️
+Save karo. Kal: strengths aur weakness ka sahi jawab.
 
-#layoffseapi #buildinpublic #layoff #softwareengineer #techjobs
+#interviewtips #hrinterview #fresherjobs #interviewpreparation #placementpreparation

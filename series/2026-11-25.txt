@@ -1,0 +1,35 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 11/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | 5 saal baad kahan dekhte ho?
+cast: malhotra, riya
+jobs: india-freshers, 0
+hook: 5 SAAL BAAD? YE BOLO
+trial_hook: Don't joke about five years. Say a two-year plan instead.
+trial_card: 'AAPKI KURSI' = NO
+Riya: Five years mein kahan dekhti ho, iska jawab ready hai. Aapki kursi pe!
+Malhotra: Joke lagta hai. Aur risky joke.
+Riya: Toh kya bolun? Mujhe sach mein nahi pata.
+Malhotra: Kisi ko nahi pata. Ye sawaal plan dekhta hai, prediction nahi.
+Malhotra: Bolo: do saal mein is role mein strong hona hai. Phir team mein badi zimmedari.
+Riya: Company ka naam?
+Malhotra: Jodo: yahin grow karna chahti hoon. Agar sach hai.
+Riya: Aur agar aage padhai ka plan hai?
+Malhotra: Focus is role pe rakho. Plan badal bhi sakta hai.
+Riya: Role, zimmedari, yahin.
+Malhotra: Kursi nahi. Follow karo, kal internship ka asli game.
+
+--- description
+Where do you see yourself in 5 years answer for freshers | HR interview questions
+Interview prep 🔭
+"Aapki kursi" = joke, aur risky joke. Ye sawaal plan dekhta hai:
+1. 2 saal: is role mein strong
+2. Phir: team mein badi zimmedari
+3. "Yahin grow karna chahta/chahti hoon" (agar sach hai)
+
+Save karo. Kal: internship ko full-time offer mein kaise badlein.
+
+#hrinterview #interviewquestions #fresherjobs #interviewtips #careergoals

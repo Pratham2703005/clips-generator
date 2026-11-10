@@ -1,0 +1,44 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 8/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Ek resume, 50 jobs? Nahi
+cast: arjun, riya
+jobs: india-freshers|remote-india, 1
+hook: 10 MINUTE RESUME FIX
+trial_hook: Stop sending the same resume to fifty jobs. Ten minutes fixes it.
+trial_card: 10 MINUTE RESUME FIX
+Riya: Applied. Next. Ek hi resume, pachaas jobs. Reply zero.
+Arjun: Sabke liye ek resume, matlab kisi ke liye nahi.
+Riya: Har job ke liye naya resume? Itna time kahan?
+Arjun: Naya nahi. Das minute ka badlaav.
+Arjun: Job description kholo. Teen skill dhoondo jo baar baar aayi hain.
+Arjun: Wo tumhare paas hain, toh resume ke upar wale hisse mein laao.
+Riya: Aur jo nahi hain?
+Arjun: Mat likho. Interview mein pakde jaoge.
+Riya: Summary bhi badlun?
+Arjun: Ek line. Role ka naam aur wahi teen skill.
+Riya: Practice ke liye job?
+Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj ki: {job1}. [job: 1]
+Riya: Das minute, teen skill, ek line.
+Arjun: Follow karo, kal low CGPA ka sawaal.
+
+--- description
+How to tailor resume for each job | Resume keywords from job description | Resume tips for freshers
+Interview prep 📄
+Ek resume sabke liye = kisi ke liye nahi. 10 minute ka fix:
+1. Job description mein baar-baar aane wali 3 skills dhoondo
+2. Jo tumhare paas hain, unhe resume ke upar laao
+3. Summary: role ka naam + wahi 3 skills
+Jo skill nahi hai, wo mat likho.
+
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: low CGPA ka sawaal.
+
+#resumetips #fresherjobs #jobsearchtips #offcampusjobs #resume

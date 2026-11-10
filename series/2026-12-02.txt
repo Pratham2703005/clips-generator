@@ -1,0 +1,37 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 18/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Manager round mein kya check hota hai
+cast: arjun, bunty
+jobs: india-freshers, 0
+hook: MANAGER ROUND ≠ CODING
+trial_hook: Don't say you'll work all night. Managers want two things first.
+trial_card: MANAGER ROUND ≠ CODING
+Bunty: Kal manager round hai. Raat bhar coding practice karunga.
+Arjun: Coding thodi. Asli sawaal: kya tum team mein kaam aaoge?
+Bunty: Wo kaise check karte hain?
+Arjun: Situation se. Deadline kal hai, kaam adhoora. Kya karoge?
+Bunty: Raat bhar karunga!
+Arjun: Galat nahi, par adhoora. Pehle manager ko batao, kya hua aur kya bacha.
+Bunty: Batana zaroori hai?
+Arjun: Manager ko surprise pasand nahi. Jaldi khabar pasand hai.
+Bunty: Aur kya poochte hain?
+Arjun: Senior se disagree kiya toh? Jawab: data ke saath, izzat se, phir jo team decide kare.
+Bunty: Matlab ego nahi, communication.
+Arjun: Bilkul. Ye round attitude ka hai.
+Arjun: Follow karo, kal relocate wala sawaal.
+
+--- description
+Managerial round interview questions for freshers | Manager round tips | Interview preparation
+Interview prep 👔
+Manager round coding ka nahi, team ka round hai:
+1. Deadline miss hone wali hai? Pehle manager ko batao, kya hua aur kya bacha
+2. Senior se disagree? Data ke saath, izzat se, phir team ka decision
+Manager ko surprise nahi, jaldi khabar pasand hai.
+
+Save karo. Kal: "Relocate karoge?" pe kya bolein.
+
+#managerialround #interviewtips #fresherjobs #interviewpreparation #placementpreparation

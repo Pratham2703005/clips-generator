@@ -1,0 +1,36 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 22/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Aur koi offer hai? Sach bolo
+cast: arjun, riya
+jobs: india-freshers, 0
+hook: 'KOI AUR OFFER?' JHOOTH NAHI
+trial_hook: Don't invent a second offer. One question from HR exposes it.
+trial_card: FAKE OFFER = DONO GAYE
+Riya: HR ne poocha, aur koi offer hai? Socha bol doon, haan, do hain.
+Arjun: Jhootha offer pakda gaya, toh ye wala bhi gaya. HR proof maang sakta hai.
+Riya: Mere paas koi offer nahi hai.
+Arjun: Toh bolo: main is role pe focus kar rahi hoon, kyunki ye mere skills se match karta hai.
+Riya: Aur do jagah process chal raha hai toh?
+Arjun: Wahi bolo: do jagah process mein hoon, final nahi hua.
+Riya: Aur agar sach mein offer hai?
+Arjun: Bolo, par dhamki nahi. Ek offer hai, par mujhe yahan zyada interest hai.
+Riya: Number bataun?
+Arjun: Poochein toh bata do. Zabardasti mat ghusao.
+Riya: Sach, focus, dhamki nahi.
+Arjun: Follow karo, kal puzzle wala sawaal.
+
+--- description
+Do you have any other offers HR question | Other offers answer for freshers | HR interview tips
+Interview prep 🤞
+Jhootha offer pakda gaya toh ye wala bhi jayega.
+Koi offer nahi: "Main is role pe focus kar rahi hoon, ye mere skills se match karta hai."
+Process chal raha hai: "2 jagah process mein hoon, final nahi hua."
+Offer hai: bolo, par dhamki nahi.
+
+Save karo. Kal: puzzle question kaise solve karein.
+
+#hrinterview #salarynegotiation #fresherjobs #interviewtips #offerletter

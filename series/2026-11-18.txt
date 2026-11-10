@@ -1,0 +1,46 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 4/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Off-campus drive checklist
+cast: arjun, bunty
+jobs: india-freshers|bangalore-tech, 1
+hook: DRIVE PE YE 5 CHEEZEIN
+trial_hook: Don't go to an off-campus drive with one resume. Carry five.
+trial_card: DRIVE? YE 5 CHEEZEIN
+Bunty: Kal off-campus drive hai. Ek resume print kar liya, kaafi hai na?
+Arjun: Ek? Drive mein teen chaar round, har round naya banda. Paanch copy le jao.
+Bunty: Aur?
+Arjun: Photo ID, marksheets ki copy, do passport photo, aur pen.
+Bunty: Pen? Main bachcha hoon kya?
+Arjun: Aptitude kabhi kaagaz pe hota hai. Wahan pen maangna achha nahi lagta.
+Bunty: Reporting time nau baje hai.
+Arjun: Saade aath pahuncho. Line lambi hoti hai.
+Bunty: Drive milti kahan hai?
+Arjun: Company ki career site pe. Ek website roz saari career sites se fresh jobs laati hai. Link bio mein.
+Arjun: Aaj ki job: {job1}. [job: 1]
+Bunty: Phir bhi ek copy print kar leta hoon.
+Arjun: Paanch, Bunty. Paanch.
+Arjun: Checklist save karo. Follow karo, kal interviewer se kya poochna hai.
+
+--- description
+Off campus drive checklist for freshers | Walk in interview documents | Fresher jobs India
+Interview prep 🎒
+Drive pe le jao:
+1. Resume ki 5 copy (har round naya interviewer)
+2. Photo ID
+3. Marksheets ki copy
+4. 2 passport photo
+5. Pen (aptitude kabhi paper pe hota hai)
+Reporting time se 30 minute pehle pahuncho.
+
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: interview ke end mein kya poochna hai.
+
+#offcampusdrive #walkininterview #fresherjobs #placementpreparation #jobsearchtips

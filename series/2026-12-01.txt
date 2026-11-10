@@ -1,0 +1,36 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 17/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Tell me about a failure
+cast: malhotra, riya
+jobs: india-freshers, 0
+hook: FAILURE + SEEKH = JAWAB
+trial_hook: Never say you have never failed. Tell one small failure instead.
+trial_card: 'NEVER FAILED' = JHOOTH
+Riya: Ma'am, failure wala sawaal aaya toh bolungi, maine kabhi fail nahi kiya.
+Malhotra: Koi nahi maanega. Failure nahi, uske baad kya kiya, wo sun rahe hain.
+Malhotra: Format: kya hua, tumne kya kiya, kya seekha.
+Riya: Hackathon mein demo crash hua. Maine raat bhar fix kiya, aur agli baar backup rakha.
+Malhotra: Aur seekh?
+Riya: Ab demo se pehle hamesha ek test run.
+Malhotra: Perfect. Chhoti kahani, saaf seekh.
+Riya: Team ki galti thi toh?
+Malhotra: Blame kabhi nahi. Humse hua, bolo.
+Malhotra: Follow karo, kal manager round mein kya check hota hai.
+
+--- description
+Tell me about a time you failed answer for freshers | Behavioral interview questions | HR interview tips
+Interview prep 🧱
+"Main kabhi fail nahi hua" koi nahi maanta. Format:
+1. Kya hua
+2. Tumne kya kiya
+3. Kya seekha
+Example: "Hackathon mein demo crash hua. Raat bhar fix kiya. Ab demo se pehle hamesha test run."
+Blame kabhi nahi.
+
+Save karo. Kal: manager round mein kya check hota hai.
+
+#hrinterview #behavioralinterview #fresherjobs #interviewtips #interviewquestions

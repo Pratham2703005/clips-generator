@@ -1,0 +1,36 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 30/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Job ka pehla hafta: 3 kaam
+cast: arjun, riya
+jobs: india-freshers, 0
+hook: JOB KA PEHLA HAFTA: 3 KAAM
+trial_hook: Don't try to impress everyone in your first week. Do three things.
+trial_card: PEHLA HAFTA: 3 KAAM
+Riya: Join kar liya! Pehle hafte sabko impress karna hai.
+Arjun: Pehle hafte kaam kam, samajhna zyada. Teen kaam karo.
+Arjun: Pehla: manager se poocho, pehle teen mahine mein achha kaam kaisa dikhega.
+Arjun: Doosra: har cheez note karo. Tool, log, process. Ek sawaal do baar nahi.
+Riya: Sawaal poochun ya nahi? Bewakoof lagungi.
+Arjun: Poocho, par pehle pandrah minute khud try karo. Phir batao kya try kiya.
+Arjun: Teesra: har Friday manager ko teen line. Kya kiya, kya seekha, kahan atki.
+Riya: Internship wala update, wapas!
+Arjun: Wahi aadat, ab job pe.
+Riya: Samjho, likho, update.
+Arjun: Pehla hafta, teen kaam. Follow karo, kal se naye sawaal.
+
+--- description
+First week at new job tips for freshers | First job tips | How to impress manager in first week
+Interview prep 🚀
+Pehle hafte impress nahi, samajhna:
+1. Manager se poocho: pehle 3 mahine mein achha kaam kaisa dikhega
+2. Sab note karo: tool, log, process (ek sawaal do baar nahi)
+3. Har Friday manager ko 3 line: kya kiya, kya seekha, kahan atke
+Sawaal poocho, par pehle 15 minute khud try karke.
+
+Save karo. Kal se naye sawaal. 🎯
+
+#firstjob #corporatetips #fresherjobs #careeradvice #newjob

@@ -1,0 +1,42 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 20/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Non-CS se tech job
+cast: arjun, riya
+jobs: india-freshers|bangalore-tech, 1
+hook: NON-CS? SKILL + PROJECT + KAHANI
+trial_hook: Don't skip a tech job because of your degree. Read the skills first.
+trial_card: NON-CS? TECH JOB POSSIBLE
+Riya: Mechanical se hoon. Har tech job mein likha hai, B Tech CS. Main toh gayi.
+Arjun: Kai jagah likha hota hai, CS or related, ya sirf skills.
+Arjun: Pehle job description padho. Degree se lambi list skills ki hoti hai.
+Riya: Toh main kya dikhaun?
+Arjun: Teen cheezein. Ek skill jo job maange, uska ek project, aur ek line ki kahani.
+Riya: Kahani?
+Arjun: Mechanical mein machine ka data dekha, wahin se data pasand aaya.
+Riya: Matlab branch ko bhi kahani bana do.
+Arjun: Haan. Branch switch kamzori nahi, angle hai.
+Riya: Aisi jobs kahan?
+Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
+Riya: Skill, project, kahani.
+Arjun: Follow karo, kal interview ke pehle tees second.
+
+--- description
+Non CS student tech job | Mechanical to IT job for freshers | Career switch to tech
+Interview prep 🔧➡️💻
+Degree CS nahi? Job description padho, skills ki list degree se lambi hoti hai.
+1. Ek skill jo job maange
+2. Us skill ka ek project
+3. 1 line ki kahani: branch se tech tak kyun
+
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: interview ke pehle 30 second.
+
+#careerswitch #techjobs #fresherjobs #noncs #jobsearchtips

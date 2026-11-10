@@ -1,0 +1,36 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 27/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | 2 offers mein se kaunsa?
+cast: malhotra, riya
+jobs: india-freshers, 0
+hook: 2 OFFERS? SIRF CTC MAT DEKHO
+trial_hook: Never choose between two offers only by CTC.
+trial_card: CTC SE ZYADA DEKHO
+Riya: Do offer aaye! Ek mein do lakh zyada. Wahi le rahi hoon.
+Malhotra: Sirf CTC dekh ke? In-hand dekha? Bond? Location?
+Riya: Hmm. Zyada wale mein bond hai.
+Malhotra: Teen sawaal aur. Pehle saal kya seekhogi, manager kaun hai, team freshers ko kaise sikhati hai.
+Riya: Ye sab kaise pata chalega?
+Malhotra: HR se poocho. Aur wahan ke kisi junior se ek call.
+Riya: CTC, in-hand, bond, seekhna.
+Malhotra: Pehli job seekhne ke liye hoti hai.
+Malhotra: Follow karo, kal doosre shehar ki job.
+
+--- description
+How to choose between two job offers | First job offer comparison for freshers | CTC vs in hand
+Interview prep ⚖️
+Sirf CTC mat dekho:
+1. In-hand kitna
+2. Bond hai?
+3. Location
+4. Pehle saal kya seekhoge
+5. Manager kaun, team freshers ko kaise sikhati hai
+HR se poocho, aur wahan ke kisi junior se ek call karo.
+
+Save karo. Kal: doosre shehar ki job, pehle ye math.
+
+#joboffer #offerletter #fresherjobs #careeradvice #ctc

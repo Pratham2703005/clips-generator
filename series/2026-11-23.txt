@@ -1,0 +1,34 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 9/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Low CGPA ka sawaal
+cast: malhotra, bunty
+jobs: india-freshers, 0
+hook: LOW CGPA? SORRY MAT BOLO
+trial_hook: Never hide a low CGPA. Show one project that beats it.
+trial_card: CGPA KAM? SORRY NAHI
+Bunty: Ma'am, six point two CGPA aur ek backlog. Mera toh khatam.
+Malhotra: Khatam nahi. Pehle cutoff dekho. Kai jobs mein cutoff hota hi nahi.
+Bunty: Aur interview mein poochenge toh?
+Malhotra: Bahana nahi. Second year mein focus kam tha. Backlog clear kiya, last do semester mein sudhaar hua.
+Bunty: Sudhaar nahi hua toh?
+Malhotra: Toh skill dikhao. Ek project, ek certificate, jo job se jude.
+Bunty: Matlab number se nazar hatao.
+Malhotra: Haan. Pehle sach, phir proof.
+Bunty: Sorry nahi, sach plus proof.
+Malhotra: Follow karo, kal group discussion ke teen rule.
+
+--- description
+Low CGPA in interview how to answer | Backlog question for freshers | HR interview tips
+Interview prep 📉
+Low CGPA pe sorry mat bolo. 1 line + proof:
+1. Pehle job ka cutoff dekho (kai jobs mein hota hi nahi)
+2. Sach: kya hua aur kya sudhaara
+3. Proof: ek project ya certificate jo job se jude
+
+Save karo. Kal: group discussion ke 3 rule.
+
+#lowcgpa #hrinterview #fresherjobs #placementpreparation #interviewtips

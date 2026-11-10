@@ -1,40 +1,40 @@
-# Season 3 "Layoff se API" - Ep 2 "Public API" (value, no promotion)
-# AI interviews and no replies -> Arjun finds that many career pages run on ATS systems with public job-board APIs
-# (Greenhouse, Lever, Ashby: no login), writes a script, ~10k jobs the first night, builds filters, shares on the
-# friends' WhatsApp group. Lesson: your own problem is your first product.
-# Written with the ig-reel skill: hookscore 78.8 STRONG.
-# Trial reel (non-followers only): the same reel with trial_hook as line 1 and trial_card on screen.
-title: Layoff se API | Ep 2: Public API mil gayi
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 2/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Strengths and weaknesses
 cast: arjun, bunty
 jobs: india-freshers, 0
-hook: JOBS KI PUBLIC API HOTI HAI
-trial_hook: Stop waiting for replies. Company jobs are on a public API.
-trial_card: JOBS KI PUBLIC API
-Arjun: Stop waiting for replies. Companies ki jobs public API pe hain.
-Bunty: Arjun, aaj kitne interview hue?
-Arjun: Teen. Teeno AI bot ne liye. Aur reply zero.
-Bunty (shocked): Bot interview le raha hai?
-Arjun: Haan. Toh socha, job seedha company se kyun na dhoondhun.
-Bunty: Matlab har company ki site alag se kholega?
-Arjun: Nahi. Bahut career pages Greenhouse, Lever jaise systems pe chalte hain.
-Arjun: Unki job list ek public API se aati hai. Bina login.
-Bunty: Toh tune kya kiya?
-Arjun: Ek script likhi. Pehli raat, das hazaar jobs.
-Bunty: Das hazaar mein dhoondhega kaise?
-Arjun: Filters banaye. City, experience, aur job kitni fresh hai.
-Bunty: Bhai, dosto ke group pe daal.
-Arjun: Daal diya. Reactions bhi aaye.
-Bunty: Toh sab use karne lage?
-Arjun: Seekh: apni problem solve karo, wahi pehla product. Replies ka wait mat karo.
-Bunty: Follow karo. Kal: das hazaar jobs ka link kisne khola?
+hook: WEAKNESS: SACH + FIX
+trial_hook: Don't fake your weakness. Say one real one, plus one fix.
+trial_card: 'TOO HARD' = FAKE
+Bunty: Weakness poochi, maine bola, I work too hard. Interviewer hans diya.
+Arjun: Kyunki ye roz sunte hain. Fake lagta hai.
+Bunty: But ChatGPT said yahi safe hai!
+Arjun: Safe nahi, ratta lagta hai. Sach wali weakness bolo, jo job ke liye khatarnaak na ho.
+Bunty: Jaise?
+Arjun: Jaise: main group mein bolne se pehle bahut sochta hoon.
+Bunty: Bas itna?
+Arjun: Nahi. Saath mein fix. Ab har meeting mein ek point pehle se likh ke jaata hoon.
+Bunty: Aur strength?
+Arjun: Ek strength, ek kahani. Quick learner bolna kaafi nahi.
+Arjun: Bolo: do hafte mein React seekha, aur fest ki website bana di.
+Bunty: Matlab adjective nahi, example.
+Arjun: Haan. Strength ke saath proof, weakness ke saath fix.
+Bunty: Aur agar wo bole, koi aur weakness?
+Arjun: Same format. Sach, chhoti, aur fix ke saath.
+Bunty: ChatGPT ko bhi ye sikhata hoon.
+Arjun: Sach weakness, saath mein fix. Follow karo, kal salary ka sawaal.
 
 --- description
-Public job APIs | How company career pages work | Build in public
-Layoff se API | Ep 2 🛠️
-AI interviews, zero replies. Phir pata chala: bahut companies ke career pages Greenhouse, Lever, Ashby jaise ATS pe chalte hain, aur unki job list ek public API se aati hai, bina login.
-Pehli raat: ek script, 10,000 jobs, aur filters (city, experience, freshness).
-Seekh: apni problem solve karo, wahi pehla product hai.
+Strengths and weaknesses answer for freshers | What is your weakness interview | HR interview tips
+Interview prep 💪
+"My weakness is I work too hard" sunte hi pata chal jata hai ki ratta hai.
+Weakness: sach wali, job ke liye khatarnaak nahi, aur saath mein fix.
+Strength: adjective nahi, ek kahani. "Quick learner" nahi, "2 hafte mein React seekha aur fest ki site banayi."
 
-Ep 3 kal: dosto ne react kiya... par kholi kisne? 👀
+Save karo. Kal: salary expectation pe kya bolein.
 
-#layoffseapi #buildinpublic #api #softwareengineer #sideproject
+#interviewtips #hrinterview #fresherjobs #interviewquestions #placementpreparation

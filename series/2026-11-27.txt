@@ -1,0 +1,35 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 13/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Coding round mein chup mat raho
+cast: arjun, riya
+jobs: india-freshers, 0
+hook: CODING ROUND: BOLTE RAHO
+trial_hook: Don't stay silent in a coding round. Repeat the question first.
+trial_card: CHUP = BLANK SCREEN
+Riya: Live coding mein main bilkul chup rehti hoon. Focus ke liye.
+Arjun: Chup raho toh interviewer ko sirf blank screen dikhti hai.
+Riya: Toh kya bolun?
+Arjun: Pehle sawaal apne shabdon mein dohrao. Phir ek example input.
+Arjun: Phir simple tareeka bolo, chahe slow ho. Pehle brute force, phir better.
+Riya: Atak gayi toh?
+Arjun: Bolo kahan atki ho. Hint aksar wahin se aata hai.
+Riya: Matlab answer ke saath soch bhi dikhani hai.
+Arjun: Bilkul. Silence se kuch pata nahi chalta.
+Arjun: Follow karo, kal why this company ka jawab.
+
+--- description
+Live coding interview tips for freshers | Technical interview think aloud | Coding round tips
+Interview prep ⌨️
+Chup rehke code karoge toh interviewer ko sirf blank screen dikhegi:
+1. Sawaal apne shabdon mein dohrao
+2. Ek example input lo
+3. Pehle simple (brute force), phir better
+4. Atke? Bolo kahan atke ho, hint wahin se aata hai
+
+Save karo. Kal: "Why this company?" ka jawab.
+
+#codinginterview #technicalinterview #fresherjobs #placementpreparation #interviewtips

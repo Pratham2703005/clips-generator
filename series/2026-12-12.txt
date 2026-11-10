@@ -1,0 +1,42 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 28/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Doosre shehar ki job: pehle ye math
+cast: arjun, bunty
+jobs: bangalore-tech|india-freshers, 1
+hook: DOOSRA SHEHAR? PEHLE YE MATH
+trial_hook: Never refuse a job in another city before these four numbers.
+trial_card: SHEHAR BADLO? PEHLE MATH
+Bunty: Bangalore se offer aaya. Mana karne wala hoon, kiraya hi aadhi salary kha jayega.
+Arjun: Mana karne se pehle number lagao. In-hand, kiraya, khana, travel.
+Bunty: Kiraya kitna hoga, kaise pata?
+Arjun: Office ke paas ke area dekho, sharing mein. Wahan ke kisi dost se poocho.
+Arjun: Mahine ke end mein kuch bachta hai, aur seekhne ko milta hai, toh ye shuruaat hai.
+Bunty: Aur kuch nahi bacha toh?
+Arjun: Toh relocation help poocho, ya remote ka option.
+Bunty: Relocation help bhi milti hai?
+Arjun: Kuch companies deti hain. Poochne mein kya jaata hai.
+Bunty: Aisi jobs kahan?
+Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
+Bunty: In-hand minus kharcha.
+Arjun: Pehle math, phir faisla. Follow karo, kal internship wala sawaal.
+
+--- description
+Should freshers relocate for a job | Job in another city cost of living | Bangalore jobs for freshers
+Interview prep 🏙️
+Doosre shehar ki job ko na bolne se pehle math:
+In-hand - kiraya (sharing, office ke paas) - khana - travel = kitna bachta hai?
+Kuch bachta hai + seekhne ko milta hai = achhi shuruaat
+Nahi bachta? Relocation help ya remote option poocho.
+
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: "Internship mein kya kiya?" ka jawab.
+
+#relocation #bangalorejobs #fresherjobs #jobsearchtips #firstjob

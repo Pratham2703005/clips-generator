@@ -1,0 +1,38 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 7/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Gap year kaise explain karein
+cast: malhotra, riya
+jobs: india-freshers, 0
+hook: GAP YEAR? 1 LINE MEIN
+trial_hook: Never hide a gap year. They already saw the dates.
+trial_card: GAP YEAR CHHUPAO MAT
+Riya: Ma'am, resume mein ek saal ka gap hai. Interview mein kya bolun?
+Malhotra: Chhupao mat, dates wo dekh chuke hain. Kya kiya tha?
+Riya: Ek saal ghar pe thi. Exam ki taiyari ki, phir chhod diya.
+Malhotra: Toh wahi bolo. Seedha, ek line mein.
+Riya: Ajeeb nahi lagega?
+Malhotra: Ajeeb tab lagta hai, jab kahani ghoomti hai.
+Malhotra: Format: kya kiya, kya seekha, ab ye job kyun.
+Riya: Ek saal government exam ki taiyari ki. Discipline seekha. Ab data mein kaam karna hai, isliye SQL seekha.
+Malhotra: Perfect. Last part sabse zaroori: gap ke baad kuch kiya.
+Riya: Kuch nahi kiya toh?
+Malhotra: Aaj se karo. Ek course, ek project. Interview tak gap chhota lagega.
+Riya: Sach, seekh, plan.
+Malhotra: Follow karo, kal resume har job ke liye kaise badlein.
+
+--- description
+How to explain gap year in interview | Gap year for freshers | HR interview tips
+Interview prep 📅
+Gap chhupane se nahi chhupta, dates resume pe hain. 1 line:
+1. Kya kiya
+2. Kya seekha
+3. Ab ye job kyun (aur gap ke baad kya kiya)
+Kuch nahi kiya? Aaj se ek course ya project shuru karo.
+
+Save karo. Kal: har job ke liye resume 10 minute mein.
+
+#gapyear #hrinterview #fresherjobs #interviewtips #careeradvice

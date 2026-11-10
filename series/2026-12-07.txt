@@ -1,0 +1,36 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 23/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Puzzle question: guess mat karo
+cast: arjun, bunty
+jobs: india-freshers, 0
+hook: PUZZLE: GUESS NAHI, SOCH
+trial_hook: Never guess a puzzle answer. Try two people, then three.
+trial_card: PUZZLE = THINKING
+Bunty: Interview mein puzzle aaya, maine turant guess maara. Galat.
+Arjun: Guess hi galti thi. Wo answer nahi, soch dekhna chahte hain.
+Bunty: But ChatGPT said answer yaad kar lo!
+Arjun: Yaad kiya answer pakda jaata hai.
+Bunty: Toh kaise?
+Arjun: Pehle sawaal dohrao. Phir chhota case try karo, zor se bolke.
+Arjun: Jaise: do log hon toh? Teen hon toh? Pattern dikhega.
+Bunty: Answer galat hua toh?
+Arjun: Soch saaf hai toh aadhi baazi jeet gaye. Aur hint lene mein sharm nahi.
+Bunty: Chhota case, zor se, pattern.
+Arjun: Guess nahi. Follow karo, kal HR ko paanch line ka email.
+
+--- description
+Puzzle interview questions approach | How to solve puzzles in interview | Interview tips for freshers
+Interview prep 🧩
+Puzzle mein answer se zyada soch dekhte hain:
+1. Sawaal dohrao
+2. Chhota case try karo (2 log? 3 log?), zor se bolke
+3. Pattern dhoondo
+Hint lene mein sharm nahi.
+
+Save karo. Kal: HR ko 5 line ka email.
+
+#puzzles #interviewtips #fresherjobs #placementpreparation #technicalinterview

@@ -1,0 +1,35 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 29/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Internship mein kya kiya?
+cast: malhotra, bunty
+jobs: india-freshers, 0
+hook: 'LEARNED A LOT' NAHI, YE BOLO
+trial_hook: Don't say I learned a lot. Say one thing your internship changed.
+trial_card: 'LEARNED A LOT' = KHAALI
+Bunty: Internship ke baare mein poocha, maine bola, I learned a lot.
+Malhotra: Sabne seekha. Tumne kiya kya?
+Bunty: Excel mein reports banata tha.
+Malhotra: Kaunsi? Kisko jaati thi? Kya badla?
+Bunty: Roz ek sales report, manager ko. Formula se do ghante ka kaam aadhe ghante mein hone laga.
+Malhotra: Ye hai jawab. Kaam, kisko, kya badla.
+Bunty: Aur team project tha toh?
+Malhotra: Toh team ne kya kiya, aur tumhara hissa kya tha. Dono alag bolo.
+Bunty: Learned a lot se kahin better.
+Malhotra: Wo line delete. Follow karo, kal job ka pehla hafta.
+
+--- description
+Tell me about your internship answer | Internship experience interview question | Interview tips for freshers
+Interview prep 📊
+"I learned a lot" sab bolte hain. Ye bolo:
+1. Kaam: kya banaya/kiya
+2. Kisko: kiske kaam aaya
+3. Kya badla: time bacha, galti kam hui, number
+Example: "Roz sales report manager ko. Formula se 2 ghante ka kaam aadhe ghante mein."
+
+Save karo. Kal: job ka pehla hafta.
+
+#internship #interviewtips #fresherjobs #hrinterview #interviewquestions

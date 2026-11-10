@@ -1,0 +1,42 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 16/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Remote job: asli ya scam?
+cast: arjun, bunty
+jobs: remote-india|india-freshers, 1
+hook: REMOTE JOB? FEE MAANGE = SCAM
+trial_hook: Never pay a fee for a remote job. Here are three signs.
+trial_card: FEE MAANGE? SCAM.
+Bunty: Ghar baithe pachaas hazaar ki job mili! Bas do hazaar registration.
+Arjun: Wahi scam hai. Asli company paise nahi leti. Teen nishaan yaad rakho.
+Arjun: Pehla: paise maange. Training fee, kit, registration, kuch bhi.
+Arjun: Doosra: interview sirf chat pe. Na video, na kisi ka naam.
+Arjun: Teesra: company ki apni website pe ye job hai hi nahi.
+Bunty: Toh asli remote job kaise pakdein?
+Arjun: Seedha company ki career site. Wahan job hai, toh asli.
+Bunty: Itni sites kaun dekhega?
+Arjun: Ek website roz saari career sites se fresh jobs laati hai. Link bio mein.
+Arjun: Aaj ki job: {job1}. [job: 1]
+Bunty: Do hazaar bach gaye.
+Arjun: Paise maange, toh bhaago. Follow karo, kal failure wala sawaal.
+
+--- description
+Work from home job scam signs | Remote jobs for freshers India | Fake job alert
+Interview prep 🚩
+Remote job ke 3 red flag:
+1. Kisi bhi naam pe paise (training fee, kit, registration)
+2. Interview sirf chat pe, na video, na naam
+3. Company ki apni career site pe job hai hi nahi
+Asli company tumse paise nahi leti.
+
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: "Tell me about a failure" ka jawab.
+
+#remotejobs #jobscam #workfromhome #fresherjobs #fakejobalert

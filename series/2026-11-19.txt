@@ -1,0 +1,36 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 5/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Do you have any questions for us?
+cast: malhotra, riya
+jobs: india-freshers, 0
+hook: END MEIN YE 3 SAWAAL
+trial_hook: Never leave an interview with zero questions. Ask about the first three months.
+trial_card: 'NO QUESTIONS' = NO JOB
+Riya: Ma'am, end mein poocha, any questions? Maine bola, no questions.
+Malhotra: Wahin interest khatam dikha. Koi sawaal nahi, matlab interest nahi.
+Riya: Toh kya poochun?
+Malhotra: Teen mein se ek. Pehla: is role mein pehle teen mahine kya karna hoga?
+Malhotra: Doosra: team freshers ko kaise sikhati hai?
+Malhotra: Teesra: is role mein achha kaam kaisa dikhta hai?
+Riya: Aur salary?
+Malhotra: Pehle round mein nahi. Wo HR round ka sawaal hai.
+Riya: Teen mahine, seekhna, achha kaam.
+Malhotra: Ek sawaal kaafi hai. No questions kabhi nahi.
+Malhotra: Follow karo, kal project kaise explain karein.
+
+--- description
+Do you have any questions for us | Questions to ask interviewer as a fresher | Interview tips
+Interview prep ❓
+"No questions" = interest nahi. In 3 mein se ek poocho:
+1. Is role mein pehle 3 mahine kya karna hoga?
+2. Team freshers ko kaise sikhati hai?
+3. Is role mein achha kaam kaisa dikhta hai?
+Salary ka sawaal HR round ke liye rakho.
+
+Save karo. Kal: apna project 3 line mein kaise explain karein.
+
+#interviewtips #interviewquestions #fresherjobs #interviewpreparation #hrinterview

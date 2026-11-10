@@ -1,0 +1,34 @@
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 19/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+title: Interview prep | Relocate karoge? Sach bolo
+cast: malhotra, riya
+jobs: india-freshers, 0
+hook: 'DEKHTE HAIN' MAT BOLO
+trial_hook: Never say let's see when they ask about relocation. Say yes or no.
+trial_card: 'DEKHTE HAIN' = NO
+Riya: HR ne poocha, relocate karogi? Maine bola, dekhte hain.
+Malhotra: Dekhte hain, na jaisa lagta hai. Haan ki tarah bola hua na.
+Riya: Par seedha na bola toh reject?
+Malhotra: Kabhi kabhi. Isliye interview se pehle khud decide karo.
+Riya: Raat ki shift main nahi kar sakti.
+Malhotra: Toh saaf bolo, reason ke saath. Jhooth bolke join kiya, toh jaldi chhodogi.
+Riya: Aur shehar badalna? Wo theek hai.
+Malhotra: Toh bolo: haan, main relocate kar sakti hoon. Bina dekhte hain ke.
+Malhotra: Sach haan, sach na. Follow karo, kal non-CS se tech job.
+
+--- description
+Are you willing to relocate answer | Night shift interview question | HR interview tips for freshers
+Interview prep 🧳
+"Dekhte hain" = na jaisa lagta hai.
+1. Interview se pehle khud decide karo: shehar, shift
+2. Haan hai toh saaf haan
+3. Na hai toh saaf na, reason ke saath
+Jhooth bolke join kiya toh jaldi chhodna padega.
+
+Save karo. Kal: non-CS branch se tech job.
+
+#hrinterview #relocation #fresherjobs #interviewtips #interviewquestions
