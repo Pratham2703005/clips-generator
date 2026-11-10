@@ -184,10 +184,11 @@ def main() -> None:
     if not video.is_file():
         sys.exit(f"no reel at {video}")
     # the YouTube variant (run.py make_variants): the same reel saying "subscribe" where it says "follow"
-    yt = folder / "variants" / "youtube"
-    media_folder = yt if (yt / "reel.mp4").is_file() else folder
-    if media_folder is yt:
-        video = yt / "reel.mp4"
+    # (not named `yt`: that is the [youtube] config, and reusing the name broke access_token on 2026-11-10)
+    variant = folder / "variants" / "youtube"
+    media_folder = variant if (variant / "reel.mp4").is_file() else folder
+    if media_folder is variant:
+        video = variant / "reel.mp4"
         print(f"YouTube variant: {video}")
     done = folder / "posted.json"
     if done.is_file() and json.loads(done.read_text(encoding="utf-8")).get("youtube_url"):

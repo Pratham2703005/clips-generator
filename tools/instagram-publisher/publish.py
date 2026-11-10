@@ -177,9 +177,19 @@ def post_trial(api: Api, user: str, folder: Path, ig: dict, cfg: dict, dry_run: 
     if record.get("trial_media_id"):
         print(f"trial reel already posted: {record.get('trial_permalink') or record['trial_media_id']}")
         return
-    media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000)),
-                                              "trial_params": json.dumps({"graduation_strategy": strategy})},
-                 cfg["poll"], ig.get("chunk_mb", 8))
+    try:
+        media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000)),
+                                                  "trial_params": json.dumps({"graduation_strategy": strategy})},
+                     cfg["poll"], ig.get("chunk_mb", 8))
+    except RuntimeError as e:
+        # 2207081 = this account can't post trial reels (yet): refused every night since 2026-11-09 with 8 followers.
+        # Not a failure of the run: noted in posted.json so the report says "not eligible yet" instead of ❌/⚠️.
+        if "2207081" not in str(e):
+            raise
+        record.update({"trial_status": "not eligible", "trial_checked_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})
+        record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+        print("trial reel not posted: Instagram says this account can't post trial reels yet (subcode 2207081)")
+        return
     link = api.call("GET", media, {"fields": "permalink"}).get("permalink", "")
     record.update({"trial_media_id": media, "trial_permalink": link,
                    "trial_posted_at": datetime.now(timezone.utc).isoformat(timespec="seconds")})

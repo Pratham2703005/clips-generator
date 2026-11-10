@@ -588,10 +588,13 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
          state(bool(posted.get("youtube_url")), out["youtube"]), posted.get("youtube_url", "")),
     ]
     if (folder / "variants" / "trial" / "reel.mp4").is_file() or posted.get("trial_media_id") or out["trial"]:
-        rows.append(("Instagram trial reel", state(bool(posted.get("trial_media_id")), out["trial"]),
-                     posted.get("trial_permalink") or posted.get("trial_media_id", "")))
+        not_yet = posted.get("trial_status") == "not eligible" and not posted.get("trial_media_id")
+        rows.append(("Instagram trial reel", "skipped" if not_yet else state(bool(posted.get("trial_media_id")), out["trial"]),
+                     "account not eligible for trial reels yet (Instagram subcode 2207081)" if not_yet
+                     else posted.get("trial_permalink") or posted.get("trial_media_id", "")))
     # Facebook Page / Threads / Telegram (2026-11-09): a row once the workflow has the step or posted.json has the post
     for label, key, ids in (("Facebook reel", "facebook", ("facebook_url", "facebook_video_id")),
+                            ("Facebook story", "facebook", ("facebook_story_id",)),
                             ("Threads post", "threads", ("threads_url", "threads_id")),
                             ("Telegram post", "telegram", ("telegram_url", "telegram_message_id"))):
         done = next((str(posted[i]) for i in ids if posted.get(i)), "")
