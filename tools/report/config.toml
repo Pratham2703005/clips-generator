@@ -14,13 +14,20 @@ stats_file = "../../content/stats-history.json"
 keep_stats_days = 120
 # per platform, the newest N posts go in the mail; the full lists of the window come as an attached HTML file
 rows_in_mail = 10
+# Metric lists below (2026-11-12): add or remove names here, no code change. A metric the API refuses is named once in
+# the mail (with Meta's / Google's reason) and the rest still show; a new one appears as a column or in the account line.
+account_days = 7                  # window for the account totals (Instagram / Facebook Page / Threads / YouTube channel)
 
 [instagram]
 api_version = "v26.0"
 token_env = "IG_ACCESS_TOKEN"
 user_env = "IG_USER_ID"
 # needs the Meta configuration's instagram_manage_insights permission; without it, likes and comments only
-media_metrics = ["views", "reach", "saved", "shares"]
+media_metrics = ["views", "reach", "saved", "shares", "ig_reels_avg_watch_time", "follows", "profile_visits"]
+# account totals: where follows are lost (views -> profile visits -> follows); follows_and_unfollows needs 100+ followers
+account_metrics = ["views", "reach", "profile_views", "profile_links_taps", "accounts_engaged", "total_interactions",
+                   "follows_and_unfollows"]
+follow_type_split = ["views", "reach"]   # share of these that came from people who don't follow yet
 
 [facebook]
 api_version = "v26.0"
@@ -31,10 +38,19 @@ page_env = "FB_PAGE_ID"
 reel_metrics = ["blue_reels_play_count", "post_video_avg_time_watched",
                 "post_video_likes_by_reaction_type", "post_video_social_actions"]
 
+# Page totals: "sum" adds up the daily values, "last" takes the newest (running totals)
+[facebook.page_metrics]
+page_follows = "last"
+page_daily_follows_unique = "sum"
+page_views_total = "sum"
+page_post_engagements = "sum"
+page_video_views = "sum"
+
 [threads]
 token_env = "THREADS_ACCESS_TOKEN"
 user_env = "THREADS_USER_ID"
 post_metrics = ["views", "likes", "replies", "reposts", "quotes", "shares"]   # needs threads_manage_insights
+account_metrics = ["views", "likes", "replies", "reposts", "clicks", "followers_count"]
 
 [telegram]
 token_env = "TELEGRAM_BOT_TOKEN"
@@ -45,3 +61,6 @@ channel_env = "TELEGRAM_CHANNEL"
 client_id_env = "YT_CLIENT_ID"
 client_secret_env = "YT_CLIENT_SECRET"
 refresh_token_env = "YT_REFRESH_TOKEN"
+# YouTube Analytics (yt-analytics.readonly): extra columns per Short, and the channel totals
+video_metrics = ["subscribersGained", "shares", "engagedViews"]
+channel_metrics = ["views", "engagedViews", "estimatedMinutesWatched", "averageViewDuration", "subscribersGained", "subscribersLost"]

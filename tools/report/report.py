@@ -69,7 +69,114 @@ def get_json(url: str, data: bytes | None = None, headers: dict | None = None) -
         raise RuntimeError(f"HTTP {e.code}: {msg}") from None
 
 
+# Readable names for the config metrics; one not listed here still shows, under its API name.
+LABELS = {
+    "views": "views", "reach": "accounts reached", "profile_views": "profile visits", "profile_links_taps": "bio link taps",
+    "accounts_engaged": "accounts engaged", "total_interactions": "interactions", "follows_and_unfollows": "follows",
+    "website_clicks": "website clicks", "ig_reels_avg_watch_time": "avg watch", "ig_reels_video_view_total_time": "total watch",
+    "page_follows": "followers", "page_daily_follows_unique": "new follows", "page_views_total": "Page views",
+    "page_post_engagements": "post engagements", "page_video_views": "video views", "page_impressions_unique": "reach",
+    "followers_count": "followers", "likes": "likes", "replies": "replies", "reposts": "reposts", "quotes": "quotes",
+    "shares": "shares", "clicks": "link clicks", "estimatedMinutesWatched": "minutes watched",
+    "subscribersGained": "subscribers gained", "subscribersLost": "subscribers lost", "averageViewDuration": "avg view",
+    "averageViewPercentage": "avg % watched", "engagedViews": "engaged views", "comments": "comments",
+    "post_video_view_time": "total watch", "fb_reels_total_plays": "total plays", "fb_reels_replay_count": "replays",
+}
+FB_REEL_KNOWN = {"blue_reels_play_count", "post_impressions_unique", "post_video_avg_time_watched",
+                 "post_video_likes_by_reaction_type", "post_video_social_actions"}
+
+
+def metric_text(name: str, value) -> str:
+    """A metric for the mail: milliseconds of watch time as seconds or minutes, YouTube's seconds and percentages."""
+    if value is None:
+        return "-"
+    if isinstance(value, dict):  # e.g. a breakdown Meta returns as {type: count}
+        return " / ".join(f"{k.lower()} {num(v)}" for k, v in value.items())
+    if name in ("ig_reels_avg_watch_time", "post_video_avg_time_watched"):
+        return f"{value / 1000:.1f} s"
+    if name in ("ig_reels_video_view_total_time", "post_video_view_time"):
+        return f"{value / 60000:.0f} min"
+    if name == "averageViewDuration":
+        return f"{value:.0f} s"
+    if name == "averageViewPercentage":
+        return f"{value:.0f}%"
+    return num(value)
+
+
+def account_line(platform: str, days: int, values: dict, split: dict | None = None) -> str:
+    """'Instagram, last 7 days: 17,630 views (91% non-followers) · 120 profile visits · ...'"""
+    parts = []
+    for k, v in values.items():
+        if v is None:
+            continue
+        part = f"{metric_text(k, v)} {LABELS.get(k, k)}"
+        s = (split or {}).get(k) or {}
+        total = sum(x for x in s.values() if isinstance(x, (int, float)))
+        if total and s.get("non_follower") is not None:
+            part += f" ({100 * s['non_follower'] / total:.0f}% from non-followers)"
+        parts.append(part)
+    return f"{platform}, last {days} days: " + " · ".join(parts) if parts else ""
+
+
+def tolerant(fetch, metrics: list[str]) -> tuple[dict, dict]:
+    """fetch(list of metric names) -> {name: value}. One call for all; when the API refuses that (one unknown or not-yet-
+    available metric fails the whole call), one call per metric. Returns (values, {refused metric: reason}), so a metric
+    added to a config list either shows up or is named in the mail, never breaks the report (user, 2026-11-12: new
+    metrics should need a config line, not code or permission changes)."""
+    if not metrics:
+        return {}, {}
+    try:
+        return fetch(metrics), {}
+    except RuntimeError:
+        got, refused = {}, {}
+        for m in metrics:
+            try:
+                got.update(fetch([m]))
+            except RuntimeError as e:
+                refused[m] = str(e)[:160]
+        return got, refused
+
+
+def window(days: int) -> tuple[int, int]:
+    """(since, until) unix seconds for the last `days` days, for the insights endpoints that take a time range."""
+    until = datetime.now(timezone.utc)
+    return int((until - timedelta(days=days)).timestamp()), int(until.timestamp())
+
+
+def refused_note(platform: str, refused: dict) -> str:
+    if not refused:
+        return ""
+    first = next(iter(refused.values()))
+    return (f"{platform} did not give: {', '.join(sorted(refused))} ({first}). Remove them from tools/report/config.toml "
+            "if they stay refused.")
+
+
 # ---------- Instagram ----------
+
+def ig_account(cfg: dict, call, user: str) -> dict:
+    """Account totals over [report] account_days: views, reach, profile visits, bio-link taps, accounts engaged...
+    ([instagram] account_metrics), plus the follower / non-follower split of the metrics in follow_type_split. These
+    say where follows are lost: many views but few profile visits = the reel gives no reason to look; many visits but
+    few follows = the profile doesn't convince."""
+    since, until = window(cfg.get("account_days", 7))
+
+    def fetch(ms: list[str]) -> dict:
+        d = call(f"{user}/insights", metric=",".join(ms), period="day", metric_type="total_value", since=since, until=until)
+        return {x["name"]: (x.get("total_value") or {}).get("value") for x in d.get("data", [])}
+
+    vals, refused = tolerant(fetch, cfg.get("account_metrics", []))
+    split = {}
+    for m in cfg.get("follow_type_split", []):
+        try:
+            d = call(f"{user}/insights", metric=m, period="day", metric_type="total_value", breakdown="follow_type",
+                     since=since, until=until)
+            for b in ((d.get("data") or [{}])[0].get("total_value") or {}).get("breakdowns", []):
+                for r in b.get("results", []):
+                    split.setdefault(m, {})[r["dimension_values"][0].lower()] = r.get("value")
+        except RuntimeError as e:
+            refused[f"{m} by follow_type"] = str(e)[:160]
+    return {"values": vals, "split": split, "refused": refused, "days": cfg.get("account_days", 7)}
+
 
 def instagram_stats(cfg: dict, since: datetime) -> dict:
     token, user = os.environ.get(cfg["token_env"], ""), os.environ.get(cfg["user_env"], "")
@@ -102,19 +209,24 @@ def instagram_stats(cfg: dict, since: datetime) -> dict:
         if not out.get("username"):  # even the account call failed: most likely the token itself
             out["token"] = {"line": f"Instagram token may have stopped working ({e}): make a new one and update IG_ACCESS_TOKEN", "warn": True}
         return {**out, "note": f"Instagram stats failed: {e}"}
-    insights_ok = True
+    # per post: the metrics of [instagram] media_metrics; one refused for the first post is not asked again
+    metrics, refused = list(cfg["media_metrics"]), {}
     for m in posts:
-        try:
-            ins = call(f"{m['id']}/insights", metric=",".join(cfg["media_metrics"]))
-            m.update({d["name"]: (d.get("values") or [{}])[0].get("value", d.get("total_value", {}).get("value"))
-                      for d in ins.get("data", [])})
-        except RuntimeError as e:
-            if insights_ok:
-                out["note"] = (f"views/reach not available ({e}). Add instagram_manage_insights to the Meta "
-                               "configuration's permissions and generate a new token.")
-            insights_ok = False
+        def fetch(ms: list[str], mid: str = m["id"]) -> dict:
+            ins = call(f"{mid}/insights", metric=",".join(ms))
+            return {d["name"]: (d.get("values") or [{}])[0].get("value", d.get("total_value", {}).get("value"))
+                    for d in ins.get("data", [])}
+        got, bad = tolerant(fetch, metrics)
+        m.update(got)
+        if bad:
+            refused.update(bad)
+            metrics = [x for x in metrics if x not in bad]
+        if not metrics:
             break
+    if refused:
+        out["note"] = refused_note("Instagram (per post)", refused)
     out["posts"] = posts
+    out["account"] = ig_account(cfg, call, user)
     return out
 
 
@@ -124,12 +236,12 @@ def media_numbers(cfg: dict, mid: str) -> dict:
     base = f"https://graph.facebook.com/{cfg['api_version']}"
     q = lambda path, **p: get_json(f"{base}/{path}?" + urllib.parse.urlencode({**p, "access_token": token}))  # noqa: E731
     out = {k: v for k, v in q(mid, fields="like_count,comments_count,permalink").items() if k != "id"}
-    for metric in (",".join(cfg["media_metrics"]), "ig_reels_avg_watch_time"):
-        try:
-            for d in q(f"{mid}/insights", metric=metric).get("data", []):
-                out[d["name"]] = (d.get("values") or [{}])[0].get("value", d.get("total_value", {}).get("value"))
-        except RuntimeError:
-            pass  # a metric this post (or this API version) doesn't have
+
+    def fetch(ms: list[str]) -> dict:
+        return {d["name"]: (d.get("values") or [{}])[0].get("value", d.get("total_value", {}).get("value"))
+                for d in q(f"{mid}/insights", metric=",".join(ms)).get("data", [])}
+    metrics = list(dict.fromkeys(list(cfg["media_metrics"]) + ["ig_reels_avg_watch_time"]))
+    out.update(tolerant(fetch, metrics)[0])  # a metric this post (or this API version) doesn't have is just left out
     return out
 
 
@@ -223,21 +335,15 @@ def facebook_stats(cfg: dict, since: datetime) -> dict:
                               limit=50), since, "created_time")
     except RuntimeError as e:
         return {"note": f"Facebook stats failed: {e}"}
-    missing, why = set(), ""
+    metrics, refused = list(cfg["reel_metrics"]), {}
     for r in reels:
-        vals: dict = {}
-        try:
-            data = q(f"{r['id']}/video_insights", tok, metric=",".join(cfg["reel_metrics"])).get("data", [])
-        except RuntimeError:
-            data = []
-            for m in cfg["reel_metrics"]:
-                try:
-                    data += q(f"{r['id']}/video_insights", tok, metric=m).get("data", [])
-                except RuntimeError as e:
-                    missing.add(m)
-                    why = why or str(e)  # Meta's own words, so the mail says what is wrong (no token in it)
-        for d in data:
-            vals[d["name"]] = _first_value(d)
+        def fetch(ms: list[str], vid: str = r["id"]) -> dict:
+            return {d["name"]: _first_value(d) for d in q(f"{vid}/video_insights", tok, metric=",".join(ms)).get("data", [])}
+        vals, bad = tolerant(fetch, metrics)
+        if bad:  # Meta's own words go in the note (no token in them); not asked again for the next reels
+            refused.update(bad)
+            metrics = [x for x in metrics if x not in bad]
+        r["extra"] = {k: v for k, v in vals.items() if k not in FB_REEL_KNOWN}
         social = vals.get("post_video_social_actions") if isinstance(vals.get("post_video_social_actions"), dict) else {}
         reactions = vals.get("post_video_likes_by_reaction_type")
         r.update({"plays": vals.get("blue_reels_play_count"), "reach": vals.get("post_impressions_unique"),
@@ -247,9 +353,23 @@ def facebook_stats(cfg: dict, since: datetime) -> dict:
         if (r.get("permalink_url") or "").startswith("/"):
             r["permalink_url"] = "https://www.facebook.com" + r["permalink_url"]
     out["posts"] = reels
-    if missing:
-        out["note"] = (f"Facebook did not give {', '.join(sorted(missing))} ({why[:300]}). If it is a permission, the "
-                       "Page token needs read_insights (Graph API Explorer: add it, extend, take the Page token again)")
+    # Page totals over [report] account_days: [facebook] page_metrics = {metric = "sum" | "last"} (daily values are
+    # added up, or the newest one is taken for running totals such as followers)
+    since_s, until_s = window(cfg.get("account_days", 7))
+    page_metrics = cfg.get("page_metrics", {})
+
+    def fetch_page(ms: list[str]) -> dict:
+        res = {}
+        for d in q(f"{pg.get('id', page)}/insights", tok, metric=",".join(ms), period="day", since=since_s, until=until_s).get("data", []):
+            vals = [v.get("value") for v in d.get("values") or [] if isinstance(v.get("value"), (int, float))]
+            if vals:
+                res[d["name"]] = vals[-1] if page_metrics.get(d["name"]) == "last" else sum(vals)
+        return res
+    out["account"], bad = tolerant(fetch_page, list(page_metrics))
+    refused.update({f"page {k}": v for k, v in bad.items()})
+    out["days"] = cfg.get("account_days", 7)
+    if refused:
+        out["note"] = refused_note("Facebook", refused)
         print(f"Facebook insights: {out['note']}")  # in the run log too
     return out
 
@@ -270,16 +390,33 @@ def threads_stats(cfg: dict, since: datetime) -> dict:
         posts = _list_since(q(f"{user}/threads", fields="id,text,timestamp,permalink,media_type", limit=50), since, "timestamp")
     except RuntimeError as e:
         return {"note": f"Threads stats failed: {e}"}
-    try:
-        out["followers"] = _first_value((q(f"{user}/threads_insights", metric="followers_count").get("data") or [{}])[0])
-    except RuntimeError as e:
-        out["note"] = f"Threads followers not available ({e})"
+    # account totals over [report] account_days ([threads] account_metrics; followers_count is a running total, the
+    # others come per day and are added up)
+    since_s, until_s = window(cfg.get("account_days", 7))
+
+    def fetch_account(ms: list[str]) -> dict:
+        res = {}
+        for d in q(f"{user}/threads_insights", metric=",".join(ms), since=since_s, until=until_s).get("data", []):
+            if d.get("total_value"):
+                res[d["name"]] = d["total_value"].get("value")
+            else:
+                vals = [v.get("value") for v in d.get("values") or [] if isinstance(v.get("value"), (int, float))]
+                res[d["name"]] = sum(vals) if vals else None
+        return res
+    out["account"], refused = tolerant(fetch_account, cfg.get("account_metrics", ["followers_count"]))
+    out["followers"] = out["account"].get("followers_count")
+    out["days"] = cfg.get("account_days", 7)
+    metrics = list(cfg["post_metrics"])
     for m in posts:
-        try:
-            m.update({d["name"]: _first_value(d) for d in q(f"{m['id']}/insights", metric=",".join(cfg["post_metrics"])).get("data", [])})
-        except RuntimeError as e:
-            out["note"] = f"Threads post numbers not available ({e}): the app needs threads_manage_insights"
-            break
+        def fetch(ms: list[str], mid: str = m["id"]) -> dict:
+            return {d["name"]: _first_value(d) for d in q(f"{mid}/insights", metric=",".join(ms)).get("data", [])}
+        got, bad = tolerant(fetch, metrics)
+        m.update(got)
+        if bad:
+            refused.update(bad)
+            metrics = [x for x in metrics if x not in bad]
+    if refused:
+        out["note"] = refused_note("Threads", refused)
     out["posts"] = posts
     return out
 
@@ -489,7 +626,7 @@ def youtube_stats(cfg: dict, since: datetime, extra: list[str] | None = None) ->
                        "public_at": v.get("status", {}).get("publishAt", "") if v.get("status", {}).get("privacyStatus") == "private" else "",
                        **{k: v["statistics"].get(k) for k in ("viewCount", "likeCount", "commentCount")}} for v in got]
         out["videos"] = videos
-        out.update(youtube_analytics(auth, since, videos))
+        out.update(youtube_analytics(auth, since, videos, cfg))
         return out
     except RuntimeError as e:
         hint = (" Run tools/youtube-publisher/authorize.py again (it now asks for youtube.readonly too) after adding "
@@ -505,7 +642,7 @@ SOURCES = {"SHORTS": "Shorts feed", "YT_SEARCH": "YouTube search", "SUBSCRIBER":
            "HASHTAGS": "hashtag pages", "SOUND_PAGE": "sound pages", "END_SCREEN": "end screens"}
 
 
-def youtube_analytics(auth: dict, since: datetime, videos: list[dict]) -> dict:
+def youtube_analytics(auth: dict, since: datetime, videos: list[dict], cfg: dict | None = None) -> dict:
     """YouTube Analytics (yt-analytics.readonly): per Short the average share watched and seconds watched, and where the
     channel's views came from. Answers the question the counts can't: are people swiping away, and is the Shorts feed
     showing the Shorts at all (2026-11-07: YouTube got ~6% of Instagram's views for the same reels). The data lags 1-2
@@ -527,7 +664,43 @@ def youtube_analytics(auth: dict, since: datetime, videos: list[dict]) -> dict:
             v["avg_seconds"], v["avg_percent"] = rows[v["id"]][2], rows[v["id"]][3]
     total = sum(r[1] for r in src.get("rows") or []) or 0
     sources = [(SOURCES.get(r[0], r[0].replace("_", " ").lower()), r[1], 100 * r[1] / total) for r in src.get("rows") or [] if total]
-    return {"sources": sources}
+    out: dict = {"sources": sources}
+    cfg = cfg or {}
+
+    # more per Short ([youtube] video_metrics: subscribers gained, shares...), one call per metric when the set is refused
+    extra, refused = {}, {}
+    def per_video(ms: list[str]) -> dict:
+        d = get_json(base + f"&metrics={','.join(ms)}&dimensions=video&maxResults=50", headers=auth)
+        names = [h["name"] for h in d.get("columnHeaders", [])][1:]
+        return {r[0]: dict(zip(names, r[1:])) for r in d.get("rows") or []}
+    ms = list(cfg.get("video_metrics", []))
+    try:
+        extra = per_video(ms) if ms else {}
+    except RuntimeError:
+        for m in ms:
+            try:
+                for vid, vals in per_video([m]).items():
+                    extra.setdefault(vid, {}).update(vals)
+            except RuntimeError as e:
+                refused[m] = str(e)[:160]
+    for v in videos:
+        v["extra"] = extra.get(v["id"], {})
+
+    # channel totals over [report] account_days ([youtube] channel_metrics)
+    days = cfg.get("account_days", 7)
+    start = datetime.now(timezone.utc) - timedelta(days=days)
+    chan = "https://youtubeanalytics.googleapis.com/v2/reports?" + urllib.parse.urlencode({
+        "ids": "channel==MINE", "startDate": f"{start:%Y-%m-%d}", "endDate": f"{datetime.now(timezone.utc):%Y-%m-%d}"})
+    def channel(ms2: list[str]) -> dict:
+        d = get_json(chan + f"&metrics={','.join(ms2)}", headers=auth)
+        names = [h["name"] for h in d.get("columnHeaders", [])]
+        return dict(zip(names, (d.get("rows") or [[None] * len(names)])[0]))
+    out["account"], bad = tolerant(channel, list(cfg.get("channel_metrics", [])))
+    refused.update({f"channel {k}": v for k, v in bad.items()})
+    out["days"] = days
+    if refused:
+        out["metrics_note"] = refused_note("YouTube Analytics", refused)
+    return out
 
 
 # ---------- the email ----------
@@ -699,32 +872,46 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
 
     h.append(f"<h3>Instagram, last {days} days</h3>")
     t += ["", f"Instagram, last {days} days"]
+    def para(line: str, italic: bool = False) -> None:
+        if line:
+            h.append(f"<p>{'<i>' if italic else ''}{html.escape(line)}{'</i>' if italic else ''}</p>")
+            t.append(("Note: " if italic else "") + line)
+
+    def extra_cols(items: list[dict], skip: set) -> list[str]:
+        """Metrics beyond the fixed columns (added in config): each becomes a column, labelled from LABELS."""
+        keys: list[str] = []
+        for it in items:
+            keys += [k for k in it if k not in skip and k not in keys]
+        return keys
+
     if ig.get("username"):
-        line = f"@{ig['username']}: {num(ig.get('followers_count'))} followers, {num(ig.get('media_count'))} posts in total"
-        h.append(f"<p>{html.escape(line)}</p>")
-        t.append(line)
+        para(f"@{ig['username']}: {num(ig.get('followers_count'))} followers, {num(ig.get('media_count'))} posts in total")
+    acc = ig.get("account") or {}
+    para(account_line("Account", acc.get("days", 7), acc.get("values") or {}, acc.get("split")))
     posts = ig.get("posts") or []
     if posts:
+        ig_extra = extra_cols(posts, {"id", "caption", "media_product_type", "timestamp", "permalink", "like_count",
+                                      "comments_count", "ts", "views", "reach", "saved", "shares"})
         rows_ig = []
         for m in posts:
             cap = (m.get("caption") or "").split("\n")[0][:50]
             cells = [m["ts"].strftime("%d %b"), m.get("media_product_type", ""), with_day(m.get("views"), m["id"], day_ig, "views"),
                      num(m.get("reach")), with_day(m.get("like_count"), m["id"], day_ig, "likes"), num(m.get("comments_count")),
-                     num(m.get("saved")), num(m.get("shares"))]
+                     num(m.get("saved")), num(m.get("shares"))] + [metric_text(k, m.get(k)) for k in ig_extra]
             rows_ig.append(("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
                             + f'<td><a href="{html.escape(m.get("permalink", ""))}">{html.escape(cap)}</a></td></tr>',
                             " | ".join(cells) + f" | {cap}"))
         long_table(h, t, f"Instagram, last {days} days",
                    '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Type</th>'
-                   "<th>Views</th><th>Reach</th><th>Likes</th><th>Comments</th><th>Saves</th><th>Shares</th><th align=\"left\">Post</th></tr>",
-                   rows_ig)
+                   "<th>Views</th><th>Reach</th><th>Likes</th><th>Comments</th><th>Saves</th><th>Shares</th>"
+                   + "".join(f"<th>{html.escape(LABELS.get(k, k).capitalize())}</th>" for k in ig_extra)
+                   + "<th align=\"left\">Post</th></tr>", rows_ig)
         totals = {k: sum(int(m.get(k) or 0) for m in posts) for k in ("views", "like_count", "comments_count")}
         line = f"Totals: {num(totals['views'])} views, {num(totals['like_count'])} likes, {num(totals['comments_count'])} comments"
         h.append(f"<p>{line}</p>")
         t.append(line)
-    if ig.get("note"):
-        h.append(f"<p><i>{html.escape(ig['note'])}</i></p>")
-        t.append(f"Note: {ig['note']}")
+    para(ig.get("note", ""), italic=True)
+    para(refused_note("Instagram (account)", acc.get("refused") or {}), italic=True)
 
     h.append(f"<h3>YouTube, last {days} days</h3>")
     t += ["", f"YouTube, last {days} days"]
@@ -733,12 +920,14 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
                 f"{num(yt.get('videoCount'))} videos")
         h.append(f"<p>{html.escape(line)}</p>")
         t.append(line)
+    para(account_line("Channel", yt.get("days", 7), yt.get("account") or {}))
     if yt.get("videos"):
         rows_yt = []
+        yt_extra = extra_cols([v.get("extra") or {} for v in yt["videos"]], {"views", "averageViewDuration", "averageViewPercentage"})
         for v in sorted(yt["videos"], key=lambda v: v["published"], reverse=True):
             watched = f"{v['avg_percent']:.0f}% ({v['avg_seconds']:.0f} s)" if v.get("avg_percent") is not None else "-"
             cells = [v["published"], with_day(v.get("viewCount"), v["id"], day_yt, "views"), num(v.get("likeCount")),
-                     num(v.get("commentCount")), watched]
+                     num(v.get("commentCount")), watched] + [metric_text(k, (v.get("extra") or {}).get(k)) for k in yt_extra]
             name = v["title"][:60]
             if v.get("public_at"):
                 when = datetime.fromisoformat(v["public_at"].replace("Z", "+00:00")).astimezone(timezone(timedelta(hours=5, minutes=30)))
@@ -748,7 +937,9 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
                             " | ".join(cells) + f" | {name}"))
         long_table(h, t, f"YouTube, last {days} days",
                    '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Views</th>'
-                   '<th>Likes</th><th>Comments</th><th>Watched</th><th align="left">Short</th></tr>', rows_yt)
+                   '<th>Likes</th><th>Comments</th><th>Watched</th>'
+                   + "".join(f"<th>{html.escape(LABELS.get(k, k).capitalize())}</th>" for k in yt_extra)
+                   + '<th align="left">Short</th></tr>', rows_yt)
         if any(v.get("avg_percent") is not None for v in yt["videos"]):
             line = "Watched = average share of the Short people watched (seconds); YouTube Analytics lags 1-2 days."
             h.append(f"<p><i>{line}</i></p>")
@@ -758,7 +949,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
                 + ", ".join(f"{name} {pct:.0f}% ({num(n)})" for name, n, pct in yt["sources"][:6]))
         h.append(f"<p>{html.escape(line)}</p>")
         t.append(line)
-    for key in ("note", "analytics_note"):
+    for key in ("note", "analytics_note", "metrics_note"):
         if yt.get(key):
             h.append(f"<p><i>{html.escape(yt[key])}</i></p>")
             t.append(f"Note: {yt[key]}")
@@ -774,21 +965,24 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
             line = f"{fb['name']}: {num(fb.get('followers'))} followers"
             h.append(f"<p>{html.escape(line)}</p>")
             t.append(line)
+        para(account_line("Page", fb.get("days", 7), fb.get("account") or {}))
         if fb.get("posts"):
             day_fb, rows_fb = ago("fb"), []
+            fb_extra = extra_cols([r.get("extra") or {} for r in fb["posts"]], set())
             for r in fb["posts"]:
                 cap = (r.get("description") or "").split("\n")[0][:50] or r["id"]
                 avg = r.get("avg_ms")
-                cells = [r["ts"].strftime("%d %b"), with_day(r.get("plays"), r["id"], day_fb, "views"), num(r.get("reach")),
+                cells = [r["ts"].strftime("%d %b"), with_day(r.get("plays"), r["id"], day_fb, "views"),
                          f"{avg / 1000:.1f} s" if isinstance(avg, (int, float)) else "-", num(r.get("likes")),
-                         num(r.get("comments")), num(r.get("shares"))]
+                         num(r.get("comments")), num(r.get("shares"))] + [metric_text(k, (r.get("extra") or {}).get(k)) for k in fb_extra]
                 rows_fb.append(("<tr>" + "".join(f"<td align=\"center\">{html.escape(c)}</td>" for c in cells)
                                 + f'<td><a href="{html.escape(r.get("permalink_url", ""))}">{html.escape(cap)}</a></td></tr>',
                                 " | ".join(cells) + f" | {cap}"))
             long_table(h, t, f"Facebook, last {days} days",
                        '<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Date</th><th>Plays</th>'
-                       '<th>Reach</th><th>Avg watch</th><th>Reactions</th><th>Comments</th><th>Shares</th><th align="left">Reel</th></tr>',
-                       rows_fb)
+                       '<th>Avg watch</th><th>Reactions</th><th>Comments</th><th>Shares</th>'
+                       + "".join(f"<th>{html.escape(LABELS.get(k, k).capitalize())}</th>" for k in fb_extra)
+                       + '<th align="left">Reel</th></tr>', rows_fb)
     if th:
         h.append(f"<h3>Threads, last {days} days</h3>")
         t += ["", f"Threads, last {days} days"]
@@ -796,6 +990,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
             line = f"@{th['username']}: {num(th.get('followers'))} followers"
             h.append(f"<p>{html.escape(line)}</p>")
             t.append(line)
+        para(account_line("Account", th.get("days", 7), {k: v for k, v in (th.get("account") or {}).items() if k != "followers_count"}))
         if th.get("posts"):
             day_th, rows_th = ago("th"), []
             for m in th["posts"]:
@@ -840,6 +1035,8 @@ def main() -> None:
     a = p.parse_args()
     cfg = tomllib.loads(a.config.read_text(encoding="utf-8"))
     rep = cfg["report"]
+    for k in ("instagram", "facebook", "threads", "youtube"):  # one window for every platform's account totals
+        cfg.setdefault(k, {}).setdefault("account_days", rep.get("account_days", 7))
     load_env_files([(a.config.resolve().parent / f).resolve() for f in rep.get("env_files", [])])
     since = datetime.now(timezone.utc) - timedelta(days=rep["days"])
     day = os.environ.get("DAY") or a.folder.name
