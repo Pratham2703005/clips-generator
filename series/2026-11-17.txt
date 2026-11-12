@@ -4,28 +4,31 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 3/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Opening test (2026-11-12, 13-20 Nov, 2 reels per kind): COMMON BELIEF, THEN CONTRADICT. "Fresher ho, salary pe mat
+# bolo, jo de do" is the advice everyone hears; Arjun calls it the most expensive answer.
 title: Interview prep | Expected salary as a fresher
 cast: arjun, riya
 jobs: india-freshers, 0
-hook: SALARY? NUMBER NAHI, RANGE
+hook: 'JO DE DO' = SABSE KAM
 trial_hook: Never tell HR to pay whatever they want. Say a range.
 trial_card: 'JO DE DO' = KAM MILEGA
-Riya: HR ne expected salary poochi. Maine bola, jo aap de do.
-Arjun: Matlab sabse neeche wala number. Ek number nahi, range bolo. Research wali.
+threads: Expected salary poochi toh kya bologe: number, range, ya "jo aap de do"?
+Riya: Sab kehte hain, salary pe bolo jo de do.
+Arjun: Yahi sabse mehenga jawab hai. Jo de do, matlab sabse neeche wala number.
+Riya: Toh number bol doon?
+Arjun: Ek number nahi, range bolo. Research wali.
 Riya: Research kahan se?
 Arjun: Same role, same shehar, fresher ki salary. Do teen jagah se dekh lo.
 Arjun: Phir bolo: is role ki jo range maine dekhi, main usi mein expect karti hoon, aur flexible hoon.
 Riya: Agar wo current CTC poochein?
 Arjun: Seedha bolo: ye meri pehli job hai.
-Riya: Aur range zyada boli toh?
-Arjun: Range hai, toh baat hogi. Jo de do bola, toh sabse neeche wala milega.
 Riya: Range, research, flexible.
-Arjun: Follow karo, kal off-campus drive ki checklist.
+Arjun: Jo de do kabhi nahi. Follow karo, kal off-campus drive ki checklist.
 
 --- description
 Expected salary answer for freshers | How to answer salary expectation | HR interview tips
 Interview prep 💰
-"Jo aap de do" bola, toh sabse neeche wala number milega.
+Sab kehte hain fresher ho toh "jo aap de do" bolo. Yahi sabse mehenga jawab hai: sabse neeche wala number milega.
 1. Same role, same city ki fresher salary 2-3 jagah se dekho
 2. Ek number nahi, range bolo
 3. "Main flexible hoon" saath mein

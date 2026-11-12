@@ -4,31 +4,33 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 4/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Opening test (2026-11-12, 13-20 Nov, 2 reels per kind): GOOD, BETTER, BEST. One resume is fine, five is better, and
+# "the best way is different" holds the reveal (one folder with everything); 9 baje fine, 8:30 best repeats it.
 title: Interview prep | Off-campus drive checklist
 cast: arjun, bunty
 jobs: india-freshers|bangalore-tech, 1
-hook: DRIVE PE YE 5 CHEEZEIN
+hook: 1 RESUME ACHHA. YE BEST.
 trial_hook: Don't go to an off-campus drive with one resume. Carry five.
 trial_card: DRIVE? YE 5 CHEEZEIN
-Bunty: Kal off-campus drive hai. Ek resume print kar liya, kaafi hai na?
-Arjun: Ek? Drive mein teen chaar round, har round naya banda. Paanch copy le jao.
-Bunty: Aur?
-Arjun: Photo ID, marksheets ki copy, do passport photo, aur pen.
+threads: Off-campus drive pe kabhi kuch bhool gaye ho? Kya?
+Bunty: Drive ke liye ek resume print kiya. Achha hai na?
+Arjun: Achha hai. Paanch copy better, har round naya banda. Par best tareeka alag hai.
+Bunty: Kya?
+Arjun: Ek folder. Paanch resume, photo ID, marksheets ki copy, do passport photo, aur pen.
 Bunty: Pen? Main bachcha hoon kya?
 Arjun: Aptitude kabhi kaagaz pe hota hai. Wahan pen maangna achha nahi lagta.
 Bunty: Reporting time nau baje hai.
-Arjun: Saade aath pahuncho. Line lambi hoti hai.
+Arjun: Nau theek. Saade aath best. Line lambi hoti hai.
 Bunty: Drive milti kahan hai?
 Arjun: Company ki career site pe. Ek website roz saari career sites se fresh jobs laati hai. Link bio mein.
 Arjun: Aaj ki job: {job1}. [job: 1]
-Bunty: Phir bhi ek copy print kar leta hoon.
-Arjun: Paanch, Bunty. Paanch.
-Arjun: Checklist save karo. Follow karo, kal interviewer se kya poochna hai.
+Bunty: Folder bana leta hoon.
+Arjun: Ek resume nahi, ek folder. Save karo, follow karo, kal interviewer se kya poochna hai.
 
 --- description
 Off campus drive checklist for freshers | Walk in interview documents | Fresher jobs India
 Interview prep 🎒
-Drive pe le jao:
+1 resume achha. 5 better. Best: ek folder, jisme sab ho:
 1. Resume ki 5 copy (har round naya interviewer)
 2. Photo ID
 3. Marksheets ki copy

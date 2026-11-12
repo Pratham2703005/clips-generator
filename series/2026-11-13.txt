@@ -3,34 +3,39 @@
 # Payoff: asking about the bond worked (penalty halved). Verma's nephew Pappu repeats Bunty's old mistake; Bunty recaps
 # the method and where fresh jobs come from.
 # Cliffhanger: joining day tomorrow.
+# Opening test (2026-11-12, 13-20 Nov, 2 reels per kind): RESULT FIRST. The result (penalty halved) is the first line,
+# then the how (the three questions from Din 12, in the email). Compare avg watch time / saves / shares with the rest.
 title: Offer Tak | Din 13: Verma Sir vs offer letter
 cast: bunty, verma
 jobs: india-freshers|remote-india|bangalore-tech, 1
 hook: 1 EMAIL. 1 LAKH BACHE.
-trial_hook: Don't be scared to email HR. One question saved one lakh.
-trial_card: 1 SAWAAL. 1 LAKH BACHA.
-Bunty: Don't fear HR. One email ne ek lakh bachaye.
-Verma (shocked): HR se sawaal? Hamare zamane mein toh bas sign karte the!
-Bunty: Sir, teen sawaal puche. Penalty do lakh se ek lakh ho gayi.
-Verma: Hmm. Aur offer letter laminate karwaya?
-Bunty: Sir, PDF hai. Laminate nahi hota.
+trial_hook: One polite email to HR cut my bond penalty in half.
+trial_card: 1 EMAIL = 1 LAKH
+threads: Offer letter mein bond dikha toh kya karoge: HR se sawaal ya seedha sign?
+Bunty: Sir, ek email, aur bond penalty do lakh se ek lakh.
+Verma (shocked): HR se mol-bhaav? Hamare zamane mein toh bas sign karte the!
+Bunty: Mol-bhaav nahi, Sir. Teen seedhe sawaal.
+Bunty: Penalty kab lagti hai? Training kitni hai? Notice period kitna hai?
+Verma: Aur HR ne kya bola?
+Bunty: Training sirf chhe mahine ki hai, toh penalty aadhi. Puchha, toh mila.
 Verma: Mere bhatije Pappu ka kya? Teen sau applications, ek bhi call nahi.
 Bunty: Wo meri purani galti kar raha hai. Teen hafte purani jobs.
 Verma: Toh kya kare?
-Bunty: Fresh job, din ke din apply, teen line ka follow-up.
-Verma: Fresh job milegi kahan?
-Bunty: Company ki career site pe. Ek website roz saari career sites se laati hai.
-Verma: Uska link?
-Bunty: Bio mein. Aur Pappu ke liye aaj ki job: {job1}. [job: 1]
+Bunty: Fresh job, din ke din apply. Ek website roz saari career sites se laati hai. Link bio mein.
+Bunty: Pappu ke liye aaj ki job: {job1}. [job: 1]
 Verma: Main print karke de deta hoon.
 Bunty: Bro, link bhejo, Sir. Description mein hai.
 Verma (shocked): Phir bro!
 Bunty: Ek email, ek lakh, Sir. Follow karo, kal joining day.
 
 --- description
-How freshers should apply for jobs | Off campus jobs India | Fresh jobs from company career pages
+How freshers should apply for jobs | Offer letter bond penalty | Fresh jobs from company career pages
 Offer Tak | Din 13 🖨️
-Verma Sir: "HR se sawaal mat pucho." Bunty ne ek email bheja, aur penalty aadhi ho gayi. Ab Pappu ki 300 applications ka ilaaj: fresh job, din ke din apply, teen line ka follow-up.
+Bond ki penalty 2 lakh se 1 lakh. Kaise? HR ko ek email, teen sawaal:
+1. Penalty kab lagti hai?
+2. Training kitni hai?
+3. Notice period kitna hai?
+Ab Pappu ki 300 applications ka ilaaj: fresh job, din ke din apply.
 
 Job in this episode:
 {jobs}

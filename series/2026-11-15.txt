@@ -4,28 +4,31 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 1/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Opening test (2026-11-12, 13-20 Nov, 2 reels per kind): NOT A, NOT B, BUT C. The two answers everyone gives are ruled
+# out in the second line, and the third one is held back. Compare avg watch time / saves / shares with the rest.
 title: Interview prep | Why should we hire you?
 cast: arjun, riya
 jobs: india-freshers, 0
-hook: WHY HIRE YOU? 3 PART JAWAB
+hook: NA HARDWORKING. NA PASSIONATE.
 trial_hook: Never say hardworking in an interview. Use these three parts instead.
 trial_card: HARDWORKING SE HIRE NAHI
-Riya: Why should we hire you pe maine bola, I am hardworking.
-Arjun: Reject, Kyunki sab yahi bolte hain. Isliye tum yaad nahi rahi.
-Riya: Toh kya bolun?
-Arjun: Teen part. Pehla: job ki ek zaroorat, description se.
+threads: "Why should we hire you?" pe tum kya bolte ho?
+Riya: Why should we hire you pe bolun hardworking? Ya passionate?
+Arjun: Na hardworking, na passionate. Dono sab bolte hain. Teesri cheez bolo.
+Riya: Kaunsi?
+Arjun: Teen part ka jawab. Pehla: job ki ek zaroorat, description se.
 Arjun: Doosra: tumhara ek proof. Project, internship, ya result.
 Arjun: Teesra: pehle mahine mein tum kya karogi.
 Riya: Example do.
 Arjun: Aapko SQL reporting chahiye. Maine fest ka data SQL mein saaf kiya. Pehle mahine dashboards samjhungi.
 Riya: Tees second mein ho gaya!
-Arjun: Zaroorat, proof, plan. Hardworking nahi.
-Arjun: Follow karo, kal weakness ka sahi jawab.
+Arjun: Zaroorat, proof, plan.
+Arjun: Hardworking nahi, passionate nahi. Follow karo, kal weakness ka jawab.
 
 --- description
 Why should we hire you answer for freshers | HR interview questions | Interview tips
 Interview prep 🎯
-"I am hardworking" sab bolte hain, isliye yaad nahi rehta. 3 part ka jawab:
+Na "hardworking", na "passionate". Sab yahi bolte hain, isliye yaad nahi rehta. 3 part ka jawab:
 1. Zaroorat: job description se ek cheez
 2. Proof: project, internship ya result
 3. Plan: pehle mahine mein kya karoge

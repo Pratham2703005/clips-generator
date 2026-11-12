@@ -248,7 +248,7 @@ def parse_series(path: Path) -> dict:
     sec = split_sections(path.read_text(encoding="utf-8"))
     head, lines = {}, []
     for raw in dialogue_lines(sec["body"]):
-        m = re.match(r"^\s*(title|cast|jobs|trial_hook|trial_card|yt_last)\s*:\s*(.+)$", raw, re.I)
+        m = re.match(r"^\s*(title|cast|jobs|trial_hook|trial_card|yt_last|threads)\s*:\s*(.+)$", raw, re.I)
         if m:
             head[m.group(1).lower()] = m.group(2).split("#")[0].strip() if m.group(1).lower() in ("title", "cast", "jobs") else m.group(2).strip()
         else:
@@ -263,6 +263,7 @@ def parse_series(path: Path) -> dict:
         "dialogue": "\n".join(lines),
         "description": description.strip(),
         "trial_hook": head.get("trial_hook", ""), "trial_card": head.get("trial_card", ""), "yt_last": head.get("yt_last", ""),
+        "threads": head.get("threads", ""),
         "trial_dialogue": "\n".join(dialogue_lines(sec.get("trial", ""))).strip(),
         "trial_description": sec.get("trial description", ""),
     }
@@ -343,6 +344,11 @@ def run_series(path: Path, day: str, opts: dict, env: dict, out: Path | None = N
         script = json.loads((folder / "script.json").read_text(encoding="utf-8"))
         script["caption"] = desc  # the same place the AI pipeline keeps its caption
         (folder / "script.json").write_text(json.dumps(script, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+    # 'threads:' = the whole text of the Threads post: one question people can answer, then the video (user, 2026-11-12).
+    # Without it threads-publisher falls back to the description.
+    (folder / "threads.txt").unlink(missing_ok=True)
+    if ep["threads"]:
+        (folder / "threads.txt").write_text(fill_slots(ep["threads"], jobs) + "\n", encoding="utf-8")
     # the variants the episode asks for (made after the reel by make_variants)
     spec: dict = {}
     fill = lambda t: fill_slots(t, jobs) if t else ""  # noqa: E731

@@ -4,34 +4,36 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 2/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Opening test (2026-11-12, 13-20 Nov, 2 reels per kind): COMMON BELIEF, THEN CONTRADICT. Bunty repeats the advice
+# everyone gives ("I work too hard" is safe); Arjun calls it the least safe answer, and the why keeps them watching.
 title: Interview prep | Strengths and weaknesses
 cast: arjun, bunty
 jobs: india-freshers, 0
-hook: WEAKNESS: SACH + FIX
-trial_hook: Don't fake your weakness. Say one real one, plus one fix.
+hook: 'I WORK TOO HARD' = GALAT
+trial_hook: Everyone says "I work too hard" is a safe weakness. It is the worst one.
 trial_card: 'TOO HARD' = FAKE
-Bunty: Weakness poochi, maine bola, I work too hard. Interviewer hans diya.
-Arjun: Kyunki ye roz sunte hain. Fake lagta hai.
-Bunty: But ChatGPT said yahi safe hai!
-Arjun: Safe nahi, ratta lagta hai. Sach wali weakness bolo, jo job ke liye khatarnaak na ho.
-Bunty: Jaise?
+threads: Interview mein apni weakness kya batate ho?
+Bunty: Sab kehte hain, weakness mein bolo I work too hard.
+Arjun: Ye sabse unsafe jawab hai. Interviewer ye din mein das baar sunta hai.
+Bunty: Par ChatGPT ne bhi yahi bola!
+Arjun: Isliye sab bolte hain. Aur isliye ratta lagta hai.
+Bunty: Toh kya bolun?
+Arjun: Sach wali weakness, jo job ke liye khatarnaak na ho.
 Arjun: Jaise: main group mein bolne se pehle bahut sochta hoon.
 Bunty: Bas itna?
 Arjun: Nahi. Saath mein fix. Ab har meeting mein ek point pehle se likh ke jaata hoon.
 Bunty: Aur strength?
-Arjun: Ek strength, ek kahani. Quick learner bolna kaafi nahi.
+Arjun: Wahan bhi sab galti karte hain. Quick learner bolna kaafi nahi.
 Arjun: Bolo: do hafte mein React seekha, aur fest ki website bana di.
 Bunty: Matlab adjective nahi, example.
 Arjun: Haan. Strength ke saath proof, weakness ke saath fix.
-Bunty: Aur agar wo bole, koi aur weakness?
-Arjun: Same format. Sach, chhoti, aur fix ke saath.
 Bunty: ChatGPT ko bhi ye sikhata hoon.
-Arjun: Sach weakness, saath mein fix. Follow karo, kal salary ka sawaal.
+Arjun: Too hard nahi, sach aur fix. Follow karo, kal salary ka sawaal.
 
 --- description
 Strengths and weaknesses answer for freshers | What is your weakness interview | HR interview tips
 Interview prep 💪
-"My weakness is I work too hard" sunte hi pata chal jata hai ki ratta hai.
+Sab kehte hain "I work too hard" safe hai. Sabse unsafe hai: interviewer ye din mein das baar sunta hai, ratta lagta hai.
 Weakness: sach wali, job ke liye khatarnaak nahi, aur saath mein fix.
 Strength: adjective nahi, ek kahani. "Quick learner" nahi, "2 hafte mein React seekha aur fest ki site banayi."
 

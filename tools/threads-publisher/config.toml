@@ -7,6 +7,9 @@ env_files = ["../../.env"]           # for runs on the PC; the workflow passes r
 token_expires = "2027-01-08"         # written by get_token.py (60 days from 2026-11-09); the report warns 14 days before
 text_max = 500                       # Threads' limit for a post's text
 site_url = "https://ats-jobs-api.pk2732004.workers.dev"  # replaces "link in bio" ("" = keep the text)
+# An episode with a 'threads:' line posts only that question (folder/threads.txt) with the video, no description.
+# true adds the description's first hashtag as the topic tag (how Threads files a post under a topic); false = question only.
+question_topic_tag = true
 repo = "Pratham2703005/clips-generator"   # when GITHUB_REPOSITORY isn't set (runs on the PC)
 release_tag = "reel-uploads"         # public release that holds a reel for a few minutes while Threads fetches it
 

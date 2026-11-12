@@ -211,6 +211,7 @@ jobs:
             content/${{ env.DAY }}/brief.json
             content/${{ env.DAY }}/visuals.json
             content/${{ env.DAY }}/description.txt
+            content/${{ env.DAY }}/threads.txt
             content/${{ env.DAY }}/posted.json
             content/${{ env.DAY }}/compose.json
             content/${{ env.DAY }}/voice.json
@@ -221,6 +222,7 @@ jobs:
             content/custom/${{ env.NAME }}/compose.json
             content/custom/${{ env.NAME }}/visuals.json
             content/custom/${{ env.NAME }}/description.txt
+            content/custom/${{ env.NAME }}/threads.txt
             content/custom/${{ env.NAME }}/brief.json
             content/custom/${{ env.NAME }}/voice.json
             content/custom/${{ env.NAME }}/timeline.json

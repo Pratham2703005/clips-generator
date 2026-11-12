@@ -9,7 +9,8 @@ Threads takes video only from a public URL (no upload), so the reel goes up for 
 public repo's release "reel-uploads" (made on first use), and the asset is deleted again right after, posted or not.
 Container (media_type VIDEO, video_url, text) -> wait until FINISHED -> threads_publish -> permalink. If Threads cannot
 fetch the github.com download link (it redirects), the container is made once more with the redirect's target.
-Text: description.txt cut to Threads' 500 characters at a line break; one hashtag kept (Threads uses one topic tag).
+Text: the episode's question (threads.txt, from its 'threads:' line) plus one topic tag; without one, description.txt
+cut to Threads' 500 characters at a line break, one hashtag kept (Threads uses one topic tag).
 Writes threads_id / threads_url / threads_posted_at into posted.json and skips when they are already there.
 The token is never printed. The token lasts 60 days: [threads] token_expires (written by get_token.py) is checked here
 and by the report.
@@ -70,8 +71,14 @@ def call(method: str, path: str, token: str, fields: dict | None = None) -> dict
         raise RuntimeError(f"{method} {path.split('/')[-1]}: HTTP {e.code}: {msg}") from None
 
 
-def threads_text(folder: Path, limit: int, site_url: str = "") -> str:
-    desc, script = folder / "description.txt", folder / "script.json"
+def threads_text(folder: Path, limit: int, site_url: str = "", topic_tag: bool = True) -> str:
+    desc, script, question = folder / "description.txt", folder / "script.json", folder / "threads.txt"
+    if question.is_file() and question.read_text(encoding="utf-8").strip():
+        # the episode's 'threads:' line: only the question (Threads rewards replies), plus the description's first hashtag
+        # as the post's topic tag when topic_tag is on (that is how Threads files a post under a topic)
+        text = question.read_text(encoding="utf-8").strip()
+        tags = re.findall(r"#\w+", desc.read_text(encoding="utf-8")) if topic_tag and desc.is_file() else []
+        return (text + (f"\n\n{tags[0]}" if tags else ""))[:limit]
     if desc.is_file():
         text = desc.read_text(encoding="utf-8").strip()
     elif script.is_file():
@@ -171,7 +178,7 @@ def main() -> None:
     print(f"account: @{me.get('username')}; token " + (f"expires in {left} days" if left is not None else "expiry unknown"))
     if left is not None and left < 14:
         print("::warning::Threads token expires soon: generate a new one and run tools/threads-publisher/get_token.py --long")
-    text = threads_text(folder, th["text_max"], th.get("site_url", ""))
+    text = threads_text(folder, th["text_max"], th.get("site_url", ""), th.get("question_topic_tag", True))
     print(f"reel: {video} ({video.stat().st_size / 1e6:.1f} MB), text {len(text)} characters")
     if a.dry_run:
         print("---\n" + text + "\n---\n(dry run: nothing posted)")

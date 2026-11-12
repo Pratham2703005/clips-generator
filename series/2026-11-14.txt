@@ -1,42 +1,43 @@
 # Series "7 Din, 1 Offer", Season 2 "Offer Tak" finale - Din 14 "Joining day" (promo episode, 2 of 2 this season)
 # Rewritten 2026-11-07 with the ig-reel skill: hookscore 81.8 STRONG, beats.py ~40 s.
 # Closes both arcs: Bunty joins, Riya (kept applying after her rejection) gets an offer. No open "Monday interview".
-# Bridge to Season 3 (the story of the job website itself): "who made it? Arjun always has its link". Season 3 can
-# reveal Arjun built it after a layoff, or name someone else: the line commits to nothing more.
+# 2026-11-12: the Season 3 tease is gone (Season 3 was dropped); the bridge is now the Interview prep reels from 15 Nov.
+# Opening test (2026-11-12, 13-20 Nov, 2 reels per kind): RESULT FIRST. Both offers are in the first line, then how
+# (3 a day, fresh jobs the same day, apply on rejection days too). Compare avg watch time / saves / shares with the rest.
 title: Offer Tak | Din 14: Joining day
 cast: riya, bunty
 jobs: india-freshers|bangalore-tech|remote-india, 2
-hook: 200 APPLICATIONS SE 1 OFFER
-trial_hook: Stop sending two hundred applications. Send three a day.
+hook: 2 OFFERS. ROZ SIRF 3 APPLY.
+trial_hook: We both got offers by sending three applications a day, not two hundred.
 trial_card: 200 NAHI. ROZ 3.
-Bunty: Stop counting applications. Two hundred se one offer ka sach.
-Riya: Aaj joining hai na? Laptop mila?
-Bunty: Laptop, ID card, aur free chai. Malhotra Ma'am ki chai bhi bach gayi.
-Riya: Sabse badi seekh?
-Bunty: Do sau nahi, din ke teen sahi. Fresh job pe, din ke din.
-Riya: Aur meri seekh? Rejection ke din bhi apply.
-Bunty: Toh?
-Riya: Kal raat mail aaya. Offer!
-Bunty (shocked): Riya! Dono ka offer! Season ka perfect end.
-Riya: Ek sawaal. Wo fresh jobs wali website banayi kisne?
-Bunty: Pata nahi. Par Arjun ke paas hamesha uska link hota hai.
-Riya: Matlab Arjun ko pata hai. Season three?
-Bunty: Season three. Tab tak doston ke liye aaj ki do jobs.
-Riya: Pehli, {job1}. [job: 1]
+threads: Pehli job ke liye tumne kitni applications bheji thi?
+Bunty: Aaj joining, kal Riya ka offer. Roz sirf teen applications.
+Riya: Laptop mila?
+Bunty: Laptop, ID card, aur free chai. Ab batate hain kaise.
+Riya: Pehla: do sau random nahi, din ke teen sahi jobs.
+Bunty: Doosra: fresh job, din ke din apply. Purani job pe line lambi hoti hai.
+Riya: Teesra: rejection ke din bhi apply. Mera offer usi hafte aaya.
+Bunty (shocked): Usi hafte? Tune bataya bhi nahi!
+Riya: Kal raat hi mail aaya. Fresh jobs kahan se mili, wo bata.
+Bunty: Ek website se. Roz saari career sites se fresh jobs laati hai.
+Riya: Doston ke liye aaj ki do jobs. Pehli, {job1}. [job: 1]
 Riya: Aur doosri, {job2}. [job: 2]
 Bunty: Links description mein. Applications mat gino.
-Riya: Follow karo, Season three mein website ka sach.
+Riya: Roz teen. Follow karo, kal se interview ke sawaal.
 
 --- description
 Fresher first job joining day | Fresher jobs 2026 | Off campus jobs India
 Offer Tak | Din 14 🎉
-200 applications se ek offer tak. Bunty ki joining ho gayi, aur Riya? Rejection ke baad bhi roz apply kiya, aur kal raat offer aaya. 🎉
-Seekh: 200 random nahi, din ke 3 sahi. Fresh job pe, din ke din.
+Do offers, roz sirf 3 applications se. Bunty ki joining ho gayi, aur Riya ka offer kal raat aaya. 🎉
+Kaise:
+1. 200 random nahi, din ke 3 sahi jobs
+2. Fresh job pe, din ke din apply
+3. Rejection ke din bhi apply
 
 Jobs in this episode:
 {jobs}
 
-Season 3 jaldi: jis website se ye jobs aati hain, uski kahani. Follow karo.
+Kal se: interview ke sawaal, ek reel mein ek. Follow karo.
 Fresh jobs from company career pages, every day: link in bio.
 
 #offertak #fresherjobs #firstjob #joiningday #offcampusjobs
