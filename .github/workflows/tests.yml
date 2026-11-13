@@ -1,0 +1,182 @@
+# Checks that never post, send or commit anything.
+#  unit      every push / PR that touches code, series or configs: python -m pytest (offline, fake APIs, ~seconds)
+#  pipeline  by hand (Actions -> Tests -> Run workflow): makes a real reel the way the nightly run does (tomorrow's
+#            series episode by default, so a broken episode shows a day early), checks the video, then runs every
+#            publisher and the report with --dry-run (each checks its token and prints what it would post).
+#            Costs one reel's TTS and the API calls of a brief; history files are changed only on the runner.
+name: Tests
+
+on:
+  push:
+    paths: ["**.py", "series/**", "modes/**", "**.toml", "tests/**", "requirements.txt", ".github/workflows/tests.yml"]
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      pipeline:
+        description: "Also make a real reel and dry-run every publisher (nothing is posted)"
+        type: boolean
+        default: true
+      what:
+        description: "Which reel: tomorrow's series episode, or a short fixed test script"
+        type: choice
+        options: [tomorrow, custom]
+        default: tomorrow
+
+permissions:
+  contents: read
+
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt pytest
+      - run: python -m pytest -q
+
+  pipeline:
+    needs: unit
+    if: github.event_name == 'workflow_dispatch' && inputs.pipeline
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+      GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+      JOB_FEED_API_KEY: ${{ secrets.JOB_FEED_API_KEY }}
+      HF_HUB_DISABLE_TELEMETRY: "1"
+      IN_WHAT: ${{ inputs.what }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: FFmpeg
+        timeout-minutes: 8
+        run: |
+          if ! timeout 180 bash -c 'sudo apt-get update -q -o Acquire::Retries=3 -o Acquire::http::Timeout=20 && sudo apt-get install -y -q -o Acquire::Retries=3 ffmpeg'; then
+            echo "::warning::apt was slow or failed; using a static ffmpeg build"
+            curl -fsSL --retry 3 -o /tmp/ffmpeg.tar.xz https://github.com/BtbN/FFmpeg-Builds/releases/download/latest/ffmpeg-master-latest-linux64-gpl.tar.xz
+            sudo tar -xJf /tmp/ffmpeg.tar.xz -C /opt
+            sudo ln -sf /opt/ffmpeg-master-latest-linux64-gpl/bin/ffmpeg /opt/ffmpeg-master-latest-linux64-gpl/bin/ffprobe /usr/local/bin/
+          fi
+          ffmpeg -version | head -1
+
+      - run: pip install -r requirements.txt
+
+      - name: Whisper model cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface
+          key: whisper-small-v1
+
+      - name: Background clips
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh release download backgrounds --pattern "*.mp4" --dir public/bg-minecraft-video/input --skip-existing
+
+      - name: Make the reel
+        run: |
+          if [ "$IN_WHAT" = custom ]; then
+            DAY=$(TZ=Asia/Kolkata date +%F)
+            echo "FOLDER=content/custom/pipeline-check" >> "$GITHUB_ENV"
+            python run.py custom --date "$DAY" --name pipeline-check --script-text \
+              "hook: PIPELINE CHECK | Riya: Ye ek test reel hai, post nahi hogi. | Arjun (shocked): Toh banaya kyun? [show: https://ats-jobs-api.pk2732004.workers.dev] | Riya: Taaki pata chale sab chal raha hai. Follow karo."
+          else
+            # tomorrow's episode, exactly as tonight's run will make it (series file, fresh jobs, variants)
+            DAY=$(TZ=Asia/Kolkata date -d tomorrow +%F)
+            echo "FOLDER=content/$DAY" >> "$GITHUB_ENV"
+            [ -f "series/$DAY.txt" ] && echo "series episode: series/$DAY.txt" || echo "::notice::no series/$DAY.txt: the AI pipeline makes the reel"
+            python run.py ats --date "$DAY"
+          fi
+
+      - name: Check the video
+        run: |
+          v="$FOLDER/reel.mp4"
+          w=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$v")
+          h=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$v")
+          a=$(ffprobe -v error -select_streams a -show_entries stream=index -of csv=p=0 "$v" | wc -l)
+          d=$(ffprobe -v error -show_entries format=duration -of csv=p=0 "$v")
+          mb=$(du -m "$v" | cut -f1)
+          echo "reel: ${w}x${h}, ${d}s, ${a} audio stream(s), ${mb} MB"
+          [ "$w" = 1080 ] && [ "$h" = 1920 ] || { echo "::error::not 1080x1920"; exit 1; }
+          [ "$a" -ge 1 ] || { echo "::error::no audio"; exit 1; }
+          awk "BEGIN{exit !($d >= 5 && $d <= 90)}" || { echo "::error::duration ${d}s outside 5-90 s"; exit 1; }
+          [ "$mb" -lt 100 ] || { echo "::error::${mb} MB is over the 100 MB the platforms take"; exit 1; }
+          for f in script.json timeline.json captions.ass compose.json; do [ -s "$FOLDER/$f" ] || { echo "::error::$f missing"; exit 1; }; done
+          echo "variants: $(ls "$FOLDER/variants" 2>/dev/null | tr '\n' ' ')"
+
+      - name: Keep the test reel
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pipeline-check-run${{ github.run_number }}
+          path: |
+            ${{ env.FOLDER }}/reel.mp4
+            ${{ env.FOLDER }}/script.md
+            ${{ env.FOLDER }}/description.txt
+            ${{ env.FOLDER }}/threads.txt
+            ${{ env.FOLDER }}/variants/*/reel.mp4
+          if-no-files-found: warn
+          retention-days: 3
+
+      # --dry-run: each checks its token / account and prints what it would post; nothing is posted
+      - name: Instagram (dry run)
+        if: always()
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+        run: |
+          python tools/instagram-publisher/publish.py --folder "$FOLDER" --dry-run
+          python tools/instagram-publisher/publish.py --folder "$FOLDER" --trial --dry-run
+      - name: YouTube (dry run)
+        if: always()
+        env:
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+        run: python tools/youtube-publisher/publish.py --folder "$FOLDER" --dry-run
+      - name: Facebook (dry run)
+        if: always()
+        env:
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          IG_APP_SECRET: ${{ secrets.IG_APP_SECRET }}
+        run: python tools/facebook-publisher/publish.py --folder "$FOLDER" --dry-run
+      - name: Threads (dry run)
+        if: always()
+        env:
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+        run: python tools/threads-publisher/publish.py --folder "$FOLDER" --dry-run
+      - name: Telegram (dry run)
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+        run: python tools/telegram-publisher/publish.py --folder "$FOLDER" --dry-run
+      - name: Report (dry run, no mail)
+        if: always()
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          IG_APP_SECRET: ${{ secrets.IG_APP_SECRET }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          OUT_MAKE: success
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: python tools/report/report.py --folder "$FOLDER" --dry-run

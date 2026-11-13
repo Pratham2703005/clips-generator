@@ -72,6 +72,15 @@ Paths in an override are relative to the file they are written in. Each tool rea
 - `content/<date>/` (ats) or `content/custom/<name>/` (custom): `brief.json`, `script.json` / `script.md`, `voice.wav`, `captions.ass`, `visuals.json`, `reel.mp4`
 - `content/history.json`: which jobs, premises, hooks and dynamics were used, so reels don't repeat. This is the only content file kept in git.
 
+## Tests
+Nothing in them posts, sends or commits.
+- `pip install pytest` then `python -m pytest` (repo root, a few seconds, no network or keys): every series episode parses
+  and keeps the promo rule, the configs only set keys the tools have, captions, the publishers' texts and posting logic
+  (fake APIs: e.g. Instagram's upload refused -> the video_url fallback), the report's metric handling. Runs on every push.
+- **Actions → Tests → Run workflow** (pipeline ticked): makes tomorrow's episode exactly as the nightly run will (or a
+  short fixed script with `what: custom`), checks the video (1080x1920, audio, length, size), keeps it as an artifact for
+  3 days, then runs every publisher and the report with `--dry-run` (tokens checked, nothing posted, no mail).
+
 ## GitHub Actions (daily)
 [.github/workflows/daily-reel.yml](.github/workflows/daily-reel.yml) runs `python run.py ats` at 08:00 IST and keeps the reel as a downloadable artifact for 30 days (Actions → the run → Artifacts).
 
