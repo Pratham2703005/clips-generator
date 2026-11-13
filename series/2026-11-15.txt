@@ -9,6 +9,7 @@
 title: Interview prep | Why should we hire you?
 cast: arjun, riya
 jobs: india-freshers, 0
+funnel: top
 hook: NA HARDWORKING. NA PASSIONATE.
 trial_hook: Never say hardworking in an interview. Use these three parts instead.
 trial_card: HARDWORKING SE HIRE NAHI

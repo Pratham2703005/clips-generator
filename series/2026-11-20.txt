@@ -9,6 +9,7 @@
 title: Interview prep | Explain your project in 3 lines
 cast: arjun, bunty
 jobs: india-freshers, 0
+funnel: middle
 hook: FEATURES NAHI. BEST: 3 LINE.
 trial_hook: Don't list every feature of your project. Interviewers remember three lines.
 trial_card: PROJECT = 3 LINES

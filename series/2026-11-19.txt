@@ -9,6 +9,7 @@
 title: Interview prep | Do you have any questions for us?
 cast: malhotra, riya
 jobs: india-freshers, 0
+funnel: top
 hook: NA SALARY. NA 'NO QUESTIONS'.
 trial_hook: Never leave an interview with zero questions. Ask about the first three months.
 trial_card: 'NO QUESTIONS' = NO JOB

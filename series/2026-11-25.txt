@@ -7,6 +7,7 @@
 title: Interview prep | 5 saal baad kahan dekhte ho?
 cast: malhotra, riya
 jobs: india-freshers, 0
+funnel: top
 hook: 5 SAAL BAAD? YE BOLO
 trial_hook: Don't joke about five years. Say a two-year plan instead.
 trial_card: 'AAPKI KURSI' = NO

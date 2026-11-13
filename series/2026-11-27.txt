@@ -7,6 +7,7 @@
 title: Interview prep | Coding round mein chup mat raho
 cast: arjun, riya
 jobs: india-freshers, 0
+funnel: middle
 hook: CODING ROUND: BOLTE RAHO
 trial_hook: Don't stay silent in a coding round. Repeat the question first.
 trial_card: CHUP = BLANK SCREEN

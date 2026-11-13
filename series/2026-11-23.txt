@@ -7,6 +7,7 @@
 title: Interview prep | Low CGPA ka sawaal
 cast: malhotra, bunty
 jobs: india-freshers, 0
+funnel: top
 hook: LOW CGPA? SORRY MAT BOLO
 trial_hook: Never hide a low CGPA. Show one project that beats it.
 trial_card: CGPA KAM? SORRY NAHI

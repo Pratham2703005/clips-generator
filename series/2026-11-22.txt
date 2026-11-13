@@ -7,6 +7,7 @@
 title: Interview prep | Ek resume, 50 jobs? Nahi
 cast: arjun, riya
 jobs: india-freshers|remote-india, 1
+funnel: bottom
 hook: 10 MINUTE RESUME FIX
 trial_hook: Stop sending the same resume to fifty jobs. Ten minutes fixes it.
 trial_card: 10 MINUTE RESUME FIX

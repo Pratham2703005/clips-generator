@@ -7,6 +7,7 @@
 title: Interview prep | Tell me about a failure
 cast: malhotra, riya
 jobs: india-freshers, 0
+funnel: top
 hook: FAILURE + SEEKH = JAWAB
 trial_hook: Never say you have never failed. Tell one small failure instead.
 trial_card: 'NEVER FAILED' = JHOOTH

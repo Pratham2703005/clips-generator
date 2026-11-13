@@ -7,6 +7,7 @@
 title: Interview prep | Group discussion ke 3 rule
 cast: arjun, riya
 jobs: india-freshers, 0
+funnel: middle
 hook: GD: 3 RULE, CHILLANA NAHI
 trial_hook: Never shout in a group discussion. Three rules win it instead.
 trial_card: GD: CHILLAO MAT

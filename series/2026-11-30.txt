@@ -7,6 +7,7 @@
 title: Interview prep | Remote job: asli ya scam?
 cast: arjun, bunty
 jobs: remote-india|india-freshers, 1
+funnel: bottom
 hook: REMOTE JOB? FEE MAANGE = SCAM
 trial_hook: Never pay a fee for a remote job. Here are three signs.
 trial_card: FEE MAANGE? SCAM.

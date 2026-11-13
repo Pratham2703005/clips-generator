@@ -7,6 +7,7 @@
 title: Interview prep | Why this company? 10 minute research
 cast: malhotra, bunty
 jobs: india-freshers, 0
+funnel: top
 hook: WHY US? 10 MINUTE RESEARCH
 trial_hook: Never say big brand when they ask why this company. Ten minutes fixes it.
 trial_card: 'BIG BRAND' = WEAK

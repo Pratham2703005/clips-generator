@@ -7,6 +7,7 @@
 title: Interview prep | Puzzle question: guess mat karo
 cast: arjun, bunty
 jobs: india-freshers, 0
+funnel: top
 hook: PUZZLE: GUESS NAHI, SOCH
 trial_hook: Never guess a puzzle answer. Try two people, then three.
 trial_card: PUZZLE = THINKING

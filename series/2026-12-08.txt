@@ -7,6 +7,7 @@
 title: Interview prep | HR ko 5 line ka email
 cast: arjun, riya
 jobs: india-freshers|remote-india, 1
+funnel: bottom
 hook: HR EMAIL: SIRF 5 LINE
 trial_hook: Stop sending long emails to HR. Five lines are enough.
 trial_card: HR EMAIL = 5 LINES

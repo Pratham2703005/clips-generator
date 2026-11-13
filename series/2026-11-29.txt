@@ -7,6 +7,7 @@
 title: Interview prep | Interview ke baad 3 line ka mail
 cast: arjun, riya
 jobs: india-freshers, 0
+funnel: middle
 hook: INTERVIEW KE BAAD 3 LINE
 trial_hook: Send three lines after every interview. Same day, never longer.
 trial_card: 3 LINE, SAME DAY

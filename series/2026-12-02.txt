@@ -7,6 +7,7 @@
 title: Interview prep | Manager round mein kya check hota hai
 cast: arjun, bunty
 jobs: india-freshers, 0
+funnel: middle
 hook: MANAGER ROUND ≠ CODING
 trial_hook: Don't say you'll work all night. Managers want two things first.
 trial_card: MANAGER ROUND ≠ CODING

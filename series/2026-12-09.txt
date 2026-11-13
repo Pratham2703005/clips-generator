@@ -7,6 +7,7 @@
 title: Interview prep | Final round ke baad ghost
 cast: malhotra, riya
 jobs: india-freshers, 0
+funnel: middle
 hook: FINAL KE BAAD GHOST? DAY 5
 trial_hook: Don't wait forever after a final round. Mail on day five.
 trial_card: GHOSTED? DAY 5 MAIL

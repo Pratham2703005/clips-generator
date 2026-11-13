@@ -7,6 +7,7 @@
 title: Interview prep | 2 offers mein se kaunsa?
 cast: malhotra, riya
 jobs: india-freshers, 0
+funnel: top
 hook: 2 OFFERS? SIRF CTC MAT DEKHO
 trial_hook: Never choose between two offers only by CTC.
 trial_card: CTC SE ZYADA DEKHO

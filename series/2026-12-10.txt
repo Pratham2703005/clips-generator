@@ -7,6 +7,7 @@
 title: Interview prep | Background verification
 cast: arjun, bunty
 jobs: india-freshers, 0
+funnel: middle
 hook: OFFER KE BAAD BHI CHECK HOTA HAI
 trial_hook: Don't lie on your resume. They check it after the offer.
 trial_card: OFFER KE BAAD CHECK

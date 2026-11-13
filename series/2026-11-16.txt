@@ -9,6 +9,7 @@
 title: Interview prep | Strengths and weaknesses
 cast: arjun, bunty
 jobs: india-freshers, 0
+funnel: top
 hook: 'I WORK TOO HARD' = GALAT
 trial_hook: Everyone says "I work too hard" is a safe weakness. It is the worst one.
 trial_card: 'TOO HARD' = FAKE

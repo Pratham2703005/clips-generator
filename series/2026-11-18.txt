@@ -9,6 +9,7 @@
 title: Interview prep | Off-campus drive checklist
 cast: arjun, bunty
 jobs: india-freshers|bangalore-tech, 1
+funnel: bottom
 hook: 1 RESUME ACHHA. YE BEST.
 trial_hook: Don't go to an off-campus drive with one resume. Carry five.
 trial_card: DRIVE? YE 5 CHEEZEIN

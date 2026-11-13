@@ -7,6 +7,7 @@
 title: Interview prep | Job ka pehla hafta: 3 kaam
 cast: arjun, riya
 jobs: india-freshers, 0
+funnel: middle
 hook: JOB KA PEHLA HAFTA: 3 KAAM
 trial_hook: Don't try to impress everyone in your first week. Do three things.
 trial_card: PEHLA HAFTA: 3 KAAM

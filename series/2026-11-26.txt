@@ -7,6 +7,7 @@
 title: Interview prep | Internship se full-time offer
 cast: arjun, bunty
 jobs: india-freshers, 1
+funnel: bottom
 hook: INTERNSHIP = 2 MAHINE KA INTERVIEW
 trial_hook: Don't waste your internship. Three habits turn it into an offer.
 trial_card: INTERNSHIP = INTERVIEW

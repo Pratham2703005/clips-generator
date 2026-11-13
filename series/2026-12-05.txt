@@ -7,6 +7,7 @@
 title: Interview prep | Interview ke pehle 30 second
 cast: malhotra, bunty
 jobs: india-freshers, 0
+funnel: top
 hook: PEHLE 30 SECOND = IMPRESSION
 trial_hook: Your interview starts before your first answer. Thirty seconds.
 trial_card: PEHLE 30 SECOND

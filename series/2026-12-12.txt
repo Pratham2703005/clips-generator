@@ -7,6 +7,7 @@
 title: Interview prep | Doosre shehar ki job: pehle ye math
 cast: arjun, bunty
 jobs: bangalore-tech|india-freshers, 1
+funnel: bottom
 hook: DOOSRA SHEHAR? PEHLE YE MATH
 trial_hook: Never refuse a job in another city before these four numbers.
 trial_card: SHEHAR BADLO? PEHLE MATH

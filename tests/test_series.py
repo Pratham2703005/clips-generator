@@ -33,7 +33,7 @@ def test_episode_parses_and_fills(path: Path, run_py, tmp_path):
 
     # header lines never reach the spoken dialogue (a new header field must be added to parse_series)
     for line in ep["dialogue"].splitlines():
-        assert not re.match(r"^\s*(title|cast|jobs|trial_hook|trial_card|yt_last|threads)\s*:", line, re.I), line
+        assert not re.match(r"^\s*(title|cast|jobs|funnel|trial_hook|trial_card|yt_last|threads)\s*:", line, re.I), line
 
     slots = {int(n) for n in re.findall(r"\{job(\d)", ep["dialogue"])}
     assert not slots or max(slots) <= max(ep["count"], 1), f"dialogue uses {{job{max(slots)}}} but jobs count is {ep['count']}"
@@ -79,6 +79,34 @@ def test_promo_ratio():
         window = promo[i:i + 10]
         n = sum(1 for _, is_promo in window if is_promo)
         assert n <= 3, f"{n} promo episodes between {window[0][0]} and {window[-1][0]}"
+
+
+FUNNEL_FROM = "2026-11-14"  # every episode from here has one funnel job (2026-11-13)
+
+
+def dated_from(day: str) -> list[Path]:
+    return [p for p in EPISODES if re.fullmatch(r"\d{4}-\d{2}-\d{2}", p.stem) and p.stem >= day]
+
+
+@pytest.mark.parametrize("path", dated_from(FUNNEL_FROM), ids=lambda p: p.stem)
+def test_funnel_role(path: Path, run_py):
+    """top = reach, middle = follow, bottom = join the owned audience (jobs / Telegram). A promo episode is the bottom
+    of the funnel and a bottom episode promotes, so the two can't drift apart."""
+    ep = run_py.parse_series(path)
+    assert ep["funnel"] in ("top", "middle", "bottom"), f"funnel: must be top, middle or bottom (got {ep['funnel']!r})"
+    promo = ep["count"] > 0 or "{job" in ep["dialogue"]
+    assert promo == (ep["funnel"] == "bottom"), "a promo episode must be funnel: bottom, and a bottom one must promote"
+
+
+def test_funnel_mix():
+    """Reach first: in any 10 consecutive episodes at least 4 are top and at most 3 are bottom."""
+    roles = [(p.stem, (re.search(r"(?mi)^\s*funnel\s*:\s*(\w+)", p.read_text(encoding="utf-8")) or [None, ""])[1].lower())
+             for p in dated_from(FUNNEL_FROM)]
+    for i in range(max(0, len(roles) - 9)):
+        window = [r for _, r in roles[i:i + 10]]
+        span = f"{roles[i][0]}..{roles[min(i + 9, len(roles) - 1)][0]}"
+        assert window.count("top") >= 4, f"only {window.count('top')} top episodes in {span}"
+        assert window.count("bottom") <= 3, f"{window.count('bottom')} bottom episodes in {span}"
 
 
 def test_dates_are_real():

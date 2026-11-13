@@ -248,9 +248,9 @@ def parse_series(path: Path) -> dict:
     sec = split_sections(path.read_text(encoding="utf-8"))
     head, lines = {}, []
     for raw in dialogue_lines(sec["body"]):
-        m = re.match(r"^\s*(title|cast|jobs|trial_hook|trial_card|yt_last|threads)\s*:\s*(.+)$", raw, re.I)
+        m = re.match(r"^\s*(title|cast|jobs|funnel|trial_hook|trial_card|yt_last|threads)\s*:\s*(.+)$", raw, re.I)
         if m:
-            head[m.group(1).lower()] = m.group(2).split("#")[0].strip() if m.group(1).lower() in ("title", "cast", "jobs") else m.group(2).strip()
+            head[m.group(1).lower()] = m.group(2).split("#")[0].strip() if m.group(1).lower() in ("title", "cast", "jobs", "funnel") else m.group(2).strip()
         else:
             lines.append(raw)
     description = sec.get("description", "")
@@ -264,6 +264,7 @@ def parse_series(path: Path) -> dict:
         "description": description.strip(),
         "trial_hook": head.get("trial_hook", ""), "trial_card": head.get("trial_card", ""), "yt_last": head.get("yt_last", ""),
         "threads": head.get("threads", ""),
+        "funnel": head.get("funnel", "").lower(),  # top | middle | bottom: the episode's one job in the funnel (2026-11-13)
         "trial_dialogue": "\n".join(dialogue_lines(sec.get("trial", ""))).strip(),
         "trial_description": sec.get("trial description", ""),
     }
@@ -338,6 +339,10 @@ def run_series(path: Path, day: str, opts: dict, env: dict, out: Path | None = N
     filled = folder / "series-script.txt"
     filled.write_text(fill_slots(ep["dialogue"], jobs), encoding="utf-8")
     build_custom(filled, {**opts, "left": cast[0], "right": cast[1]}, day, folder=folder, jobs=jobs, title=ep["title"], track="series")
+    if ep["funnel"]:  # kept with the reel, so results can later be compared per funnel stage
+        script = json.loads((folder / "script.json").read_text(encoding="utf-8"))
+        script["funnel"] = ep["funnel"]
+        (folder / "script.json").write_text(json.dumps(script, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
     if ep["description"]:
         desc = with_platform_link(fill_slots(ep["description"].replace("{jobs}", jobs_block(jobs[:needed])), jobs), platform)
         (folder / "description.txt").write_text(desc + "\n", encoding="utf-8")

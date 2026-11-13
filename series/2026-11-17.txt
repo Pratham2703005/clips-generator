@@ -9,6 +9,7 @@
 title: Interview prep | Expected salary as a fresher
 cast: arjun, riya
 jobs: india-freshers, 0
+funnel: top
 hook: 'JO DE DO' = SABSE KAM
 trial_hook: Never tell HR to pay whatever they want. Say a range.
 trial_card: 'JO DE DO' = KAM MILEGA

@@ -7,6 +7,7 @@
 title: Interview prep | Internship mein kya kiya?
 cast: malhotra, bunty
 jobs: india-freshers, 0
+funnel: top
 hook: 'LEARNED A LOT' NAHI, YE BOLO
 trial_hook: Don't say I learned a lot. Say one thing your internship changed.
 trial_card: 'LEARNED A LOT' = KHAALI

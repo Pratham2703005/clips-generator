@@ -1,0 +1,45 @@
+# Special, 2026-11-13 (19:00 IST, extra mid-day reel). Value episode, no promotion. funnel: top.
+# Built from the 2026-11-13 niche study (custom-skills/job-shorts-playbook/NICHE.md):
+#   - the topic is a proven niche hook: Career Talk's "Applied in 200 companies but NO interview calls" did 17x their median
+#   - the first line is the problem itself in the viewer's words (the search phrase), no scene before it
+#   - a numbered frame (3 galtiyan), each with a fix you can copy; the recruiter message is said word for word
+#   - a comment prompt ("comment mein number likho") + follow, loop back to "do sau"
+# It is Bunty's own Season 1 problem (his application count only went up); Malhotra, the HR insider, explains.
+# Run it: Daily reel -> mode custom, script = series/specials/200-no-calls.txt, name = special-200-no-calls, posting off.
+title: Job search | 200 applications, 0 calls
+cast: malhotra, bunty
+jobs: india-freshers, 0
+funnel: top
+hook: 200 APPLY. 0 CALL. KYUN?
+trial_hook: Two hundred applications and zero calls is not bad luck. It is three mistakes.
+trial_card: 200 APPLY = 3 GALTI
+threads: Ab tak kitni applications bheji, aur kitni calls aayi?
+Bunty: Do sau applications, Ma'am. Ek bhi call nahi.
+Malhotra: Kyunki ek hi galti nahi. Teen galtiyan, do sau baar.
+Bunty (shocked): Teen?
+Malhotra: Pehli: har job pe same resume. Software pehle keywords padhta hai.
+Malhotra: Job description ke paanch skill words, resume ke upar.
+Bunty: ChatGPT se likhwa loon?
+Malhotra: Likhwao, par sirf jo sach mein aate hain.
+Malhotra: Doosri: teen hafte purani job. Wahan line pehle se lambi hai.
+Malhotra: Do din ke andar wali job pe apply karo.
+Bunty: Aur teesri?
+Malhotra: Apply karke bhool jaana. Recruiter ko do line likho.
+Malhotra: Hi, maine aaj Data Analyst role ke liye apply kiya. SQL mein do project kiye hain. Ek baar resume dekh lenge?
+Bunty: Bas itna?
+Malhotra: Bas itna. Do line tumhe bheed se alag karti hain.
+Bunty: Matlab do sau random nahi, roz teen sahi.
+Malhotra: Haan. Tumne kitni bheji? Comment mein number likho.
+Bunty: Aur follow karo, do sau se pehle.
+
+--- description
+200 applications but no interview call | Fresher job search tips | Off campus jobs India
+Do sau applications, zero calls? Ye luck nahi, 3 galtiyan hain:
+1. Har job pe same resume. Job description ke 5 skill words resume ke top par (sirf jo sach mein aate hain).
+2. Purani job pe apply. 2 din ke andar wali job chuno.
+3. Apply karke chup. Recruiter ko 2 line ka message bhejo:
+"Hi, maine aaj <role> ke liye apply kiya. <skill> mein 2 project kiye hain. Ek baar resume dekh lenge?"
+
+Tumne kitni applications bheji? Comment mein number likho.
+
+#fresherjobs #jobsearch #offcampusjobs #resumetips #interviewtips

@@ -7,6 +7,7 @@
 title: Interview prep | Non-CS se tech job
 cast: arjun, riya
 jobs: india-freshers|bangalore-tech, 1
+funnel: bottom
 hook: NON-CS? SKILL + PROJECT + KAHANI
 trial_hook: Don't skip a tech job because of your degree. Read the skills first.
 trial_card: NON-CS? TECH JOB POSSIBLE
