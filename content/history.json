@@ -196,6 +196,23 @@
       "premise": "intern-coffee",
       "hook": "receipt",
       "dynamic": "news-anchor"
+    },
+    {
+      "date": "2026-11-13",
+      "track": "job_drop",
+      "format": "guess-the-company",
+      "niche": "india-freshers",
+      "platform": "zyla",
+      "cast": "bunty+verma",
+      "job_ids": [
+        "efeeb24af04c9cf9f2cb2869373e2105"
+      ],
+      "companies": [
+        "Zebra"
+      ],
+      "premise": "first-salary-plans",
+      "hook": "numbered-favourite",
+      "dynamic": "detective"
     }
   ]
 }
