@@ -82,6 +82,7 @@ jobs:
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          GH_TOKEN: ${{ github.token }}   # fallback when Instagram's upload host refuses the file: a temporary release asset
           IN_IG_REEL: ${{ inputs.instagram_reel }}
           IN_IG_STORY: ${{ inputs.instagram_story }}
         run: |
@@ -96,6 +97,7 @@ jobs:
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          GH_TOKEN: ${{ github.token }}
         run: python tools/instagram-publisher/publish.py --folder "$FOLDER" --trial
       - name: Post to YouTube
         id: youtube

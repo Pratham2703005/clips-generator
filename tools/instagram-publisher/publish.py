@@ -5,7 +5,9 @@ instagram-publisher: posts a reel to Instagram, as a Reel and/or a story.
 
 Needs IG_ACCESS_TOKEN (the system-user token of the Meta app's Unified login configuration, graph.facebook.com) and
 IG_USER_ID (the Instagram account ID), from the environment or .env on the PC. The video file is uploaded straight to
-Instagram (resumable upload, rupload.facebook.com): no hosting.
+Instagram (resumable upload, rupload.facebook.com). When that host keeps answering ProcessingFailedError, the reel goes
+up for a few minutes as an asset of the public repo's release [instagram] release_tag and Instagram fetches it from
+there (video_url); the asset is deleted right after (needs the gh CLI with a token that can write releases: GH_TOKEN).
 Each post: container -> upload -> wait until processed (status_code FINISHED) -> publish.
   - reel: caption from description.txt (else script.json's caption); cover = compose.json's cover_seconds (the frame
     with the whole hook card), else [instagram] cover_seconds
@@ -23,7 +25,10 @@ import argparse
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
+import tempfile
 import time
 import tomllib
 import urllib.error
@@ -120,7 +125,53 @@ def wait_until_ready(api: Api, container: str, poll: dict) -> None:
         time.sleep(poll["every_seconds"])
 
 
-def post(api: Api, user: str, video: Path, media_type: str, fields: dict, poll: dict, chunk_mb: int = 8) -> str:
+class Hosted:
+    """The reel as a temporary release asset of the public repo, made on first use and deleted by close(): the way in
+    when Instagram's upload host refuses the file (Threads takes video the same way)."""
+
+    def __init__(self, video: Path, repo: str, tag: str):
+        self.video, self.repo, self.tag = video, repo, tag
+        self.url = self.asset = ""
+
+    def gh(self, *args: str) -> subprocess.CompletedProcess:
+        return subprocess.run(["gh", *args, "-R", self.repo], capture_output=True, text=True)
+
+    def get(self) -> str:
+        if self.url:
+            return self.url
+        if not shutil.which("gh"):
+            raise RuntimeError("no gh CLI to host the reel for a video_url post")
+        if self.gh("release", "view", self.tag).returncode:
+            r = self.gh("release", "create", self.tag, "--title", "Reel uploads (temporary)",
+                        "--notes", "Reels sit here for a few minutes while Threads / Instagram fetch them; each is deleted after.")
+            if r.returncode:
+                raise RuntimeError(f"could not make release {self.tag}: {r.stderr.strip()}")
+        name = f"instagram-{self.video.parent.name}-{int(time.time())}.mp4"
+        tmp = Path(tempfile.mkdtemp()) / name
+        shutil.copyfile(self.video, tmp)
+        r = self.gh("release", "upload", self.tag, str(tmp), "--clobber")
+        shutil.rmtree(tmp.parent, ignore_errors=True)
+        if r.returncode:
+            raise RuntimeError(f"could not upload the reel to release {self.tag}: {r.stderr.strip()}")
+        self.asset, self.url = name, f"https://github.com/{self.repo}/releases/download/{self.tag}/{name}"
+        print("  reel hosted as a temporary release asset", flush=True)
+        return self.url
+
+    def close(self) -> None:
+        if self.asset:
+            r = self.gh("release", "delete-asset", self.tag, self.asset, "--yes")
+            print("temporary asset deleted" if not r.returncode else f"warning: asset {self.asset} not deleted: {r.stderr.strip()}")
+            self.asset = self.url = ""
+
+
+def resolved(url: str) -> str:
+    """Where the github.com download link redirects to (a signed link, valid for a few minutes)."""
+    with urllib.request.urlopen(urllib.request.Request(url, method="HEAD"), timeout=60) as r:
+        return r.geturl()
+
+
+def post(api: Api, user: str, video: Path, media_type: str, fields: dict, poll: dict, chunk_mb: int = 8,
+         hosted: Hosted | None = None) -> str:
     """Container -> upload -> processed -> published; returns the media id. The container takes only the documented
     fields (2026-11-02: share_to_feed made the upload fail with a bare HTTP 400)."""
     data = video.read_bytes()
@@ -137,28 +188,44 @@ def post(api: Api, user: str, video: Path, media_type: str, fields: dict, poll: 
             raise RuntimeError(f"upload refused: {up}")
         return container
 
+    def from_url(url: str) -> str:
+        return api.call("POST", f"{user}/media", {"media_type": media_type, **fields, "video_url": url})["id"]
+
     # Meta's upload host answers ProcessingFailedError now and then, for files of any size: 2026-11-02 twice in a row
     # and then fine for the same file; 2026-11-04 the nightly run failed in one piece AND in 8 MB pieces, and a rerun 6 h
-    # later went through in pieces. So: one piece, then pieces, then pieces again after a pause, each in a new container.
-    attempts = [(0, 0), (chunk_mb, 0), (chunk_mb, 90), (max(1, chunk_mb // 2), 180)]
-    for i, (mb, pause) in enumerate(attempts):
-        if pause:
-            print(f"  waiting {pause} s before trying again", flush=True)
-            time.sleep(pause)
+    # later went through in pieces; 2026-11-13 it refused all four tries (one piece, 8 MB, 8 MB after 90 s, 4 MB after
+    # 180 s) while Facebook took the same file. Pauses don't fix it, so: one piece, then pieces, then Instagram fetches
+    # the reel from a temporary public link (video_url) instead of our upload.
+    attempts = [0, chunk_mb]
+    container = ""
+    for i, mb in enumerate(attempts):
         try:
             container = container_and_upload(mb * 1024 * 1024)
             break
         except RuntimeError as e:
-            if "ProcessingFailedError" not in str(e) or i == len(attempts) - 1:
+            if "ProcessingFailedError" not in str(e):
                 raise
-            nxt = attempts[i + 1][0]
-            print(f"  upload failed ({'one piece' if not mb else f'{mb} MB pieces'}): {e}; next: {nxt} MB pieces", flush=True)
-    print(f"{media_type.lower()} container {container}: uploaded, waiting for Instagram", flush=True)
+            last = i == len(attempts) - 1
+            if last and hosted is None:
+                raise
+            nxt = "a video_url post" if last else f"{attempts[i + 1]} MB pieces"
+            print(f"  upload failed ({'one piece' if not mb else f'{mb} MB pieces'}): {e}; next: {nxt}", flush=True)
+    if not container:
+        url = hosted.get()
+        try:
+            container = from_url(url)
+            wait_until_ready(api, container, poll)
+        except RuntimeError as e:  # Meta may not follow github.com's redirect: give it the signed target itself
+            print(f"  video_url failed ({e}); trying the redirect's target", flush=True)
+            container = from_url(resolved(url))
+        print(f"{media_type.lower()} container {container}: fetched from the temporary link", flush=True)
+    else:
+        print(f"{media_type.lower()} container {container}: uploaded, waiting for Instagram", flush=True)
     wait_until_ready(api, container, poll)
     return api.call("POST", f"{user}/media_publish", {"creation_id": container})["id"]
 
 
-def post_trial(api: Api, user: str, folder: Path, ig: dict, cfg: dict, dry_run: bool) -> None:
+def post_trial(api: Api, user: str, folder: Path, ig: dict, cfg: dict, dry_run: bool, hosted: Hosted | None = None) -> None:
     """The trial variant as a trial reel (Meta's content publishing API, trial_params; 2026-11-08: first use)."""
     vf = folder / "variants" / "trial"
     video = vf / "reel.mp4"
@@ -180,7 +247,7 @@ def post_trial(api: Api, user: str, folder: Path, ig: dict, cfg: dict, dry_run: 
     try:
         media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000)),
                                                   "trial_params": json.dumps({"graduation_strategy": strategy})},
-                     cfg["poll"], ig.get("chunk_mb", 8))
+                     cfg["poll"], ig.get("chunk_mb", 8), hosted)
     except RuntimeError as e:
         # 2207081 = this account can't post trial reels (yet): refused every night since 2026-11-09 with 8 followers.
         # Not a failure of the run: noted in posted.json so the report says "not eligible yet" instead of ❌/⚠️.
@@ -227,8 +294,14 @@ def main() -> None:
     print(f"account: @{acct.get('username')}")
 
     folder = a.folder.resolve()
+    repo = os.environ.get("GITHUB_REPOSITORY") or ig.get("repo", "")
     if a.trial:
-        post_trial(api, user, folder, ig, cfg, a.dry_run)
+        hosted = Hosted(folder / "variants" / "trial" / "reel.mp4", repo, ig["release_tag"]) if repo and ig.get("release_tag") else None
+        try:
+            post_trial(api, user, folder, ig, cfg, a.dry_run, hosted)
+        finally:
+            if hosted:
+                hosted.close()
         return
     video = folder / "reel.mp4"
     if not video.is_file():
@@ -254,21 +327,27 @@ def main() -> None:
     if not a.no_story and record.get("story_id"):
         print(f"story already posted: {record['story_id']}")
         a.no_story = True
-    if not a.no_reel:
-        media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000))}, cfg["poll"],
-                     ig.get("chunk_mb", 8))
-        link = api.call("GET", media, {"fields": "permalink"}).get("permalink", "")
-        record.update({"media_id": media, "permalink": link, "posted_at": now()})
-        record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-        print(f"reel posted: {link or media}")
-    if not a.no_story:
-        try:  # a failed story never undoes the reel; the step still fails so it shows
-            story = post(api, user, video, "STORIES", {}, cfg["poll"], ig.get("chunk_mb", 8))
-        except RuntimeError as e:
-            sys.exit(f"story not posted: {e}")
-        record.update({"story_id": story, "story_at": now()})
-        record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
-        print(f"story posted: {story}")
+    # one temporary link for the reel and the story, made only if the upload host refuses the file
+    hosted = Hosted(video, repo, ig["release_tag"]) if repo and ig.get("release_tag") else None
+    try:
+        if not a.no_reel:
+            media = post(api, user, video, "REELS", {"caption": caption, "thumb_offset": str(int(cover * 1000))}, cfg["poll"],
+                         ig.get("chunk_mb", 8), hosted)
+            link = api.call("GET", media, {"fields": "permalink"}).get("permalink", "")
+            record.update({"media_id": media, "permalink": link, "posted_at": now()})
+            record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+            print(f"reel posted: {link or media}")
+        if not a.no_story:
+            try:  # a failed story never undoes the reel; the step still fails so it shows
+                story = post(api, user, video, "STORIES", {}, cfg["poll"], ig.get("chunk_mb", 8), hosted)
+            except RuntimeError as e:
+                sys.exit(f"story not posted: {e}")
+            record.update({"story_id": story, "story_at": now()})
+            record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+            print(f"story posted: {story}")
+    finally:
+        if hosted:
+            hosted.close()
 
 
 if __name__ == "__main__":

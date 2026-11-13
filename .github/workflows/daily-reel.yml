@@ -242,6 +242,7 @@ jobs:
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          GH_TOKEN: ${{ github.token }}   # fallback when Instagram's upload host refuses the file: a temporary release asset
           # the cron (no inputs) posts both
           IN_IG_REEL: ${{ github.event_name == 'schedule' || inputs.instagram_reel }}
           IN_IG_STORY: ${{ github.event_name == 'schedule' || inputs.instagram_story }}
@@ -262,6 +263,7 @@ jobs:
         env:
           IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          GH_TOKEN: ${{ github.token }}
         run: |
           folder="content/$DAY"
           [ -n "$NAME" ] && folder="content/custom/$NAME"
