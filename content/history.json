@@ -213,6 +213,25 @@
       "premise": "first-salary-plans",
       "hook": "numbered-favourite",
       "dynamic": "detective"
+    },
+    {
+      "date": "2026-11-14",
+      "track": "job_drop",
+      "format": "top-drop",
+      "niche": "india-freshers",
+      "platform": "n8n",
+      "cast": "riya+bunty",
+      "job_ids": [
+        "950bc633d31662bef0248f833da34787",
+        "65ade4b336ba1a4164e247035957a1f1"
+      ],
+      "companies": [
+        "Wells Fargo Bank",
+        "Theapexgroup"
+      ],
+      "premise": "placement-season-panic",
+      "hook": "the-objection",
+      "dynamic": "news-anchor"
     }
   ]
 }
