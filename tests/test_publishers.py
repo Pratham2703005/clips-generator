@@ -178,10 +178,18 @@ def test_youtube_metadata(reel_folder):
 
 def test_youtube_publish_time():
     early = datetime(2026, 11, 13, 0, 5, tzinfo=yt.IST).astimezone(timezone.utc)  # the nightly run, 00:05 IST
-    when = yt.publish_time("08:00", early)
-    assert when and when.hour == 8
-    late = datetime(2026, 11, 13, 7, 50, tzinfo=yt.IST)
-    assert yt.publish_time("08:00", late) is None  # under 15 min away: public right away
+    when = yt.publish_time("19:00", early)
+    assert when and when.hour == 19
+    late = datetime(2026, 11, 13, 18, 50, tzinfo=yt.IST)
+    assert yt.publish_time("19:00", late) is None  # under 15 min away: public right away
+
+
+def test_youtube_config_publishes_at_seven_pm():
+    """User, 2026-11-14: every Short goes public at 19:00 IST."""
+    import tomllib
+    from conftest import ROOT
+    cfg = tomllib.loads((ROOT / "tools/youtube-publisher/config.toml").read_text(encoding="utf-8"))
+    assert cfg["video"]["publish_at"] == "19:00"
 
 
 def test_youtube_cover_without_ffmpeg(reel_folder, monkeypatch):

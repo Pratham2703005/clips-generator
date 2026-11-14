@@ -16,10 +16,9 @@ synthetic_media = false                 # cartoon characters: not "realistic alt
 title_max = 100                         # YouTube's limit
 description_max = 5000                  # YouTube's limit
 shorts_tag = true                       # adds #Shorts to the title when it fits
-publish_at = "08:00"                    # IST, same day: the night's upload stays private (scheduled) until then; "" = at once
-# 2026-11-12: 18:00 -> 08:00 as a test. Shorts from Din 9-11 (public at 18:00) got 5 / 13 / 4 views while Din 8, also
-# at 18:00, got 605, so the hour may not be the cause; compare a week at 08:00. The cron lands ~05:00-07:00 IST; a run
-# after 07:45 publishes at once (publish_time() needs 15 minutes).
+publish_at = "19:00"                    # IST, same day: the night's upload stays private (scheduled) until then; "" = at once
+# 2026-11-14 (user): 08:00 -> 19:00 from now on. Earlier: 18:00 until 2026-11-12, then 08:00 for two days.
+# A run after 18:45 publishes at once (publish_time() needs 15 minutes).
 thumbnail = true                        # try the Instagram cover frame as thumbnail (needs a Partner Program channel today)
 cover_seconds = 2.2                     # the cover frame when compose.json has no cover_seconds (as [instagram])
 site_url = "https://ats-jobs-api.pk2732004.workers.dev"  # replaces "link in bio" in the description ("" = keep the text)
