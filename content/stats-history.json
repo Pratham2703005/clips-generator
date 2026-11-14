@@ -2381,6 +2381,600 @@
      }
     }
    }
+  },
+  {
+   "at": "2026-11-13T10:10:59+00:00",
+   "fb": {
+    "followers": 0,
+    "posts": {
+     "1848536829833080": {
+      "views": 0,
+      "likes": 0
+     },
+     "1657589029327828": {
+      "views": 1,
+      "likes": 0
+     },
+     "1474043391493210": {
+      "views": 3,
+      "likes": 2
+     },
+     "1859518192068684": {
+      "views": 4,
+      "likes": 0
+     }
+    }
+   },
+   "th": {
+    "followers": 0,
+    "posts": {
+     "18182223334432239": {
+      "views": 2,
+      "likes": 0
+     },
+     "18639855655045899": {
+      "views": 5,
+      "likes": 0
+     },
+     "17943160449384634": {
+      "views": 4,
+      "likes": 0
+     },
+     "18089424479706372": {
+      "views": 3,
+      "likes": 0
+     }
+    }
+   },
+   "tg": {
+    "subscribers": 2
+   },
+   "models": {
+    "script": {
+     "model": "hand-written series episode",
+     "tried": []
+    },
+    "voice": {
+     "model": "gemini-2.5-flash-preview-tts",
+     "tried": [
+      {
+       "model": "gemini-2.5-flash-preview-tts",
+       "outcome": "used (attempt 1)"
+      }
+     ]
+    },
+    "captions": {
+     "model": "faster-whisper small",
+     "tried": []
+    }
+   },
+   "ig": {
+    "followers": 12,
+    "posts": {
+     "18221470555343943": {
+      "views": 1242,
+      "likes": 3,
+      "comments": 1,
+      "saves": 11,
+      "shares": 3
+     },
+     "18133382863692854": {
+      "views": 2528,
+      "likes": 7,
+      "comments": 0,
+      "saves": 17,
+      "shares": 7
+     },
+     "18121982537002183": {
+      "views": 2757,
+      "likes": 19,
+      "comments": 0,
+      "saves": 9,
+      "shares": 8
+     },
+     "17868751152674978": {
+      "views": 2043,
+      "likes": 23,
+      "comments": 3,
+      "saves": 9,
+      "shares": 2
+     },
+     "18081302516564822": {
+      "views": 436,
+      "likes": 6,
+      "comments": 0,
+      "saves": 2,
+      "shares": 0
+     },
+     "17975899770152009": {
+      "views": 1772,
+      "likes": 11,
+      "comments": 0,
+      "saves": 2,
+      "shares": 0
+     },
+     "17873341035647414": {
+      "views": 3139,
+      "likes": 45,
+      "comments": 0,
+      "saves": 27,
+      "shares": 13
+     },
+     "18069788741524725": {
+      "views": 2026,
+      "likes": 17,
+      "comments": 0,
+      "saves": 5,
+      "shares": 3
+     },
+     "18155160952554181": {
+      "views": 1752,
+      "likes": 7,
+      "comments": 0,
+      "saves": 3,
+      "shares": 0
+     },
+     "18136099345709430": {
+      "views": 1752,
+      "likes": 28,
+      "comments": 0,
+      "saves": 6,
+      "shares": 0
+     },
+     "18075778169781025": {
+      "views": 436,
+      "likes": 2,
+      "comments": 0,
+      "saves": 4,
+      "shares": 2
+     },
+     "17996714184106909": {
+      "views": 1751,
+      "likes": 10,
+      "comments": 0,
+      "saves": 4,
+      "shares": 1
+     },
+     "18141225574712113": {
+      "views": 2428,
+      "likes": 13,
+      "comments": 3,
+      "saves": 25,
+      "shares": 18
+     },
+     "18073160561784749": {
+      "views": 2517,
+      "likes": 21,
+      "comments": 4,
+      "saves": 5,
+      "shares": 5
+     },
+     "18179808415446295": {
+      "views": 238,
+      "likes": 2,
+      "comments": 0,
+      "saves": 0,
+      "shares": 0
+     },
+     "18641299453051210": {
+      "views": 505,
+      "likes": 5,
+      "comments": 0,
+      "saves": 1,
+      "shares": 2
+     },
+     "17913754989504721": {
+      "views": 274,
+      "likes": 3,
+      "comments": 1,
+      "saves": 2,
+      "shares": 1
+     }
+    }
+   },
+   "yt": {
+    "subscribers": "18",
+    "views": "1455",
+    "videos": {
+     "H3buT4Yo2b4": {
+      "views": "28",
+      "likes": "0",
+      "comments": "0"
+     },
+     "ICgbJ9sKjck": {
+      "views": "3",
+      "likes": "0",
+      "comments": "0"
+     },
+     "VdAefQTL5Qw": {
+      "views": "9",
+      "likes": "1",
+      "comments": "0"
+     },
+     "jBl9kClmU-A": {
+      "views": "17",
+      "likes": "0",
+      "comments": "0"
+     },
+     "YCZhFH0Q0Yg": {
+      "views": "5",
+      "likes": "0",
+      "comments": "0"
+     },
+     "dEQ_ikdVZmQ": {
+      "views": "238",
+      "likes": "1",
+      "comments": "0"
+     },
+     "IEAVtync46c": {
+      "views": "605",
+      "likes": "2",
+      "comments": "0"
+     },
+     "fDsCnYK5u2A": {
+      "views": "25",
+      "likes": "1",
+      "comments": "0"
+     },
+     "qszb4WZtfU0": {
+      "views": "18",
+      "likes": "1",
+      "comments": "0"
+     },
+     "TdDp3F75vh0": {
+      "views": "9",
+      "likes": "0",
+      "comments": "0"
+     },
+     "VJQu3ZM5knw": {
+      "views": "262",
+      "likes": "4",
+      "comments": "0"
+     },
+     "JypkfLU368Y": {
+      "views": "13",
+      "likes": "0",
+      "comments": "0"
+     },
+     "feqtVXfUZV8": {
+      "views": "102",
+      "likes": "2",
+      "comments": "0"
+     },
+     "cDzHgV9nFWg": {
+      "views": "40",
+      "likes": "0",
+      "comments": "0"
+     },
+     "9z8lXO9QHuM": {
+      "views": "17",
+      "likes": "0",
+      "comments": "0"
+     },
+     "xG0c4aXaNxo": {
+      "views": "19",
+      "likes": "1",
+      "comments": "0"
+     }
+    }
+   }
+  },
+  {
+   "at": "2026-11-14T00:06:42+00:00",
+   "fb": {
+    "followers": 0,
+    "posts": {
+     "1450882417191592": {
+      "views": 0,
+      "likes": 0
+     },
+     "1151539370781533": {
+      "views": 0,
+      "likes": 0
+     },
+     "1848536829833080": {
+      "views": 0,
+      "likes": 0
+     },
+     "1657589029327828": {
+      "views": 1,
+      "likes": 0
+     },
+     "1474043391493210": {
+      "views": 3,
+      "likes": 2
+     },
+     "1859518192068684": {
+      "views": 4,
+      "likes": 0
+     }
+    }
+   },
+   "th": {
+    "followers": 0,
+    "posts": {
+     "18129494954489994": {
+      "views": 0,
+      "likes": 0
+     },
+     "17955553401297868": {
+      "views": 0,
+      "likes": 0
+     },
+     "18182223334432239": {
+      "views": 2,
+      "likes": 0
+     },
+     "18639855655045899": {
+      "views": 5,
+      "likes": 0
+     },
+     "17943160449384634": {
+      "views": 4,
+      "likes": 0
+     },
+     "18089424479706372": {
+      "views": 3,
+      "likes": 0
+     }
+    }
+   },
+   "tg": {
+    "subscribers": 2
+   },
+   "models": {
+    "script": {
+     "model": "hand-written series episode",
+     "tried": []
+    },
+    "voice": {
+     "model": "gemini-2.5-flash-preview-tts",
+     "tried": [
+      {
+       "model": "gemini-2.5-flash-preview-tts",
+       "outcome": "used (attempt 1)"
+      }
+     ]
+    },
+    "captions": {
+     "model": "faster-whisper small",
+     "tried": []
+    }
+   },
+   "ig": {
+    "followers": 13,
+    "posts": {
+     "18158298034598128": {
+      "views": 0,
+      "likes": 0,
+      "comments": 0,
+      "saves": 0,
+      "shares": 0
+     },
+     "18024772217944479": {
+      "views": 141,
+      "likes": 0,
+      "comments": 0,
+      "saves": 0,
+      "shares": 0
+     },
+     "18221470555343943": {
+      "views": 1576,
+      "likes": 6,
+      "comments": 1,
+      "saves": 18,
+      "shares": 6
+     },
+     "18133382863692854": {
+      "views": 2531,
+      "likes": 7,
+      "comments": 0,
+      "saves": 17,
+      "shares": 7
+     },
+     "18121982537002183": {
+      "views": 2757,
+      "likes": 19,
+      "comments": 0,
+      "saves": 9,
+      "shares": 8
+     },
+     "17868751152674978": {
+      "views": 2043,
+      "likes": 23,
+      "comments": 3,
+      "saves": 9,
+      "shares": 2
+     },
+     "18081302516564822": {
+      "views": 436,
+      "likes": 6,
+      "comments": 0,
+      "saves": 2,
+      "shares": 0
+     },
+     "17975899770152009": {
+      "views": 1772,
+      "likes": 11,
+      "comments": 0,
+      "saves": 2,
+      "shares": 0
+     },
+     "17873341035647414": {
+      "views": 3142,
+      "likes": 45,
+      "comments": 0,
+      "saves": 27,
+      "shares": 13
+     },
+     "18069788741524725": {
+      "views": 2026,
+      "likes": 17,
+      "comments": 0,
+      "saves": 5,
+      "shares": 3
+     },
+     "18155160952554181": {
+      "views": 1752,
+      "likes": 7,
+      "comments": 0,
+      "saves": 3,
+      "shares": 0
+     },
+     "18136099345709430": {
+      "views": 1752,
+      "likes": 28,
+      "comments": 0,
+      "saves": 6,
+      "shares": 0
+     },
+     "18075778169781025": {
+      "views": 436,
+      "likes": 2,
+      "comments": 0,
+      "saves": 4,
+      "shares": 2
+     },
+     "17996714184106909": {
+      "views": 1751,
+      "likes": 10,
+      "comments": 0,
+      "saves": 4,
+      "shares": 1
+     },
+     "18141225574712113": {
+      "views": 2428,
+      "likes": 13,
+      "comments": 3,
+      "saves": 25,
+      "shares": 18
+     },
+     "18073160561784749": {
+      "views": 2517,
+      "likes": 21,
+      "comments": 4,
+      "saves": 5,
+      "shares": 5
+     },
+     "18179808415446295": {
+      "views": 238,
+      "likes": 2,
+      "comments": 0,
+      "saves": 0,
+      "shares": 0
+     },
+     "18641299453051210": {
+      "views": 505,
+      "likes": 5,
+      "comments": 0,
+      "saves": 1,
+      "shares": 2
+     },
+     "17913754989504721": {
+      "views": 274,
+      "likes": 3,
+      "comments": 1,
+      "saves": 2,
+      "shares": 1
+     }
+    }
+   },
+   "yt": {
+    "subscribers": "18",
+    "views": "1487",
+    "videos": {
+     "nZ9Iee6BHso": {
+      "views": "0",
+      "likes": "0",
+      "comments": "0"
+     },
+     "1D0Cf8bdASQ": {
+      "views": "91",
+      "likes": "2",
+      "comments": "0"
+     },
+     "H3buT4Yo2b4": {
+      "views": "32",
+      "likes": "0",
+      "comments": "0"
+     },
+     "ICgbJ9sKjck": {
+      "views": "3",
+      "likes": "0",
+      "comments": "0"
+     },
+     "VdAefQTL5Qw": {
+      "views": "9",
+      "likes": "1",
+      "comments": "0"
+     },
+     "jBl9kClmU-A": {
+      "views": "17",
+      "likes": "0",
+      "comments": "0"
+     },
+     "YCZhFH0Q0Yg": {
+      "views": "5",
+      "likes": "0",
+      "comments": "0"
+     },
+     "dEQ_ikdVZmQ": {
+      "views": "238",
+      "likes": "1",
+      "comments": "0"
+     },
+     "IEAVtync46c": {
+      "views": "605",
+      "likes": "2",
+      "comments": "0"
+     },
+     "fDsCnYK5u2A": {
+      "views": "25",
+      "likes": "1",
+      "comments": "0"
+     },
+     "qszb4WZtfU0": {
+      "views": "18",
+      "likes": "1",
+      "comments": "0"
+     },
+     "TdDp3F75vh0": {
+      "views": "9",
+      "likes": "0",
+      "comments": "0"
+     },
+     "VJQu3ZM5knw": {
+      "views": "262",
+      "likes": "4",
+      "comments": "0"
+     },
+     "JypkfLU368Y": {
+      "views": "13",
+      "likes": "0",
+      "comments": "0"
+     },
+     "feqtVXfUZV8": {
+      "views": "102",
+      "likes": "2",
+      "comments": "0"
+     },
+     "cDzHgV9nFWg": {
+      "views": "40",
+      "likes": "0",
+      "comments": "0"
+     },
+     "9z8lXO9QHuM": {
+      "views": "17",
+      "likes": "0",
+      "comments": "0"
+     },
+     "xG0c4aXaNxo": {
+      "views": "19",
+      "likes": "1",
+      "comments": "0"
+     }
+    }
+   }
   }
  ]
 }
