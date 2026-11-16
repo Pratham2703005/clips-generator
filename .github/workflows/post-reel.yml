@@ -106,6 +106,7 @@ jobs:
           YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
           YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
           YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}  # the English caption track
         run: python tools/youtube-publisher/publish.py --folder "$FOLDER"
       - name: Post to Facebook
         id: facebook

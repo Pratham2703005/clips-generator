@@ -279,6 +279,8 @@ def make_overlay(script: dict, timeline: dict, cfg: dict) -> tuple[str, list[tup
         f"-1,0,0,0,100,100,0,0,3,18,0,8,60,60,{o['top']},1",
         f"Style: card,{o['font']},{o['card_size']},{ass_color('#111111')},{ass_color('#111111')},{ass_color('#FFFFFF')},{ass_color('#000000', 0x80)},"
         f"-1,0,0,0,100,100,0,0,3,22,0,8,90,90,{o['top']},1",
+        f"Style: topic,{o['font']},{o.get('topic_size', 64)},{ass_color('#FFFFFF')},{ass_color('#FFFFFF')},{ass_color('#000000', 0x30)},{ass_color('#000000', 0x60)},"
+        f"-1,0,0,0,100,100,0,0,3,14,0,8,90,90,{o['top']},1",
         f"Style: stamp,{o['font']},{o['stamp_size']},{ass_color(o['stamp_color'])},{ass_color(o['stamp_color'])},{ass_color('#FFFFFF')},{ass_color('#000000', 0x80)},"
         f"-1,0,0,0,100,100,4,0,1,7,0,5,0,0,0,1",
     ]
@@ -320,7 +322,8 @@ def make_overlay(script: dict, timeline: dict, cfg: dict) -> tuple[str, list[tup
             events.append(f"Dialogue: 2,{ass_time(0)},{ass_time(end)},hook,,0,0,0,,{{\\fad(0,150)}}{card_text(ass_text(card[0]), 0)}")
         if zero is not None:
             cues.append(("stamp", lands[zero]))
-    # job cards: while a line about a job is spoken
+    # job cards: while a line about a job is spoken (their times also keep the topic tag below out of their way)
+    job_times = []
     by_text = {ln["text"]: ln for ln in script["lines"]}
     for ln in lines:
         job = (by_text.get(ln["text"]) or {}).get("job")
@@ -331,7 +334,20 @@ def make_overlay(script: dict, timeline: dict, cfg: dict) -> tuple[str, list[tup
         text = (f"{{\\move({cx},{o['top'] - 60},{cx},{o['top']},0,180)\\fad(120,150)}}{ass_text(job['company']).upper()}"
                 f"\\N{{\\fs{int(o['card_size'] * 0.66)}\\b0}}{ass_text(title)}\\N{{\\fs{int(o['card_size'] * 0.5)}}}{ass_text(where)}")
         events.append(f"Dialogue: 1,{ass_time(ln['start'])},{ass_time(ln['end'] + 0.3)},card,,0,0,0,,{text}")
+        job_times.append((ln["start"] - 0.1, ln["end"] + 0.4))
         cues.append(("pop", ln["start"]))
+    # topic tag: after the hook card, the same words stay small at the top until the end (2026-11-16). YouTube's Shorts
+    # shelf shows a frame it picks itself, never the thumbnail we set, so every frame should say what the Short is about;
+    # a viewer who lands mid-reel learns it too. It steps aside while a job card uses the same spot.
+    if card and lines and o.get("topic_tag", True):
+        start, stop = max(o["hook_hold"], lines[0]["end"]), lines[-1]["end"] + 1.0
+        words = " ".join(ass_text(w) for w in card)
+        gaps = sorted((a, b) for a, b in job_times if b > start)
+        t = start
+        for a, b in gaps + [(stop, stop)]:
+            if a - t > 0.4:
+                events.append(f"Dialogue: 0,{ass_time(t)},{ass_time(min(a, stop))},topic,,0,0,0,,{{\\fad(150,120)}}{words}")
+            t = max(t, b)
     # stamps: a word in the dialogue slams a big rotated stamp onto the middle of the frame
     for word, label in o.get("stamps", {}).items():
         for ln in lines:

@@ -108,15 +108,92 @@ def make_title(episode: str, first_line: str, limit: int) -> str:
     return first_line[:limit]
 
 
-def metadata(folder: Path, v: dict, desc_folder: Path | None = None) -> dict:
+ACRONYMS = {"CGPA", "GD", "HR", "CTC", "LPA", "PPO", "AI", "IT", "CV", "PF", "JD", "MBA", "BTECH", "SQL", "API", "TCS"}
+
+
+def sentence_case(card: str) -> str:
+    """The on-screen hook card ("'I WORK TOO HARD' = GALAT") as title text ("'I work too hard' = galat"): caps lock reads
+    as shouting in a title. Known acronyms stay upper case."""
+    words = []
+    for w in card.strip().split():
+        core = re.sub(r"[^A-Za-z]", "", w)
+        words.append(w if core.upper() in ACRONYMS or core == "I" else w.lower())
+    out = " ".join(words)
+    # capital letter at the start and after a full stop / question mark
+    return re.sub(r"(^|[.?!]\s+)(['\"]?)([a-z])", lambda m: m.group(1) + m.group(2) + m.group(3).upper(), out)
+
+
+def suggestions(query: str, timeout: int = 10) -> list[str]:
+    """What people type on YouTube after `query` (the public autocomplete the search box uses; India, English). Not an
+    official API: any failure gives []."""
+    url = "https://suggestqueries.google.com/complete/search?" + urllib.parse.urlencode(
+        {"client": "firefox", "ds": "yt", "hl": "en", "gl": "IN", "q": query})
+    try:
+        with urllib.request.urlopen(urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"}), timeout=timeout) as r:
+            data = json.loads(r.read().decode("utf-8", "replace"))
+        return [s for s in data[1] if isinstance(s, str)]
+    except Exception:  # noqa: BLE001 - tags are a nice-to-have, never a reason to fail the upload
+        return []
+
+
+# off-topic searches, other languages than ours (Hinglish / English), and other audiences than freshers. Found in the
+# 2026-11-16 dry run of reoptimize.py: short heads ("how to ask for a", "service bond in") pulled "... a kiss",
+# "... in mbbs", "... after first date", "... for nurses"
+OFF_TOPIC = re.compile(r"\b(meme|funny|song|status|prank|cabin crew|comedy|reaction|whatsapp|tamil|telugu|kannada|malayalam|"
+                       r"bengali|marathi|gujarati|urdu|punjabi|odia|nurses?|teachers?|professor|experienced|mbbs|bams|bds|"
+                       r"aiims|medical college|railway|maharashtra|assam|in up|tnpsc|pw|iim|mba|subliminal|manifestation|"
+                       r"call cent(er|re)|date|kiss|girl|court|haircut|hamster|processor|antutu|weight loss|indigo|poll|"
+                       r"ibew|college admission|raise)\b", re.I)
+# a suggestion has to be about jobs / interviews at all
+NICHE = re.compile(r"\b(fresher\w*|interview\w*|jobs?|hr|resume|cv|placement\w*|salary|offer|ctc|in.?hand|referral|linkedin|"
+                   r"hire|hiring|campus|career|apply\w*|application|internship|bond|rejection|aptitude|weakness\w*|"
+                   r"strength\w*|yourself|follow.?up|scam|joining|recruiter|naukri|employ\w*)\b", re.I)
+
+
+def make_tags(description: str, max_chars: int = 450, suggest: bool = True) -> list[str]:
+    """Tags, most specific first: the search phrases of the description's first line ("Why should we hire you answer for
+    freshers | HR interview questions"), what YouTube's search box suggests for the first of them (user's SEO notes,
+    2026-11-16: tags from real searches, not random), then the #hashtags. YouTube counts at most 500 characters."""
+    first = re.sub(r"\s*#\w+", "", (description.splitlines() or [""])[0])
+    phrases = [re.sub(r"[?!.]+$", "", p.strip().lower()) for p in first.split("|") if p.strip()]
+    found: list[str] = list(phrases)
+    if suggest and phrases:
+        words = phrases[0].split()
+        got: list[str] = []
+        for n in dict.fromkeys((len(words), 5, 3)):  # the whole phrase, then shorter heads, until 5+ suggestions
+            got += [s for s in suggestions(" ".join(words[:n])) if NICHE.search(s) and not OFF_TOPIC.search(s) and s not in got]
+            if len(got) >= 5:
+                break
+        found += got
+    found += [t.lstrip("#").lower() for t in re.findall(r"#\w+", description)]
+    tags, used = [], 0
+    for t in dict.fromkeys(found):
+        cost = len(t) + (2 if " " in t else 0) + 1  # YouTube counts quotes around a tag with spaces, and the comma
+        if len(t) <= 100 and used + cost <= max_chars:
+            tags.append(t)
+            used += cost
+    return tags
+
+
+def upload_name(title: str) -> str:
+    """The file name sent with the upload: the title, not "reel.mp4" (user, 2026-11-16; YouTube never said it matters,
+    but it costs nothing)."""
+    slug = re.sub(r"[^a-z0-9]+", "-", re.sub(r"#\w+", "", title).lower()).strip("-")
+    return (slug[:90].rstrip("-") or "short") + ".mp4"
+
+
+def metadata(folder: Path, v: dict, desc_folder: Path | None = None, suggest: bool = False) -> dict:
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
     desc_file = (desc_folder or folder) / "description.txt"
     description = desc_file.read_text(encoding="utf-8").strip() if desc_file.is_file() else script.get("caption", "")
     room = v["title_max"] - (8 if v["shorts_tag"] else 0)
-    title = clean(make_title(script.get("title", ""), (description.splitlines() or [""])[0], room) or folder.name).strip()
+    # keyword first, then curiosity (user's SEO notes, 2026-11-16): the hook card ("Na hardworking. Na passionate.")
+    # instead of the episode name ("Interview prep | Why should we hire you?"), which only repeated the keyword
+    tail = sentence_case(script["hook_card"]) if v.get("hook_in_title", True) and script.get("hook_card") else script.get("title", "")
+    title = clean(make_title(tail, (description.splitlines() or [""])[0], room) or folder.name).strip()
     if v["shorts_tag"] and "#shorts" not in title.lower() and len(title) + 8 <= v["title_max"]:
         title += " #Shorts"
-    tags = list(dict.fromkeys(t.lstrip("#") for t in re.findall(r"#\w+", description)))
+    tags = make_tags(description, v.get("tags_max_chars", 450), suggest and v.get("suggest_tags", True))
     # YouTube has no "bio" link next to a Short: the website's URL goes in the description itself (user, 2026-11-03).
     # Only where the description points to the bio: a value episode without one promotes nothing (user, 2026-11-07)
     if v.get("site_url"):
@@ -128,6 +205,98 @@ def metadata(folder: Path, v: dict, desc_folder: Path | None = None) -> dict:
         "status": {"privacyStatus": v["privacy"], "selfDeclaredMadeForKids": v["made_for_kids"],
                    "containsSyntheticMedia": v["synthetic_media"]},
     }
+
+
+CAPTIONS = "https://www.googleapis.com/upload/youtube/v3/captions"
+GEMINI = "https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
+
+
+def caption_lines(folder: Path, media_folder: Path) -> list[tuple[float, float, str]]:
+    """(start, end, text) per spoken line, from the reel's timeline.json (the script's own words, timed by Whisper). The
+    YouTube variant has the same timing with its own last line ("subscribe" for "follow"), so its texts are used."""
+    tl = folder / "timeline.json"
+    if not tl.is_file():
+        return []
+    lines = [(float(x["start"]), float(x["end"]), str(x["text"]).strip()) for x in json.loads(tl.read_text(encoding="utf-8")).get("lines", [])]
+    vs = media_folder / "script.json"
+    if media_folder != folder and vs.is_file():
+        texts = [str(x.get("text", "")).strip() for x in json.loads(vs.read_text(encoding="utf-8")).get("lines", []) if isinstance(x, dict)]
+        if len(texts) == len(lines) and all(texts):
+            lines = [(s, e, t) for (s, e, _), t in zip(lines, texts)]
+    return [x for x in lines if x[2]]
+
+
+def srt(lines: list[tuple[float, float, str]]) -> str:
+    def ts(t: float) -> str:
+        ms = int(round(t * 1000))
+        return f"{ms // 3_600_000:02d}:{ms // 60_000 % 60:02d}:{ms // 1000 % 60:02d},{ms % 1000:03d}"
+    return "\n".join(f"{i}\n{ts(s)} --> {ts(max(e, s + 0.3))}\n{t}\n" for i, (s, e, t) in enumerate(lines, 1))
+
+
+def translate_lines(texts: list[str], models: str | list[str], timeout: int = 60) -> list[str]:
+    """Hinglish lines in English, one for one (Gemini; GEMINI_API_KEY), trying each model in turn (2026-11-16: flash-lite
+    answered 503 "high demand"). [] when all fail: the English track is skipped."""
+    for model in [models] if isinstance(models, str) else models:
+        out = translate_with(texts, model)
+        if out:
+            return out
+    return []
+
+
+def translate_with(texts: list[str], model: str) -> list[str]:
+    key = os.environ.get("GEMINI_API_KEY", "").strip()
+    if not key or not texts:
+        return []
+    prompt = ("Translate each line of this Hinglish (Hindi and English in Roman script) dialogue into natural, simple "
+              "English for subtitles. Keep names and job terms as they are. Answer with a JSON array of strings, exactly "
+              f"one per input line, same order.\n\n{json.dumps(texts, ensure_ascii=False)}")
+    body = json.dumps({"contents": [{"parts": [{"text": prompt}]}],
+                       "generationConfig": {"responseMimeType": "application/json", "temperature": 0.2}}).encode()
+    try:
+        with request(GEMINI.format(model=model) + f"?key={urllib.parse.quote(key)}", body, {"Content-Type": "application/json"}) as r:
+            out = json.loads(json.loads(r.read())["candidates"][0]["content"]["parts"][0]["text"])
+    except Exception as e:  # noqa: BLE001
+        print(f"warning: {model} could not translate the captions ({str(e).replace(key, '***')[:160]})")
+        return []
+    if not isinstance(out, list) or len(out) != len(texts) or not all(isinstance(x, str) and x.strip() for x in out):
+        print(f"warning: {model}'s translation did not come back line for line")
+        return []
+    return [x.strip() for x in out]
+
+
+def upload_caption(token: str, vid: str, language: str, name: str, body_srt: str) -> str:
+    boundary = "caption" + os.urandom(8).hex()
+    meta = json.dumps({"snippet": {"videoId": vid, "language": language, "name": name, "isDraft": False}})
+    data = (f"--{boundary}\r\nContent-Type: application/json; charset=UTF-8\r\n\r\n{meta}\r\n"
+            f"--{boundary}\r\nContent-Type: application/octet-stream\r\n\r\n").encode() + body_srt.encode("utf-8") + f"\r\n--{boundary}--\r\n".encode()
+    try:
+        with request(f"{CAPTIONS}?uploadType=multipart&part=snippet", data,
+                     {"Authorization": f"Bearer {token}", "Content-Type": f"multipart/related; boundary={boundary}"}):
+            pass
+        return "set"
+    except RuntimeError as e:
+        hint = " (the token needs the youtube.force-ssl scope: run authorize.py again)" if "403" in str(e) else ""
+        return f"not set ({str(e)[:160]}){hint}"
+
+
+def add_captions(token: str, vid: str, folder: Path, media_folder: Path, v: dict) -> dict:
+    """Caption tracks from the script's own words (user's SEO notes, 2026-11-16): YouTube reads captions for search, and
+    its own speech recognition hears Hinglish as Hindi. A Hinglish track (the exact script) and an English one (Gemini)."""
+    lines = caption_lines(folder, media_folder)
+    if not lines:
+        return {"youtube_captions": "no timeline.json"}
+    done = {}
+    for lang in v.get("caption_languages", ["hi-Latn", "en"]):
+        if lang == "en":
+            english = translate_lines([t for _, _, t in lines], v.get("translate_models", ["gemini-3.5-flash-lite", "gemini-3.5-flash"]))
+            if not english:
+                done[lang] = "skipped"
+                continue
+            done[lang] = upload_caption(token, vid, "en", "English", srt([(s, e, t) for (s, e, _), t in zip(lines, english)]))
+        else:
+            done[lang] = upload_caption(token, vid, lang, "Hinglish", srt(lines))
+    print("captions: " + ", ".join(f"{k} {r}" for k, r in done.items()))
+    return {"youtube_captions": {k: r[:200] for k, r in done.items()}}
 
 
 def publish_time(at: str, now: datetime | None = None) -> datetime | None:
@@ -199,14 +368,18 @@ def main() -> None:
         # a Post reel run of a reel that is partly up: never upload the same Short twice
         print(f"already on YouTube: {json.loads(done.read_text(encoding='utf-8'))['youtube_url']}")
         return
-    meta = metadata(folder, v, media_folder if (media_folder / "description.txt").is_file() else None)
+    meta = metadata(folder, v, media_folder if (media_folder / "description.txt").is_file() else None, suggest=True)
     when = None if a.now or v["privacy"] != "public" else publish_time(v.get("publish_at", ""))
     if when:  # YouTube's scheduled publishing: private until publishAt
         meta["status"].update({"privacyStatus": "private", "publishAt": when.astimezone(timezone.utc).isoformat().replace("+00:00", "Z")})
     token = access_token(yt)
     print(f"short: {video} ({video.stat().st_size / 1e6:.1f} MB), title {meta['snippet']['title']!r}, "
           f"{len(meta['snippet']['tags'])} tags, " + (f"public at {when:%d %b %H:%M} IST" if when else meta['status']['privacyStatus']))
+    name = upload_name(meta["snippet"]["title"])
     if a.dry_run:
+        lines = caption_lines(folder, media_folder)
+        print(f"file name: {name}\ntags: {', '.join(meta['snippet']['tags'])}\ncaptions: {len(lines)} lines "
+              f"({', '.join(v.get('caption_languages', [])) if v.get('captions', True) else 'off'})")
         print("---\n" + meta["snippet"]["description"] + "\n---\n(dry run: nothing uploaded)")
         return
 
@@ -214,7 +387,7 @@ def main() -> None:
     auth = {"Authorization": f"Bearer {token}"}
     with request(f"{UPLOAD}?uploadType=resumable&part=snippet,status", json.dumps(meta).encode(), {
         **auth, "Content-Type": "application/json; charset=UTF-8",
-        "X-Upload-Content-Type": "video/mp4", "X-Upload-Content-Length": str(len(data)),
+        "X-Upload-Content-Type": "video/mp4", "X-Upload-Content-Length": str(len(data)), "Slug": name,
     }) as r:
         session = r.headers["Location"]
     # the upload's answer is the video (snippet + status): no read-back call, which would need a read scope on top of
@@ -241,6 +414,9 @@ def main() -> None:
         thumb = set_thumbnail(token, vid, media_folder, video, v.get("cover_seconds", 2.2))
         print(f"thumbnail: {thumb}" if thumb == "set" else f"warning: thumbnail {thumb}; YouTube picks a frame itself")
         record["youtube_thumbnail"] = thumb[:200]
+        record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+    if v.get("captions", True):  # after the Short is up and recorded: a caption failure never fails the upload
+        record.update(add_captions(token, vid, folder, media_folder, v))
         record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
 
 

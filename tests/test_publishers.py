@@ -170,10 +170,64 @@ def test_youtube_title():
 def test_youtube_metadata(reel_folder):
     v = {"title_max": 100, "shorts_tag": True, "description_max": 5000, "category_id": "27", "language": "hi",
          "privacy": "private", "made_for_kids": False, "synthetic_media": True, "site_url": "https://site"}
-    md = yt.metadata(reel_folder, v)
+    md = yt.metadata(reel_folder, v)  # suggest=False: no network in tests
     assert md["snippet"]["title"].endswith("#Shorts") and len(md["snippet"]["title"]) <= 100
     assert "every day: https://site" in md["snippet"]["description"]
-    assert md["snippet"]["tags"][:2] == ["interviewtips", "hrinterview"]
+    assert {"interviewtips", "hrinterview"} <= set(md["snippet"]["tags"])
+
+
+def test_youtube_title_keyword_then_hook(reel_folder):
+    s = json.loads((reel_folder / "script.json").read_text(encoding="utf-8"))
+    s["hook_card"] = "'I WORK TOO HARD' = GALAT"
+    (reel_folder / "script.json").write_text(json.dumps(s), encoding="utf-8")
+    (reel_folder / "description.txt").write_text("Strengths and weaknesses answer for freshers | HR interview\nBody\n#a", encoding="utf-8")
+    v = {"title_max": 100, "shorts_tag": True, "description_max": 5000, "category_id": "27", "language": "hi",
+         "privacy": "public", "made_for_kids": False, "synthetic_media": False}
+    title = yt.metadata(reel_folder, v)["snippet"]["title"]
+    assert title.startswith("Strengths and weaknesses answer for freshers") and "'I work too hard' = galat" in title
+
+
+def test_sentence_case_keeps_acronyms():
+    assert yt.sentence_case("LOW CGPA? SORRY MAT BOLO") == "Low CGPA? Sorry mat bolo"
+    assert yt.sentence_case("NA HARDWORKING. NA PASSIONATE.") == "Na hardworking. Na passionate."
+
+
+def test_youtube_tags(monkeypatch):
+    monkeypatch.setattr(yt, "suggestions", lambda q: ["why should we hire you best answer", "why should we hire you meme",
+                                                     "why should we hire you in hindi"])
+    desc = "Why should we hire you answer for freshers | HR interview questions\nBody\n#interviewtips #fresherjobs"
+    tags = yt.make_tags(desc)
+    assert tags[:2] == ["why should we hire you answer for freshers", "hr interview questions"]
+    assert "why should we hire you best answer" in tags and not any("meme" in t for t in tags)
+    assert tags[-2:] == ["interviewtips", "fresherjobs"]
+    long = yt.make_tags("x" * 90 + " | " + " | ".join(f"phrase number {i} here" for i in range(60)), 450, suggest=False)
+    assert sum(len(t) + (2 if " " in t else 0) + 1 for t in long) <= 450
+
+
+def test_upload_name():
+    assert yt.upload_name("Why should we hire you answer for freshers | Na hardworking. #Shorts") == \
+        "why-should-we-hire-you-answer-for-freshers-na-hardworking.mp4"
+
+
+def test_captions_from_timeline(reel_folder, tmp_path):
+    (reel_folder / "timeline.json").write_text(json.dumps({"lines": [
+        {"text": "Do sau applications.", "start": 0.0, "end": 2.4}, {"text": "Follow karo.", "start": 2.4, "end": 4.0}]}), encoding="utf-8")
+    var = reel_folder / "variants" / "youtube"
+    var.mkdir(parents=True)
+    (var / "script.json").write_text(json.dumps({"lines": [{"text": "Do sau applications."}, {"text": "Subscribe karo."}]}), encoding="utf-8")
+    lines = yt.caption_lines(reel_folder, var)
+    assert lines[-1] == (2.4, 4.0, "Subscribe karo.")
+    assert yt.srt(lines).startswith("1\n00:00:00,000 --> 00:00:02,400\nDo sau applications.\n")
+
+
+def test_captions_failure_never_raises(reel_folder, monkeypatch):
+    (reel_folder / "timeline.json").write_text(json.dumps({"lines": [{"text": "Hi.", "start": 0, "end": 1}]}), encoding="utf-8")
+    def refuse(*a, **k):
+        raise RuntimeError("POST /upload/youtube/v3/captions: HTTP 403: insufficient scopes")
+    monkeypatch.setattr(yt, "request", refuse)
+    monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+    out = yt.add_captions("T", "VID", reel_folder, reel_folder, {"caption_languages": ["hi-Latn", "en"]})
+    assert "force-ssl" in out["youtube_captions"]["hi-Latn"] and out["youtube_captions"]["en"] == "skipped"
 
 
 def test_youtube_publish_time():
