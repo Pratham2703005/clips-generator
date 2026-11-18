@@ -40,3 +40,24 @@ def test_account_line():
                            {"views": {"non_follower": 91, "follower": 9}})
     assert line.startswith("Instagram, last 7 days: 100 ") and "91% from non-followers" in line
     assert rp.account_line("Instagram", 7, {"views": None}) == ""
+
+
+def test_dm_stats_sums_days(monkeypatch):
+    import io
+    import json as _json
+    per_day = {"2026-11-17": {"dms": 3, "tgClicks": 2, "followClicks": 1, "tgJoins": 1, "followsYes": 1, "followsNo": 1, "followsUnknown": 1},
+               "2026-11-12": {"dms": 1, "tgClicks": 0, "followClicks": 0, "tgJoins": 0, "followsYes": 0, "followsNo": 0, "followsUnknown": 0},
+               "2026-11-18": {"dms": 5, "tgClicks": 0, "followClicks": 0, "tgJoins": 0, "followsYes": 0, "followsNo": 0, "followsUnknown": 0}}
+
+    class Resp(io.BytesIO):
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *a):
+            return False
+    monkeypatch.setattr(rp.urllib.request, "urlopen", lambda req, timeout=30: Resp(_json.dumps(per_day).encode()))
+    s = rp.dm_stats({"stats_url": "https://x/stats"}, "2026-11-18")
+    assert s["yesterday"]["dms"] == 3 and s["week"]["dms"] == 4 and s["all"]["dms"] == 9
+    line = rp.dm_line("Yesterday", s["yesterday"])
+    assert line.startswith("Yesterday: 3 DMs sent · 2 Telegram button clicks") and "1 yes, 1 no, 1 unknown" in line
+    assert rp.dm_stats({}, "2026-11-18") == {}

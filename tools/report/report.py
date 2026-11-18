@@ -1012,7 +1012,15 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
                     "(the Bot API gives no views per post; Telegram shows them under each post in the channel)")
             h.append(f"<p>{html.escape(line)}</p>")
             t.append(line)
-    for name, o in (("Facebook", fb), ("Threads", th), ("Telegram", tg)):
+    dm = others.get("dm") or {}
+    if dm.get("all") is not None:
+        h.append("<h3>Instagram comment -> DM</h3>")
+        t += ["", "Instagram comment -> DM"]
+        for label, key in (("Yesterday", "yesterday"), ("Last 7 days", "week"), ("Since the start", "all")):
+            line = dm_line(label, dm.get(key) or {})
+            h.append(f"<p>{html.escape(line)}</p>")
+            t.append(line)
+    for name, o in (("Facebook", fb), ("Threads", th), ("Telegram", tg), ("Instagram DM", dm)):
         if o.get("note"):
             h.append(f"<p><i>{html.escape(o['note'])}</i></p>")
             t.append(f"Note ({name}): {o['note']}")
@@ -1020,6 +1028,50 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     page = lambda parts: "<html><body style=\"font-family:sans-serif\">" + "\n".join(parts) + "</body></html>"  # noqa: E731
     attachment = page([f"<h2>{html.escape(f'Job Shorts {day}: every post of the last {days} days')}</h2>"] + full) if longer else ""
     return subject, "\n".join(t) + "\n", page(h), attachment
+
+
+# ---------- Instagram comment -> DM (Cloudflare Worker, 2026-11-18) ----------
+
+DM_FIELDS = (("dms", "DMs sent"), ("tgClicks", "Telegram button clicks"), ("followClicks", "Follow button clicks"),
+             ("tgJoins", "joined Telegram via the DM link"))
+
+
+def dm_stats(cfg: dict, day: str) -> dict:
+    """The Worker's per-day counts (GET /stats; counts only), summed for the day before the report, the last 7 days
+    and in total. Follows are checked 3 h after a DM; "unknown" = Instagram didn't say (it may answer only for people
+    who wrote to us)."""
+    url = cfg.get("stats_url", "")
+    if not url:
+        return {}
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (job-shorts report)"})
+        with urllib.request.urlopen(req, timeout=30) as r:
+            per_day = json.loads(r.read() or b"{}")
+    except Exception as e:  # noqa: BLE001 - a missing DM line never breaks the report
+        return {"note": f"Instagram DM stats unavailable ({str(e)[:120]})"}
+    try:
+        ref = datetime.fromisoformat(day).date()
+    except ValueError:
+        ref = datetime.now(timezone.utc).date()
+
+    def total(days: int | None) -> dict:
+        out: dict = {}
+        for d, v in per_day.items():
+            age = (ref - datetime.fromisoformat(d).date()).days
+            if days is None or 1 <= age <= days:
+                for k, n in v.items():
+                    out[k] = out.get(k, 0) + n
+        return out
+    return {"yesterday": total(1), "week": total(7), "all": total(None)}
+
+
+def dm_line(label: str, s: dict) -> str:
+    parts = [f"{num(s.get(k, 0))} {name}" for k, name in DM_FIELDS]
+    checked = s.get("followsYes", 0) + s.get("followsNo", 0) + s.get("followsUnknown", 0)
+    if checked:
+        parts.append(f"follow us 3 h later: {num(s.get('followsYes', 0))} yes, {num(s.get('followsNo', 0))} no, "
+                     f"{num(s.get('followsUnknown', 0))} unknown")
+    return f"{label}: " + " · ".join(parts)
 
 
 def posted_youtube_id(folder: Path) -> str:
@@ -1054,7 +1106,8 @@ def main() -> None:
     pairs = trial_pairs(cfg["instagram"], history, pair) if ig.get("username") else []
     others = {"fb": facebook_stats(cfg.get("facebook", {}), since) if cfg.get("facebook") else {},
               "th": threads_stats(cfg.get("threads", {}), since) if cfg.get("threads") else {},
-              "tg": telegram_stats(cfg["telegram"]) if cfg.get("telegram") else {}}
+              "tg": telegram_stats(cfg["telegram"]) if cfg.get("telegram") else {},
+              "dm": dm_stats(cfg.get("instagram_dm", {}), day)}
     subject, text, body, attachment = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""), ig, yt, rep["days"],
                                             history, pairs, others, rep.get("rows_in_mail", 10))
     if a.save_stats:

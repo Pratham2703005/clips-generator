@@ -1,0 +1,38 @@
+{
+	// Instagram comment -> DM (worker.js). One-time setup, from this folder (wrangler is in PoolBox:
+	// ../../../PoolBox/cloudflare-worker/node_modules/.bin/wrangler, already logged in to the Cloudflare account):
+	//   1. wrangler kv namespace create DM_STATE      -> put the id it prints below
+	//   2. wrangler secret put IG_ACCESS_TOKEN         -> paste the Instagram token (typed in, never saved in a file)
+	//      wrangler secret put TELEGRAM_BOT_TOKEN      -> the @pk07007_bot token (BotFather); for the DM invite link + join count.
+	//      The bot needs the channel admin right "Invite users via link".
+	//   3. wrangler deploy
+	// Then: wrangler tail (live logs), or open the workers.dev URL for the last run's counts.
+	"name": "isha-instagram-dm",
+	"main": "worker.js",
+	"compatibility_date": "2026-10-02",
+	"workers_dev": true,
+	// every 2 minutes; a reel whose comment count hasn't changed costs one cheap call, not a comment read
+	"triggers": {
+		"crons": [
+			"*/2 * * * *"
+		]
+	},
+	"kv_namespaces": [
+		{
+			"binding": "DM_STATE",
+			"id": "45c268675aa041bcb0e1050a5885c286"
+		}
+	],
+	"vars": {
+		"IG_USER_ID": "17841469277847208",
+		// the DM buttons go through here, so clicks can be counted (this Worker's own workers.dev address)
+		"PUBLIC_URL": "https://isha-instagram-dm.pk2732004.workers.dev",
+		"TELEGRAM_CHANNEL": "@fresherjobs_isha"
+	},
+	"observability": {
+		"logs": {
+			"enabled": true,
+			"invocation_logs": false
+		}
+	}
+}

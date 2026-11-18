@@ -56,6 +56,11 @@ account_metrics = ["views", "likes", "replies", "reposts", "clicks", "followers_
 token_env = "TELEGRAM_BOT_TOKEN"
 channel_env = "TELEGRAM_CHANNEL"
 
+# the comment -> DM Worker (video-generator/cloudflare/instagram-dm): DMs, button clicks, Telegram joins via the DM link,
+# follows 3 h after a DM. "" = no such section.
+[instagram_dm]
+stats_url = "https://isha-instagram-dm.pk2732004.workers.dev/stats"
+
 [youtube]
 # needs the youtube.readonly scope (authorize.py); without it the email says so
 client_id_env = "YT_CLIENT_ID"
