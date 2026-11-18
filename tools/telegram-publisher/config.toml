@@ -10,3 +10,21 @@ max_mb = 50                       # Bot API upload limit
 width = 1080                      # the reel's size, so the player shows it vertical
 height = 1920
 cover_seconds = 2.2               # thumbnail frame when compose.json has no cover_seconds
+
+# daily_jobs.py (user, 2026-11-18): one short message of fresh jobs a day, whatever the reel is about. The reel's own jobs
+# go first, then one per niche (the niche names are content-data-preparation's [niches]), starting at a different niche
+# each day. One channel with a hashtag per job, not a channel per niche (2 subscribers today; revisit at ~500).
+[daily_jobs]
+count = 5
+# never in the daily post: gig, freelance, volunteer and commission-only work
+exclude_titles = '\b(gig|freelance|volunteer|unpaid|commission only|mystery)\b'
+footer = "Roz 5 nayi fresher jobs, seedha company ki site se. Doston ko bhejo 🙌"
+niches = [
+  { niche = "india-freshers", tag = "freshers" },
+  { niche = "data-ai", tag = "data" },
+  { niche = "bangalore-tech", tag = "software" },
+  { niche = "remote-india", tag = "remote" },
+  { niche = "support-india", tag = "support" },
+  { niche = "sales-sdr", tag = "sales" },
+  { niche = "marketing", tag = "marketing" },
+]

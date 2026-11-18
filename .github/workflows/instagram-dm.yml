@@ -1,0 +1,50 @@
+# Instagram comment -> DM (tools/instagram-dm): people who comment a keyword or only emoji on our reels get the Telegram
+# link by DM. By hand for now (user, 2026-11-18): first "check" (permissions), then "dry-run", then a test comment and
+# "send". The schedule (every 15 min) gets switched on once that works.
+name: Instagram DM
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: "check = permissions only; dry-run = list the comments it would answer; send = send the DMs"
+        type: choice
+        options: [check, dry-run, send]
+        default: check
+
+permissions:
+  contents: read
+
+concurrency:
+  group: instagram-dm
+  cancel-in-progress: false
+
+jobs:
+  dm:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      # comments already answered, kept between runs (Instagram also refuses a second private reply to one comment)
+      - name: State
+        uses: actions/cache@v4
+        with:
+          path: .instagram-dm-state.json
+          key: instagram-dm-state-${{ github.run_id }}
+          restore-keys: instagram-dm-state-
+      - name: Comments -> DMs
+        env:
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          IG_APP_SECRET: ${{ secrets.IG_APP_SECRET }}
+          MODE: ${{ inputs.mode || 'send' }}
+        run: |
+          case "$MODE" in
+            check) python tools/instagram-dm/reply_comments.py --check ;;
+            dry-run) python tools/instagram-dm/reply_comments.py --dry-run ;;
+            *) python tools/instagram-dm/reply_comments.py ;;
+          esac

@@ -1,0 +1,13 @@
+# instagram-dm: DMs the Telegram link to people who comment a keyword or only emoji on our reels. See reply_comments.py.
+
+[dm]
+# matched as words, any case ("Jobs!", "link pls", "TELEGRAM" all count)
+keywords = ["job", "jobs", "link", "daily jobs", "telegram", "channel"]
+emoji_only = true          # a comment of only emoji ("🔥", "🙏🙏") counts too (user, 2026-11-18)
+max_age_days = 7           # Instagram allows a private reply only within 7 days of the comment
+max_per_run = 50
+# one DM per comment, so the link and the follow ask go together
+message = """Hi! 👋 Roz ki fresher jobs (seedha company ki site se, apply link ke saath) yahan milti hain:
+https://telegram.me/fresherjobs_isha
+
+Aur interview tips ke reels ke liye @isha.07007 ko follow kar lo 🙂"""

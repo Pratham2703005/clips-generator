@@ -323,6 +323,18 @@ jobs:
           folder="content/$DAY"
           [ -n "$NAME" ] && folder="content/custom/$NAME"
           python tools/telegram-publisher/publish.py --folder "$folder"
+      # 5 fresh jobs a day on the channel, whatever the reel is about (2026-11-18); the reel's own jobs go first
+      - name: Post daily jobs to Telegram
+        id: telegram_jobs
+        if: always() && steps.make.outcome == 'success' && (github.event_name == 'schedule' || inputs.telegram)
+        continue-on-error: true
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/telegram-publisher/daily_jobs.py --folder "$folder"
 
       # what went up where, for a later Post reel run of this reel (so it never posts the same thing twice)
       - name: Keep the post record
@@ -375,6 +387,7 @@ jobs:
           OUT_FACEBOOK: ${{ steps.facebook.outcome }}
           OUT_THREADS: ${{ steps.threads.outcome }}
           OUT_TELEGRAM: ${{ steps.telegram.outcome }}
+          OUT_TELEGRAM_JOBS: ${{ steps.telegram_jobs.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           DAY="${DAY:-$(TZ=Asia/Kolkata date +%F)}"

@@ -148,10 +148,23 @@ def test_telegram_channel_text(reel_folder):
                                             encoding="utf-8")
     t = tg.channel_text(reel_folder)
     assert t.startswith("Interview prep | Test")
-    assert "Job in this reel:\n- Data Analyst at Infosys" in t and "Apply: https://career.infosys.com" in t
+    assert "Apply:" not in t  # the reel's jobs go in the day's jobs post (daily_jobs.py), 2026-11-18
     assert t.endswith("N8n: https://n8n.io/workflows/1")
-    cap, rest = tg.caption_parts(reel_folder, 40, 4096)
-    assert len(cap) <= 40 and rest
+    cap, rest = tg.caption_parts(reel_folder, 20, 4096)
+    assert len(cap) <= 20 and rest
+
+
+dj = load("tools/telegram-publisher/daily_jobs.py")
+
+
+def test_daily_jobs_message():
+    from datetime import date
+    jobs = [{"title": "Data Analyst <Fresher> " + "x" * 80, "company": "A&B", "where": "Pune, India", "posted": "today",
+             "apply_url": "https://x.com/a?b=1&c=2", "tag": "data"}]
+    m = dj.message(jobs, date(2026, 11, 18), "Doston ko bhejo")
+    assert m.startswith("🔥 <b>Aaj ki 1 fresher jobs</b> · 18 Nov")
+    assert "&lt;Fresher&gt;" in m and "A&amp;B" in m and 'href="https://x.com/a?b=1&amp;c=2"' in m and "#data" in m
+    assert "…" in m and m.endswith("Doston ko bhejo")
 
 
 def test_telegram_value_episode_has_no_jobs(reel_folder):
@@ -250,3 +263,22 @@ def test_youtube_cover_without_ffmpeg(reel_folder, monkeypatch):
     """2026-11-10: the Post reel runner had no ffmpeg and the step failed after the upload."""
     monkeypatch.setattr(yt.shutil, "which", lambda name: None)
     assert yt.cover_frame(reel_folder, reel_folder / "reel.mp4", 2.2) is None
+
+
+# ---------- Instagram comment -> DM ----------
+
+igdm = load("tools/instagram-dm/reply_comments.py")
+
+
+@pytest.mark.parametrize("text,want", [("JOBS", True), ("jobs pls", True), ("Link?", True), ("telegram link do", True),
+                                       ("🔥", True), ("🙏🙏 ", True), ("❤️", True), ("👍 nice", False),
+                                       ("great video", False), ("jobless life 😂", False), ("", False)])
+def test_dm_wants_link(text, want):
+    assert igdm.wants_link(text, ["job", "jobs", "link", "daily jobs", "telegram", "channel"], True) is want
+
+
+def test_dm_config_parses():
+    import tomllib
+    from conftest import ROOT
+    dm_cfg = tomllib.loads((ROOT / "tools/instagram-dm/config.toml").read_text(encoding="utf-8"))["dm"]
+    assert "telegram.me/fresherjobs_isha" in dm_cfg["message"] and dm_cfg["max_age_days"] <= 7

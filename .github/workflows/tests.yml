@@ -161,6 +161,9 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
         run: python tools/telegram-publisher/publish.py --folder "$FOLDER" --dry-run
+      - name: Telegram daily jobs (dry run)
+        if: always()
+        run: python tools/telegram-publisher/daily_jobs.py --folder "$FOLDER" --dry-run
       - name: Report (dry run, no mail)
         if: always()
         env:

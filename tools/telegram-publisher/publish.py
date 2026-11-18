@@ -33,6 +33,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 
 DEFAULT_CONFIG = Path(__file__).resolve().parent / "config.toml"
+JOBS_IN_DAILY_POST = True  # daily_jobs.py posts the reel's jobs with the day's others
 
 
 def load_env_files(paths: list[Path]) -> None:
@@ -101,8 +102,9 @@ def channel_text(folder: Path) -> str:
         lines = [l.strip() for l in desc.splitlines() if l.strip()]
         title = lines[1] if len(lines) > 1 else (lines[0] if lines else folder.name)
     parts = [title]
+    # the reel's jobs go in the day's jobs post now (daily_jobs.py, user 2026-11-18: less text, more links), not here
     jobs = re.findall(r"^- (.+?)\s*\n\s+Apply: (\S+)", desc, flags=re.M)
-    if jobs:
+    if jobs and not JOBS_IN_DAILY_POST:
         head = "Job in this reel:" if len(jobs) == 1 else "Jobs in this reel:"
         parts.append(head + "\n" + "\n".join(f"- {what}\n  Apply: {url}" for what, url in jobs))
     platform = brief.get("platform") or {}

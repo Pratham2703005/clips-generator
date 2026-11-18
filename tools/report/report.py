@@ -740,7 +740,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     posted = json.loads((folder / "posted.json").read_text(encoding="utf-8")) if (folder / "posted.json").is_file() else {}
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
     out = {k: os.environ.get(f"OUT_{k.upper()}", "")
-           for k in ("make", "instagram", "youtube", "trial", "facebook", "threads", "telegram")}
+           for k in ("make", "instagram", "youtube", "trial", "facebook", "threads", "telegram", "telegram_jobs")}
     title = script.get("title") or day
     if not posted.get("youtube_url"):
         # put up by an earlier run whose record wasn't kept (2026-11-02: a Post reel run with YouTube unticked showed
@@ -771,7 +771,8 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     for label, key, ids in (("Facebook reel", "facebook", ("facebook_url", "facebook_video_id")),
                             ("Facebook story", "facebook", ("facebook_story_id",)),
                             ("Threads post", "threads", ("threads_url", "threads_id")),
-                            ("Telegram post", "telegram", ("telegram_url", "telegram_message_id"))):
+                            ("Telegram post", "telegram", ("telegram_url", "telegram_message_id")),
+                            ("Telegram daily jobs", "telegram_jobs", ("telegram_jobs_url", "telegram_jobs_message_id"))):
         done = next((str(posted[i]) for i in ids if posted.get(i)), "")
         if out[key] or done:
             rows.append((label, state(bool(done), out[key]), done))

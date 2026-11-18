@@ -23,3 +23,6 @@ out/
 .run-settings.toml
 __pycache__/
 *.pyc
+
+# instagram-dm: comments already answered (kept between runs by actions/cache)
+.instagram-dm-state.json
