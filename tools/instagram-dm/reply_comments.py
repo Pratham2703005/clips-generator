@@ -71,8 +71,34 @@ def recent_comments(api, user_id: str, days: int, own: str) -> list[dict]:
     return [c for c in out if datetime.fromisoformat(c["timestamp"].replace("+0000", "+00:00")) >= since]
 
 
-def private_reply(api, user_id: str, comment_id: str, text: str) -> None:
-    _post_json(api, f"{user_id}/messages", {"recipient": {"comment_id": comment_id}, "message": {"text": text}})
+def card(dm: dict) -> dict | None:
+    """The DM as a card with buttons (user, 2026-11-18: links in a text DM weren't clickable). Instagram's generic
+    template: title + subtitle (80 characters each) and up to 3 web_url buttons (titles up to 20 characters)."""
+    c = dm.get("card") or {}
+    buttons = [{"type": "web_url", "url": b["url"], "title": b["title"][:20]} for b in c.get("buttons", [])[:3]]
+    if not c.get("title") or not buttons:
+        return None
+    element = {"title": c["title"][:80], "buttons": buttons}
+    if c.get("subtitle"):
+        element["subtitle"] = c["subtitle"][:80]
+    if c.get("image_url"):
+        element["image_url"] = c["image_url"]
+    return {"attachment": {"type": "template", "payload": {"template_type": "generic", "elements": [element]}}}
+
+
+def private_reply(api, user_id: str, comment_id: str, dm: dict) -> str:
+    """The card with buttons; when Instagram refuses it, the plain text message. Returns which one went."""
+    message = card(dm)
+    if message:
+        try:
+            _post_json(api, f"{user_id}/messages", {"recipient": {"comment_id": comment_id}, "message": message})
+            return "card"
+        except RuntimeError as e:
+            if "(code 10," in str(e) or "(code 200," in str(e):
+                raise  # a permission problem: the text would fail the same way
+            print(f"    card refused ({str(e)[:160]}); sending the text instead")
+    _post_json(api, f"{user_id}/messages", {"recipient": {"comment_id": comment_id}, "message": {"text": dm["message"]}})
+    return "text"
 
 
 def _post_json(api, path: str, payload: dict) -> dict:
@@ -175,7 +201,8 @@ def main() -> int:
         if a.dry_run:
             continue
         try:
-            private_reply(api, user_id, c["id"], dm["message"])
+            kind = private_reply(api, user_id, c["id"], dm)
+            print(f"    sent ({kind})")
             sent += 1
         except RuntimeError as e:
             refused += 1

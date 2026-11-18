@@ -6,8 +6,18 @@ keywords = ["job", "jobs", "link", "daily jobs", "telegram", "channel"]
 emoji_only = true          # a comment of only emoji ("🔥", "🙏🙏") counts too (user, 2026-11-18)
 max_age_days = 7           # Instagram allows a private reply only within 7 days of the comment
 max_per_run = 50
-# one DM per comment, so the link and the follow ask go together
+# the fallback when Instagram refuses the card below
 message = """Hi! 👋 Roz ki fresher jobs (seedha company ki site se, apply link ke saath) yahan milti hain:
 https://telegram.me/fresherjobs_isha
 
 Aur interview tips ke reels ke liye @isha.07007 ko follow kar lo 🙂"""
+
+# One DM per comment, so the link and the follow ask go together: a card with buttons (2026-11-18: links in a text DM
+# weren't clickable). Title / subtitle up to 80 characters, up to 3 buttons with titles up to 20.
+[dm.card]
+title = "Roz ki fresher jobs 📌"
+subtitle = "Seedha company ki site se, apply link ke saath. Reels ke liye follow kar lo 🙂"
+buttons = [
+  { title = "Telegram kholo", url = "https://telegram.me/fresherjobs_isha" },
+  { title = "Follow karo", url = "https://www.instagram.com/isha.07007/" },
+]

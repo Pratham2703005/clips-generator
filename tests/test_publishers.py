@@ -282,3 +282,22 @@ def test_dm_config_parses():
     from conftest import ROOT
     dm_cfg = tomllib.loads((ROOT / "tools/instagram-dm/config.toml").read_text(encoding="utf-8"))["dm"]
     assert "telegram.me/fresherjobs_isha" in dm_cfg["message"] and dm_cfg["max_age_days"] <= 7
+
+
+def test_dm_card_then_text_fallback(monkeypatch):
+    dm_cfg = {"message": "text", "card": {"title": "T", "subtitle": "S", "buttons": [{"title": "Telegram kholo", "url": "https://t"}]}}
+    sent = []
+
+    def fake(api, path, payload):
+        sent.append(payload["message"])
+        if "attachment" in payload["message"]:
+            raise RuntimeError("POST x: HTTP 400: template not supported (code 100, subcode None)")
+    monkeypatch.setattr(igdm, "_post_json", fake)
+    assert igdm.private_reply(None, "U", "C", dm_cfg) == "text"
+    assert "attachment" in sent[0] and sent[1] == {"text": "text"}
+
+    def no_permission(api, path, payload):
+        raise RuntimeError("POST x: HTTP 403: (#10) no permission (code 10, subcode None)")
+    monkeypatch.setattr(igdm, "_post_json", no_permission)
+    with pytest.raises(RuntimeError):
+        igdm.private_reply(None, "U", "C", dm_cfg)
