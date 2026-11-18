@@ -11,6 +11,7 @@ funnel: top
 hook: 'KOI AUR OFFER?' JHOOTH NAHI
 trial_hook: Don't invent a second offer. One question from HR exposes it.
 trial_card: FAKE OFFER = DONO GAYE
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: HR ne poocha, aur koi offer hai? Socha bol doon, haan, do hain.
 Arjun: Jhootha offer pakda gaya, toh ye wala bhi gaya. HR proof maang sakta hai.
 Riya: Mere paas koi offer nahi hai.
@@ -21,8 +22,9 @@ Riya: Aur agar sach mein offer hai?
 Arjun: Bolo, par dhamki nahi. Ek offer hai, par mujhe yahan zyada interest hai.
 Riya: Number bataun?
 Arjun: Poochein toh bata do. Zabardasti mat ghusao.
-Riya: Sach, focus, dhamki nahi.
-Arjun: Follow karo, kal puzzle wala sawaal.
+Riya: Theek hai, jhootha offer wala idea drop.
+Arjun: Kal puzzle wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Do you have any other offers HR question | Other offers answer for freshers | HR interview tips
@@ -32,6 +34,7 @@ Koi offer nahi: "Main is role pe focus kar rahi hoon, ye mere skills se match ka
 Process chal raha hai: "2 jagah process mein hoon, final nahi hua."
 Offer hai: bolo, par dhamki nahi.
 
-Save karo. Kal: puzzle question kaise solve karein.
+Kal: puzzle question kaise solve karein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #hrinterview #salarynegotiation #fresherjobs #interviewtips #offerletter

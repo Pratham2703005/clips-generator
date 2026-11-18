@@ -11,6 +11,7 @@ funnel: bottom
 hook: HR EMAIL: SIRF 5 LINE
 trial_hook: Stop sending long emails to HR. Five lines are enough.
 trial_card: HR EMAIL = 5 LINES
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: HR ko das line ka email likha. Apni poori kahani.
 Arjun: Paanch line kaafi hain. Kahani interview mein.
 Riya: Paanch line mein kya aayega?
@@ -23,13 +24,14 @@ Riya: Subject line?
 Arjun: Role ka naam aur tumhara naam. Bas.
 Riya: Role kahan dhoondhun?
 Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
-Riya: Paanch line, ek proof, PDF.
-Arjun: Follow karo, kal final round ke baad ghost.
+Riya: Das line wala mail draft mein hi rehne deti hoon.
+Arjun: Kal final round ke baad ghost.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Cold email to HR for job as a fresher | How to email HR for job opening | Job application email
 Interview prep 📧
-HR ko lambi kahani nahi, 5 line:
+HR ko 5 line kaafi hain:
 1. Kaunsa role (job ID ke saath)
 2. Tum kaun ho: degree, saal
 3. Ek proof: project + result
@@ -43,5 +45,6 @@ Job in this episode:
 Fresh jobs from company career pages, every day: link in bio.
 
 Kal: final round ke baad reply nahi aaya toh.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #coldemail #hremail #fresherjobs #jobsearchtips #offcampusjobs

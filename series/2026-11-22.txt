@@ -11,8 +11,9 @@ funnel: bottom
 hook: 10 MINUTE RESUME FIX
 trial_hook: Stop sending the same resume to fifty jobs. Ten minutes fixes it.
 trial_card: 10 MINUTE RESUME FIX
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Applied. Next. Ek hi resume, pachaas jobs. Reply zero.
-Arjun: Sabke liye ek resume, matlab kisi ke liye nahi.
+Arjun: Ek hi resume sab jagah bhejogi, toh kisi job se match nahi karega.
 Riya: Har job ke liye naya resume? Itna time kahan?
 Arjun: Naya nahi. Das minute ka badlaav.
 Arjun: Job description kholo. Teen skill dhoondo jo baar baar aayi hain.
@@ -23,13 +24,14 @@ Riya: Summary bhi badlun?
 Arjun: Ek line. Role ka naam aur wahi teen skill.
 Riya: Practice ke liye job?
 Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj ki: {job1}. [job: 1]
-Riya: Das minute, teen skill, ek line.
-Arjun: Follow karo, kal low CGPA ka sawaal.
+Riya: Das minute? Itna toh main reels dekhne mein laga deti hoon.
+Arjun: Kal low CGPA ka sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 How to tailor resume for each job | Resume keywords from job description | Resume tips for freshers
 Interview prep 📄
-Ek resume sabke liye = kisi ke liye nahi. 10 minute ka fix:
+Ek hi resume har job pe bhejoge, toh kisi job se match nahi karega. 10 minute ka fix:
 1. Job description mein baar-baar aane wali 3 skills dhoondo
 2. Jo tumhare paas hain, unhe resume ke upar laao
 3. Summary: role ka naam + wahi 3 skills
@@ -41,5 +43,6 @@ Job in this episode:
 Fresh jobs from company career pages, every day: link in bio.
 
 Kal: low CGPA ka sawaal.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #resumetips #fresherjobs #jobsearchtips #offcampusjobs #resume

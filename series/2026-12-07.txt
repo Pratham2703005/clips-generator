@@ -11,8 +11,9 @@ funnel: top
 hook: PUZZLE: GUESS NAHI, SOCH
 trial_hook: Never guess a puzzle answer. Try two people, then three.
 trial_card: PUZZLE = THINKING
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Interview mein puzzle aaya, maine turant guess maara. Galat.
-Arjun: Guess hi galti thi. Wo answer nahi, soch dekhna chahte hain.
+Arjun: Guess hi galti thi. Wo dekhna chahte hain ki tum sochte kaise ho.
 Bunty: But ChatGPT said answer yaad kar lo!
 Arjun: Yaad kiya answer pakda jaata hai.
 Bunty: Toh kaise?
@@ -20,8 +21,9 @@ Arjun: Pehle sawaal dohrao. Phir chhota case try karo, zor se bolke.
 Arjun: Jaise: do log hon toh? Teen hon toh? Pattern dikhega.
 Bunty: Answer galat hua toh?
 Arjun: Soch saaf hai toh aadhi baazi jeet gaye. Aur hint lene mein sharm nahi.
-Bunty: Chhota case, zor se, pattern.
-Arjun: Guess nahi. Follow karo, kal HR ko paanch line ka email.
+Bunty: Agli baar pehle do log, phir teen log.
+Arjun: Aur guess bilkul nahi. Kal HR ko paanch line ka email.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Puzzle interview questions approach | How to solve puzzles in interview | Interview tips for freshers
@@ -32,6 +34,7 @@ Puzzle mein answer se zyada soch dekhte hain:
 3. Pattern dhoondo
 Hint lene mein sharm nahi.
 
-Save karo. Kal: HR ko 5 line ka email.
+Kal: HR ko 5 line ka email.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #puzzles #interviewtips #fresherjobs #placementpreparation #technicalinterview

@@ -14,6 +14,7 @@ hook: NA SALARY. NA 'NO QUESTIONS'.
 trial_hook: Never leave an interview with zero questions. Ask about the first three months.
 trial_card: 'NO QUESTIONS' = NO JOB
 threads: Interview ke end mein "any questions?" pe tum kya poochte ho?
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Ma'am, any questions pe kya poochun? Salary? Ya no questions?
 Malhotra: Na salary, na no questions. Ek teesra sawaal, jo interviewer ko yaad rehta hai.
 Riya: Kaunsa?
@@ -24,7 +25,8 @@ Malhotra: Do aur rakho: team freshers ko kaise sikhati hai? Achha kaam kaisa dik
 Riya: Aur salary kab?
 Malhotra: HR round mein. Pehle round mein nahi.
 Riya: Teen mahine, seekhna, achha kaam.
-Malhotra: No questions kabhi nahi. Follow karo, kal project kaise explain karein.
+Malhotra: No questions kabhi nahi. Kal project kaise explain karein.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 Do you have any questions for us | Questions to ask interviewer as a fresher | Interview tips
@@ -36,6 +38,7 @@ Backup:
 3. Is role mein achha kaam kaisa dikhta hai?
 Salary ka sawaal HR round ke liye rakho.
 
-Save karo. Kal: apna project 3 line mein kaise explain karein.
+Kal: apna project 3 line mein kaise explain karein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #interviewtips #interviewquestions #fresherjobs #interviewpreparation #hrinterview

@@ -11,6 +11,7 @@ funnel: bottom
 hook: DOOSRA SHEHAR? PEHLE YE MATH
 trial_hook: Never refuse a job in another city before these four numbers.
 trial_card: SHEHAR BADLO? PEHLE MATH
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Bangalore se offer aaya. Mana karne wala hoon, kiraya hi aadhi salary kha jayega.
 Arjun: Mana karne se pehle number lagao. In-hand, kiraya, khana, travel.
 Bunty: Kiraya kitna hoga, kaise pata?
@@ -23,7 +24,8 @@ Arjun: Kuch companies deti hain. Poochne mein kya jaata hai.
 Bunty: Aisi jobs kahan?
 Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
 Bunty: In-hand minus kharcha.
-Arjun: Pehle math, phir faisla. Follow karo, kal internship wala sawaal.
+Arjun: Pehle math, phir faisla. Kal internship wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Should freshers relocate for a job | Job in another city cost of living | Bangalore jobs for freshers
@@ -39,5 +41,6 @@ Job in this episode:
 Fresh jobs from company career pages, every day: link in bio.
 
 Kal: "Internship mein kya kiya?" ka jawab.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #relocation #bangalorejobs #fresherjobs #jobsearchtips #firstjob

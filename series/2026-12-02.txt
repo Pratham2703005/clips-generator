@@ -11,6 +11,7 @@ funnel: middle
 hook: MANAGER ROUND ≠ CODING
 trial_hook: Don't say you'll work all night. Managers want two things first.
 trial_card: MANAGER ROUND ≠ CODING
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Kal manager round hai. Raat bhar coding practice karunga.
 Arjun: Coding thodi. Asli sawaal: kya tum team mein kaam aaoge?
 Bunty: Wo kaise check karte hain?
@@ -21,18 +22,20 @@ Bunty: Batana zaroori hai?
 Arjun: Manager ko surprise pasand nahi. Jaldi khabar pasand hai.
 Bunty: Aur kya poochte hain?
 Arjun: Senior se disagree kiya toh? Jawab: data ke saath, izzat se, phir jo team decide kare.
-Bunty: Matlab ego nahi, communication.
+Bunty: Matlab baat izzat se, aur faisla team ka.
 Arjun: Bilkul. Ye round attitude ka hai.
-Arjun: Follow karo, kal relocate wala sawaal.
+Arjun: Kal relocate wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Managerial round interview questions for freshers | Manager round tips | Interview preparation
 Interview prep 👔
-Manager round coding ka nahi, team ka round hai:
+Manager round mein dekhte hain ki tum team mein kaise kaam karoge:
 1. Deadline miss hone wali hai? Pehle manager ko batao, kya hua aur kya bacha
 2. Senior se disagree? Data ke saath, izzat se, phir team ka decision
-Manager ko surprise nahi, jaldi khabar pasand hai.
+Manager ko buri khabar bhi jaldi chahiye hoti hai.
 
-Save karo. Kal: "Relocate karoge?" pe kya bolein.
+Kal: "Relocate karoge?" pe kya bolein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #managerialround #interviewtips #fresherjobs #interviewpreparation #placementpreparation

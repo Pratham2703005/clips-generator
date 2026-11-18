@@ -11,6 +11,7 @@ funnel: top
 hook: GAP YEAR? 1 LINE MEIN
 trial_hook: Never hide a gap year. They already saw the dates.
 trial_card: GAP YEAR CHHUPAO MAT
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Ma'am, resume mein ek saal ka gap hai. Interview mein kya bolun?
 Malhotra: Chhupao mat, dates wo dekh chuke hain. Kya kiya tha?
 Riya: Ek saal ghar pe thi. Exam ki taiyari ki, phir chhod diya.
@@ -22,8 +23,9 @@ Riya: Ek saal government exam ki taiyari ki. Discipline seekha. Ab data mein kaa
 Malhotra: Perfect. Last part sabse zaroori: gap ke baad kuch kiya.
 Riya: Kuch nahi kiya toh?
 Malhotra: Aaj se karo. Ek course, ek project. Interview tak gap chhota lagega.
-Riya: Sach, seekh, plan.
-Malhotra: Follow karo, kal resume har job ke liye kaise badlein.
+Riya: Theek hai, aaj se ek course shuru.
+Malhotra: Kal resume har job ke liye kaise badlein.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 How to explain gap year in interview | Gap year for freshers | HR interview tips
@@ -34,6 +36,7 @@ Gap chhupane se nahi chhupta, dates resume pe hain. 1 line:
 3. Ab ye job kyun (aur gap ke baad kya kiya)
 Kuch nahi kiya? Aaj se ek course ya project shuru karo.
 
-Save karo. Kal: har job ke liye resume 10 minute mein.
+Kal: har job ke liye resume 10 minute mein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #gapyear #hrinterview #fresherjobs #interviewtips #careeradvice

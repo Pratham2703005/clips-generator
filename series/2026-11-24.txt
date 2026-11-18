@@ -11,6 +11,7 @@ funnel: middle
 hook: GD: 3 RULE, CHILLANA NAHI
 trial_hook: Never shout in a group discussion. Three rules win it instead.
 trial_card: GD: CHILLAO MAT
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Kal GD hai. Plan hai, sabse pehle bolungi, sabse zor se.
 Arjun: Pehle bolna tab achha, jab point ho. Aur zor se bolna kabhi nahi.
 Riya: Toh rule kya hain?
@@ -21,18 +22,20 @@ Arjun: Dikhta hai tum sun rahi ho. GD mein sunna bhi check hota hai.
 Arjun: Teesra: end mein summary do, ya summary ka offer karo.
 Riya: Aur koi chillaye toh?
 Arjun: Tum mat chillao. Ruko, phir shaant awaaz mein point.
-Riya: Point, naam, summary.
-Arjun: Aur chillana nahi. Follow karo, kal paanch saal baad wala sawaal.
+Riya: Matlab zor se bolne ka plan cancel.
+Arjun: Aur chillana nahi. Kal paanch saal baad wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Group discussion tips for freshers | GD rules for placements | Campus placement GD
 Interview prep 🗣️
-GD mein jeet chillane se nahi hoti. 3 rule:
+GD ke 3 rule:
 1. Ek point, ek example (lambi speech nahi)
 2. Kisi ka naam lo: "Jaise Rahul ne kaha, main usme jodti hoon" (dikhta hai tum sun rahe ho)
 3. End mein summary do ya offer karo
 Koi chillaye? Tum shaant awaaz mein point rakho.
 
-Save karo. Kal: "5 saal baad khud ko kahan dekhte ho?"
+Kal: "5 saal baad khud ko kahan dekhte ho?"
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #groupdiscussion #gdtips #placementpreparation #fresherjobs #campusplacement

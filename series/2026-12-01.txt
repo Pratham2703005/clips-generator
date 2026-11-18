@@ -11,8 +11,10 @@ funnel: top
 hook: FAILURE + SEEKH = JAWAB
 trial_hook: Never say you have never failed. Tell one small failure instead.
 trial_card: 'NEVER FAILED' = JHOOTH
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Ma'am, failure wala sawaal aaya toh bolungi, maine kabhi fail nahi kiya.
-Malhotra: Koi nahi maanega. Failure nahi, uske baad kya kiya, wo sun rahe hain.
+Malhotra: Koi nahi maanega.
+Malhotra: Wo sunna chahte hain ki fail hone ke baad tumne kya kiya.
 Malhotra: Format: kya hua, tumne kya kiya, kya seekha.
 Riya: Hackathon mein demo crash hua. Maine raat bhar fix kiya, aur agli baar backup rakha.
 Malhotra: Aur seekh?
@@ -20,7 +22,8 @@ Riya: Ab demo se pehle hamesha ek test run.
 Malhotra: Perfect. Chhoti kahani, saaf seekh.
 Riya: Team ki galti thi toh?
 Malhotra: Blame kabhi nahi. Humse hua, bolo.
-Malhotra: Follow karo, kal manager round mein kya check hota hai.
+Malhotra: Kal manager round mein kya check hota hai.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 Tell me about a time you failed answer for freshers | Behavioral interview questions | HR interview tips
@@ -32,6 +35,7 @@ Interview prep 🧱
 Example: "Hackathon mein demo crash hua. Raat bhar fix kiya. Ab demo se pehle hamesha test run."
 Blame kabhi nahi.
 
-Save karo. Kal: manager round mein kya check hota hai.
+Kal: manager round mein kya check hota hai.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #hrinterview #behavioralinterview #fresherjobs #interviewtips #interviewquestions

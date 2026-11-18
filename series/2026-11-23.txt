@@ -11,6 +11,7 @@ funnel: top
 hook: LOW CGPA? SORRY MAT BOLO
 trial_hook: Never hide a low CGPA. Show one project that beats it.
 trial_card: CGPA KAM? SORRY NAHI
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Ma'am, six point two CGPA aur ek backlog. Mera toh khatam.
 Malhotra: Khatam nahi. Pehle cutoff dekho. Kai jobs mein cutoff hota hi nahi.
 Bunty: Aur interview mein poochenge toh?
@@ -19,8 +20,9 @@ Bunty: Sudhaar nahi hua toh?
 Malhotra: Toh skill dikhao. Ek project, ek certificate, jo job se jude.
 Bunty: Matlab number se nazar hatao.
 Malhotra: Haan. Pehle sach, phir proof.
-Bunty: Sorry nahi, sach plus proof.
-Malhotra: Follow karo, kal group discussion ke teen rule.
+Bunty: Toh sorry nahi bolunga. Sach bolunga, aur project dikhaunga.
+Malhotra: Kal group discussion ke teen rule.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 Low CGPA in interview how to answer | Backlog question for freshers | HR interview tips
@@ -30,6 +32,7 @@ Low CGPA pe sorry mat bolo. 1 line + proof:
 2. Sach: kya hua aur kya sudhaara
 3. Proof: ek project ya certificate jo job se jude
 
-Save karo. Kal: group discussion ke 3 rule.
+Kal: group discussion ke 3 rule.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #lowcgpa #hrinterview #fresherjobs #placementpreparation #interviewtips

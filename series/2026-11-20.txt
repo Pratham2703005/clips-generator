@@ -14,6 +14,7 @@ hook: FEATURES NAHI. BEST: 3 LINE.
 trial_hook: Don't list every feature of your project. Interviewers remember three lines.
 trial_card: PROJECT = 3 LINES
 threads: Apna final year project ek line mein batao.
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Project ke saare features gina diye. Interviewer ne rok diya.
 Arjun: Login, dashboard, chatbot, sab? Ek feature achhe se, wo better. Par best hai teen line.
 Bunty: Teen line?
@@ -27,7 +28,8 @@ Arjun: Ek number, agar sach hai. Kitne students ne use kiya, kitna time bacha.
 Bunty: Aur chatbot?
 Arjun: Wo tab, jab wo poochein. Agla sawaal tumhari teen line se hi aayega.
 Bunty: Matlab main decide kar raha hoon wo kya poochenge.
-Arjun: Exactly. Features nahi, teen line. Follow karo, kal gap year ka sawaal.
+Arjun: Exactly. Features nahi, teen line. Kal gap year ka sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 How to explain your project in interview | Final year project interview questions | Interview tips for freshers
@@ -38,6 +40,7 @@ Saare features ginana: galti. Ek feature achhe se: better. Best: 3 line.
 3. Result: ek number, agar sach hai
 Baaki features tab, jab wo poochein. Agla sawaal tumhari 3 line se hi aata hai.
 
-Save karo. Kal: gap year kaise explain karein.
+Kal: gap year kaise explain karein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #interviewtips #projectinterview #fresherjobs #placementpreparation #technicalinterview

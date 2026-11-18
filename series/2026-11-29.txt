@@ -11,6 +11,7 @@ funnel: middle
 hook: INTERVIEW KE BAAD 3 LINE
 trial_hook: Send three lines after every interview. Same day, never longer.
 trial_card: 3 LINE, SAME DAY
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Interview achha gaya. Ab bas result ka wait.
 Arjun: Wait se pehle ek kaam. Same din, teen line ka mail.
 Riya: Thank you mail? Ye toh chamchagiri lagegi.
@@ -23,7 +24,8 @@ Riya: Bas?
 Arjun: Bas. Na resume dobara, na please select me.
 Riya: Kisko bhejun?
 Arjun: Jisne interview liya, ya HR ko, jis mail se invite aaya tha.
-Arjun: Teen line, same din. Follow karo, kal remote jobs ka sach.
+Arjun: Teen line, same din. Kal remote jobs ka sach.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Thank you email after interview for freshers | Follow up email after interview | Interview tips
@@ -34,6 +36,7 @@ Same din, 3 line:
 3. "Is role mein kaam karne ka intezaar hai."
 Na resume dobara, na "please select me".
 
-Save karo. Kal: remote job ka scam kaise pehchanein.
+Kal: remote job ka scam kaise pehchanein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #interviewtips #emailtips #fresherjobs #jobsearchtips #hrinterview

@@ -11,6 +11,7 @@ funnel: middle
 hook: OFFER KE BAAD BHI CHECK HOTA HAI
 trial_hook: Don't lie on your resume. They check it after the offer.
 trial_card: OFFER KE BAAD CHECK
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Offer aa gaya! Ab resume mein jo thoda badhaya tha, koi check nahi karega.
 Arjun: Karega. Background verification offer ke baad hota hai.
 Arjun: Kai companies joining se pehle ya baad mein verification karwati hain.
@@ -24,8 +25,9 @@ Bunty: Documents?
 Arjun: Ek folder: degree, saari marksheets, internship letter, ID, address proof. PDF mein.
 Bunty: Aur original?
 Arjun: Dikhane ke liye, jama karne ke liye nahi.
-Bunty: Sach, folder, original nahi.
-Arjun: Follow karo, kal do offers mein se kaunsa.
+Bunty: Toh aaj hi HR ko mail karta hoon.
+Arjun: Kal do offers mein se kaunsa.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Background verification for freshers | BGV documents list | Fake experience in resume
@@ -37,6 +39,7 @@ Offer ke baad bhi check hota hai. Ek folder (PDF) ready rakho:
 Resume pe galat date ya fake internship? Verification se pehle HR ko khud sach batao.
 Originals dikhane ke liye, jama karne ke liye nahi.
 
-Save karo. Kal: 2 offers mein se kaunsa chunein.
+Kal: 2 offers mein se kaunsa chunein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #backgroundverification #offerletter #fresherjobs #joiningdocuments #hrtips

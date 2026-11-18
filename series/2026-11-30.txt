@@ -11,6 +11,7 @@ funnel: bottom
 hook: REMOTE JOB? FEE MAANGE = SCAM
 trial_hook: Never pay a fee for a remote job. Here are three signs.
 trial_card: FEE MAANGE? SCAM.
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Ghar baithe pachaas hazaar ki job mili! Bas do hazaar registration.
 Arjun: Wahi scam hai. Asli company paise nahi leti. Teen nishaan yaad rakho.
 Arjun: Pehla: paise maange. Training fee, kit, registration, kuch bhi.
@@ -22,7 +23,8 @@ Bunty: Itni sites kaun dekhega?
 Arjun: Ek website roz saari career sites se fresh jobs laati hai. Link bio mein.
 Arjun: Aaj ki job: {job1}. [job: 1]
 Bunty: Do hazaar bach gaye.
-Arjun: Paise maange, toh bhaago. Follow karo, kal failure wala sawaal.
+Arjun: Paise maange, toh bhaago. Kal failure wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Work from home job scam signs | Remote jobs for freshers India | Fake job alert
@@ -39,5 +41,6 @@ Job in this episode:
 Fresh jobs from company career pages, every day: link in bio.
 
 Kal: "Tell me about a failure" ka jawab.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #remotejobs #jobscam #workfromhome #fresherjobs #fakejobalert

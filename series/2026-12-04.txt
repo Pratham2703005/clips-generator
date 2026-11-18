@@ -11,6 +11,7 @@ funnel: bottom
 hook: NON-CS? SKILL + PROJECT + KAHANI
 trial_hook: Don't skip a tech job because of your degree. Read the skills first.
 trial_card: NON-CS? TECH JOB POSSIBLE
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Mechanical se hoon. Har tech job mein likha hai, B Tech CS. Main toh gayi.
 Arjun: Kai jagah likha hota hai, CS or related, ya sirf skills.
 Arjun: Pehle job description padho. Degree se lambi list skills ki hoti hai.
@@ -19,11 +20,12 @@ Arjun: Teen cheezein. Ek skill jo job maange, uska ek project, aur ek line ki ka
 Riya: Kahani?
 Arjun: Mechanical mein machine ka data dekha, wahin se data pasand aaya.
 Riya: Matlab branch ko bhi kahani bana do.
-Arjun: Haan. Branch switch kamzori nahi, angle hai.
+Arjun: Haan. Interviewer wajah sunna chahta hai, aur tumhari wajah achhi hai.
 Riya: Aisi jobs kahan?
 Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
-Riya: Skill, project, kahani.
-Arjun: Follow karo, kal interview ke pehle tees second.
+Riya: Theek hai, aaj se ek data project shuru.
+Arjun: Kal interview ke pehle tees second.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 Non CS student tech job | Mechanical to IT job for freshers | Career switch to tech
@@ -39,5 +41,6 @@ Job in this episode:
 Fresh jobs from company career pages, every day: link in bio.
 
 Kal: interview ke pehle 30 second.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #careerswitch #techjobs #fresherjobs #noncs #jobsearchtips

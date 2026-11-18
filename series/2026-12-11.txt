@@ -11,15 +11,17 @@ funnel: top
 hook: 2 OFFERS? SIRF CTC MAT DEKHO
 trial_hook: Never choose between two offers only by CTC.
 trial_card: CTC SE ZYADA DEKHO
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Do offer aaye! Ek mein do lakh zyada. Wahi le rahi hoon.
 Malhotra: Sirf CTC dekh ke? In-hand dekha? Bond? Location?
 Riya: Hmm. Zyada wale mein bond hai.
 Malhotra: Teen sawaal aur. Pehle saal kya seekhogi, manager kaun hai, team freshers ko kaise sikhati hai.
 Riya: Ye sab kaise pata chalega?
 Malhotra: HR se poocho. Aur wahan ke kisi junior se ek call.
-Riya: CTC, in-hand, bond, seekhna.
+Riya: Theek hai, pehle wahan ke junior ko call karti hoon.
 Malhotra: Pehli job seekhne ke liye hoti hai.
-Malhotra: Follow karo, kal doosre shehar ki job.
+Malhotra: Kal doosre shehar ki job.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 How to choose between two job offers | First job offer comparison for freshers | CTC vs in hand
@@ -32,6 +34,7 @@ Sirf CTC mat dekho:
 5. Manager kaun, team freshers ko kaise sikhati hai
 HR se poocho, aur wahan ke kisi junior se ek call karo.
 
-Save karo. Kal: doosre shehar ki job, pehle ye math.
+Kal: doosre shehar ki job, pehle ye math.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #joboffer #offerletter #fresherjobs #careeradvice #ctc

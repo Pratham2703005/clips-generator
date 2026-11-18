@@ -11,6 +11,7 @@ funnel: bottom
 hook: INTERNSHIP = 2 MAHINE KA INTERVIEW
 trial_hook: Don't waste your internship. Three habits turn it into an offer.
 trial_card: INTERNSHIP = INTERVIEW
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Internship mil gayi! Do mahine kaam karo, certificate lo, bas.
 Arjun: Bas nahi. Ye do mahine ka interview hai. Kaam ke saath teen cheezein.
 Bunty: Kaunsi?
@@ -21,13 +22,14 @@ Bunty: Poochna bura nahi lagega?
 Arjun: Nahi poocha, toh wo maan lenge tumhe interest nahi.
 Bunty: Internship mile kahan?
 Arjun: Company ki career site pe. Ek website roz fresh roles ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
-Bunty: Update, apna kaam, seedha sawaal.
-Arjun: Do mahine ka interview. Follow karo, kal coding round.
+Bunty: Matlab certificate ke saath offer bhi le ke aana hai.
+Arjun: Do mahine ka interview. Kal coding round.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 How to convert internship into full time job | PPO tips for interns | Fresher jobs India
 Interview prep 🧑‍💻
-Internship certificate nahi, 2 mahine ka interview hai. 3 kaam:
+Internship asal mein 2 mahine ka interview hai. 3 kaam:
 1. Har hafte manager ko 3 line: kya kiya, kahan atka, aage kya
 2. Ek kaam poora apne naam ka
 3. Last 2 hafte mein seedha poocho: full-time ka chance hai?
@@ -38,5 +40,6 @@ Job in this episode:
 Fresh jobs from company career pages, every day: link in bio.
 
 Kal: coding round mein chup kyun nahi rehna.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #internship #ppo #fresherjobs #jobsearchtips #careeradvice

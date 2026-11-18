@@ -11,6 +11,7 @@ funnel: top
 hook: 'DEKHTE HAIN' MAT BOLO
 trial_hook: Never say let's see when they ask about relocation. Say yes or no.
 trial_card: 'DEKHTE HAIN' = NO
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: HR ne poocha, relocate karogi? Maine bola, dekhte hain.
 Malhotra: Dekhte hain, na jaisa lagta hai. Haan ki tarah bola hua na.
 Riya: Par seedha na bola toh reject?
@@ -19,7 +20,8 @@ Riya: Raat ki shift main nahi kar sakti.
 Malhotra: Toh saaf bolo, reason ke saath. Jhooth bolke join kiya, toh jaldi chhodogi.
 Riya: Aur shehar badalna? Wo theek hai.
 Malhotra: Toh bolo: haan, main relocate kar sakti hoon. Bina dekhte hain ke.
-Malhotra: Sach haan, sach na. Follow karo, kal non-CS se tech job.
+Malhotra: Haan ho ya na, saaf bolo. Kal non-CS se tech job.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 Are you willing to relocate answer | Night shift interview question | HR interview tips for freshers
@@ -30,6 +32,7 @@ Interview prep 🧳
 3. Na hai toh saaf na, reason ke saath
 Jhooth bolke join kiya toh jaldi chhodna padega.
 
-Save karo. Kal: non-CS branch se tech job.
+Kal: non-CS branch se tech job.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #hrinterview #relocation #fresherjobs #interviewtips #interviewquestions

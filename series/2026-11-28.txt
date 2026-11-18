@@ -11,6 +11,7 @@ funnel: top
 hook: WHY US? 10 MINUTE RESEARCH
 trial_hook: Never say big brand when they ask why this company. Ten minutes fixes it.
 trial_card: 'BIG BRAND' = WEAK
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Why this company? Mera jawab ready hai. Big brand hai!
 Malhotra: Unhe pata hai. Wo dekh rahe hain tumne das minute bhi diye ya nahi.
 Bunty: Das minute mein kya hoga?
@@ -22,8 +23,9 @@ Bunty: Matlab apni kahani unki kahani se jodni hai.
 Malhotra: Haan. Aur salary ya location ko reason mat banao.
 Bunty: Brand bolna mana hai?
 Malhotra: Bol sakte ho, akela nahi. Brand plus tumhara connection.
-Bunty: Das minute, teen cheez, ek connection.
-Malhotra: Follow karo, kal interview ke baad wala mail.
+Bunty: Das minute ki research. Big brand wala jawab ab retire.
+Malhotra: Kal interview ke baad wala mail.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 Why do you want to join this company answer | Why this company interview question | Interview tips for freshers
@@ -34,6 +36,7 @@ Interview prep 🔍
 3. Haal ki ek khabar (website, blog, news)
 Phir apni kahani jodo: "Aapka product chhote dukaandaron ke liye hai, mera project bhi billing pe tha."
 
-Save karo. Kal: interview ke baad 3 line ka mail.
+Kal: interview ke baad 3 line ka mail.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #interviewtips #hrinterview #fresherjobs #interviewquestions #placementpreparation

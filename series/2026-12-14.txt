@@ -11,6 +11,7 @@ funnel: middle
 hook: JOB KA PEHLA HAFTA: 3 KAAM
 trial_hook: Don't try to impress everyone in your first week. Do three things.
 trial_card: PEHLA HAFTA: 3 KAAM
+yt_last: Subscribe karo, aise aur tips ke liye.
 Riya: Join kar liya! Pehle hafte sabko impress karna hai.
 Arjun: Pehle hafte kaam kam, samajhna zyada. Teen kaam karo.
 Arjun: Pehla: manager se poocho, pehle teen mahine mein achha kaam kaisa dikhega.
@@ -20,18 +21,20 @@ Arjun: Poocho, par pehle pandrah minute khud try karo. Phir batao kya try kiya.
 Arjun: Teesra: har Friday manager ko teen line. Kya kiya, kya seekha, kahan atki.
 Riya: Internship wala update, wapas!
 Arjun: Wahi aadat, ab job pe.
-Riya: Samjho, likho, update.
-Arjun: Pehla hafta, teen kaam. Follow karo, kal se naye sawaal.
+Riya: Notebook aaj hi le aati hoon.
+Arjun: Pehla hafta, teen kaam. Kal se naye sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
 
 --- description
 First week at new job tips for freshers | First job tips | How to impress manager in first week
 Interview prep 🚀
-Pehle hafte impress nahi, samajhna:
+Pehle hafte samajhne pe dhyan do:
 1. Manager se poocho: pehle 3 mahine mein achha kaam kaisa dikhega
 2. Sab note karo: tool, log, process (ek sawaal do baar nahi)
 3. Har Friday manager ko 3 line: kya kiya, kya seekha, kahan atke
 Sawaal poocho, par pehle 15 minute khud try karke.
 
-Save karo. Kal se naye sawaal. 🎯
+Kal se naye sawaal. 🎯
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #firstjob #corporatetips #fresherjobs #careeradvice #newjob

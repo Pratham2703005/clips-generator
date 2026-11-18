@@ -11,6 +11,7 @@ funnel: top
 hook: PEHLE 30 SECOND = IMPRESSION
 trial_hook: Your interview starts before your first answer. Thirty seconds.
 trial_card: PEHLE 30 SECOND
+yt_last: Subscribe karo, aise aur tips ke liye.
 Bunty: Ma'am, interview pehle sawaal se shuru hota hai na?
 Malhotra: Nahi. Pehle tees second se. Tum andar kaise aaye, kaise baithe, kya bole.
 Malhotra: Online ho toh camera aankh ki height pe, chehra roshni ki taraf.
@@ -20,7 +21,8 @@ Bunty: Haath milana?
 Malhotra: Wo badhaayein toh. Pakad normal, na dheeli, na kas ke.
 Bunty: Phone?
 Malhotra: Silent nahi, band. Vibrate bhi sunai deta hai.
-Malhotra: Pehle tees second. Follow karo, kal, aur koi offer hai?
+Malhotra: Pehle tees second. Kal: aur koi offer hai?
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
 
 --- description
 First impression in interview tips | Interview body language for freshers | Online interview setup
@@ -31,6 +33,7 @@ Offline: muskurao, "Good morning", baithne ka ishaara hone do
 Handshake: wo badhaayein toh, normal pakad
 Phone: silent nahi, band
 
-Save karo. Kal: "Aur koi offer hai?" ka jawab.
+Kal: "Aur koi offer hai?" ka jawab.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
 #interviewtips #bodylanguage #fresherjobs #onlineinterview #firstimpression
