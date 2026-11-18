@@ -232,6 +232,23 @@
       "premise": "placement-season-panic",
       "hook": "the-objection",
       "dynamic": "news-anchor"
+    },
+    {
+      "date": "2026-11-18",
+      "track": "job_drop",
+      "format": "guess-the-company",
+      "niche": "india-freshers",
+      "platform": "zyla",
+      "cast": "arjun+bunty",
+      "job_ids": [
+        "e6a6279f6565890cddd14d25c58cf65a"
+      ],
+      "companies": [
+        "Home | Jobbasket"
+      ],
+      "premise": "linkedin-cringe",
+      "hook": "the-steal",
+      "dynamic": "challenge"
     }
   ]
 }
