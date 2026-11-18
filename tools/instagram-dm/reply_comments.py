@@ -101,7 +101,16 @@ def check(api, user_id: str) -> int:
     app_id, secret = os.environ.get("META_APP_ID", "").strip(), os.environ.get("IG_APP_SECRET", "").strip()
     if app_id and secret:
         try:
-            d = api.call("GET", "debug_token", {"input_token": api.token, "access_token": f"{app_id}|{secret}"}).get("data", {})
+            # not api.call: it puts the user token in access_token, and debug_token wants the app token there
+            import urllib.error
+            import urllib.parse
+            import urllib.request
+            q = urllib.parse.urlencode({"input_token": api.token, "access_token": f"{app_id}|{secret}"})
+            try:
+                with urllib.request.urlopen(f"{api.base}/debug_token?{q}", timeout=60) as r:
+                    d = json.loads(r.read()).get("data", {})
+            except urllib.error.HTTPError as e:
+                raise RuntimeError(f"HTTP {e.code}: {e.read().decode('utf-8', 'replace')[:200]}") from None
             scopes = sorted(d.get("scopes", []))
             print(f"token type {d.get('type')}, app {d.get('application')}, scopes: {', '.join(scopes) or '-'}")
             for need in ("instagram_manage_comments", "instagram_manage_messages"):
