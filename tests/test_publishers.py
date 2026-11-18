@@ -168,8 +168,10 @@ def test_daily_jobs_message():
 
 
 def test_telegram_value_episode_has_no_jobs(reel_folder):
-    (reel_folder / "description.txt").write_text("Search line\nInterview prep\nTips.\n\n#a", encoding="utf-8")
-    assert tg.channel_text(reel_folder) == "Interview prep | Test"
+    (reel_folder / "description.txt").write_text(
+        "Search line\nInterview prep\nTips.\nInstagram pe \"JOBS\" comment karo, link DM mein.\nSave karo.\n\n#a", encoding="utf-8")
+    # the tips go along (2026-11-18); the label, the Instagram-only ask and the hashtags don't
+    assert tg.channel_text(reel_folder) == "Interview prep | Test\n\nTips."
 
 
 # ---------- YouTube ----------

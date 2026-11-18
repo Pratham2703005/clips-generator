@@ -1,0 +1,52 @@
+# Special, 2026-11-18 (user asked): an office tip for a fresher's first job. Keep everything on record from day one, so
+# nobody can pin their mistake on you. Value episode, no promotion. funnel: top.
+# Playbook rules: the first line is a Hinglish scene that names the topic (blame, no proof), under ~3 s; three habits,
+# each with a line you can copy; Bunty's ChatGPT gag; follow CTA, then (user, 2026-11-18) "comment JOBS" for the
+# channel link: the comment -> DM Worker answers it on Instagram.
+# Bunty joined his first job in Din 14 ("Offer Tak"), so this is his first-month problem; Malhotra, the HR insider, explains.
+# Run it: Daily reel -> mode custom, script = series/specials/office-blame-record.txt, name = special-office-blame-record.
+title: Office tips | Blame se bachne ka tareeka
+cast: malhotra, bunty
+jobs: india-freshers, 0
+funnel: top
+hook: BLAME MERA. PROOF ZERO.
+trial_hook: Freshers get blamed for other people's mistakes when nothing is in writing.
+trial_card: LIKHO, WARNA BLAME
+# YouTube has no comment -> DM, so its version ends on the Telegram channel's name instead (the variant also says
+# "subscribe" where the reel says "follow")
+yt_last: Aur roz ki jobs ke liye Telegram pe fresherjobs isha search karo.
+threads: Office mein kabhi kisi aur ki galti ka blame tum pe aaya hai?
+Bunty: Galti manager ki, blame mera. Proof bhi nahi.
+Malhotra: Kyunki baat sirf call pe hui thi.
+Malhotra: Call ka koi saboot nahi hota. Mail pe date aur time hota hai.
+Bunty (shocked): Toh har baat ka mail?
+Malhotra: Har zaroori baat ka. Join karte hi teen aadatein daal lo.
+Malhotra: Pehli: call ke baad do line ka mail.
+Malhotra: Jaisa baat hui, main kal tak report bhej dunga. Bas itna.
+Bunty: Itna formal?
+Malhotra: Lagega. Par kal koi bole maine aisa nahi kaha tha,
+Malhotra: toh wahi mail forward kar dena.
+Malhotra: Doosri: roz shaam teen line. Kya kiya, kya atka, kal kya.
+Bunty: Diary jaisa?
+Malhotra: Haan. Appraisal mein yahi tumhara proof banega.
+Malhotra: Teesri: plan badle toh likhit mein lo.
+Malhotra: Ek baar chat pe confirm kar dijiye.
+Bunty: ChatGPT se mail likhwa loon?
+Malhotra: Likhwao, par bhejo aaj hi.
+Bunty: Matlab jo bhi bola, kahin likha hona chahiye.
+Malhotra: Sab likha hoga, toh blame tum tak nahi aayega.
+Bunty: Follow karo, aise office rules ke liye.
+Bunty: Roz ki jobs ka link chahiye? Instagram pe JOBS comment karo.
+
+--- description
+How to avoid blame at work | Office tips for freshers | First job tips
+Office tips 📝
+Galti kisi aur ki, blame tumhara? Aksar isliye, kyunki baat sirf call pe hui thi. Join karte hi ye 3 aadatein daal lo:
+1. Call ke baad 2 line ka mail: "Jaisa baat hui, main kal tak report bhej dunga."
+2. Roz shaam 3 line: kya kiya, kya atka, kal kya. Appraisal mein yahi proof hai.
+3. Plan badle toh likhit mein lo: "Ek baar chat pe confirm kar dijiye."
+Appraisal ya kisi jhagde ke waqt yahi mails aur notes kaam aate hain.
+
+Roz ki fresher jobs chahiye? Instagram pe "JOBS" comment karo, Telegram channel ka link DM mein milega.
+
+#officetips #firstjob #fresherjobs #worklife #careertips

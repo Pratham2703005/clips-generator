@@ -89,6 +89,23 @@ def read_json(path: Path) -> dict:
         return {}
 
 
+SKIP_TIP = re.compile(r"link in bio|\bcomment\b.*\bjobs?\b|\bjobs?\b.*\bcomment\b|^save kar|^apply:|^- .+ at .+", re.I)
+
+
+def reel_tips(desc: str) -> str:
+    """The reel's lesson from its description, for the channel (user, 2026-11-18: "telegram pe ye tips bhi jaengi na"):
+    every line after the search line except the short label ("Office tips 📝"), hashtags, job lines, links and the
+    Instagram-only asks ("comment JOBS", "link in bio": the channel's readers are already here)."""
+    out = []
+    for line in [l.strip() for l in desc.splitlines()][1:]:
+        if not line or line.startswith("#") or "http" in line or SKIP_TIP.search(line):
+            continue
+        if len(line) <= 25 and not re.search(r"[.?:!]$", line) and not out:  # the label right under the search line
+            continue
+        out.append(line)
+    return "\n".join(out)
+
+
 def channel_text(folder: Path) -> str:
     """What the channel gets with the reel (user, 2026-11-09): the episode's title, the jobs in it, and the app link -
     the last two only when this reel has them. Built from the description, so it holds exactly what the reel
@@ -102,6 +119,9 @@ def channel_text(folder: Path) -> str:
         lines = [l.strip() for l in desc.splitlines() if l.strip()]
         title = lines[1] if len(lines) > 1 else (lines[0] if lines else folder.name)
     parts = [title]
+    tips = reel_tips(desc)
+    if tips:
+        parts.append(tips)
     # the reel's jobs go in the day's jobs post now (daily_jobs.py, user 2026-11-18: less text, more links), not here
     jobs = re.findall(r"^- (.+?)\s*\n\s+Apply: (\S+)", desc, flags=re.M)
     if jobs and not JOBS_IN_DAILY_POST:
