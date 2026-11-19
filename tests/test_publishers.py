@@ -303,3 +303,12 @@ def test_dm_card_then_text_fallback(monkeypatch):
     monkeypatch.setattr(igdm, "_post_json", no_permission)
     with pytest.raises(RuntimeError):
         igdm.private_reply(None, "U", "C", dm_cfg)
+
+
+@pytest.mark.parametrize("text,want", [("mining engineer", True), ("B.Tech fresher hu", True), ("any vacancy?", True),
+                                       ("jobless life 😂", False), ("great video", False)])
+def test_dm_role_words(text, want):
+    import tomllib
+    from conftest import ROOT
+    dm_cfg = tomllib.loads((ROOT / "tools/instagram-dm/config.toml").read_text(encoding="utf-8"))["dm"]
+    assert igdm.wants_link(text, dm_cfg["keywords"], True, dm_cfg["role_words"]) is want

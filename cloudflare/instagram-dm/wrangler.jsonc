@@ -27,7 +27,9 @@
 		"IG_USER_ID": "17841469277847208",
 		// the DM buttons go through here, so clicks can be counted (this Worker's own workers.dev address)
 		"PUBLIC_URL": "https://isha-instagram-dm.pk2732004.workers.dev",
-		"TELEGRAM_CHANNEL": "@fresherjobs_isha"
+		"TELEGRAM_CHANNEL": "@fresherjobs_isha",
+		// our own test account(s): they get the DM on every new comment, but never count in the stats / report
+		"TEST_USERNAMES": "me_pratham_hoon"
 	},
 	"observability": {
 		"logs": {

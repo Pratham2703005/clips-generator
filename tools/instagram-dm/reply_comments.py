@@ -43,11 +43,13 @@ ig_pub = load("ig_publish", ROOT / "tools" / "instagram-publisher" / "publish.py
 EMOJI = re.compile("[\U0001F000-\U0001FAFF☀-➿⌀-⏿⬀-⯿️‍]")
 
 
-def wants_link(text: str, keywords: list[str], emoji_only: bool) -> bool:
+def wants_link(text: str, keywords: list[str], emoji_only: bool, role_words: str = "") -> bool:
     t = (text or "").strip().lower()
     if not t:
         return False
     if any(re.search(rf"(?<![a-z]){re.escape(k.lower())}(?![a-z])", t) for k in keywords):
+        return True
+    if role_words and re.search(role_words, t, re.I):
         return True
     rest = EMOJI.sub("", t)
     return emoji_only and bool(EMOJI.search(t)) and not re.search(r"[a-z0-9ऀ-ॿ]", rest)
@@ -193,7 +195,7 @@ def main() -> int:
     cutoff = (datetime.now(timezone.utc) - timedelta(days=dm["max_age_days"] + 1)).isoformat()
     answered = {k: v for k, v in answered.items() if v >= cutoff}  # older ones can't be answered anyway
     todo = [c for c in recent_comments(api, user_id, dm["max_age_days"], own)
-            if c["id"] not in answered and wants_link(c.get("text", ""), dm["keywords"], dm.get("emoji_only", True))]
+            if c["id"] not in answered and wants_link(c.get("text", ""), dm["keywords"], dm.get("emoji_only", True), dm.get("role_words", ""))]
     print(f"{len(todo)} comment(s) asking for the link" + (" (dry run)" if a.dry_run else ""))
     sent = refused = 0
     for c in todo[: dm.get("max_per_run", 50)]:

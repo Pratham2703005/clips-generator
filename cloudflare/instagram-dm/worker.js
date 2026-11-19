@@ -24,6 +24,11 @@ const GRAPH = "https://graph.facebook.com/v26.0";
 const MAX_AGE_DAYS = 7;
 const FOLLOW_CHECK_AFTER_MS = 3 * 3600_000;
 const KEYWORDS = ["job", "jobs", "link", "daily jobs", "telegram", "channel"];
+// a comment that names a role, a degree or a hiring word wants jobs too (2026-11-19: "mining engineer" got no DM)
+const ROLE_WORDS = /\b(engineers?|engineering|developers?|analysts?|freshers?|b\.? ?tech|m\.? ?tech|bca|mca|mba|bba|b\.? ?com|diploma|intern|internship|hiring|vacanc(y|ies)|openings?|naukri|placement)\b/i;
+// bump when the matching rules change: every reel's comments are read once more, so older unanswered comments that now
+// match get their DM (within Instagram's 7 days)
+const RULES_VERSION = "2";
 const EMOJI_ONLY = true;
 const PROFILE_URL = "https://www.instagram.com/isha.07007/";
 const CHANNEL_URL = "https://telegram.me/fresherjobs_isha";
@@ -41,6 +46,7 @@ export function wantsLink(text) {
   if (!t) return false;
   const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
   if (KEYWORDS.some((k) => new RegExp(`(?<![a-z])${escape(k)}(?![a-z])`).test(t))) return true;
+  if (ROLE_WORDS.test(t)) return true;
   // only emoji (and spaces / punctuation): "🔥", "🙏🙏", "❤️"
   const rest = t.replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}\u{1F3FB}-\u{1F3FF}]/gu, "");
   return EMOJI_ONLY && /\p{Extended_Pictographic}/u.test(t) && !/[\p{L}\p{N}]/u.test(rest);
@@ -124,12 +130,14 @@ export async function run(env, dryRun = false) {
   const own = (await graph(env, env.IG_USER_ID, { fields: "username" })).username || "";
   const media = (await graph(env, `${env.IG_USER_ID}/media`, { fields: "id,timestamp,permalink,comments_count", limit: 30 })).data || [];
   const out = { at: new Date().toISOString(), reels: 0, read: 0, matched: 0, sent: 0, failed: 0, log: [] };
+  const testers = new Set((env.TEST_USERNAMES || "").toLowerCase().split(",").map((s) => s.trim()).filter(Boolean));
+  const rulesChanged = (await env.DM_STATE.get("rules")) !== RULES_VERSION;
   for (const m of media) {
     if (Date.parse(m.timestamp) < reelsSince) break;
     out.reels++;
     const count = m.comments_count || 0;
     const seen = await env.DM_STATE.get(`n:${m.id}`);
-    if (!count || String(count) === seen) continue; // nothing new on this reel
+    if (!count || (String(count) === seen && !rulesChanged)) continue; // nothing new on this reel
     out.read++;
     const res = await graph(env, `${m.id}/comments`, { fields: "id,text,timestamp,username,replies{id,text,timestamp,username}", limit: 50 });
     let ok = true;
@@ -147,9 +155,10 @@ export async function run(env, dryRun = false) {
           const { kind, igsid } = await reply(env, x.id);
           out.sent++;
           out.log.push(`DM (${kind}) to @${x.username}: ${JSON.stringify((x.text || "").slice(0, 60))}`);
-          await env.DM_STATE.put(`d:${x.id}`, JSON.stringify({ at: Date.now(), kind, igsid }), { expirationTtl: 60 * 86400 });
-          await bump(env, "dms");
-          if (igsid) {
+          const test = testers.has((x.username || "").toLowerCase()); // our own test account: DM it, never count it
+          await env.DM_STATE.put(`d:${x.id}`, JSON.stringify({ at: Date.now(), kind, igsid, test }), { expirationTtl: 60 * 86400 });
+          if (!test) await bump(env, "dms");
+          if (igsid && !test) {
             const pending = JSON.parse((await env.DM_STATE.get("pending")) || "[]");
             pending.push(x.id);
             await env.DM_STATE.put("pending", JSON.stringify(pending.slice(-500)));
@@ -166,6 +175,7 @@ export async function run(env, dryRun = false) {
     }
     if (ok && !dryRun) await env.DM_STATE.put(`n:${m.id}`, String(count), { expirationTtl: 9 * 86400 });
   }
+  if (!dryRun && rulesChanged && out.failed === 0) await env.DM_STATE.put("rules", RULES_VERSION);
   if (!dryRun) {
     out.follows = await checkFollows(env).catch((e) => `follow check failed: ${e.message.slice(0, 160)}`);
     out.joins = await countJoins(env).catch((e) => `join count failed: ${e.message.slice(0, 160)}`);
@@ -251,7 +261,7 @@ export async function countJoins(env) {
 
 async function click(env, kind, commentId) {
   const d = JSON.parse((await env.DM_STATE.get(`d:${commentId}`)) || "null");
-  if (d && !d[kind]) {
+  if (d && !d[kind] && !d.test) {
     d[kind] = Date.now(); // the first click per DM counts
     await env.DM_STATE.put(`d:${commentId}`, JSON.stringify(d), { expirationTtl: 60 * 86400 });
     await bump(env, kind === "tg" ? "tgClicks" : "followClicks", 1, d.at);

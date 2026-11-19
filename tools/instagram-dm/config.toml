@@ -3,6 +3,8 @@
 [dm]
 # matched as words, any case ("Jobs!", "link pls", "TELEGRAM" all count)
 keywords = ["job", "jobs", "link", "daily jobs", "telegram", "channel"]
+# a role, degree or hiring word wants jobs too (2026-11-19: "mining engineer" got no DM); same list as the Worker
+role_words = '\b(engineers?|engineering|developers?|analysts?|freshers?|b\.? ?tech|m\.? ?tech|bca|mca|mba|bba|b\.? ?com|diploma|intern|internship|hiring|vacanc(y|ies)|openings?|naukri|placement)\b'
 emoji_only = true          # a comment of only emoji ("🔥", "🙏🙏") counts too (user, 2026-11-18)
 max_age_days = 7           # Instagram allows a private reply only within 7 days of the comment
 max_per_run = 50
