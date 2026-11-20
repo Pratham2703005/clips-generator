@@ -26,3 +26,6 @@ __pycache__/
 
 # instagram-dm: comments already answered (kept between runs by actions/cache)
 .instagram-dm-state.json
+
+# wrangler local cache (account id + name): never commit, the repo is public
+.wrangler/

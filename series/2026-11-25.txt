@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 11/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | 5 saal baad kahan dekhte ho?
 cast: malhotra, riya
 jobs: india-freshers, 0
@@ -11,19 +12,17 @@ funnel: top
 hook: 5 SAAL BAAD? YE BOLO
 trial_hook: Don't joke about five years. Say a two-year plan instead.
 trial_card: 'AAPKI KURSI' = NO
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Paanch saal baad bhi kaam aayega.
 Riya: Five years mein kahan dekhti ho, iska jawab ready hai. Aapki kursi pe!
-Malhotra: Joke lagta hai. Aur risky joke.
-Riya: Toh kya bolun? Mujhe sach mein nahi pata.
-Malhotra: Kisi ko nahi pata. Ye sawaal plan dekhta hai, prediction nahi.
-Malhotra: Bolo: do saal mein is role mein strong hona hai. Phir team mein badi zimmedari.
-Riya: Company ka naam?
-Malhotra: Jodo: yahin grow karna chahti hoon. Agar sach hai.
-Riya: Aur agar aage padhai ka plan hai?
-Malhotra: Focus is role pe rakho. Plan badal bhi sakta hai.
-Riya: Kursi wala joke main doston ke liye bacha ke rakhti hoon.
-Malhotra: Kursi nahi. Kal internship ka asli game.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+Malhotra: Joke hai. Aur risky joke. Sach mein kya chahti ho?
+Riya: Sach? Pata nahi. Shayad data mein, shayad MBA.
+Malhotra: Kisi ko nahi pata. Ye sawaal plan dekhta hai. Is role mein pehle kya seekhna hai?
+Riya: SQL aur dashboards. Do saal mein inmein strong, phir team mein badi zimmedari.
+Riya: Aur yahin grow karna hai.
+Malhotra: Agar sach hai, toh bolo. MBA wali baat abhi mat bolo, plan badal sakta hai.
+Riya: Kursi wala joke doston ke liye bacha ke rakhti hoon.
+Malhotra: Paanch saal ka plan, kursi nahi. Kal internship ka asli game.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Ismein paanch saal nahi lagenge.
 
 --- description
 Where do you see yourself in 5 years answer for freshers | HR interview questions

@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 8/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Ek resume, 50 jobs? Nahi
 cast: arjun, riya
 jobs: india-freshers|remote-india, 1
@@ -11,22 +12,19 @@ funnel: bottom
 hook: 10 MINUTE RESUME FIX
 trial_hook: Stop sending the same resume to fifty jobs. Ten minutes fixes it.
 trial_card: 10 MINUTE RESUME FIX
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Resume badlo, channel nahi.
 Riya: Applied. Next. Ek hi resume, pachaas jobs. Reply zero.
-Arjun: Ek hi resume sab jagah bhejogi, toh kisi job se match nahi karega.
-Riya: Har job ke liye naya resume? Itna time kahan?
-Arjun: Naya nahi. Das minute ka badlaav.
-Arjun: Job description kholo. Teen skill dhoondo jo baar baar aayi hain.
-Arjun: Wo tumhare paas hain, toh resume ke upar wale hisse mein laao.
-Riya: Aur jo nahi hain?
-Arjun: Mat likho. Interview mein pakde jaoge.
-Riya: Summary bhi badlun?
-Arjun: Ek line. Role ka naam aur wahi teen skill.
-Riya: Practice ke liye job?
-Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj ki: {job1}. [job: 1]
+Arjun: Wo resume kaunsi job ke liye tha?
+Riya: Sabke liye. Data analyst, business analyst, sab.
+Arjun: Isliye kisi ka nahi laga. Abhi wali job ka description kholo.
+Riya: Excel, SQL, Power BI, baar baar. Mere resume mein ye sabse neeche hain.
+Arjun: Upar laao, project ke saath. Das minute ka kaam.
+Riya: Power BI mujhe aata hi nahi.
+Arjun: Toh mat likho, interview mein pakdi jaogi. Aaj ki job pe try karo.
+Arjun: Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj ki: {job1}. [job: 1]
 Riya: Das minute? Itna toh main reels dekhne mein laga deti hoon.
-Arjun: Kal low CGPA ka sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Das minute, har job. Kal low CGPA ka sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Link same hai, resume same mat rakhna.
 
 --- description
 How to tailor resume for each job | Resume keywords from job description | Resume tips for freshers

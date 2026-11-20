@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 21/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Interview ke pehle 30 second
 cast: malhotra, bunty
 jobs: india-freshers, 0
@@ -11,18 +12,19 @@ funnel: top
 hook: PEHLE 30 SECOND = IMPRESSION
 trial_hook: Your interview starts before your first answer. Thirty seconds.
 trial_card: PEHLE 30 SECOND
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Phir phone band.
 Bunty: Ma'am, interview pehle sawaal se shuru hota hai na?
-Malhotra: Nahi. Pehle tees second se. Tum andar kaise aaye, kaise baithe, kya bole.
-Malhotra: Online ho toh camera aankh ki height pe, chehra roshni ki taraf.
-Bunty: Aur offline?
-Malhotra: Muskurao, good morning bolo, aur baithne ka ishaara hone do.
-Bunty: Haath milana?
+Malhotra: Nahi, pehle tees second se. Pichle interview mein andar kaise gaye the?
+Bunty: Phone pe baat karte hue. Phir seedha kursi pe.
+Malhotra: Toh interview, sawaal se pehle hi khatam.
+Bunty: Toh kya karun?
+Malhotra: Phone band, silent nahi. Muskurao, good morning bolo, aur baithne ka ishaara hone do.
+Bunty: Aur haath milaun?
 Malhotra: Wo badhaayein toh. Pakad normal, na dheeli, na kas ke.
-Bunty: Phone?
-Malhotra: Silent nahi, band. Vibrate bhi sunai deta hai.
+Bunty: Aur online interview mein?
+Malhotra: Camera aankh ki height pe, chehra roshni ki taraf.
 Malhotra: Pehle tees second. Kal: aur koi offer hai?
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Comment karke phone band karna.
 
 --- description
 First impression in interview tips | Interview body language for freshers | Online interview setup

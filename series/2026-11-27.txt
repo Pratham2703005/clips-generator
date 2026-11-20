@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 13/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Coding round mein chup mat raho
 cast: arjun, riya
 jobs: india-freshers, 0
@@ -11,18 +12,17 @@ funnel: middle
 hook: CODING ROUND: BOLTE RAHO
 trial_hook: Don't stay silent in a coding round. Repeat the question first.
 trial_card: CHUP = BLANK SCREEN
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Ek click, koi coding nahi.
 Riya: Live coding mein main bilkul chup rehti hoon. Focus ke liye.
-Arjun: Chup raho toh interviewer ko sirf blank screen dikhti hai.
-Riya: Toh kya bolun?
-Arjun: Pehle sawaal apne shabdon mein dohrao. Phir ek example input.
-Arjun: Phir simple tareeka bolo, chahe slow ho. Pehle brute force, phir better.
-Riya: Atak gayi toh?
+Arjun: Pichli baar kya hua tha?
+Riya: Duplicate dhoondhne wala sawaal. Das minute chup rahi, phir answer diya.
+Arjun: Un das minute mein unhe pata hi nahi chala, tum soch rahi thi ya so rahi thi.
+Riya: Toh kya bolti?
+Arjun: Sawaal apne shabdon mein. Phir simple tareeka, chahe slow ho. Phir better.
+Riya: Aur atak jaati toh?
 Arjun: Bolo kahan atki ho. Hint aksar wahin se aata hai.
-Riya: Matlab answer ke saath soch bhi dikhani hai.
-Arjun: Bilkul. Silence se kuch pata nahi chalta.
-Arjun: Kal why this company ka jawab.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Bolte raho. Kal why this company ka jawab.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Yahan bolte mat raho, ek word kaafi hai.
 
 --- description
 Live coding interview tips for freshers | Technical interview think aloud | Coding round tips

@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 15/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Interview ke baad 3 line ka mail
 cast: arjun, riya
 jobs: india-freshers, 0
@@ -11,21 +12,17 @@ funnel: middle
 hook: INTERVIEW KE BAAD 3 LINE
 trial_hook: Send three lines after every interview. Same day, never longer.
 trial_card: 3 LINE, SAME DAY
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Mail se fast.
 Riya: Interview achha gaya. Ab bas result ka wait.
-Arjun: Wait se pehle ek kaam. Same din, teen line ka mail.
+Arjun: Wait se pehle ek kaam. Aaj hi teen line ka mail.
 Riya: Thank you mail? Ye toh chamchagiri lagegi.
-Arjun: Lambi ho toh haan. Teen line ho toh professional.
-Riya: Kya likhun?
-Arjun: Pehli: dhanyavaad, role ke naam ke saath.
-Arjun: Doosri: interview ki ek baat jo yaad rahi. Jaise unka naya project.
-Arjun: Teesri: is role mein kaam karne ka intezaar hai.
-Riya: Bas?
-Arjun: Bas. Na resume dobara, na please select me.
-Riya: Kisko bhejun?
-Arjun: Jisne interview liya, ya HR ko, jis mail se invite aaya tha.
+Arjun: Lambi ho toh haan. Teen line ho toh professional. Interview mein kya yaad raha?
+Riya: Unka naya payments project. Mujhe usme interest aaya.
+Arjun: Wahi doosri line. Pehli mein dhanyavaad, role ke naam ke saath. Teesri mein, is role ka intezaar.
+Riya: Aur end mein, please select me, I am hardworking?
+Arjun: Phir mail bhi spam mein, aur tum bhi.
 Arjun: Teen line, same din. Kal remote jobs ka sach.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Teen line bhi nahi, ek word.
 
 --- description
 Thank you email after interview for freshers | Follow up email after interview | Interview tips

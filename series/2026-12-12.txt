@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 28/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Doosre shehar ki job: pehle ye math
 cast: arjun, bunty
 jobs: bangalore-tech|india-freshers, 1
@@ -11,21 +12,19 @@ funnel: bottom
 hook: DOOSRA SHEHAR? PEHLE YE MATH
 trial_hook: Never refuse a job in another city before these four numbers.
 trial_card: SHEHAR BADLO? PEHLE MATH
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Rent free.
 Bunty: Bangalore se offer aaya. Mana karne wala hoon, kiraya hi aadhi salary kha jayega.
-Arjun: Mana karne se pehle number lagao. In-hand, kiraya, khana, travel.
-Bunty: Kiraya kitna hoga, kaise pata?
-Arjun: Office ke paas ke area dekho, sharing mein. Wahan ke kisi dost se poocho.
-Arjun: Mahine ke end mein kuch bachta hai, aur seekhne ko milta hai, toh ye shuruaat hai.
+Arjun: Kitna kiraya?
+Bunty: Pata nahi. Ek reel mein dekha tha.
+Arjun: Reel se nahi, math se. In-hand, kiraya, khana, travel.
+Arjun: Office ke paas sharing mein dekho, wahan ke kisi dost se poocho.
 Bunty: Aur kuch nahi bacha toh?
-Arjun: Toh relocation help poocho, ya remote ka option.
-Bunty: Relocation help bhi milti hai?
-Arjun: Kuch companies deti hain. Poochne mein kya jaata hai.
-Bunty: Aisi jobs kahan?
-Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
-Bunty: In-hand minus kharcha.
+Arjun: Toh relocation help poocho, ya remote option. Kuch companies deti hain.
+Bunty: Aur thoda bacha toh?
+Arjun: Thoda bache aur seekhne ko mile, toh ye shuruaat hai.
+Arjun: Aur jobs ke liye, ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
 Arjun: Pehle math, phir faisla. Kal internship wala sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Iska rent nahi lagta.
 
 --- description
 Should freshers relocate for a job | Job in another city cost of living | Bangalore jobs for freshers

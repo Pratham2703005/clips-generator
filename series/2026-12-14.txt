@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 30/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Job ka pehla hafta: 3 kaam
 cast: arjun, riya
 jobs: india-freshers, 0
@@ -11,19 +12,20 @@ funnel: middle
 hook: JOB KA PEHLA HAFTA: 3 KAAM
 trial_hook: Don't try to impress everyone in your first week. Do three things.
 trial_card: PEHLA HAFTA: 3 KAAM
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Meeting se kam boring.
 Riya: Join kar liya! Pehle hafte sabko impress karna hai.
-Arjun: Pehle hafte kaam kam, samajhna zyada. Teen kaam karo.
-Arjun: Pehla: manager se poocho, pehle teen mahine mein achha kaam kaisa dikhega.
-Arjun: Doosra: har cheez note karo. Tool, log, process. Ek sawaal do baar nahi.
-Riya: Sawaal poochun ya nahi? Bewakoof lagungi.
-Arjun: Poocho, par pehle pandrah minute khud try karo. Phir batao kya try kiya.
-Arjun: Teesra: har Friday manager ko teen line. Kya kiya, kya seekha, kahan atki.
+Arjun: Kaise?
+Riya: Pehle din se kaam maangungi, har meeting mein bolungi.
+Arjun: Pehle hafte har meeting mein bologi, toh agle hafte invite nahi aayega.
+Riya: Toh kya karun?
+Arjun: Manager se ek sawaal: pehle teen mahine mein achha kaam kaisa dikhega?
+Riya: Aur sab naya hai, tools, log. Sawaal poochungi toh bewakoof lagungi.
+Arjun: Sab note karo. Pandrah minute khud try karo, phir poocho, aur batao kya try kiya.
+Riya: Aur manager ko update kab?
+Arjun: Har Friday teen line. Kya kiya, kya seekha, kahan atki.
 Riya: Internship wala update, wapas!
-Arjun: Wahi aadat, ab job pe.
-Riya: Notebook aaj hi le aati hoon.
 Arjun: Pehla hafta, teen kaam. Kal se naye sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Bolna hai, toh comment mein bolo.
 
 --- description
 First week at new job tips for freshers | First job tips | How to impress manager in first week

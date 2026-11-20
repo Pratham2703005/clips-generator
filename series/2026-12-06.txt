@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 22/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Aur koi offer hai? Sach bolo
 cast: arjun, riya
 jobs: india-freshers, 0
@@ -11,20 +12,18 @@ funnel: top
 hook: 'KOI AUR OFFER?' JHOOTH NAHI
 trial_hook: Don't invent a second offer. One question from HR exposes it.
 trial_card: FAKE OFFER = DONO GAYE
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Ye offer asli hai.
 Riya: HR ne poocha, aur koi offer hai? Socha bol doon, haan, do hain.
-Arjun: Jhootha offer pakda gaya, toh ye wala bhi gaya. HR proof maang sakta hai.
-Riya: Mere paas koi offer nahi hai.
-Arjun: Toh bolo: main is role pe focus kar rahi hoon, kyunki ye mere skills se match karta hai.
-Riya: Aur do jagah process chal raha hai toh?
-Arjun: Wahi bolo: do jagah process mein hoon, final nahi hua.
-Riya: Aur agar sach mein offer hai?
-Arjun: Bolo, par dhamki nahi. Ek offer hai, par mujhe yahan zyada interest hai.
-Riya: Number bataun?
-Arjun: Poochein toh bata do. Zabardasti mat ghusao.
-Riya: Theek hai, jhootha offer wala idea drop.
-Arjun: Kal puzzle wala sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Aur wo letter maang lein toh?
+Riya: Toh bol dungi, wo offer kal hi expire ho gaya.
+Arjun: Haan, aur saath mein ye wala bhi.
+Riya: Sach ye hai, koi offer nahi. Do jagah process chal raha hai.
+Arjun: Wahi bolo. Aur jodo, ye role tumhe kyun zyada pasand hai.
+Riya: Do jagah process mein hoon, final nahi hua. Par ye role mere SQL kaam se match karta hai.
+Riya: Aur agar sach mein offer hota?
+Arjun: Toh bolo, par dhamki nahi. Number tab, jab wo poochein.
+Arjun: Koi aur offer, jhooth nahi. Kal puzzle wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Aur ye offer jhootha nahi hai.
 
 --- description
 Do you have any other offers HR question | Other offers answer for freshers | HR interview tips

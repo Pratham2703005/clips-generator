@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 12/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Internship se full-time offer
 cast: arjun, bunty
 jobs: india-freshers, 1
@@ -11,20 +12,19 @@ funnel: bottom
 hook: INTERNSHIP = 2 MAHINE KA INTERVIEW
 trial_hook: Don't waste your internship. Three habits turn it into an offer.
 trial_card: INTERNSHIP = INTERVIEW
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Iska koi interview nahi.
 Bunty: Internship mil gayi! Do mahine kaam karo, certificate lo, bas.
-Arjun: Bas nahi. Ye do mahine ka interview hai. Kaam ke saath teen cheezein.
-Bunty: Kaunsi?
-Arjun: Pehli: har hafte manager ko teen line. Kya kiya, kahan atka, aage kya.
-Arjun: Doosri: ek kaam poora apne naam ka. Chhota sahi.
-Arjun: Teesri: last do hafte mein seedha poocho, full-time ka chance hai?
-Bunty: Poochna bura nahi lagega?
-Arjun: Nahi poocha, toh wo maan lenge tumhe interest nahi.
-Bunty: Internship mile kahan?
-Arjun: Company ki career site pe. Ek website roz fresh roles ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
-Bunty: Matlab certificate ke saath offer bhi le ke aana hai.
+Arjun: Bas? Ye do mahine ka interview hai.
+Bunty: Main toh chupchaap kaam karne wala tha.
+Arjun: Chupchaap kaam ka kisi ko pata nahi chalta. Har hafte manager ko teen line: kya kiya, kahan atka, aage kya.
+Bunty: Par mujhe toh chhote kaam milenge.
+Arjun: Ek chhota kaam poora apne naam ka. Wahi yaad rehta hai.
+Bunty: Aur full-time ka wo khud bolenge.
+Arjun: Zaroori nahi. Last do hafte mein seedha poocho.
+Bunty: Ye toh ChatGPT ne bhi nahi bataya.
+Arjun: Aur jinko abhi internship chahiye: ek website roz fresh roles ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
 Arjun: Do mahine ka interview. Kal coding round.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Is DM ke liye koi interview nahi.
 
 --- description
 How to convert internship into full time job | PPO tips for interns | Fresher jobs India

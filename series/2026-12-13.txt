@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 29/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Internship mein kya kiya?
 cast: malhotra, bunty
 jobs: india-freshers, 0
@@ -11,7 +12,7 @@ funnel: top
 hook: 'LEARNED A LOT' NAHI, YE BOLO
 trial_hook: Don't say I learned a lot. Say one thing your internship changed.
 trial_card: 'LEARNED A LOT' = KHAALI
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Sach mein learned a lot.
 Bunty: Internship ke baare mein poocha, maine bola, I learned a lot.
 Malhotra: Sabne seekha. Tumne kiya kya?
 Bunty: Excel mein reports banata tha.
@@ -20,9 +21,8 @@ Bunty: Roz ek sales report, manager ko. Formula se do ghante ka kaam aadhe ghant
 Malhotra: Ye hai jawab. Kaam, kisko, kya badla.
 Bunty: Aur team project tha toh?
 Malhotra: Toh team ne kya kiya, aur tumhara hissa kya tha. Dono alag bolo.
-Bunty: Learned a lot se kahin better.
 Malhotra: Aur learned a lot wali line delete. Kal job ka pehla hafta.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Bas 'learned a lot' mat likhna.
 
 --- description
 Tell me about your internship answer | Internship experience interview question | Interview tips for freshers

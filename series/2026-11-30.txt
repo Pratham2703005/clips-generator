@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 16/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Remote job: asli ya scam?
 cast: arjun, bunty
 jobs: remote-india|india-freshers, 1
@@ -11,20 +12,19 @@ funnel: bottom
 hook: REMOTE JOB? FEE MAANGE = SCAM
 trial_hook: Never pay a fee for a remote job. Here are three signs.
 trial_card: FEE MAANGE? SCAM.
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Free hai, koi fee nahi.
 Bunty: Ghar baithe pachaas hazaar ki job mili! Bas do hazaar registration.
-Arjun: Wahi scam hai. Asli company paise nahi leti. Teen nishaan yaad rakho.
-Arjun: Pehla: paise maange. Training fee, kit, registration, kuch bhi.
-Arjun: Doosra: interview sirf chat pe. Na video, na kisi ka naam.
-Arjun: Teesra: company ki apni website pe ye job hai hi nahi.
-Bunty: Toh asli remote job kaise pakdein?
-Arjun: Seedha company ki career site. Wahan job hai, toh asli.
-Bunty: Itni sites kaun dekhega?
-Arjun: Ek website roz saari career sites se fresh jobs laati hai. Link bio mein.
+Arjun: Pehla nishaan: paise maange. Asli company nahi leti. Interview kaise hua?
+Bunty: WhatsApp pe chat. Na video, na kisi ka naam.
+Arjun: Doosra nishaan. Aur company ki website pe ye job hai?
+Bunty: Website... ek Google form hai.
+Arjun: Teesra. Teeno nishaan, bhaago.
+Bunty: Toh asli remote job kahan milegi?
+Arjun: Seedha company ki career site pe. Ek website roz saari career sites se fresh jobs laati hai, link bio mein.
 Arjun: Aaj ki job: {job1}. [job: 1]
 Bunty: Do hazaar bach gaye.
 Arjun: Paise maange, toh bhaago. Kal failure wala sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Fee zero hai. Maangu, toh bhaag jaana.
 
 --- description
 Work from home job scam signs | Remote jobs for freshers India | Fake job alert

@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 27/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | 2 offers mein se kaunsa?
 cast: malhotra, riya
 jobs: india-freshers, 0
@@ -11,17 +12,17 @@ funnel: top
 hook: 2 OFFERS? SIRF CTC MAT DEKHO
 trial_hook: Never choose between two offers only by CTC.
 trial_card: CTC SE ZYADA DEKHO
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. CTC zero, value poori.
 Riya: Do offer aaye! Ek mein do lakh zyada. Wahi le rahi hoon.
-Malhotra: Sirf CTC dekh ke? In-hand dekha? Bond? Location?
+Malhotra: In-hand dekha? Bond? Location?
 Riya: Hmm. Zyada wale mein bond hai.
-Malhotra: Teen sawaal aur. Pehle saal kya seekhogi, manager kaun hai, team freshers ko kaise sikhati hai.
-Riya: Ye sab kaise pata chalega?
-Malhotra: HR se poocho. Aur wahan ke kisi junior se ek call.
-Riya: Theek hai, pehle wahan ke junior ko call karti hoon.
-Malhotra: Pehli job seekhne ke liye hoti hai.
-Malhotra: Kal doosre shehar ki job.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+Malhotra: Aur pehle saal kya seekhogi? Manager kaun hai? Team freshers ko sikhati hai?
+Riya: Ye toh offer letter mein likha hi nahi.
+Malhotra: Offer letter mein wahi hota hai jo wo dikhana chahte hain.
+Malhotra: HR se poocho, aur wahan ke kisi junior se ek call.
+Riya: Theek hai, pehle junior ko call karti hoon.
+Malhotra: Sirf CTC nahi. Pehli job seekhne ke liye hai. Kal doosre shehar ki job.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Is offer ka CTC zero hai, value poori.
 
 --- description
 How to choose between two job offers | First job offer comparison for freshers | CTC vs in hand

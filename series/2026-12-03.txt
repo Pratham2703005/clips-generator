@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 19/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Relocate karoge? Sach bolo
 cast: malhotra, riya
 jobs: india-freshers, 0
@@ -11,17 +12,18 @@ funnel: top
 hook: 'DEKHTE HAIN' MAT BOLO
 trial_hook: Never say let's see when they ask about relocation. Say yes or no.
 trial_card: 'DEKHTE HAIN' = NO
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. 'Dekhte hain' mat bolna.
 Riya: HR ne poocha, relocate karogi? Maine bola, dekhte hain.
-Malhotra: Dekhte hain, na jaisa lagta hai. Haan ki tarah bola hua na.
+Malhotra: HR ke liye dekhte hain ka matlab hai, na.
 Riya: Par seedha na bola toh reject?
-Malhotra: Kabhi kabhi. Isliye interview se pehle khud decide karo.
-Riya: Raat ki shift main nahi kar sakti.
+Malhotra: Kabhi kabhi. Isliye interview se pehle khud decide karo. Kya nahi kar sakti?
+Riya: Raat ki shift. Wo nahi.
 Malhotra: Toh saaf bolo, reason ke saath. Jhooth bolke join kiya, toh jaldi chhodogi.
-Riya: Aur shehar badalna? Wo theek hai.
-Malhotra: Toh bolo: haan, main relocate kar sakti hoon. Bina dekhte hain ke.
+Riya: Shehar badalna theek hai. Toh bolun, haan, relocate kar sakti hoon?
+Malhotra: Haan. Bina dekhte hain ke.
+Riya: Matlab dekhte hain ab sirf mummy ke liye.
 Malhotra: Haan ho ya na, saaf bolo. Kal non-CS se tech job.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Aur main 'dekhte hain' nahi bolti.
 
 --- description
 Are you willing to relocate answer | Night shift interview question | HR interview tips for freshers

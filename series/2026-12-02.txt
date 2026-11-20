@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 18/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Manager round mein kya check hota hai
 cast: arjun, bunty
 jobs: india-freshers, 0
@@ -11,21 +12,18 @@ funnel: middle
 hook: MANAGER ROUND ≠ CODING
 trial_hook: Don't say you'll work all night. Managers want two things first.
 trial_card: MANAGER ROUND ≠ CODING
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Sabse easy round.
 Bunty: Kal manager round hai. Raat bhar coding practice karunga.
-Arjun: Coding thodi. Asli sawaal: kya tum team mein kaam aaoge?
-Bunty: Wo kaise check karte hain?
-Arjun: Situation se. Deadline kal hai, kaam adhoora. Kya karoge?
+Arjun: Coding thodi. Manager dekhega, tum team mein kaam aaoge ya nahi.
+Arjun: Jaise: deadline kal hai, kaam adhoora. Kya karoge?
 Bunty: Raat bhar karunga!
-Arjun: Galat nahi, par adhoora. Pehle manager ko batao, kya hua aur kya bacha.
-Bunty: Batana zaroori hai?
-Arjun: Manager ko surprise pasand nahi. Jaldi khabar pasand hai.
-Bunty: Aur kya poochte hain?
-Arjun: Senior se disagree kiya toh? Jawab: data ke saath, izzat se, phir jo team decide kare.
-Bunty: Matlab baat izzat se, aur faisla team ka.
-Arjun: Bilkul. Ye round attitude ka hai.
-Arjun: Kal relocate wala sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Tumhara har jawab raat bhar hai.
+Arjun: Pehle manager ko batao, kya hua aur kya bacha. Manager ko surprise pasand nahi.
+Bunty: Aur senior galat ho toh? Main toh seedha bol deta hoon.
+Arjun: Bolo, par data ke saath, izzat se. Phir jo team decide kare.
+Bunty: Matlab ye round coding ka nahi, attitude ka hai.
+Arjun: Manager round, coding nahi. Kal relocate wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Ismein koi round nahi hai.
 
 --- description
 Managerial round interview questions for freshers | Manager round tips | Interview preparation

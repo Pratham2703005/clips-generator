@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 14/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Why this company? 10 minute research
 cast: malhotra, bunty
 jobs: india-freshers, 0
@@ -11,21 +12,18 @@ funnel: top
 hook: WHY US? 10 MINUTE RESEARCH
 trial_hook: Never say big brand when they ask why this company. Ten minutes fixes it.
 trial_card: 'BIG BRAND' = WEAK
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Research ho gayi, hum theek hain.
 Bunty: Why this company? Mera jawab ready hai. Big brand hai!
-Malhotra: Unhe pata hai. Wo dekh rahe hain tumne das minute bhi diye ya nahi.
-Bunty: Das minute mein kya hoga?
-Malhotra: Teen cheezein dhoondo. Company kya bechti hai, kisko, aur haal ki ek khabar.
-Bunty: Khabar kahan milegi?
-Malhotra: Company ki website pe, unka blog ya news section.
-Malhotra: Phir jodo: aapka product chhote dukaandaron ke liye hai. Mera project bhi billing pe tha.
-Bunty: Matlab apni kahani unki kahani se jodni hai.
-Malhotra: Haan. Aur salary ya location ko reason mat banao.
-Bunty: Brand bolna mana hai?
-Malhotra: Bol sakte ho, akela nahi. Brand plus tumhara connection.
-Bunty: Das minute ki research. Big brand wala jawab ab retire.
-Malhotra: Kal interview ke baad wala mail.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+Malhotra: Unhe pata hai. Company kya bechti hai, kisko?
+Bunty: Software... kuch. Brand bada hai.
+Malhotra: Das minute do. Website, blog ya news section. Kya bechte hain, kisko, aur haal ki ek khabar.
+Bunty: Dekha. Chhote dukaandaron ke liye billing app.
+Malhotra: Aur tumhara project?
+Bunty: Mera bhi billing pe tha! College canteen ka.
+Bunty: Toh bolun, aap dukaandaron ke liye billing banate ho, maine canteen ke liye banaya tha?
+Malhotra: Haan. Bas salary ya location ko reason mat banana.
+Malhotra: Das minute ki research. Kal interview ke baad wala mail.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Ismein research bhi nahi lagegi.
 
 --- description
 Why do you want to join this company answer | Why this company interview question | Interview tips for freshers

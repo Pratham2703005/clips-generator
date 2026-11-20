@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 24/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | HR ko 5 line ka email
 cast: arjun, riya
 jobs: india-freshers|remote-india, 1
@@ -11,22 +12,17 @@ funnel: bottom
 hook: HR EMAIL: SIRF 5 LINE
 trial_hook: Stop sending long emails to HR. Five lines are enough.
 trial_card: HR EMAIL = 5 LINES
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Paanch line bhi nahi likhni.
 Riya: HR ko das line ka email likha. Apni poori kahani.
-Arjun: Paanch line kaafi hain. Kahani interview mein.
-Riya: Paanch line mein kya aayega?
-Arjun: Pehli: kaunsa role, job ID ke saath.
-Arjun: Doosri: tum kaun ho. Degree aur saal.
-Arjun: Teesri: ek proof. Project ka naam aur result.
-Arjun: Chauthi: resume attached, PDF, apne naam se.
-Arjun: Paanchvi: kya hum is role pe aage baat kar sakte hain?
-Riya: Subject line?
-Arjun: Role ka naam aur tumhara naam. Bas.
-Riya: Role kahan dhoondhun?
-Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
-Riya: Das line wala mail draft mein hi rehne deti hoon.
-Arjun: Kal final round ke baad ghost.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Kahani interview ke liye bachao. Pehli line kya hai?
+Riya: Respected sir, I am writing this mail to introduce myself.
+Arjun: Wahin HR ne next kar diya.
+Arjun: Pehli line mein role, job ID ke saath. Phir tum kaun ho, degree aur saal.
+Riya: Phir mera project?
+Arjun: Haan, naam aur result. Phir resume attached, apne naam se. End mein ek sawaal: kya hum is role pe aage baat kar sakte hain?
+Arjun: Role dhoondhna hai, toh ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
+Arjun: HR email, sirf paanch line. Kal final round ke baad ghost.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. HR se pehle reply aayega.
 
 --- description
 Cold email to HR for job as a fresher | How to email HR for job opening | Job application email

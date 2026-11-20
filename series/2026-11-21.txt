@@ -3,7 +3,10 @@
 # 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
-# Ep 7/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Ep 7/30 - value episode (no promotion).
+# Rewritten 2026-11-20 as a conversation (playbook rule: the teacher reacts, the example is the learner's own story),
+# with one joke beat (joke-writing skill: the HR "we'll get back to you" line, Malhotra deadpan), the ending-tag test
+# (a different tag after the fixed CTA), ~35 s spoken (the length test is paused, see EXPERIMENTS.md).
 title: Interview prep | Gap year kaise explain karein
 cast: malhotra, riya
 jobs: india-freshers, 0
@@ -11,21 +14,18 @@ funnel: top
 hook: GAP YEAR? 1 LINE MEIN
 trial_hook: Never hide a gap year. They already saw the dates.
 trial_card: GAP YEAR CHHUPAO MAT
-yt_last: Subscribe karo, aise aur tips ke liye.
-Riya: Ma'am, resume mein ek saal ka gap hai. Interview mein kya bolun?
-Malhotra: Chhupao mat, dates wo dekh chuke hain. Kya kiya tha?
-Riya: Ek saal ghar pe thi. Exam ki taiyari ki, phir chhod diya.
-Malhotra: Toh wahi bolo. Seedha, ek line mein.
-Riya: Ajeeb nahi lagega?
-Malhotra: Ajeeb tab lagta hai, jab kahani ghoomti hai.
-Malhotra: Format: kya kiya, kya seekha, ab ye job kyun.
-Riya: Ek saal government exam ki taiyari ki. Discipline seekha. Ab data mein kaam karna hai, isliye SQL seekha.
-Malhotra: Perfect. Last part sabse zaroori: gap ke baad kuch kiya.
-Riya: Kuch nahi kiya toh?
-Malhotra: Aaj se karo. Ek course, ek project. Interview tak gap chhota lagega.
-Riya: Theek hai, aaj se ek course shuru.
-Malhotra: Kal resume har job ke liye kaise badlein.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+yt_last: Subscribe karo. Hum sach mein get back karte hain.
+Riya: Interviewer ne poocha, gap kyun? Main chup.
+Malhotra: Chup kyun? Us saal kya kiya tha?
+Riya: Exam ki taiyari. Clear nahi hua. Ye bolun toh fail lagungi.
+Riya: Ya bol doon, aapke "we'll get back to you" ka wait tha?
+Malhotra: Sach hai. Par phir ye bhi get back nahi karenge.
+Malhotra: Exam wali baat hi bolo. Saath mein kya seekha, aur ab ye job kyun.
+Riya: Ek saal exam ki taiyari ki, discipline seekha.
+Riya: Ab data mein kaam karna hai, isliye SQL seekh rahi hoon.
+Malhotra: Bas. Dates wo dekh chuke hain, sach bolne se gap chhota lagta hai.
+Malhotra: Gap ek line mein. Kal, har job ke liye resume kaise badlein.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Aur main sach mein get back karti hoon.
 
 --- description
 How to explain gap year in interview | Gap year for freshers | HR interview tips

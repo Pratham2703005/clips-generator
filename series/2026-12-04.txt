@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 20/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Non-CS se tech job
 cast: arjun, riya
 jobs: india-freshers|bangalore-tech, 1
@@ -11,21 +12,17 @@ funnel: bottom
 hook: NON-CS? SKILL + PROJECT + KAHANI
 trial_hook: Don't skip a tech job because of your degree. Read the skills first.
 trial_card: NON-CS? TECH JOB POSSIBLE
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Branch koi bhi ho.
 Riya: Mechanical se hoon. Har tech job mein likha hai, B Tech CS. Main toh gayi.
-Arjun: Kai jagah likha hota hai, CS or related, ya sirf skills.
-Arjun: Pehle job description padho. Degree se lambi list skills ki hoti hai.
-Riya: Toh main kya dikhaun?
-Arjun: Teen cheezein. Ek skill jo job maange, uska ek project, aur ek line ki kahani.
-Riya: Kahani?
-Arjun: Mechanical mein machine ka data dekha, wahin se data pasand aaya.
-Riya: Matlab branch ko bhi kahani bana do.
-Arjun: Haan. Interviewer wajah sunna chahta hai, aur tumhari wajah achhi hai.
-Riya: Aisi jobs kahan?
-Arjun: Company ki career site pe. Ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
-Riya: Theek hai, aaj se ek data project shuru.
-Arjun: Kal interview ke pehle tees second.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Poora padha, ya CS dekhte hi tab band? Kai jagah likha hota hai, CS or related, ya sirf skills.
+Riya: Haan, neeche lambi list hai. SQL, Python, Excel.
+Arjun: Inmein se kya aata hai?
+Riya: Excel aur thoda SQL. Plant internship mein machine ka data Excel mein dekhti thi.
+Arjun: Wahi tumhari kahani hai. Mechanical se data tak, aur kyun.
+Arjun: Ek SQL project jod do, toh skill, project, kahani teeno.
+Arjun: Aisi jobs ke liye, ek website roz fresh jobs ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
+Arjun: Skill, project, kahani. Kal interview ke pehle tees second.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Branch nahi poochunga.
 
 --- description
 Non CS student tech job | Mechanical to IT job for freshers | Career switch to tech

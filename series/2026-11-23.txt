@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 9/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Low CGPA ka sawaal
 cast: malhotra, bunty
 jobs: india-freshers, 0
@@ -11,18 +12,18 @@ funnel: top
 hook: LOW CGPA? SORRY MAT BOLO
 trial_hook: Never hide a low CGPA. Show one project that beats it.
 trial_card: CGPA KAM? SORRY NAHI
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. CGPA koi nahi poochega.
 Bunty: Ma'am, six point two CGPA aur ek backlog. Mera toh khatam.
-Malhotra: Khatam nahi. Pehle cutoff dekho. Kai jobs mein cutoff hota hi nahi.
-Bunty: Aur interview mein poochenge toh?
-Malhotra: Bahana nahi. Second year mein focus kam tha. Backlog clear kiya, last do semester mein sudhaar hua.
-Bunty: Sudhaar nahi hua toh?
-Malhotra: Toh skill dikhao. Ek project, ek certificate, jo job se jude.
-Bunty: Matlab number se nazar hatao.
-Malhotra: Haan. Pehle sach, phir proof.
-Bunty: Toh sorry nahi bolunga. Sach bolunga, aur project dikhaunga.
-Malhotra: Kal group discussion ke teen rule.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon.
+Malhotra: Khatam nahi. Kai jobs mein cutoff hota hi nahi. Backlog kab aaya tha?
+Bunty: Second year. Hostel, cricket, aur thoda zyada cricket.
+Malhotra: Interview mein cricket mat bolna. Bas itna: focus kam tha.
+Bunty: Phir sorry bolun?
+Malhotra: Sorry nahi. Bolo uske baad kya badla.
+Bunty: Backlog clear kiya. Last do semester achhe gaye.
+Bunty: Aur marks na sudhre hote toh?
+Malhotra: Toh project dikhao, jo is job se jude. Number se zyada wo bolta hai.
+Malhotra: CGPA pe sorry nahi. Kal group discussion ke teen rule.
+Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. CGPA nahi poochungi, promise.
 
 --- description
 Low CGPA in interview how to answer | Backlog question for freshers | HR interview tips

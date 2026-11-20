@@ -4,6 +4,7 @@
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 10/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 title: Interview prep | Group discussion ke 3 rule
 cast: arjun, riya
 jobs: india-freshers, 0
@@ -11,20 +12,17 @@ funnel: middle
 hook: GD: 3 RULE, CHILLANA NAHI
 trial_hook: Never shout in a group discussion. Three rules win it instead.
 trial_card: GD: CHILLAO MAT
-yt_last: Subscribe karo, aise aur tips ke liye.
+yt_last: Subscribe karo. Bina chillaye.
 Riya: Kal GD hai. Plan hai, sabse pehle bolungi, sabse zor se.
-Arjun: Pehle bolna tab achha, jab point ho. Aur zor se bolna kabhi nahi.
-Riya: Toh rule kya hain?
-Arjun: Pehla: ek point, ek example. Lambi speech nahi.
-Arjun: Doosra: kisi ka naam lo. Jaise Rahul ne kaha, main usme jodti hoon.
-Riya: Isse kya hoga?
-Arjun: Dikhta hai tum sun rahi ho. GD mein sunna bhi check hota hai.
-Arjun: Teesra: end mein summary do, ya summary ka offer karo.
-Riya: Aur koi chillaye toh?
-Arjun: Tum mat chillao. Ruko, phir shaant awaaz mein point.
-Riya: Matlab zor se bolne ka plan cancel.
-Arjun: Aur chillana nahi. Kal paanch saal baad wala sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon.
+Arjun: Zor se kyun?
+Riya: Taaki panel sirf mujhe sune.
+Arjun: Panel ye bhi dekhta hai ki tum kisko sunti ho. Ek point, ek example, aur kisi ka naam lo.
+Riya: Jaise, Rahul ne kaha, main usme jodti hoon?
+Arjun: Haan. Aur end mein summary ka offer karo.
+Riya: Aur agar Rahul hi chilla raha ho?
+Arjun: Toh Rahul apne number khud kaat raha hai. Tum ruko, phir shaant awaaz mein.
+Arjun: Teen rule, chillana nahi. Kal paanch saal baad wala sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. JOBS caps mein likho, bas wahan chillana allowed hai.
 
 --- description
 Group discussion tips for freshers | GD rules for placements | Campus placement GD
