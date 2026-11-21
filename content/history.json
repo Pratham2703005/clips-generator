@@ -249,6 +249,23 @@
       "premise": "linkedin-cringe",
       "hook": "the-steal",
       "dynamic": "challenge"
+    },
+    {
+      "date": "2026-11-22",
+      "track": "job_drop",
+      "format": "company-spotlight",
+      "niche": "india-freshers",
+      "platform": "make",
+      "cast": "arjun+riya",
+      "job_ids": [
+        "1b4f8ea2fe2ca224fb13b26dff2b0e2e"
+      ],
+      "companies": [
+        "Wipro"
+      ],
+      "premise": "layoff-fear",
+      "hook": "cost-confession",
+      "dynamic": "flashback"
     }
   ]
 }
