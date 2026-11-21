@@ -5,6 +5,9 @@
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 11/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
 # 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
+# 2026-11-21: lead-magnet week (22-28 Nov, EXPERIMENTS.md): line 2 says what the viewer gets (lock-in), one
+# rehook at ~10-13 s (where the average watch ends), and the CTA asks for this topic's word; the Worker DMs the
+# template (the description's tips block) for it. Line 1 unchanged (Opener test B).
 title: Interview prep | 5 saal baad kahan dekhte ho?
 cast: malhotra, riya
 jobs: india-freshers, 0
@@ -14,15 +17,15 @@ trial_hook: Don't joke about five years. Say a two-year plan instead.
 trial_card: 'AAPKI KURSI' = NO
 yt_last: Subscribe karo. Paanch saal baad bhi kaam aayega.
 Riya: Five years mein kahan dekhti ho, iska jawab ready hai. Aapki kursi pe!
-Malhotra: Joke hai. Aur risky joke. Sach mein kya chahti ho?
+Malhotra: Joke hai, aur risky joke. Do saal ka plan isse kahin behtar hai. Sach mein kya chahti ho?
 Riya: Sach? Pata nahi. Shayad data mein, shayad MBA.
-Malhotra: Kisi ko nahi pata. Ye sawaal plan dekhta hai. Is role mein pehle kya seekhna hai?
+Malhotra: Kisi ko nahi pata, aur interviewer ye jaanta hai. Ye sawaal plan dekhta hai. Is role mein pehle kya seekhna hai?
 Riya: SQL aur dashboards. Do saal mein inmein strong, phir team mein badi zimmedari.
 Riya: Aur yahin grow karna hai.
 Malhotra: Agar sach hai, toh bolo. MBA wali baat abhi mat bolo, plan badal sakta hai.
 Riya: Kursi wala joke doston ke liye bacha ke rakhti hoon.
 Malhotra: Paanch saal ka plan, kursi nahi. Kal internship ka asli game.
-Malhotra: Follow karke JOBS comment karo, channel ka link DM mein bhejti hoon. Ismein paanch saal nahi lagenge.
+Malhotra: Follow karke PLAN comment karo, poora sample answer DM mein bhejti hoon.
 
 --- description
 Where do you see yourself in 5 years answer for freshers | HR interview questions
@@ -31,8 +34,9 @@ Interview prep 🔭
 1. 2 saal: is role mein strong
 2. Phir: team mein badi zimmedari
 3. "Yahin grow karna chahta/chahti hoon" (agar sach hai)
+Sample: "Do saal mein is role ke skills mein strong banna hai, jaise SQL aur dashboards. Phir team mein badi zimmedari. Aur yahin grow karna chahti hoon."
 
 Kal: internship ko full-time offer mein kaise badlein.
-Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
+"PLAN" comment karo: 5 saal wala sample answer + roz ki fresher jobs, DM mein bhej denge.
 
 #hrinterview #interviewquestions #fresherjobs #interviewtips #careergoals

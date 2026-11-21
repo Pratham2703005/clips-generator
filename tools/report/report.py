@@ -1032,7 +1032,8 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
 
 # ---------- Instagram comment -> DM (Cloudflare Worker, 2026-11-18) ----------
 
-DM_FIELDS = (("dms", "DMs sent"), ("tgClicks", "Telegram button clicks"), ("followClicks", "Follow button clicks"),
+DM_FIELDS = (("dms", "DMs sent"), ("magnetDms", "of them a topic template"), ("magnetClicks", "template opened"),
+             ("tgClicks", "Telegram button clicks"), ("followClicks", "Follow button clicks"),
              ("tgJoins", "joined Telegram via the DM link"))
 
 
@@ -1066,7 +1067,8 @@ def dm_stats(cfg: dict, day: str) -> dict:
 
 
 def dm_line(label: str, s: dict) -> str:
-    parts = [f"{num(s.get(k, 0))} {name}" for k, name in DM_FIELDS]
+    # the template counts (lead-magnet reels, from 2026-11-22) only once there are any
+    parts = [f"{num(s.get(k, 0))} {name}" for k, name in DM_FIELDS if s.get(k) or not k.startswith("magnet")]
     checked = s.get("followsYes", 0) + s.get("followsNo", 0) + s.get("followsUnknown", 0)
     if checked:
         parts.append(f"follow us 3 h later: {num(s.get('followsYes', 0))} yes, {num(s.get('followsNo', 0))} no, "

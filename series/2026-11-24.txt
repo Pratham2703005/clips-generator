@@ -5,6 +5,10 @@
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 10/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
 # 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
+# 2026-11-21: lead-magnet week (22-28 Nov, EXPERIMENTS.md): line 2 says what the viewer gets (lock-in), one
+# rehook at ~10-13 s (where the average watch ends), and the CTA asks for this topic's word; the Worker DMs the
+# template (the description's tips block) for it. Line 1 unchanged (Opener test B).
+# 2026-11-21 (2): after a review: rule 2 says why it matters (the rehook), the closing names the three rules again.
 title: Interview prep | Group discussion ke 3 rule
 cast: arjun, riya
 jobs: india-freshers, 0
@@ -14,15 +18,17 @@ trial_hook: Never shout in a group discussion. Three rules win it instead.
 trial_card: GD: CHILLAO MAT
 yt_last: Subscribe karo. Bina chillaye.
 Riya: Kal GD hai. Plan hai, sabse pehle bolungi, sabse zor se.
-Arjun: Zor se kyun?
+Arjun: Teen rule hain jo zor se zyada kaam karte hain. Par pehle, zor se kyun?
 Riya: Taaki panel sirf mujhe sune.
-Arjun: Panel ye bhi dekhta hai ki tum kisko sunti ho. Ek point, ek example, aur kisi ka naam lo.
+Arjun: Panel ye bhi dekhta hai ki tum kisko sunti ho. Pehla rule: ek point, ek example.
+Riya: Bas?
+Arjun: Doosra rule se panel tumhe yaad rakhta hai. Kisi ka naam lo.
 Riya: Jaise, Rahul ne kaha, main usme jodti hoon?
-Arjun: Haan. Aur end mein summary ka offer karo.
+Arjun: Haan. Teesra: end mein summary ka offer karo.
 Riya: Aur agar Rahul hi chilla raha ho?
-Arjun: Toh Rahul apne number khud kaat raha hai. Tum ruko, phir shaant awaaz mein.
-Arjun: Teen rule, chillana nahi. Kal paanch saal baad wala sawaal.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. JOBS caps mein likho, bas wahan chillana allowed hai.
+Arjun: Toh Rahul apne number khud kaat raha hai. Tum ruko, phir shaant awaaz mein bolo.
+Arjun: Ek point, ek naam, ek summary. Chillana nahi. Kal paanch saal baad wala sawaal.
+Arjun: Follow karke GD comment karo, teen rule ki checklist DM mein bhejta hoon.
 
 --- description
 Group discussion tips for freshers | GD rules for placements | Campus placement GD
@@ -34,6 +40,6 @@ GD ke 3 rule:
 Koi chillaye? Tum shaant awaaz mein point rakho.
 
 Kal: "5 saal baad khud ko kahan dekhte ho?"
-Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
+"GD" comment karo: GD ke 3 rule + roz ki fresher jobs, DM mein bhej denge.
 
 #groupdiscussion #gdtips #placementpreparation #fresherjobs #campusplacement

@@ -14,7 +14,10 @@
  *    who wrote to us; then it is counted as "unknown")
  *  GET /stats: per-day counts (no names). The report (tools/report) reads it.
  *
- * KV (DM_STATE): start, n:<media> (comment count seen), c:<comment> (answered, 8 d), d:<comment> (the DM: recipient id,
+ * Lead magnet (from 22 Nov): a reel whose caption names its own word ("PROJECT" comment karo: ...) gets a template card
+ * instead; see parseMagnet.
+ *
+ * KV (DM_STATE): start, n:<media> (comment count seen), m:<media> (the reel's lead magnet, 60 d), c:<comment> (answered, 8 d), d:<comment> (the DM: recipient id,
  * clicks, follow check; 60 d), pending (DMs waiting for their follow check), stats (per-day counts), tg:invite, tg:offset,
  * last-run. Secrets: IG_ACCESS_TOKEN, TELEGRAM_BOT_TOKEN (optional: no join count without it). Vars: IG_USER_ID,
  * PUBLIC_URL, TELEGRAM_CHANNEL.
@@ -28,7 +31,7 @@ const KEYWORDS = ["job", "jobs", "link", "daily jobs", "telegram", "channel"];
 const ROLE_WORDS = /\b(engineers?|engineering|developers?|analysts?|freshers?|b\.? ?tech|m\.? ?tech|bca|mca|mba|bba|b\.? ?com|diploma|intern|internship|hiring|vacanc(y|ies)|openings?|naukri|placement)\b/i;
 // bump when the matching rules change: every reel's comments are read once more, so older unanswered comments that now
 // match get their DM (within Instagram's 7 days)
-const RULES_VERSION = "2";
+const RULES_VERSION = "3";
 const EMOJI_ONLY = true;
 const PROFILE_URL = "https://www.instagram.com/isha.07007/";
 const CHANNEL_URL = "https://telegram.me/fresherjobs_isha";
@@ -39,13 +42,43 @@ const CARD_TEXT = {
 const TEXT =
   "Hi! 👋 Roz ki fresher jobs (seedha company ki site se, apply link ke saath) yahan milti hain:\n" +
   `${CHANNEL_URL}\n\nAur interview tips ke reels ke liye @isha.07007 ko follow kar lo 🙂`;
-const EMPTY_DAY = { dms: 0, tgClicks: 0, followClicks: 0, tgJoins: 0, followsYes: 0, followsNo: 0, followsUnknown: 0 };
+const EMPTY_DAY = { dms: 0, tgClicks: 0, followClicks: 0, tgJoins: 0, followsYes: 0, followsNo: 0, followsUnknown: 0, magnetDms: 0, magnetClicks: 0 };
 
-export function wantsLink(text) {
+/**
+ * A reel's own lead magnet (user, 2026-11-21: "CTA with an aligned lead magnet", one-week test from 22 Nov). The
+ * episode's description, which is the reel's caption, holds one line in this form:
+ *   "PROJECT" comment karo: 3-line project template + roz ki fresher jobs, DM mein bhej denge.
+ * A comment naming that word (or any of the usual keywords) on that reel gets a card for the template; its button opens
+ * /t/<comment> on this Worker, a page with the reel's tips (the caption's first block, under the label line) and the
+ * Telegram / Follow buttons. Returns null for a caption without such a line.
+ */
+export function parseMagnet(caption) {
+  const lines = (caption || "").split("\n").map((l) => l.trim());
+  let keyword = "";
+  let title = "";
+  for (const l of lines) {
+    const m = l.match(/["“]([A-Za-z0-9]{2,20})["”]\s+comment\s+karo:\s*(.+?)\s*\+\s*roz ki fresher jobs/i);
+    if (m) {
+      keyword = m[1].toLowerCase();
+      title = m[2].replace(/[.,;:]+$/, "");
+      break;
+    }
+  }
+  if (!keyword) return null;
+  // the tips: the first block of lines after the search line and the short label ("Interview prep 📄")
+  const tips = [];
+  let i = 1;
+  if (lines[i] && lines[i].length <= 25 && !/[.?:!]$/.test(lines[i])) i++;
+  for (; i < lines.length && lines[i]; i++) tips.push(lines[i]);
+  return { keyword, title: title.slice(0, 80), tips: tips.slice(0, 12) };
+}
+
+export function wantsLink(text, extraKeyword = "") {
   const t = (text || "").trim().toLowerCase();
   if (!t) return false;
   const escape = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-  if (KEYWORDS.some((k) => new RegExp(`(?<![a-z])${escape(k)}(?![a-z])`).test(t))) return true;
+  const words = extraKeyword ? [...KEYWORDS, extraKeyword] : KEYWORDS;
+  if (words.some((k) => new RegExp(`(?<![a-z])${escape(k)}(?![a-z])`).test(t))) return true;
   if (ROLE_WORDS.test(t)) return true;
   // only emoji (and spaces / punctuation): "🔥", "🙏🙏", "❤️"
   const rest = t.replace(/[\p{Extended_Pictographic}\u{FE0F}\u{200D}\u{1F3FB}-\u{1F3FF}]/gu, "");
@@ -91,9 +124,20 @@ async function telegram(env, method, params) {
 
 // ---------- DM ----------
 
-function card(env, commentId) {
+function card(env, commentId, magnet = null) {
   const base = (env.PUBLIC_URL || "").replace(/\/$/, "");
   const via = (kind, direct) => (base ? `${base}/go/${kind}/${encodeURIComponent(commentId)}` : direct);
+  if (magnet && base) {
+    return {
+      title: `${magnet.title} ✅`.slice(0, 80),
+      subtitle: "Template yahan. Saath mein roz ki fresher jobs 📌",
+      buttons: [
+        { type: "web_url", title: "Template kholo", url: `${base}/t/${encodeURIComponent(commentId)}` },
+        { type: "web_url", title: "Fresher jobs", url: via("tg", CHANNEL_URL) },
+        { type: "web_url", title: "Follow karo", url: via("follow", PROFILE_URL) },
+      ],
+    };
+  }
   return {
     ...CARD_TEXT,
     buttons: [
@@ -103,17 +147,23 @@ function card(env, commentId) {
   };
 }
 
-async function reply(env, commentId) {
+/** The plain-text fallback: with a magnet, the tips themselves go in the message. */
+function fallbackText(magnet) {
+  if (!magnet || !magnet.tips.length) return TEXT;
+  return `${magnet.title} ✅\n\n${magnet.tips.join("\n")}\n\nRoz ki fresher jobs: ${CHANNEL_URL}\nAur aise tips ke liye @isha.07007 ko follow kar lo 🙂`.slice(0, 990);
+}
+
+async function reply(env, commentId, magnet = null) {
   const recipient = { comment_id: commentId };
   try {
     const r = await graph(env, `${env.IG_USER_ID}/messages`, {}, {
       recipient,
-      message: { attachment: { type: "template", payload: { template_type: "generic", elements: [card(env, commentId)] } } },
+      message: { attachment: { type: "template", payload: { template_type: "generic", elements: [card(env, commentId, magnet)] } } },
     });
     return { kind: "card", igsid: r.recipient_id || "" };
   } catch (e) {
     if (/\(code (10|200|190),/.test(e.message)) throw e; // permission / token: the text would fail the same way
-    const r = await graph(env, `${env.IG_USER_ID}/messages`, {}, { recipient, message: { text: TEXT } });
+    const r = await graph(env, `${env.IG_USER_ID}/messages`, {}, { recipient, message: { text: fallbackText(magnet) } });
     return { kind: "text", igsid: r.recipient_id || "" };
   }
 }
@@ -128,7 +178,7 @@ export async function run(env, dryRun = false) {
   const reelsSince = Date.now() - MAX_AGE_DAYS * 86400_000; // Instagram: private replies only within 7 days
   const since = Math.max(reelsSince, Date.parse(start));
   const own = (await graph(env, env.IG_USER_ID, { fields: "username" })).username || "";
-  const media = (await graph(env, `${env.IG_USER_ID}/media`, { fields: "id,timestamp,permalink,comments_count", limit: 30 })).data || [];
+  const media = (await graph(env, `${env.IG_USER_ID}/media`, { fields: "id,timestamp,permalink,comments_count,caption", limit: 30 })).data || [];
   const out = { at: new Date().toISOString(), reels: 0, read: 0, matched: 0, sent: 0, failed: 0, log: [] };
   const testers = new Set((env.TEST_USERNAMES || "").toLowerCase().split(",").map((s) => s.trim()).filter(Boolean));
   const rulesChanged = (await env.DM_STATE.get("rules")) !== RULES_VERSION;
@@ -139,25 +189,32 @@ export async function run(env, dryRun = false) {
     const seen = await env.DM_STATE.get(`n:${m.id}`);
     if (!count || (String(count) === seen && !rulesChanged)) continue; // nothing new on this reel
     out.read++;
+    const magnet = parseMagnet(m.caption);
+    if (magnet && !dryRun) {
+      // what /t/<comment> shows; written only when the reel's comments are read, so KV writes stay rare
+      const doc = JSON.stringify({ ...magnet, permalink: m.permalink || "" });
+      if ((await env.DM_STATE.get(`m:${m.id}`)) !== doc) await env.DM_STATE.put(`m:${m.id}`, doc, { expirationTtl: 60 * 86400 });
+    }
     const res = await graph(env, `${m.id}/comments`, { fields: "id,text,timestamp,username,replies{id,text,timestamp,username}", limit: 50 });
     let ok = true;
     for (const c of res.data || []) {
       for (const x of [c, ...((c.replies && c.replies.data) || [])]) {
         if ((x.username || "").toLowerCase() === own.toLowerCase() || Date.parse(x.timestamp) < since) continue;
-        if (!wantsLink(x.text) || (await env.DM_STATE.get(`c:${x.id}`))) continue;
+        if (!wantsLink(x.text, magnet && magnet.keyword) || (await env.DM_STATE.get(`c:${x.id}`))) continue;
         out.matched++;
         if (dryRun) {
-          out.log.push(`would DM @${x.username}: ${JSON.stringify((x.text || "").slice(0, 60))}`);
+          out.log.push(`would DM${magnet ? ` (${magnet.keyword} template)` : ""} @${x.username}: ${JSON.stringify((x.text || "").slice(0, 60))}`);
           continue;
         }
         let done = true;
         try {
-          const { kind, igsid } = await reply(env, x.id);
+          const { kind, igsid } = await reply(env, x.id, magnet);
           out.sent++;
-          out.log.push(`DM (${kind}) to @${x.username}: ${JSON.stringify((x.text || "").slice(0, 60))}`);
+          out.log.push(`DM (${kind}${magnet ? `, ${magnet.keyword} template` : ""}) to @${x.username}: ${JSON.stringify((x.text || "").slice(0, 60))}`);
           const test = testers.has((x.username || "").toLowerCase()); // our own test account: DM it, never count it
-          await env.DM_STATE.put(`d:${x.id}`, JSON.stringify({ at: Date.now(), kind, igsid, test }), { expirationTtl: 60 * 86400 });
+          await env.DM_STATE.put(`d:${x.id}`, JSON.stringify({ at: Date.now(), kind, igsid, test, media: magnet ? m.id : undefined }), { expirationTtl: 60 * 86400 });
           if (!test) await bump(env, "dms");
+          if (!test && magnet) await bump(env, "magnetDms");
           if (igsid && !test) {
             const pending = JSON.parse((await env.DM_STATE.get("pending")) || "[]");
             pending.push(x.id);
@@ -264,8 +321,38 @@ async function click(env, kind, commentId) {
   if (d && !d[kind] && !d.test) {
     d[kind] = Date.now(); // the first click per DM counts
     await env.DM_STATE.put(`d:${commentId}`, JSON.stringify(d), { expirationTtl: 60 * 86400 });
-    await bump(env, kind === "tg" ? "tgClicks" : "followClicks", 1, d.at);
+    await bump(env, CLICK_FIELD[kind], 1, d.at);
   }
+}
+
+const CLICK_FIELD = { tg: "tgClicks", follow: "followClicks", tip: "magnetClicks" };
+
+const esc = (s) => String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+/** /t/<comment>: the template the DM promised, plus the channel and follow buttons (counted like the DM's own). */
+export function templatePage(env, commentId, m) {
+  const base = (env.PUBLIC_URL || "").replace(/\/$/, "");
+  const go = (kind) => `${base}/go/${kind}/${encodeURIComponent(commentId)}`;
+  // numbered lines become one list; the other lines stay paragraphs around it
+  const parts = [];
+  for (const t of m.tips) {
+    if (/^\d+[.)]\s/.test(t)) {
+      const item = `<li>${esc(t.replace(/^\d+[.)]\s*/, ""))}</li>`;
+      if (parts.length && parts[parts.length - 1].startsWith("<ol>")) parts[parts.length - 1] = parts[parts.length - 1].replace("</ol>", `${item}</ol>`);
+      else parts.push(`<ol>${item}</ol>`);
+    } else parts.push(`<p>${esc(t)}</p>`);
+  }
+  return `<!doctype html><html lang="hi"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(m.title)}</title><meta name="robots" content="noindex">
+<style>:root{color-scheme:light dark}body{margin:0;font:17px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#fafaf7;color:#1c1c1a}
+main{max-width:520px;margin:0 auto;padding:28px 16px 40px}h1{font-size:24px;line-height:1.25;margin:0 0 6px}.sub{color:#6b6b66;margin:0 0 22px}
+.card{background:#fff;border:1px solid #e6e4dc;border-radius:14px;padding:6px 18px}ol{padding-left:22px;margin:10px 0}li{margin:8px 0}p{margin:12px 0}
+a.btn{display:block;text-align:center;text-decoration:none;font-weight:600;border-radius:12px;padding:14px;margin-top:12px}
+.tg{background:#229ed9;color:#fff}.ig{background:#1c1c1a;color:#fff}
+@media (prefers-color-scheme:dark){body{background:#141413;color:#ecebe6}.card{background:#1e1e1c;border-color:#34332f}.sub{color:#a3a29b}.ig{background:#ecebe6;color:#141413}}</style>
+</head><body><main><h1>${esc(m.title)}</h1><p class="sub">Isha · Job Shorts</p><div class="card">${parts.join("")}</div>
+<a class="btn tg" href="${go("tg")}">Roz ki fresher jobs (Telegram)</a><a class="btn ig" href="${go("follow")}">Aise aur tips: @isha.07007 follow karo</a>
+</main></body></html>`;
 }
 
 export default {
@@ -284,6 +371,14 @@ export default {
       const [, kind, id] = go;
       ctx.waitUntil(click(env, kind, id).catch((e) => console.error(`click: ${e.message}`)));
       return Response.redirect(kind === "tg" ? await inviteLink(env) : PROFILE_URL, 302);
+    }
+    const tip = path.match(/^\/t\/([\w-]{1,64})$/);
+    if (tip) {
+      const d = JSON.parse((await env.DM_STATE.get(`d:${tip[1]}`)) || "null");
+      const m = d && d.media ? JSON.parse((await env.DM_STATE.get(`m:${d.media}`)) || "null") : null;
+      if (!m) return Response.redirect(await inviteLink(env), 302); // an old or unknown DM: the channel is the next best thing
+      ctx.waitUntil(click(env, "tip", tip[1]).catch((e) => console.error(`click: ${e.message}`)));
+      return new Response(templatePage(env, tip[1], m), { headers: { "content-type": "text/html; charset=utf-8", "cache-control": "no-store" } });
     }
     const json = (body) => new Response(body, { headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" } });
     // counts only, per IST day of the DM: no names, no comment texts, nothing secret

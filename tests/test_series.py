@@ -50,6 +50,27 @@ def test_episode_parses_and_fills(path: Path, run_py, tmp_path):
 
 
 @pytest.mark.parametrize("path", EPISODES, ids=lambda p: p.stem)
+def test_job_lines_show_their_card(path: Path, run_py):
+    """A spoken {jobN} needs its [job: N] on the same line, or the reel names a job without showing its card (an edit of
+    the 22 Nov script dropped it, 2026-11-21)."""
+    for line in run_py.parse_series(path)["dialogue"].splitlines():
+        for n in re.findall(r"\{job(\d)\}", line):  # the whole job; {job1.company} etc. are just words in a line
+            assert re.search(rf"\[job:\s*{n}\s*\]", line), f"{{job{n}}} without [job: {n}]: {line}"
+
+
+@pytest.mark.parametrize("path", EPISODES, ids=lambda p: p.stem)
+def test_lead_magnet_word_matches(path: Path, run_py):
+    """A lead-magnet episode (caption line '"GD" comment karo: ... + roz ki fresher jobs', read by the DM Worker) must ask
+    for the same word out loud in its last line, or viewers comment a word the Worker doesn't know."""
+    ep = run_py.parse_series(path)
+    m = re.search(r'["“]([A-Za-z0-9]{2,20})["”]\s+comment\s+karo:\s*.+?\s*\+\s*roz ki fresher jobs', ep["description"], re.I)
+    if not m:
+        return
+    last = [l for l in ep["dialogue"].splitlines() if l.strip()][-1]
+    assert re.search(rf"\b{re.escape(m.group(1))}\b", last), f"caption asks for {m.group(1)}, the last line doesn't: {last}"
+
+
+@pytest.mark.parametrize("path", EPISODES, ids=lambda p: p.stem)
 def test_value_episodes_promote_nothing(path: Path, run_py):
     ep = run_py.parse_series(path)
     if ep["count"] != 0:

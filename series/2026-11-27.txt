@@ -5,6 +5,9 @@
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 13/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
 # 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
+# 2026-11-21: lead-magnet week (22-28 Nov, EXPERIMENTS.md): line 2 says what the viewer gets (lock-in), one
+# rehook at ~10-13 s (where the average watch ends), and the CTA asks for this topic's word; the Worker DMs the
+# template (the description's tips block) for it. Line 1 unchanged (Opener test B).
 title: Interview prep | Coding round mein chup mat raho
 cast: arjun, riya
 jobs: india-freshers, 0
@@ -14,15 +17,16 @@ trial_hook: Don't stay silent in a coding round. Repeat the question first.
 trial_card: CHUP = BLANK SCREEN
 yt_last: Subscribe karo. Ek click, koi coding nahi.
 Riya: Live coding mein main bilkul chup rehti hoon. Focus ke liye.
-Arjun: Pichli baar kya hua tha?
+Arjun: Yahi chup round haara deti hai. Chaar step hain. Pichli baar kya hua tha?
 Riya: Duplicate dhoondhne wala sawaal. Das minute chup rahi, phir answer diya.
 Arjun: Un das minute mein unhe pata hi nahi chala, tum soch rahi thi ya so rahi thi.
 Riya: Toh kya bolti?
-Arjun: Sawaal apne shabdon mein. Phir simple tareeka, chahe slow ho. Phir better.
+Arjun: Chaar step, aur chautha sabse kaam ka. Pehle sawaal apne shabdon mein. Ek example input.
+Arjun: Phir simple tareeka, chahe slow ho. Phir better.
 Riya: Aur atak jaati toh?
-Arjun: Bolo kahan atki ho. Hint aksar wahin se aata hai.
+Arjun: Yahi chautha step. Bolo kahan atki ho. Hint aksar wahin se aata hai.
 Arjun: Bolte raho. Kal why this company ka jawab.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Yahan bolte mat raho, ek word kaafi hai.
+Arjun: Follow karke CODING comment karo, chaar step ki list DM mein bhejta hoon.
 
 --- description
 Live coding interview tips for freshers | Technical interview think aloud | Coding round tips
@@ -34,6 +38,6 @@ Chup rehke code karoge toh interviewer ko sirf blank screen dikhegi:
 4. Atke? Bolo kahan atke ho, hint wahin se aata hai
 
 Kal: "Why this company?" ka jawab.
-Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
+"CODING" comment karo: Coding round ke 4 step + roz ki fresher jobs, DM mein bhej denge.
 
 #codinginterview #technicalinterview #fresherjobs #placementpreparation #interviewtips

@@ -5,6 +5,9 @@
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
 # Ep 12/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
 # 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
+# 2026-11-21: lead-magnet week (22-28 Nov, EXPERIMENTS.md): line 2 says what the viewer gets (lock-in), one
+# rehook at ~10-13 s (where the average watch ends), and the CTA asks for this topic's word; the Worker DMs the
+# template (the description's tips block) for it. Line 1 unchanged (Opener test B).
 title: Interview prep | Internship se full-time offer
 cast: arjun, bunty
 jobs: india-freshers, 1
@@ -14,17 +17,17 @@ trial_hook: Don't waste your internship. Three habits turn it into an offer.
 trial_card: INTERNSHIP = INTERVIEW
 yt_last: Subscribe karo. Iska koi interview nahi.
 Bunty: Internship mil gayi! Do mahine kaam karo, certificate lo, bas.
-Arjun: Bas? Ye do mahine ka interview hai.
+Arjun: Bas? Ye do mahine ka interview hai. Teen aadatein isse offer banati hain.
 Bunty: Main toh chupchaap kaam karne wala tha.
-Arjun: Chupchaap kaam ka kisi ko pata nahi chalta. Har hafte manager ko teen line: kya kiya, kahan atka, aage kya.
+Arjun: Chupchaap kaam ka kisi ko pata nahi chalta. Pehli aadat: har hafte manager ko teen line. Kya kiya, kahan atka, aage kya.
 Bunty: Par mujhe toh chhote kaam milenge.
-Arjun: Ek chhota kaam poora apne naam ka. Wahi yaad rehta hai.
+Arjun: Doosri aadat yahin kaam aati hai. Ek chhota kaam poora apne naam ka.
 Bunty: Aur full-time ka wo khud bolenge.
-Arjun: Zaroori nahi. Last do hafte mein seedha poocho.
+Arjun: Zaroori nahi. Teesri: last do hafte mein seedha poocho.
 Bunty: Ye toh ChatGPT ne bhi nahi bataya.
 Arjun: Aur jinko abhi internship chahiye: ek website roz fresh roles ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
 Arjun: Do mahine ka interview. Kal coding round.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Is DM ke liye koi interview nahi.
+Arjun: Follow karke INTERN comment karo, hafte wala teen line ka template DM mein bhejta hoon.
 
 --- description
 How to convert internship into full time job | PPO tips for interns | Fresher jobs India
@@ -33,6 +36,7 @@ Internship asal mein 2 mahine ka interview hai. 3 kaam:
 1. Har hafte manager ko 3 line: kya kiya, kahan atka, aage kya
 2. Ek kaam poora apne naam ka
 3. Last 2 hafte mein seedha poocho: full-time ka chance hai?
+Template: "Is hafte: ___ kiya. Yahan atka: ___. Agle hafte: ___."
 
 Job in this episode:
 {jobs}
@@ -40,6 +44,6 @@ Job in this episode:
 Fresh jobs from company career pages, every day: link in bio.
 
 Kal: coding round mein chup kyun nahi rehna.
-Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
+"INTERN" comment karo: Internship ka weekly update template + roz ki fresher jobs, DM mein bhej denge.
 
 #internship #ppo #fresherjobs #jobsearchtips #careeradvice

@@ -55,10 +55,17 @@ def wants_link(text: str, keywords: list[str], emoji_only: bool, role_words: str
     return emoji_only and bool(EMOJI.search(t)) and not re.search(r"[a-z0-9ऀ-ॿ]", rest)
 
 
+def magnet_keyword(caption: str) -> str:
+    """The reel's own comment word, from its caption line '"PROJECT" comment karo: ... + roz ki fresher jobs' (the
+    Worker's parseMagnet; from 2026-11-22). Empty when the caption has none."""
+    m = re.search(r'["“]([A-Za-z0-9]{2,20})["”]\s+comment\s+karo:\s*.+?\s*\+\s*roz ki fresher jobs', caption or "", re.I)
+    return m.group(1).lower() if m else ""
+
+
 def recent_comments(api, user_id: str, days: int, own: str) -> list[dict]:
     """Top-level comments (and replies) by others on our media of the last `days` days, newest media first."""
     since = datetime.now(timezone.utc) - timedelta(days=days)
-    media = api.call("GET", f"{user_id}/media", {"fields": "id,timestamp,permalink,comments_count", "limit": 30}).get("data", [])
+    media = api.call("GET", f"{user_id}/media", {"fields": "id,timestamp,permalink,comments_count,caption", "limit": 30}).get("data", [])
     out = []
     for m in media:
         if datetime.fromisoformat(m["timestamp"].replace("+0000", "+00:00")) < since:
@@ -69,7 +76,7 @@ def recent_comments(api, user_id: str, days: int, own: str) -> list[dict]:
         for c in res.get("data", []):
             for x in [c] + (c.get("replies", {}) or {}).get("data", []):
                 if x.get("username", "").lower() != own.lower():
-                    out.append({**x, "media": m["id"], "permalink": m.get("permalink", "")})
+                    out.append({**x, "media": m["id"], "permalink": m.get("permalink", ""), "magnet": magnet_keyword(m.get("caption", ""))})
     return [c for c in out if datetime.fromisoformat(c["timestamp"].replace("+0000", "+00:00")) >= since]
 
 
@@ -195,11 +202,11 @@ def main() -> int:
     cutoff = (datetime.now(timezone.utc) - timedelta(days=dm["max_age_days"] + 1)).isoformat()
     answered = {k: v for k, v in answered.items() if v >= cutoff}  # older ones can't be answered anyway
     todo = [c for c in recent_comments(api, user_id, dm["max_age_days"], own)
-            if c["id"] not in answered and wants_link(c.get("text", ""), dm["keywords"], dm.get("emoji_only", True), dm.get("role_words", ""))]
+            if c["id"] not in answered and wants_link(c.get("text", ""), dm["keywords"] + ([c["magnet"]] if c["magnet"] else []), dm.get("emoji_only", True), dm.get("role_words", ""))]
     print(f"{len(todo)} comment(s) asking for the link" + (" (dry run)" if a.dry_run else ""))
     sent = refused = 0
     for c in todo[: dm.get("max_per_run", 50)]:
-        print(f"  @{c.get('username', '?')}: {c.get('text', '')[:60]!r} on {c['permalink']}")
+        print(f"  @{c.get('username', '?')}: {c.get('text', '')[:60]!r} on {c['permalink']}" + (f" (reel word {c['magnet'].upper()}: the Worker sends its template)" if c["magnet"] else ""))
         if a.dry_run:
             continue
         try:
