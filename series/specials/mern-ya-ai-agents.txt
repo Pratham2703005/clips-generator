@@ -1,0 +1,49 @@
+# Special, 2026-11-22 (extra evening reel, the user's topic). Value episode, no promotion. funnel: top.
+# The user's take: companies are automating their work with AI, so one programming language alone is not enough;
+# CS basics matter most, then one stack (any: MERN, Next.js, Java), and real AI exposure (agents that automate a task).
+# No numbers or company claims: the reel says what to learn and in what order, not a market statistic.
+# Built to the playbook (2026-11-21 structure): hook in the learner's words, lock-in on line 2, every step spoken
+# (Ek / Do / Teen, named again in the closing), one rehook at ~12 s that closes on the next line, the learner tries
+# the answer on their own project, Bunty's ChatGPT gag as the joke beat. Lead-magnet week format (EXPERIMENTS.md):
+# the CTA word AGENT matches the description's magnet line, whose tips block is the DM's page.
+# Run it: Daily reel -> mode custom, script = series/specials/mern-ya-ai-agents.txt, name = special-mern-ai-agents,
+# posting off; watch it, then Post reel with that run's ID.
+title: Fresher roadmap | MERN ya AI agents?
+cast: arjun, bunty
+jobs: india-freshers, 0
+funnel: top
+steps: Basics: DSA, DBMS, OS | Ek stack, poora | Ek AI agent project
+hook: MERN YA AI AGENTS?
+trial_hook: One programming language is not enough anymore. Learn these three things, in this order.
+trial_card: SIRF MERN = KAAFI NAHI
+yt_last: Subscribe karo. Agent tumhara interview nahi dega.
+threads: Abhi kaunsa stack seekh rahe ho, aur AI agents pe kitna time de rahe ho?
+Bunty: Teen mahine MERN seekha. Ab sab bolte hain, AI agent banao.
+Arjun: Dono chahiye, bas sahi order mein. Teen cheezein.
+Bunty: Toh mera MERN bekaar gaya?
+Arjun: Nahi. Ek: basics. DSA, DBMS, OS. Interview yahi poochta hai.
+Arjun: Do: ek stack, poora. MERN, Next.js ya Java, koi bhi ek.
+Arjun: Par yahin sab hafte barbaad karte hain.
+Bunty: Mera navbar teen din se ban raha hai.
+Arjun: Wahi. UI pe hafte mat lagao.
+Arjun: Teen: ek AI agent banao, jo koi asli kaam khud kare.
+Bunty: Jaise roz ki jobs padh ke sheet mein daalne wala?
+Arjun: Haan. Resume pe likho, usne kya automate kiya.
+Bunty: Ya agent mera interview de de? ChatGPT ne bhi yahi bola.
+Arjun: Interview tum doge. Basics, ek stack, ek agent. Kal low CGPA ka sawaal.
+Arjun: Follow karke AGENT comment karo, roadmap DM mein bhejta hoon.
+
+--- description
+MERN stack or AI agents for freshers | What to learn for placements | Fresher roadmap
+Fresher roadmap 🤖
+Sirf ek language ab kaafi nahi. Is order mein seekho:
+1. Basics: DSA, DBMS, OS, networking (interview yahi poochta hai)
+2. Ek stack, poora: MERN, Next.js ya Java, koi bhi ek
+3. Ek AI agent project: jo koi asli kaam khud kare (jaise roz ki jobs padh ke sheet mein daalna)
+Resume pe likho: agent ne kya automate kiya aur kaise.
+UI pe hafte mat lagao: ek saaf, simple design kaafi hai.
+
+Kal: low CGPA ka sawaal.
+"AGENT" comment karo: Fresher roadmap (basics + stack + AI agent) + roz ki fresher jobs, DM mein bhej denge.
+
+#fresherjobs #aiagents #mernstack #placementpreparation #codinginterview
