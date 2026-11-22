@@ -15,7 +15,10 @@
 # off, and a shorter CTA. Kept colons (not dashes) and the [job: 1] card marker.
 title: Interview prep | Ek resume, 50 jobs? Nahi
 cast: arjun, riya
-jobs: india-freshers|remote-india, 1
+# 2026-11-22 (4): the story is a data analyst's (Excel, SQL, Power BI) but india-freshers drew "Wipro, Vlsi Engineer L2";
+# data-analyst-freshers first. steps: the on-screen list, one short line each (the description's lines broke in two).
+jobs: data-analyst-freshers|india-freshers, 1
+steps: JD ki 3 skills dhoondo | Unhe upar laao | Summary: role + skills
 funnel: bottom
 hook: 10 MINUTE RESUME FIX
 trial_hook: Stop sending the same resume to fifty jobs. Ten minutes fixes it.

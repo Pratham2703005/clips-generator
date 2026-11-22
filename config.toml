@@ -71,7 +71,7 @@ max_visuals = 6
 # ---- the finished reel
 [compose.characters]
 height = 700
-inner_edge = 0.36
+inner_edge = 0.42
 
 [compose.panel]
 enabled = true

@@ -38,6 +38,18 @@ candidates = 4
 max_brightness = 115
 # Motion points lost per brightness point over max_brightness (0.5 still picked the white build: 53.7 - 15 > 30.5).
 glare_penalty = 1.0
+# And for dark stretches (caves): points lost per brightness point under min_brightness. 2026-11-22 review: the flops'
+# dark caves and lava read worse than light grass and walls (Din 13: brightness 59; the stretches sit at 59-141).
+min_brightness = 75
+dark_penalty = 1.0
+# Points lost per % of lava-orange pixels (clip3 stretches reach 30%; today's opened on a lava lake). Moderate, as the
+# data is mixed: office tips (best watch time) had 30% lava.
+lava_penalty = 0.5
+# A stretch with any frame of its first 3 s more than this % lava is rejected outright, and new stretches are drawn up
+# to reject_rounds times (2026-11-22: the 0.5 penalty let a lava opening win). About 1 in 3 random stretches is
+# rejected (clip3: 7 in 10). 0 = no rule.
+max_opening_lava = 15
+reject_rounds = 3
 # Every pick is recorded here; candidates overlapping (within `gap` s) one of the last `avoid_last` picks are skipped, so
 # the footage rotates. 2026-11-05: picking the most movement out of 4 random stretches kept landing on clip1's
 # 1100-1250 s (Din 3, the special and Din 5). Two 30-min clips hold ~80 separate 45-s stretches. "" = no memory.
@@ -51,12 +63,13 @@ gap = 10
 # 2026-10-30: 760 reached the middle of the frame; 600 looked small with the figure kept to the outer ~36%, so 700.
 height = 700
 # Gap from the bottom edge, in pixels. The packs are half-body images cut at the bottom, so any gap leaves a torso
-# floating over the background (tried 120 on 2026-10-30).
+# floating over the background (tried 120 on 2026-10-30; raised 280 with a faded torso on 2026-11-22, the user
+# preferred them standing in the bottom corners).
 margin_bottom = 0
-# How far in the figure reaches, as a share of the width: the left one's right edge sits at 0.36, the right one's
-# left edge at 0.64 (user: left 0 -> 30-40%, right 60-70% -> 100%). Placement uses the idle image's figure, so a
-# waving arm in another expression sticks out past the outer edge instead of pushing the figure inward.
-inner_edge = 0.36
+# How far in the figure reaches, as a share of the width: the left one's right edge sits at 0.42, the right one's
+# left edge at 0.58. Placement uses the idle image's figure, so a waving arm in another expression sticks out past
+# the outer edge instead of pushing the figure inward. 0.36 until 2026-11-22 (user: "a little shift towards center").
+inner_edge = 0.42
 # At most this share of the figure may be cut off by the outer frame edge; a wider figure is drawn smaller.
 # 0.15 drew Arjun at 471 px ("characters look small"); 0.3 lets the outer side of the figure (back, shoulder) go off-frame.
 bleed = 0.3
@@ -79,12 +92,15 @@ top = 300
 # Hook card: script.json's hook_card, words landing one by one over hook_build s, shown at least hook_hold s.
 hook_size = 104
 # 1.9: the last words ("0 CALLS.") land at ~1.0-1.4 s (virality checklist: the claim lands at 1.2-1.6 s).
-hook_build = 1.9
-hook_hold = 2.8
+# 2026-11-22 review: "10 MINUTE RESUME FIX" was only whole at 1.5 s and the worst reels lost 62-70% in the first 3 s;
+# the whole card is on screen from frame 0 now (0 = no word-by-word build) and held big through the 3-second window.
+hook_build = 0.0
+hook_hold = 3.5
 # Topic tag: after the hook card, its words stay small at the top till the end (YouTube's Shorts shelf shows a frame of
 # its own choosing, so every frame should name the topic). Hidden while a job card uses the spot.
 topic_tag = true
-topic_size = 64
+# 64 read as tiny text on the phone after the big hook card (2026-11-22 review).
+topic_size = 84
 # Instagram cover frame: this long after hook_build (every hook word has landed), written to compose.json
 cover_after_build = 0.3
 # A number at the start of the hook card counts up from 0 in count_steps over count_seconds; a later "0"/"ZERO"/"NO"
@@ -95,6 +111,11 @@ count_seconds = 1.0
 # 64 read as a sticker on the phone (2026-10-30), so the card is near hook size.
 card_size = 100
 card_title_max = 28
+# Step list: lines that count out steps ("Ek: ...", "Do: ...", "Teen: ...") build a numbered list (the description's
+# numbered list when it has the same steps) under the topic tag, kept to the end so it can be screenshot.
+steps = true
+steps_size = 60
+steps_top = 470
 # Stamps: a spoken word slams a big rotated label onto the middle of the frame.
 stamp_size = 150
 stamp_color = "#E53935"

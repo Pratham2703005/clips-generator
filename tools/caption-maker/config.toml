@@ -60,9 +60,11 @@ text_color = "#FFFFFF"
 # The word being spoken right now.
 highlight_color = "#FFE600"
 # Bottom-centre anchor, this many pixels above the bottom edge. 575 sits the captions just above the composer's
-# characters (now at most ~575 px tall) and below its screenshot panel (y 560-1116).
+# characters (now at most ~575 px tall) and below its screenshot panel (y 560-1116). The user likes them there, over
+# the characters' heads (2026-11-22: moved to the chest, then back). margin_sides 110 (was 80): a little clear of the
+# like/comment column and the frame edge ("USKO BHI BOLTA" ran into it).
 margin_bottom = 560
-margin_sides = 80
+margin_sides = 110
 # Each chunk pops in from this scale (percent) over this many ms; 100 turns it off.
 pop_from = 85
 pop_ms = 90

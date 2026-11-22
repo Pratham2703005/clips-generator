@@ -24,6 +24,7 @@ import subprocess
 import os
 import sys
 import tempfile
+import textwrap
 import time
 import tomllib
 from datetime import datetime, timezone
@@ -138,30 +139,52 @@ def pick_background(folder: Path, ffprobe: str, need: float, margin: float, rng:
                 break
             recent = recent[len(recent) // 2 + 1:]
             log(f"  no unused background stretch; avoiding only the last {len(recent)} picks")
-    if len(picks) == 1 or not ffmpeg:
+    if not ffmpeg or (len(picks) == 1 and not bg_cfg.get("max_opening_lava")):
         return picks[0]
     # 2026-10-30: one stretch was a still white wall, flat and bright behind the captions. Prefer movement, not glare.
-    scored = []
-    for clip, off in picks:
-        motion, bright = stretch_stats(ffmpeg, clip, off, need)
-        score = motion - max(0.0, bright - bg_cfg.get("max_brightness", 150)) * bg_cfg.get("glare_penalty", 1.0)
-        scored.append((score, clip, off, motion, bright))
-        log(f"  background {clip.name} @{off:.0f}s: motion {motion:.1f}, brightness {bright:.0f}")
-    best = max(scored, key=lambda s: s[0])
+    # 2026-11-22: a stretch whose first 3 s are mostly lava is rejected outright (busy orange under orange captions, in
+    # the seconds a viewer decides to skip); a penalty alone let a 30%-lava opening win. All rejected: draw again.
+    # Rejected ones are replaced by new draws, so `candidates` usable stretches compete (with only one left, a dark slow
+    # cave won by default, 2026-11-22).
+    length = dict(usable)[picks[0][0]]
+    scored, rejected = [], []
+    want = max(1, bg_cfg.get("candidates", 1))
+    for _ in range(1 + bg_cfg.get("reject_rounds", 3)):
+        for clip, off in picks:
+            motion, bright, lava, opening = stretch_stats(ffmpeg, clip, off, need)
+            score = (motion - max(0.0, bright - bg_cfg.get("max_brightness", 150)) * bg_cfg.get("glare_penalty", 1.0)
+                     - max(0.0, bg_cfg.get("min_brightness", 0) - bright) * bg_cfg.get("dark_penalty", 0.0)
+                     - lava * bg_cfg.get("lava_penalty", 0.0))
+            bad = bool(bg_cfg.get("max_opening_lava")) and opening > bg_cfg["max_opening_lava"]
+            (rejected if bad else scored).append((score, clip, off))
+            log(f"  background {clip.name} @{off:.0f}s: motion {motion:.1f}, brightness {bright:.0f}, lava {lava:.0f}%, "
+                f"first 3 s up to {opening:.0f}% lava{' - rejected' if bad else ''}")
+        if len(scored) >= want:
+            break
+        clip = picks[0][0]
+        picks = [(clip, o) for o in (free_offset(rng, clip.name, length, need, margin, recent, gap)
+                                     for _ in range(want - len(scored))) if o is not None]
+    best = max(scored or rejected, key=lambda s: s[0])  # every try rejected: the best of them, never no reel
     return best[1], best[2]
 
 
-def stretch_stats(ffmpeg: str, clip: Path, offset: float, length: float) -> tuple[float, float]:
-    """(mean frame-to-frame change, mean brightness 0-255) of a stretch, from tiny grey frames at 2 fps."""
+def stretch_stats(ffmpeg: str, clip: Path, offset: float, length: float) -> tuple[float, float, float, float]:
+    """(mean frame-to-frame change, mean brightness 0-255, % of lava-orange pixels, % in the worst frame of the first
+    3 s) of a stretch, from tiny frames at 2 fps."""
     import numpy as np
     w, h = 54, 96
     r = subprocess.run([ffmpeg, "-v", "error", "-ss", str(offset), "-t", str(length), "-i", str(clip),
-                        "-vf", f"fps=2,scale={w}:{h},format=gray", "-f", "rawvideo", "-"], capture_output=True)
+                        "-vf", f"fps=2,scale={w}:{h}", "-pix_fmt", "rgb24", "-f", "rawvideo", "-"], capture_output=True)
     f = np.frombuffer(r.stdout, np.uint8)
-    f = f[: len(f) // (w * h) * w * h].reshape(-1, h, w).astype(np.float32)
+    f = f[: len(f) // (w * h * 3) * w * h * 3].reshape(-1, h, w, 3).astype(np.float32)
     if len(f) < 2:
-        return 0.0, 255.0
-    return float(np.abs(np.diff(f, axis=0)).mean()), float(f.mean())
+        return 0.0, 255.0, 0.0, 0.0
+    grey = f.mean(axis=3)
+    red, green, blue = f[..., 0], f[..., 1], f[..., 2]
+    orange = (red > 150) & (red - blue > 100) & (green > 0.3 * red) & (green < 0.8 * red)  # lava, also its darker edges
+    # the opening's worst frame, not its average: 2026-11-22's stretch was lava at 0 s and 2.5 s with a wall between (14% mean)
+    opening = orange[:6].reshape(len(orange[:6]), -1).mean(axis=1).max()  # 6 frames at 2 fps = the first 3 s
+    return float(np.abs(np.diff(grey, axis=0)).mean()), float(grey.mean()), float(orange.mean() * 100), float(opening * 100)
 
 
 # ---- characters ----
@@ -235,8 +258,8 @@ def build_overlays(turns: list[dict], cast: dict, images: dict, cfg: dict) -> li
         imgs = images[t["speaker"]]
         w = imgs[cc["normal"]][1]
         # the figure (not a waving arm) stops at inner_edge of the width: the left one ends there, the right one
-        # starts at 1 - inner_edge (user, 2026-10-30: they came in to the middle; keep them to ~30-40% / ~60-70%).
-        # What sticks out on the outer side is cut by the frame edge.
+        # starts at 1 - inner_edge (user, 2026-10-30: they came in to the middle; keep them to ~30-40% / ~60-70%;
+        # 2026-11-22: bottom corners, a little nearer the middle). What sticks out on the outer side is cut by the frame edge.
         bl, br = imgs["_body"]
         inner = cc["inner_edge"] * v["width"]
         target = inner - br if c["position"] == "left" else v["width"] - inner - bl
@@ -270,11 +293,63 @@ def ass_text(s: str) -> str:
     return str(s).replace("\\", "").replace("{", "(").replace("}", ")")
 
 
-def make_overlay(script: dict, timeline: dict, cfg: dict) -> tuple[str, list[tuple[str, float]]]:
-    """The ASS file for the on-screen layer, and the (sfx name, time) cues that go with it."""
+COUNT_NOUN = re.compile(r"(APPLICATIONS?|APPS|APPLIED|JOBS?|RESUMES?|REJECTIONS?|COMPANIES|CALLS|REPLIES|INTERVIEWS)\b")
+
+
+STEP_WORDS = {"ek": 1, "do": 2, "teen": 3, "chaar": 4, "char": 4, "paanch": 5, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5}
+STEP = re.compile(r"(?:^|[.!?]\s+)(ek|do|teen|chaar|char|paanch|one|two|three|four|five|[1-5])\s*:\s*", re.I)
+
+
+def plan_steps(script: dict, timeline: dict) -> list[tuple[float, str]]:
+    """(time, label) for each step a line counts out ("Ek: ...", "Do: ...", "Teen: ..."), when they run 1, 2, 3...
+    The labels are the episode's own short ones (a series "steps:" line), else the description's numbered list when it
+    has the same steps, else the spoken words."""
+    found = []
+    for ln in timeline["lines"]:
+        m = STEP.search(ln["text"])
+        if not m:
+            continue
+        k = STEP_WORDS.get(m.group(1).lower()) or int(m.group(1))
+        idx = len(ln["text"][: m.start(1)].split())  # the step word's place among the line's words
+        words = ln.get("words") or []
+        t = words[idx]["start"] if idx < len(words) else ln["start"]
+        found.append((k, t, re.split(r"(?<=[.!?])\s", ln["text"][m.end():])[0].rstrip(".!? ")))
+    if len(found) < 2 or [k for k, _, _ in found] != list(range(1, len(found) + 1)):
+        return []
+    written = []
+    for n, text in re.findall(r"(?m)^\s*(\d)[.)]\s+(.+?)\s*$", script.get("caption") or ""):
+        if int(n) != len(written) + 1:
+            break
+        written.append(text)
+    own = script.get("steps") or []
+    labels = (own if len(own) == len(found) else written if len(written) == len(found)
+              else [s[:1].upper() + s[1:] for _, _, s in found])
+    return [(t, label) for (_, t, _), label in zip(found, labels)]
+
+
+def free_spans(a: float, b: float, busy: list[tuple[float, float]]) -> list[tuple[float, float]]:
+    """The parts of a..b outside the busy intervals."""
+    out, t = [], a
+    for x, y in sorted(busy):
+        if y <= t or x >= b:
+            continue
+        if x - t > 0.3:
+            out.append((t, x))
+        t = max(t, y)
+    if b - t > 0.3:
+        out.append((t, b))
+    return out
+
+
+def make_overlay(script: dict, timeline: dict, cfg: dict, busy: list[tuple[float, float]] = ()) -> tuple[str, list[tuple[str, float]]]:
+    """The ASS file for the on-screen layer, and the (sfx name, time) cues that go with it. busy: when a screenshot
+    panel is up (the step list steps aside for it)."""
     o, v = cfg["overlay"], cfg["video"]
     cx = v["width"] // 2
     styles = [
+        # no shadow box (BackColour fully transparent): it showed as a dark sliver beside the shorter lines
+        f"Style: steps,{o['font']},{o.get('steps_size', 52)},{ass_color('#111111')},{ass_color('#111111')},{ass_color('#FFFFFF')},{ass_color('#000000', 0xFF)},"
+        f"-1,0,0,0,100,100,0,0,3,6,0,7,80,80,{o.get('steps_top', 450)},1",
         f"Style: hook,{o['font']},{o['hook_size']},{ass_color('#FFFFFF')},{ass_color('#FFFFFF')},{ass_color('#000000')},{ass_color('#000000', 0x60)},"
         f"-1,0,0,0,100,100,0,0,3,18,0,8,60,60,{o['top']},1",
         f"Style: card,{o['font']},{o['card_size']},{ass_color('#111111')},{ass_color('#111111')},{ass_color('#FFFFFF')},{ass_color('#000000', 0x80)},"
@@ -294,7 +369,8 @@ def make_overlay(script: dict, timeline: dict, cfg: dict) -> tuple[str, list[tup
         lands = [k * step for k in range(len(card))]
         # "0 CALLS." / "ZERO REPLIES": from the first zero after word 1 on, the words slam in red with a stamp sound
         zero = next((k for k in range(1, len(card)) if re.sub(r"[^A-Z0-9]", "", card[k]) in ("0", "ZERO", "NO")), None)
-        num = re.fullmatch(r"(\d{2,5})([^\d]*)", card[0])
+        # only a count races up ("200 APPLICATIONS"); "10 MINUTE RESUME FIX" opened on a lone "1" (2026-11-22)
+        num = re.fullmatch(r"(\d{2,5})([^\d]*)", card[0]) if len(card) > 1 and COUNT_NOUN.match(card[1]) else None
         red = ass_color(o.get("stamp_color", "#E53935"))
 
         def card_text(first: str, since: float) -> str:
@@ -348,6 +424,25 @@ def make_overlay(script: dict, timeline: dict, cfg: dict) -> tuple[str, list[tup
             if a - t > 0.4:
                 events.append(f"Dialogue: 0,{ass_time(t)},{ass_time(min(a, stop))},topic,,0,0,0,,{{\\fad(150,120)}}{words}")
             t = max(t, b)
+    # step list: the steps a line counts out ("Ek: ... Do: ... Teen: ...") build up as a list under the topic tag and
+    # stay to the end, something to screenshot (2026-11-22 review: the tips were only spoken and in the description,
+    # never on screen). It steps aside for job cards and screenshot panels.
+    steps = plan_steps(script, timeline) if o.get("steps", True) and lines else []
+    stop = lines[-1]["end"] + 1.0 if lines else 0
+    # a long label is broken here, at a word, not by the renderer: its break kept the space, a white strip on the box
+    per_line = max(10, int((v["width"] - 160) / (o.get("steps_size", 52) * 0.5)))  # Archivo Black: ~0.4-0.5 em a letter
+    steps = [(t, "\\N".join(textwrap.wrap(f"{j + 1}. {ass_text(label)}", per_line))) for j, (t, label) in enumerate(steps)]
+    for k, (t, _) in enumerate(steps):
+        upto = steps[k + 1][0] if k + 1 < len(steps) else stop
+        for a, b in free_spans(t, upto, list(job_times) + list(busy)):
+            items = []
+            for j, (tj, label) in enumerate(steps[: k + 1]):
+                land = int((tj - a) * 1000)
+                show = f"{{\\alpha&HFF&\\t({land},{land + 150},\\alpha&H00&)}}" if j == k and land >= 0 else ""
+                items.append(f"{show}{label}")
+            fade = "{\\fad(0,120)}" if b < upto - 0.01 or k + 1 == len(steps) else ""  # not between two steps
+            events.append(f"Dialogue: 1,{ass_time(a)},{ass_time(b)},steps,,0,0,0,,{fade}" + "\\N".join(items))
+        cues.append(("pop", t))
     # stamps: a word in the dialogue slams a big rotated stamp onto the middle of the frame
     for word, label in o.get("stamps", {}).items():
         for ln in lines:
@@ -577,12 +672,12 @@ def main() -> None:
             log(f"  {t['in']:6.2f}-{t['end']:6.2f}  {cast[t['speaker']]['name']} ({len(t['lines'])} line{'s' if len(t['lines']) > 1 else ''})")
         overlay_ass = None
         cues: list[tuple[str, float]] = []
+        panels = plan_panels(folder, timeline, total, cfg)
         if cfg.get("overlay", {}).get("enabled", True) and cfg.get("overlay"):
-            text, cues = make_overlay(script, timeline, cfg)
+            text, cues = make_overlay(script, timeline, cfg, [(p["start"] - 0.1, p["end"] + 0.1) for p in panels])
             (folder / "overlay.ass").write_text(text, encoding="utf-8")
             overlay_ass = "overlay.ass"
         sounds = sound_inputs(cfg, base, turns, cues, total, log)
-        panels = plan_panels(folder, timeline, total, cfg)
         if panels:
             log(f"  {len(panels)} screenshot panel(s) from visuals.json")
         try:

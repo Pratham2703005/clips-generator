@@ -41,9 +41,11 @@ retries = 1
 job_pages = true
 # The last line (call to action) shows the brief's platform page.
 cta_page = true
+# ...but not in reels of these tracks: the series talks to freshers, and the platform pages are developer products.
+cta_skip_tracks = ["series"]
 # At most this many screenshots per reel (each is a ~15 s Chrome run).
 max_visuals = 6
-# When line 1 has a number (the hook, "You sent 200 applications..."), show an illustrative applications tracker with
+# When the hook card or line 1 counts applications ("200 APPLICATIONS", "50 jobs, 0 replies"), show an illustrative applications tracker with
 # that many "No response" rows from frame 0, scrolling fast (px/s in the reel). Labelled "illustration"; generic rows.
 hook_tracker = true
 hook_scroll = 500

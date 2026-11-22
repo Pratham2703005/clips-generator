@@ -169,6 +169,15 @@ label = "Data & AI jobs"
 audience = "data analysts, data engineers and ML people"
 filters = { categories = "Data & AI", countries = "India" }
 
+# For episodes whose story is a data analyst's (Excel, SQL, Power BI): 2026-11-22's resume episode drew "Vlsi Engineer
+# L2" from india-freshers. keywords: the API's title search, comma = or. title_pattern: a regex the job title must
+# also match (a guard, checked here).
+[niches.data-analyst-freshers]
+label = "Data analyst jobs for freshers in India"
+audience = "freshers who want a data analyst / business analyst job in India"
+filters = { countries = "India", experienceLevels = "Fresher,Junior", keywords = "data analyst,business analyst,power bi,mis executive,reporting analyst,bi analyst" }
+title_pattern = 'analyst|power ?bi|\bmis\b|\bbi\b'
+
 [niches.design-ux]
 label = "Design & UX jobs"
 audience = "designers"

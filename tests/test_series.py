@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import re
+import tomllib
 from datetime import date
 from pathlib import Path
 
@@ -33,7 +34,10 @@ def test_episode_parses_and_fills(path: Path, run_py, tmp_path):
 
     # header lines never reach the spoken dialogue (a new header field must be added to parse_series)
     for line in ep["dialogue"].splitlines():
-        assert not re.match(r"^\s*(title|cast|jobs|funnel|trial_hook|trial_card|yt_last|threads)\s*:", line, re.I), line
+        assert not re.match(r"^\s*(title|cast|jobs|funnel|steps|trial_hook|trial_card|yt_last|threads)\s*:", line, re.I), line
+    # every niche an episode names exists (a typo would silently fall through to the AI pipeline)
+    niches = tomllib.loads((ROOT / "tools/content-data-preparation/config.toml").read_text(encoding="utf-8"))["niches"]
+    assert all(n in niches for n in ep["niches"]), f"unknown niche in {ep['niches']}"
 
     slots = {int(n) for n in re.findall(r"\{job(\d)", ep["dialogue"])}
     assert not slots or max(slots) <= max(ep["count"], 1), f"dialogue uses {{job{max(slots)}}} but jobs count is {ep['count']}"

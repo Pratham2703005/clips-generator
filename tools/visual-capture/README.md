@@ -15,14 +15,15 @@ python tools/visual-capture/capture.py --fresh        # ignore the product-page 
 About 5-15 s per page.
 
 ## What it shows where
-- A line with a `job_id` gets that job's apply page: proof the job is real and fresh.
+- A line with a `job_id` gets that job's apply page: proof the job is real and fresh (`job_pages`).
 - A line naming a product gets that product's page. The `[[rules.mentions]]` regexes map words to `[pages]`, for example "n8n" to the n8n template.
-- The last line (the call to action) gets the day's platform page from the brief.
+- The last line (the call to action) gets the day's platform page from the brief, except in `cta_skip_tracks` reels (series: freshers, and the platform pages are developer products).
 - At most `max_visuals` per reel.
 
-- **The hook's own visual:** when line 1 has a number ("You sent 200 applications..."), it draws an illustrative "My job applications" tracker with that many "No response" rows.
+- **The hook's own visual:** when the hook card or line 1 counts applications ("200 APPLICATIONS", "50 jobs"; not "10 MINUTE"), it draws an illustrative "My job applications" tracker with that many "No response" rows.
   - It is our own HTML, labelled "illustration", with generic roles and no real companies. It is never a copy of a real app's UI.
   - The composer shows it from frame 0, scrolling fast (`hook_scroll`).
+  - Every shot is cut at the page's own height, so a short page never scrolls into blank space (the 10-row tracker did, 2026-11-22).
 
 ## How a shot is taken
 1. Each shot uses a throwaway Chrome profile: no cookies, no logins, nothing kept.

@@ -29,10 +29,11 @@ An 18 s reel renders in about 20 s.
   - The image follows the line's expression (`talk`, or `shock` for shocked lines).
   - Images are trimmed to the character, with one shared box per pack so switching expression doesn't shift it. They are scaled to `characters.height` and mirrored when the character would face away from the middle. `no_flip` images are never mirrored.
 - **On-screen layer** (`overlay.ass`, drawn over the captions):
-  - The script's `hook_card` lands word by word in the first ~1.9 s, in the top safe zone (below y=230).
-  - A leading number counts up from 0 ("200" races up in 1 s).
+  - The script's `hook_card` is on screen whole from frame 0 (`hook_build` 0), in the top safe zone (below y=230), and stays big for at least 3.5 s.
+  - A leading count counts up from 0 ("200 APPLICATIONS" races up in 1 s); other numbers ("10 MINUTE") don't.
   - From a "0"/"ZERO"/"NO" word on, the words slam in red with the stamp sound ("0 CALLS.").
   - A job card (company, title, city, "posted today") drops in while a job's line is spoken.
+  - Lines that count out steps ("Ek: ...", "Do: ...", "Teen: ...") build a numbered list under the topic tag (the episode's `steps:` labels, else the description's numbered list when it matches; long ones are broken at a word), kept to the end; it steps aside for job cards and panels.
   - A red "REJECTED" stamp slams in on the spoken word "Rejected". Stamps are set in `[overlay.stamps]`.
 - **Screenshot panel:**
   - If visual-capture wrote `visuals.json`, each screenshot appears in a 1040x600 bordered panel (y 530) while its line is spoken.
@@ -45,10 +46,10 @@ An 18 s reel renders in about 20 s.
 - **Fonts:** the on-screen layer uses Archivo Black from `public/fonts` (`overlay.fonts_dir`), so it looks the same on any machine.
 - **Layout:**
   - The first speaker is on screen at frame 0.
-  - Each figure stays in its outer ~36% (`inner_edge`). Placement follows the idle image's figure, so a waving arm in another expression sticks out past the frame edge.
+  - Each figure stays in its outer ~42% (`inner_edge`). Placement follows the idle image's figure, so a waving arm in another expression sticks out past the frame edge.
   - A figure too wide for that is drawn smaller, so at most `bleed` (30%) of it is cut off.
   - Characters sit on the bottom edge: the packs are half-body images.
-  - The background stretch is the most moving of 4 random tries, with points taken off for glare.
+  - The background stretch is the most moving of 4 random tries, with points taken off for glare, dark caves and lava. A stretch with any frame of its first 3 s more than 15% lava (`max_opening_lava`) is rejected and replaced by a new draw.
 - **Voice and captions** go on top. The captions come from caption-maker's `captions.ass`, so their look is set in caption-maker's config.
 
 ## Settings ([config.toml](config.toml))
@@ -58,8 +59,8 @@ An 18 s reel renders in about 20 s.
 | `video.tail` | 0.8 | Seconds of background after the last word |
 | `background.margin` | 5 | Keep away from the clip's start and end |
 | `background.brightness`, `saturation` | -0.05, 0.9 | Dim and desaturate the gameplay a little |
-| `characters.height` | 700 | Character height in pixels (caption-maker's `margin_bottom` 560 keeps the captions on the characters' chest line) |
-| `characters.inner_edge`, `bleed` | 0.36, 0.3 | How far in from its side a figure may reach; how much of a too-wide figure may be cut off |
+| `characters.height` | 700 | Character height in pixels (caption-maker's `margin_bottom` 560 keeps the captions just over the characters' heads) |
+| `characters.inner_edge`, `bleed` | 0.42, 0.3 | How far in from its side a figure may reach; how much of a too-wide figure may be cut off |
 | `overlay.*`, `panel.*`, `audio.*` | | On-screen layer, screenshot panel, SFX and music (see comments in the file) |
 
 These defaults can be overridden by the root `config.toml` (`[compose.*]`) and the run mode (`modes/*.toml`), see the root README.

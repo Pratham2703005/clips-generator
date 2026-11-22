@@ -228,15 +228,22 @@ def clean_company(name: str) -> str:
 # The audience is freshers (user, 2026-10-30): a senior role is no use to them, in any niche (all three workflow reels of
 # 2026-10-31/11-01 featured one: "Senior Medical Writer", "Senior Technical Writer", "Senior GCP Data Engineer").
 # "manager" stays: the product-managers niche and entry roles ("Account Manager", "Store Manager") need it.
-SENIOR_TITLE = re.compile(r"\b(senior|sr\.?|snr|lead(?!\s*gen)|principal|staff|director|head of|vice president|vp|chief|architect|iii|iv)\b", re.I)
+# 2026-11-22: "Vlsi Engineer L2" (Wipro), "TPM II" and "Associate Manager" got through: levels 2+ and II are not fresher roles.
+SENIOR_TITLE = re.compile(r"\b(senior|sr\.?|snr|lead(?!\s*gen)|principal|staff|director|head of|vice president|vp|chief|architect"
+                          r"|associate manager|ii|iii|iv|l[2-9]|level [2-9])\b", re.I)
 
 
 def too_senior(job: dict) -> bool:
     return bool(SENIOR_TITLE.search(job.get("title", ""))) or str(job.get("experience") or "").lower().replace(" ", "") in ("senior", "staff-plus", "staff+", "staffplus")
 
 
+# The feed title-cases some titles ("Vlsi Engineer L2"); these words are always written in capitals.
+ACRONYMS = re.compile(r"\b(vlsi|sql|qa|ui|ux|ai|ml|hr|it|sap|aws|gcp|bi|etl|sde|sre|api|erp|crm|rtl|asic|fpga|pcb|bpo|kpo|mis|nlp|seo|sem|cad)\b", re.I)
+
+
 def clean_title(title: str) -> str:
     title = re.sub(r"\s+", " ", title.replace("�", "-")).strip()
+    title = ACRONYMS.sub(lambda m: m.group(1).upper(), title)
     title = re.sub(r"\s*\((m/f/d|f/m/d|m/w/d|w/m/d|m/f|all genders|gn)\)", "", title, flags=re.I)
     title = re.sub(r"\s*[-|]\s*(remote|R\d{5,})$", "", title, flags=re.I)
     return title.strip(" -|")
@@ -263,8 +270,10 @@ def normalize(job: dict, today: date) -> dict:
     }
 
 
-def choose_jobs(cfg: dict, key: str, filters: dict, need: int, history: list[dict], today: date, log) -> tuple[list[dict], list[dict]]:
-    """Returns (chosen jobs, all usable candidates). Chosen: fresh, distinct companies, not featured recently, live links."""
+def choose_jobs(cfg: dict, key: str, filters: dict, need: int, history: list[dict], today: date, log,
+                title_pattern: str = "") -> tuple[list[dict], list[dict]]:
+    """Returns (chosen jobs, all usable candidates). Chosen: fresh, distinct companies, not featured recently, live links.
+    title_pattern: a niche's regex the title must match (the feed's categories are wide: "Data & AI" holds VLSI roles)."""
     rules = cfg["rules"]
     params = {**filters, "postedWithinDays": rules["posted_within_days"], "limit": rules["candidates"]}
     raw = api_get(cfg, "/jobs", params, key).get("jobs", [])
@@ -279,6 +288,8 @@ def choose_jobs(cfg: dict, key: str, filters: dict, need: int, history: list[dic
         usable = [j for j in usable if not too_senior(j)]
         if senior:
             log(f"  {senior} senior/lead/manager roles left out (fresher audience)")
+    if title_pattern:
+        usable = [j for j in usable if re.search(title_pattern, j["title"], re.I)]
     log(f"  {len(raw)} fetched, {len(usable)} usable after filters and history")
     chosen, seen, dead = [], set(), set()
     for j in usable:
@@ -371,7 +382,7 @@ def main() -> None:
     for n in order:
         log(f"niche {n}: {niches[n]['label']}")
         try:
-            jobs, usable = choose_jobs(cfg, key, niches[n]["filters"], want, history, today, log)
+            jobs, usable = choose_jobs(cfg, key, niches[n]["filters"], want, history, today, log, niches[n].get("title_pattern", ""))
         except RuntimeError as e:
             log(f"  API error, trying the next niche: {e}")
             continue

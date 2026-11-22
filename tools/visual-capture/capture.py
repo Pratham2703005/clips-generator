@@ -179,8 +179,14 @@ def shoot_cdp(chrome: str, url: str, out: Path, c: dict, log) -> bool:
                 log(f"  skipped, the page is a {why}: {url}")
                 raise UnusablePage(why)
             time.sleep(0.4)
+            # never taller than the page: below its end the shot is blank and the panel scrolls into it (2026-11-22: a
+            # 10-row hook tracker in a 6000-px shot was an empty white box from 1.5 s, the seconds that decide a skip)
+            page_h = call("Runtime.evaluate", expression="Math.max(document.documentElement.scrollHeight, document.body ? document.body.scrollHeight : 0)"
+                          ).get("result", {}).get("value") or 0
+            want = c.get("shot_height", c["height"])
+            shot_h = max(c["height"], min(want, int(page_h))) if page_h else want
             shot = call("Page.captureScreenshot", format="png", captureBeyondViewport=True,
-                        clip={"x": 0, "y": 0, "width": c["width"], "height": c.get("shot_height", c["height"]), "scale": 1})
+                        clip={"x": 0, "y": 0, "width": c["width"], "height": shot_h, "scale": 1})
             ws.close()
             out.write_bytes(base64.b64decode(shot["data"]))
             log(f"  {out.name}: {time.time() - t:.0f} s  {url}")
@@ -224,6 +230,10 @@ def shoot(chrome: str, url: str, out: Path, c: dict, log) -> bool:
         log(f"  attempt {attempt + 1} failed: {url}")
     return False
 
+
+# The tracker is only for a hook that counts applications ("200 APPLICATIONS", "50 jobs, 0 replies"). 2026-11-22: any
+# number fired it, so "10 MINUTE RESUME FIX" got a 10-row "My job applications" table, then a blank box.
+TRACKER_HOOK = re.compile(r"\b(\d{2,4})\+?\s*(applications?|apps|applied|jobs?|resumes?|rejections?|companies)\b", re.I)
 
 TRACKER_ROLES = ["Software Engineer", "Data Analyst", "Product Manager", "Business Analyst", "Frontend Developer", "Customer Success Associate",
                  "Marketing Associate", "QA Engineer", "Operations Analyst", "Sales Development Rep"]
@@ -273,7 +283,10 @@ def plan(script: dict, brief: dict, cfg: dict) -> list[dict]:
                 break
     last = len(script["lines"]) - 1
     platform = (brief.get("platform") or {}).get("id")
-    if r.get("cta_page") and platform in pages and not any(v["line"] == last for v in out):
+    # the platform pages are developer products (Make, n8n, RapidAPI...): a fresher series reel showed the Make.com
+    # scenario under "Follow karke RESUME comment karo" (2026-11-22)
+    cta = r.get("cta_page") and script.get("track") not in r.get("cta_skip_tracks", [])
+    if cta and platform in pages and not any(v["line"] == last for v in out):
         out.append({"line": last, "kind": "page", "key": platform, "url": pages[platform]})
     # each page once per reel (user, 2026-10-30: the same Apify page kept coming back); the same URL under two keys
     # (apify / apify-mcp) counts as one. The CTA keeps its page if it was used earlier: the earlier use is dropped.
@@ -318,7 +331,7 @@ def main() -> None:
     done = []
     # the hook's own visual (virality review: something the viewer recognises, moving, from frame 0)
     # the on-screen hook card has the number in digits even when the line spells it ("Two hundred applications")
-    m = re.search(r"\b(\d{2,4})\b", f"{script.get('hook_card', '')} {script['lines'][0]['text']}") if cfg["rules"].get("hook_tracker") else None
+    m = TRACKER_HOOK.search(f"{script.get('hook_card', '')} {script['lines'][0]['text']}") if cfg["rules"].get("hook_tracker") else None
     if m and not any(v["line"] == 0 for v in todo):
         html = out_dir / "hook-tracker.html"
         html.write_text(tracker_html(int(m.group(1))), encoding="utf-8")
