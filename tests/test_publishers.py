@@ -253,12 +253,13 @@ def test_youtube_publish_time():
     assert yt.publish_time("19:00", late) is None  # under 15 min away: public right away
 
 
-def test_youtube_config_publishes_at_seven_pm():
-    """User, 2026-11-14: every Short goes public at 19:00 IST."""
+def test_youtube_config_publishes_at_once():
+    """User, 2026-11-22: no schedule, the Short goes public with the other platforms (was 19:00 IST from 2026-11-14)."""
     import tomllib
     from conftest import ROOT
     cfg = tomllib.loads((ROOT / "tools/youtube-publisher/config.toml").read_text(encoding="utf-8"))
-    assert cfg["video"]["publish_at"] == "19:00"
+    assert cfg["video"]["publish_at"] == ""
+    assert yt.publish_time(cfg["video"]["publish_at"]) is None
 
 
 def test_youtube_cover_without_ffmpeg(reel_folder, monkeypatch):

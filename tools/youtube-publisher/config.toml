@@ -20,9 +20,9 @@ synthetic_media = false                 # cartoon characters: not "realistic alt
 title_max = 100                         # YouTube's limit
 description_max = 5000                  # YouTube's limit
 shorts_tag = true                       # adds #Shorts to the title when it fits
-publish_at = "19:00"                    # IST, same day: the night's upload stays private (scheduled) until then; "" = at once
-# 2026-11-14 (user): 08:00 -> 19:00 from now on. Earlier: 18:00 until 2026-11-12, then 08:00 for two days.
-# A run after 18:45 publishes at once (publish_time() needs 15 minutes).
+publish_at = ""                         # IST "HH:MM": the upload stays private (scheduled) until then; "" = public at once
+# 2026-11-22 (user): no schedule, the Short goes public with every other platform. Before: 19:00 from 2026-11-14,
+# 18:00 until 2026-11-12, then 08:00 for two days. A time under 15 minutes away publishes at once.
 # SEO (user's notes, 2026-11-16)
 hook_in_title = true                    # title = search line + the hook card in sentence case ("... | Na hardworking. Na passionate.")
 suggest_tags = true                     # tags = the search phrases + YouTube search-box suggestions + the #hashtags

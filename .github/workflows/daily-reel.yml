@@ -216,6 +216,14 @@ jobs:
             content/${{ env.DAY }}/compose.json
             content/${{ env.DAY }}/voice.json
             content/${{ env.DAY }}/timeline.json
+            # the clean voice track (~2 MB): a reel re-rendered later needs it, its mixed audio is no substitute
+            # (2026-11-22: a re-render ripped voice + music from reel.mp4 and doubled the music)
+            content/${{ env.DAY }}/voice.wav
+            content/${{ env.DAY }}/variants/*/voice.wav
+            content/${{ env.DAY }}/variants/*/timeline.json
+            content/custom/${{ env.NAME }}/voice.wav
+            content/custom/${{ env.NAME }}/variants/*/voice.wav
+            content/custom/${{ env.NAME }}/variants/*/timeline.json
             content/custom/${{ env.NAME }}/reel.mp4
             content/custom/${{ env.NAME }}/script.md
             content/custom/${{ env.NAME }}/script.json
