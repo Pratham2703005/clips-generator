@@ -266,6 +266,27 @@
       "premise": "layoff-fear",
       "hook": "cost-confession",
       "dynamic": "flashback"
+    },
+    {
+      "date": "2026-11-23",
+      "track": "job_drop",
+      "format": "top-drop",
+      "niche": "support-india",
+      "platform": "landing",
+      "cast": "arjun+bunty",
+      "job_ids": [
+        "5068a60ea736abad54bb32bca6a84827",
+        "e27f852c98e252f9258fbc7aa6c59860",
+        "e1b5a04df019274f5650673c825d3a61"
+      ],
+      "companies": [
+        "UST",
+        "Microsoft",
+        "HDFC Bank"
+      ],
+      "premise": "mass-recruiter-wait",
+      "hook": "before-after",
+      "dynamic": "both-vs-system"
     }
   ]
 }
