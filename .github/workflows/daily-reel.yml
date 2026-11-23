@@ -101,6 +101,10 @@ on:
         description: "Telegram: post to the channel"
         type: boolean
         default: true
+      linkedin:
+        description: "LinkedIn Page: text + cover image post (Short link, 2 jobs, Telegram link)"
+        type: boolean
+        default: true
       save_history:
         description: "Record this reel's jobs and ideas in content/history.json (so they don't repeat)"
         type: boolean
@@ -343,6 +347,19 @@ jobs:
           folder="content/$DAY"
           [ -n "$NAME" ] && folder="content/custom/$NAME"
           python tools/telegram-publisher/daily_jobs.py --folder "$folder"
+      # LinkedIn Page (2026-11-23): text + the cover frame through a Make.com scenario, after YouTube (the Short's link) and
+      # the daily jobs (its first 2 jobs). No webhook secret yet: the step says so and the report shows it skipped.
+      - name: Post to LinkedIn
+        id: linkedin
+        if: always() && steps.make.outcome == 'success' && (github.event_name == 'schedule' || inputs.linkedin)
+        continue-on-error: true
+        env:
+          MAKE_LINKEDIN_POST_WEBHOOK: ${{ secrets.MAKE_LINKEDIN_POST_WEBHOOK }}
+          MAKE_LINKEDIN_API_KEY: ${{ secrets.MAKE_LINKEDIN_API_KEY }}
+        run: |
+          folder="content/$DAY"
+          [ -n "$NAME" ] && folder="content/custom/$NAME"
+          python tools/linkedin-publisher/publish.py --folder "$folder"
 
       # what went up where, for a later Post reel run of this reel (so it never posts the same thing twice)
       - name: Keep the post record
@@ -353,6 +370,8 @@ jobs:
           path: |
             content/${{ env.DAY }}/posted.json
             content/custom/${{ env.NAME }}/posted.json
+            content/${{ env.DAY }}/daily-jobs.json
+            content/custom/${{ env.NAME }}/daily-jobs.json
           if-no-files-found: ignore
 
       - name: Save history
@@ -388,6 +407,8 @@ jobs:
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          MAKE_LINKEDIN_STATS_WEBHOOK: ${{ secrets.MAKE_LINKEDIN_STATS_WEBHOOK }}
+          MAKE_LINKEDIN_API_KEY: ${{ secrets.MAKE_LINKEDIN_API_KEY }}
           OUT_MAKE: ${{ steps.make.outcome }}
           OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
           OUT_YOUTUBE: ${{ steps.youtube.outcome }}
@@ -396,6 +417,7 @@ jobs:
           OUT_THREADS: ${{ steps.threads.outcome }}
           OUT_TELEGRAM: ${{ steps.telegram.outcome }}
           OUT_TELEGRAM_JOBS: ${{ steps.telegram_jobs.outcome }}
+          OUT_LINKEDIN: ${{ steps.linkedin.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           DAY="${DAY:-$(TZ=Asia/Kolkata date +%F)}"

@@ -8,7 +8,8 @@ Jobs: the reel's own jobs first (brief.json), then one per niche from [daily_job
 niche each day, until `count`. They come from the job feed through content-data-preparation's own filters (fresh,
 fresher-level, live apply link, distinct companies). Each job carries its niche as a hashtag, so a reader can tap
 #data or #remote to see only those. Needs TELEGRAM_BOT_TOKEN, TELEGRAM_CHANNEL and JOB_FEED_API_KEY.
-Writes telegram_jobs_message_id into the folder's posted.json and skips when it is already there.
+Writes telegram_jobs_message_id into the folder's posted.json and skips when it is already there; the jobs themselves go
+to the folder's daily-jobs.json (the LinkedIn post shows the first two).
 """
 
 from __future__ import annotations
@@ -136,6 +137,10 @@ def main() -> None:
         record = tg_pub.read_json(record_path)
         record.update({"telegram_jobs_message_id": msg["message_id"], "telegram_jobs_url": link, "telegram_jobs_count": len(jobs)})
         record_path.write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+        # the same jobs for the LinkedIn post (linkedin-publisher takes the first 2), so both say the same thing
+        keep = ("title", "company", "where", "posted", "apply_url", "tag")
+        (folder / "daily-jobs.json").write_text(json.dumps([{k: j.get(k) for k in keep} for j in jobs], indent=1,
+                                                           ensure_ascii=False) + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

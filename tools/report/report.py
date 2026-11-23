@@ -434,6 +434,42 @@ def telegram_stats(cfg: dict) -> dict:
     return {"channel": chan, "subscribers": n.get("result")}
 
 
+LI_KEYS = ("impressions", "unique_impressions", "clicks", "likes", "comments", "shares", "engagement")
+
+
+def linkedin_stats(cfg: dict) -> dict:
+    """The Page's followers and all-time share statistics, from the Make.com stats scenario (MAKE_LINKEDIN_STATS_WEBHOOK
+    answers {followers, impressions, clicks, likes, comments, shares, engagement}). No webhook: {}."""
+    hook = os.environ.get(cfg.get("stats_webhook_env", ""), "").strip()
+    if not hook:
+        return {}
+    headers = {"Content-Type": "application/json"}
+    key = os.environ.get(cfg.get("api_key_env", ""), "").strip()
+    if key:
+        headers["x-make-apikey"] = key
+    req = urllib.request.Request(hook, data=json.dumps({"organization": cfg.get("organization", "")}).encode(),
+                                 method="POST", headers=headers)
+    try:
+        with urllib.request.urlopen(req, timeout=90) as r:
+            raw = (r.read() or b"{}").decode("utf-8", "replace")
+        if raw.strip() == "Accepted":  # Make queued the call: the scenario is off ("Inactive") or not set to run at once
+            return {"note": "LinkedIn stats: Make answered 'Accepted', so the stats scenario is not active (switch it on)"}
+        # a Make mapping that came back empty leaves `"likes": ,` (no value): read it as null, not as broken JSON
+        data = json.loads(re.sub(r":\s*(?=[,}])", ": null", raw))
+    except (urllib.error.URLError, ValueError) as e:  # the webhook URL never goes into the note
+        reason = getattr(e, "code", None) or getattr(e, "reason", None) or "bad JSON"
+        return {"note": f"LinkedIn stats failed: {reason}"}
+    if not isinstance(data, dict):
+        return {"note": "LinkedIn stats: the Make scenario answered without a JSON object"}
+    def n(v):
+        try:
+            return round(float(v), 4) if "." in str(v) else int(v)
+        except (TypeError, ValueError):
+            return None
+    return {"page_url": cfg.get("page_url", ""), "followers": n(data.get("followers")),
+            "totals": {k: n(data[k]) for k in LI_KEYS if n(data.get(k)) is not None}}
+
+
 def threads_token_line() -> dict:
     """The Threads token lasts 60 days; get_token.py writes its expiry into the threads-publisher config."""
     path = Path(__file__).resolve().parent.parent / "threads-publisher" / "config.toml"
@@ -518,6 +554,8 @@ def snapshot(ig: dict, yt: dict, models: dict | None = None, pair: dict | None =
             m["id"]: {"views": m.get("views"), "likes": m.get("likes")} for m in o["th"]["posts"]}}
     if o.get("tg", {}).get("subscribers") is not None:
         s["tg"] = {"subscribers": o["tg"]["subscribers"]}
+    if o.get("li", {}).get("followers") is not None:
+        s["li"] = {"followers": o["li"]["followers"], "totals": o["li"].get("totals", {})}
     if pair:
         s["pair"] = pair
     if models:
@@ -584,12 +622,18 @@ def growth_rows(cur: dict, bases: list[dict | None]) -> list[tuple[str, str, lis
         for key in ("likes", "comments"):
             rows.append((f"YouTube {key} (last 60 days' Shorts)", num(sum(int(v[key]) for v in vids.values() if v.get(key) is not None)),
                          [signed(gained(vids, b["yt"]["videos"], key)) if b and b.get("yt") else "-" for b in bases]))
-    for k, name, follow in (("fb", "Facebook", "followers"), ("th", "Threads", "followers"), ("tg", "Telegram", "subscribers")):
+    for k, name, follow in (("fb", "Facebook", "followers"), ("th", "Threads", "followers"), ("tg", "Telegram", "subscribers"),
+                            ("li", "LinkedIn", "followers")):
         c = cur.get(k)
         if not c:
             continue
         rows.append((f"{name} {follow}", num(c.get(follow)),
                      [signed(change(c.get(follow), b[k].get(follow))) if b and b.get(k) else "-" for b in bases]))
+        for key in ("impressions", "clicks"):  # LinkedIn: the Page's all-time totals, so the change is the period's
+            if key in (c.get("totals") or {}):
+                rows.append((f"{name} {key} (all posts)", num(c["totals"][key]),
+                             [signed(change(c["totals"][key], ((b or {}).get(k) or {}).get("totals", {}).get(key)))
+                              if b and b.get(k) else "-" for b in bases]))
         if "posts" in c:
             for key in ("views", "likes"):
                 label = "plays" if k == "fb" and key == "views" else key
@@ -740,7 +784,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     posted = json.loads((folder / "posted.json").read_text(encoding="utf-8")) if (folder / "posted.json").is_file() else {}
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
     out = {k: os.environ.get(f"OUT_{k.upper()}", "")
-           for k in ("make", "instagram", "youtube", "trial", "facebook", "threads", "telegram", "telegram_jobs")}
+           for k in ("make", "instagram", "youtube", "trial", "facebook", "threads", "telegram", "telegram_jobs", "linkedin")}
     title = script.get("title") or day
     if not posted.get("youtube_url"):
         # put up by an earlier run whose record wasn't kept (2026-11-02: a Post reel run with YouTube unticked showed
@@ -772,15 +816,19 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
                             ("Facebook story", "facebook", ("facebook_story_id",)),
                             ("Threads post", "threads", ("threads_url", "threads_id")),
                             ("Telegram post", "telegram", ("telegram_url", "telegram_message_id")),
-                            ("Telegram daily jobs", "telegram_jobs", ("telegram_jobs_url", "telegram_jobs_message_id"))):
+                            ("Telegram daily jobs", "telegram_jobs", ("telegram_jobs_url", "telegram_jobs_message_id")),
+                            ("LinkedIn post", "linkedin", ("linkedin_url", "linkedin_post_id"))):
         done = next((str(posted[i]) for i in ids if posted.get(i)), "")
         if out[key] or done:
             rows.append((label, state(bool(done), out[key]), done))
-    ok = rows[0][1] == "success" and all(r[1] in ("success", "skipped") for r in rows)  # skipped = switched off
+    report_only = bool(os.environ.get("REPORT_ONLY"))  # the Report workflow: stats only, no reel was made (2026-11-23)
+    if report_only:
+        rows = []
+    ok = report_only or (rows[0][1] == "success" and all(r[1] in ("success", "skipped") for r in rows))  # skipped = off
     token = ig.get("token") or {}
     threads_token = threads_token_line()
     subject = (f"{'✅' if ok and not token.get('warn') and not threads_token.get('warn') else '⚠️'} "
-               f"Job Shorts {day}: {title}")
+               + (f"Job Shorts stats {day}" if report_only else f"Job Shorts {day}: {title}"))
 
     def link(v: str) -> str:
         return f'<a href="{html.escape(v)}">{html.escape(v)}</a>' if v.startswith("http") else html.escape(v)
@@ -1012,6 +1060,15 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
                     "(the Bot API gives no views per post; Telegram shows them under each post in the channel)")
             h.append(f"<p>{html.escape(line)}</p>")
             t.append(line)
+    li = others.get("li") or {}
+    if li.get("followers") is not None or li.get("totals"):
+        h.append("<h3>LinkedIn Page</h3>")
+        t += ["", "LinkedIn Page"]
+        tot = li.get("totals") or {}
+        line = (f"{num(li.get('followers'))} followers; all posts: "
+                + ", ".join(f"{num(tot[k]) if k != 'engagement' else f'{tot[k] * 100:.1f}%'} {k.replace('_', ' ')}" for k in LI_KEYS if k in tot))
+        h.append(f"<p>{html.escape(line)}" + (f' (<a href="{html.escape(li["page_url"])}">Page</a>)' if li.get("page_url") else "") + "</p>")
+        t.append(line)
     dm = others.get("dm") or {}
     if dm.get("all") is not None:
         h.append("<h3>Instagram comment -> DM</h3>")
@@ -1020,7 +1077,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
             line = dm_line(label, dm.get(key) or {})
             h.append(f"<p>{html.escape(line)}</p>")
             t.append(line)
-    for name, o in (("Facebook", fb), ("Threads", th), ("Telegram", tg), ("Instagram DM", dm)):
+    for name, o in (("Facebook", fb), ("Threads", th), ("Telegram", tg), ("LinkedIn", li), ("Instagram DM", dm)):
         if o.get("note"):
             h.append(f"<p><i>{html.escape(o['note'])}</i></p>")
             t.append(f"Note ({name}): {o['note']}")
@@ -1109,6 +1166,7 @@ def main() -> None:
     others = {"fb": facebook_stats(cfg.get("facebook", {}), since) if cfg.get("facebook") else {},
               "th": threads_stats(cfg.get("threads", {}), since) if cfg.get("threads") else {},
               "tg": telegram_stats(cfg["telegram"]) if cfg.get("telegram") else {},
+              "li": linkedin_stats(cfg["linkedin"]) if cfg.get("linkedin") else {},
               "dm": dm_stats(cfg.get("instagram_dm", {}), day)}
     subject, text, body, attachment = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""), ig, yt, rep["days"],
                                             history, pairs, others, rep.get("rows_in_mail", 10))

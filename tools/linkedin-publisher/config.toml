@@ -1,0 +1,17 @@
+# linkedin-publisher: the day's text + cover image post on the LinkedIn Page "Isha - Job Shorts". See publish.py.
+
+[linkedin]
+# The Make.com scenario's webhook (Webhooks > Custom webhook -> LinkedIn "Create a Company Image Post" -> Webhook
+# response). Make's own LinkedIn app posts for us: LinkedIn's Community Management API needs a business email domain
+# (user, 2026-11-23: no domain), and Make's free plan takes files up to 5 MB, so no video, a cover image (~200 kB).
+webhook_env = "MAKE_LINKEDIN_POST_WEBHOOK"
+api_key_env = "MAKE_LINKEDIN_API_KEY"  # the webhook's API key (sent as x-make-apikey); "" = none
+env_files = ["../../.env"]          # for runs on the PC; the workflow passes repository secrets instead
+page_url = "https://www.linkedin.com/company/144151724/"
+telegram_url = "https://t.me/fresherjobs_isha"
+jobs = 2                            # the day's first jobs (daily-jobs.json from the Telegram jobs step, else the reel's)
+hashtags = 3                        # the description's first N
+text_max = 3000                     # LinkedIn's limit for a post's text
+cover_seconds = 0.3                 # cover frame when compose.json has no cover_seconds
+image_width = 1080
+timeout = 120

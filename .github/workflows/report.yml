@@ -1,0 +1,66 @@
+# Only the report email: the stats of every platform (and the growth since ~24 h and ~7 days ago), no reel made and
+# nothing posted (user, 2026-11-23: "agar sirf reporting chahiye"). Actions -> Report -> Run workflow.
+name: Report
+
+on:
+  workflow_dispatch:
+    inputs:
+      save_stats:
+        description: "Also add these numbers to content/stats-history.json (off: the nightly run's 24 h / 7 day growth stays as it is)"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write   # only used when save_stats is on
+
+concurrency:
+  group: daily-reel   # never at the same time as a reel run (both write content/stats-history.json)
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Email report
+        env:
+          REPORT_ONLY: "1"
+          SAVE_STATS: ${{ inputs.save_stats }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          REPORT_TO: ${{ secrets.REPORT_TO }}
+          IG_ACCESS_TOKEN: ${{ secrets.IG_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_APP_ID: ${{ secrets.META_APP_ID }}
+          IG_APP_SECRET: ${{ secrets.IG_APP_SECRET }}
+          YT_CLIENT_ID: ${{ secrets.YT_CLIENT_ID }}
+          YT_CLIENT_SECRET: ${{ secrets.YT_CLIENT_SECRET }}
+          YT_REFRESH_TOKEN: ${{ secrets.YT_REFRESH_TOKEN }}
+          FB_PAGE_TOKEN: ${{ secrets.FB_PAGE_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          THREADS_ACCESS_TOKEN: ${{ secrets.THREADS_ACCESS_TOKEN }}
+          THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          MAKE_LINKEDIN_STATS_WEBHOOK: ${{ secrets.MAKE_LINKEDIN_STATS_WEBHOOK }}
+          MAKE_LINKEDIN_API_KEY: ${{ secrets.MAKE_LINKEDIN_API_KEY }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          export DAY=$(TZ=Asia/Kolkata date +%F)
+          mkdir -p "content/report-only/$DAY"
+          flags=()
+          [ "$SAVE_STATS" = true ] && flags+=(--save-stats)
+          python tools/report/report.py --folder "content/report-only/$DAY" "${flags[@]}"
+      - name: Save stats
+        if: inputs.save_stats
+        run: |
+          git config user.name "reel-bot"
+          git config user.email "reel-bot@users.noreply.github.com"
+          git add content/stats-history.json
+          git diff --cached --quiet && exit 0
+          git commit -m "stats: report-only run $(TZ=Asia/Kolkata date +%F)"
+          git pull --rebase --autostash -q && git push

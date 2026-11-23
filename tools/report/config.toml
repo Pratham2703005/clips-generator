@@ -56,6 +56,15 @@ account_metrics = ["views", "likes", "replies", "reposts", "clicks", "followers_
 token_env = "TELEGRAM_BOT_TOKEN"
 channel_env = "TELEGRAM_CHANNEL"
 
+# LinkedIn Page "Isha - Job Shorts" (2026-11-23), read through a Make.com scenario (Custom webhook -> "Get the Follower
+# Statistics" + "Get the Company Share Statistics" -> Webhook response with JSON {followers, impressions, clicks, likes,
+# comments, shares, engagement}). No webhook set: the section is left out.
+[linkedin]
+stats_webhook_env = "MAKE_LINKEDIN_STATS_WEBHOOK"
+api_key_env = "MAKE_LINKEDIN_API_KEY"   # the webhooks' API key (x-make-apikey); "" = none
+organization = "urn:li:organization:144151724"
+page_url = "https://www.linkedin.com/company/144151724/"
+
 # the comment -> DM Worker (video-generator/cloudflare/instagram-dm): DMs, button clicks, Telegram joins via the DM link,
 # follows 3 h after a DM. "" = no such section.
 [instagram_dm]

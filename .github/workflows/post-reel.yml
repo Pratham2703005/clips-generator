@@ -38,6 +38,10 @@ on:
         description: "Telegram: post to the channel"
         type: boolean
         default: true
+      linkedin:
+        description: "LinkedIn Page: text + cover image post (Short link, 2 jobs, Telegram link)"
+        type: boolean
+        default: true
 
 permissions:
   contents: write   # Threads fetches the reel from a temporary asset on the release "reel-uploads"
@@ -73,6 +77,9 @@ jobs:
           # the run's own post record (Daily reel keeps it as a separate artifact, after posting)
           record=$(find reel-download -path '*posted-*' -name posted.json | head -n 1)
           if [ -n "$record" ]; then cp "$record" "$folder/posted.json"; echo "already posted:"; cat "$folder/posted.json"; fi
+          # the jobs that went to Telegram that day (the LinkedIn post shows the first two)
+          jobs=$(find reel-download -path '*posted-*' -name daily-jobs.json | head -n 1)
+          if [ -n "$jobs" ]; then cp "$jobs" "$folder/daily-jobs.json"; fi
           echo "FOLDER=$folder" >> "$GITHUB_ENV"
           echo "DAY=$(basename "$folder")" >> "$GITHUB_ENV"
           ls -la "$folder"
@@ -135,6 +142,14 @@ jobs:
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
         run: python tools/telegram-publisher/publish.py --folder "$FOLDER"
+      - name: Post to LinkedIn
+        id: linkedin
+        if: always() && steps.download.outcome == 'success' && inputs.linkedin
+        continue-on-error: true
+        env:
+          MAKE_LINKEDIN_POST_WEBHOOK: ${{ secrets.MAKE_LINKEDIN_POST_WEBHOOK }}
+          MAKE_LINKEDIN_API_KEY: ${{ secrets.MAKE_LINKEDIN_API_KEY }}
+        run: python tools/linkedin-publisher/publish.py --folder "$FOLDER"
       - name: Keep the post record
         if: always() && steps.download.outcome == 'success'
         uses: actions/upload-artifact@v4
@@ -165,6 +180,8 @@ jobs:
           THREADS_USER_ID: ${{ secrets.THREADS_USER_ID }}
           TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
           TELEGRAM_CHANNEL: ${{ secrets.TELEGRAM_CHANNEL }}
+          MAKE_LINKEDIN_STATS_WEBHOOK: ${{ secrets.MAKE_LINKEDIN_STATS_WEBHOOK }}
+          MAKE_LINKEDIN_API_KEY: ${{ secrets.MAKE_LINKEDIN_API_KEY }}
           OUT_MAKE: ${{ steps.download.outcome }}
           OUT_INSTAGRAM: ${{ steps.instagram.outcome }}
           OUT_YOUTUBE: ${{ steps.youtube.outcome }}
@@ -172,6 +189,7 @@ jobs:
           OUT_FACEBOOK: ${{ steps.facebook.outcome }}
           OUT_THREADS: ${{ steps.threads.outcome }}
           OUT_TELEGRAM: ${{ steps.telegram.outcome }}
+          OUT_LINKEDIN: ${{ steps.linkedin.outcome }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
           [ -n "$FOLDER" ] || { echo "no reel downloaded"; FOLDER="reel-download/none"; mkdir -p "$FOLDER"; }

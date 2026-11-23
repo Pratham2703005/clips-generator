@@ -8,7 +8,8 @@ instagram-dm: DMs the Telegram channel link to people who comment a keyword (or 
 
 Follow status can't be checked first: the API lists no followers, and says whether someone follows only for people who
 have messaged the account. So everyone who asks gets the link, and the DM asks them to follow.
-State (comments already answered) is a JSON file (--state), kept between workflow runs by actions/cache. Instagram
+The automatic DMs run on Cloudflare (cloudflare/instagram-dm); this script is for checks and runs from the PC (its GitHub
+workflow was removed 2026-11-23). State (comments already answered) is a JSON file (--state). Instagram
 itself also refuses a second private reply to the same comment, so a lost state file costs a few refused calls, not
 double DMs. Needs IG_ACCESS_TOKEN + IG_USER_ID (as instagram-publisher) with instagram_manage_comments and
 instagram_manage_messages; META_APP_ID + IG_APP_SECRET only for --check's permission list. Nothing secret is printed.
