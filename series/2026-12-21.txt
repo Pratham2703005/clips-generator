@@ -1,41 +1,48 @@
-# 2026-11-22: moved here from 2026-11-29 (user: 23-30 Nov is a week of the most viral topics). The lead-magnet
+# 2026-11-23: one day earlier (low CGPA went back to 23 Nov). 2026-11-22: moved here from 2026-11-30 (user: 23-30 Nov is a week of the most viral topics). The lead-magnet
 # and Opener test notes below were written for its old date.
 # "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
 # searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
 # 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
-# Ep 15/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Ep 16/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
 # 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
-title: Interview prep | Interview ke baad 3 line ka mail
-cast: arjun, riya
-jobs: india-freshers, 0
-funnel: middle
-hook: INTERVIEW KE BAAD 3 LINE
-trial_hook: Send three lines after every interview. Same day, never longer.
-trial_card: 3 LINE, SAME DAY
-yt_last: Subscribe karo. Mail se fast.
-Riya: Interview achha gaya. Ab bas result ka wait.
-Arjun: Wait se pehle ek kaam. Aaj hi teen line ka mail.
-Riya: Thank you mail? Ye toh chamchagiri lagegi.
-Arjun: Lambi ho toh haan. Teen line ho toh professional. Interview mein kya yaad raha?
-Riya: Unka naya payments project. Mujhe usme interest aaya.
-Arjun: Wahi doosri line. Pehli mein dhanyavaad, role ke naam ke saath. Teesri mein, is role ka intezaar.
-Riya: Aur end mein, please select me, I am hardworking?
-Arjun: Phir mail bhi spam mein, aur tum bhi.
-Arjun: Teen line, same din. Kal remote jobs ka sach.
-Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Teen line bhi nahi, ek word.
+title: Interview prep | Remote job: asli ya scam?
+cast: arjun, bunty
+jobs: remote-india|india-freshers, 1
+funnel: bottom
+hook: REMOTE JOB? FEE MAANGE = SCAM
+trial_hook: Never pay a fee for a remote job. Here are three signs.
+trial_card: FEE MAANGE? SCAM.
+yt_last: Subscribe karo. Free hai, koi fee nahi.
+Bunty: Ghar baithe pachaas hazaar ki job mili! Bas do hazaar registration.
+Arjun: Pehla nishaan: paise maange. Asli company nahi leti. Interview kaise hua?
+Bunty: WhatsApp pe chat. Na video, na kisi ka naam.
+Arjun: Doosra nishaan. Aur company ki website pe ye job hai?
+Bunty: Website... ek Google form hai.
+Arjun: Teesra. Teeno nishaan, bhaago.
+Bunty: Toh asli remote job kahan milegi?
+Arjun: Seedha company ki career site pe. Ek website roz saari career sites se fresh jobs laati hai, link bio mein.
+Arjun: Aaj ki job: {job1}. [job: 1]
+Bunty: Do hazaar bach gaye.
+Arjun: Paise maange, toh bhaago. Kal se naye sawaal.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Fee zero hai. Maangu, toh bhaag jaana.
 
 --- description
-Thank you email after interview for freshers | Follow up email after interview | Interview tips
-Interview prep ✉️
-Same din, 3 line:
-1. Dhanyavaad + role ka naam
-2. Interview ki ek baat jo yaad rahi
-3. "Is role mein kaam karne ka intezaar hai."
-Na resume dobara, na "please select me".
+Work from home job scam signs | Remote jobs for freshers India | Fake job alert
+Interview prep 🚩
+Remote job ke 3 red flag:
+1. Kisi bhi naam pe paise (training fee, kit, registration)
+2. Interview sirf chat pe, na video, na naam
+3. Company ki apni career site pe job hai hi nahi
+Asli company tumse paise nahi leti.
 
-Kal: remote job ka scam kaise pehchanein.
+Job in this episode:
+{jobs}
+
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal se naye sawaal.
 Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
-#interviewtips #emailtips #fresherjobs #jobsearchtips #hrinterview
+#remotejobs #jobscam #workfromhome #fresherjobs #fakejobalert

@@ -1,45 +1,41 @@
-# 2026-11-22: moved here from 2026-11-28 (user: 23-30 Nov is a week of the most viral topics). The lead-magnet
+# 2026-11-23: one day earlier (low CGPA went back to 23 Nov). 2026-11-22: moved here from 2026-11-29 (user: 23-30 Nov is a week of the most viral topics). The lead-magnet
 # and Opener test notes below were written for its old date.
 # "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
 # searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
 # 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
-# Ep 14/30 - value episode (no promotion). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Ep 15/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
 # 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
-# 2026-11-21: lead-magnet week (22-28 Nov, EXPERIMENTS.md): line 2 says what the viewer gets (lock-in), one
-# rehook at ~10-13 s (where the average watch ends), and the CTA asks for this topic's word; the Worker DMs the
-# template (the description's tips block) for it. Line 1 unchanged (Opener test B).
-title: Interview prep | Why this company? 10 minute research
-cast: malhotra, bunty
+title: Interview prep | Interview ke baad 3 line ka mail
+cast: arjun, riya
 jobs: india-freshers, 0
-funnel: top
-hook: WHY US? 10 MINUTE RESEARCH
-trial_hook: Never say big brand when they ask why this company. Ten minutes fixes it.
-trial_card: 'BIG BRAND' = WEAK
-yt_last: Subscribe karo. Research ho gayi, hum theek hain.
-Bunty: Why this company? Mera jawab ready hai. Big brand hai!
-Malhotra: Unhe pata hai. Das minute ki research isse behtar jawab deti hai. Company kya bechti hai, kisko?
-Bunty: Software... kuch. Brand bada hai.
-Malhotra: Website, blog ya news section. Kya bechte hain, kisko, aur haal ki ek khabar.
-Bunty: Dekha. Chhote dukaandaron ke liye billing app.
-Malhotra: Ab asli trick. Tumhara project?
-Bunty: Mera bhi billing pe tha! College canteen ka.
-Bunty: Toh bolun, aap dukaandaron ke liye billing banate ho, maine canteen ke liye banaya tha?
-Malhotra: Haan. Bas salary ya location ko reason mat banana.
-Malhotra: Das minute ki research. Kal interview ke baad wala mail.
-Malhotra: Follow karke COMPANY comment karo, das minute wali checklist DM mein bhejti hoon.
+funnel: middle
+hook: INTERVIEW KE BAAD 3 LINE
+trial_hook: Send three lines after every interview. Same day, never longer.
+trial_card: 3 LINE, SAME DAY
+yt_last: Subscribe karo. Mail se fast.
+Riya: Interview achha gaya. Ab bas result ka wait.
+Arjun: Wait se pehle ek kaam. Aaj hi teen line ka mail.
+Riya: Thank you mail? Ye toh chamchagiri lagegi.
+Arjun: Lambi ho toh haan. Teen line ho toh professional. Interview mein kya yaad raha?
+Riya: Unka naya payments project. Mujhe usme interest aaya.
+Arjun: Wahi doosri line. Pehli mein dhanyavaad, role ke naam ke saath. Teesri mein, is role ka intezaar.
+Riya: Aur end mein, please select me, I am hardworking?
+Arjun: Phir mail bhi spam mein, aur tum bhi.
+Arjun: Teen line, same din. Kal remote jobs ka sach.
+Arjun: Follow karke JOBS comment karo, channel ka link DM mein bhejta hoon. Teen line bhi nahi, ek word.
 
 --- description
-Why do you want to join this company answer | Why this company interview question | Interview tips for freshers
-Interview prep 🔍
-"Big brand hai" akela kamzor jawab hai. 10 minute research:
-1. Company kya bechti hai
-2. Kisko bechti hai
-3. Haal ki ek khabar (website, blog, news)
-Phir apni kahani jodo: "Aapka product chhote dukaandaron ke liye hai, mera project bhi billing pe tha."
+Thank you email after interview for freshers | Follow up email after interview | Interview tips
+Interview prep ✉️
+Same din, 3 line:
+1. Dhanyavaad + role ka naam
+2. Interview ki ek baat jo yaad rahi
+3. "Is role mein kaam karne ka intezaar hai."
+Na resume dobara, na "please select me".
 
-Kal: interview ke baad 3 line ka mail.
-"COMPANY" comment karo: 10 minute company research checklist + roz ki fresher jobs, DM mein bhej denge.
+Kal: remote job ka scam kaise pehchanein.
+Follow karke "JOBS" comment karo, roz ki fresher jobs wale channel ka link DM mein bhej denge.
 
-#interviewtips #hrinterview #fresherjobs #interviewquestions #placementpreparation
+#interviewtips #emailtips #fresherjobs #jobsearchtips #hrinterview

@@ -1,0 +1,43 @@
+# Viral week (24-30 Nov 2026). Written 2026-11-23.
+# C++, Java ya Python for placements. Why: Apna College's "C++, Java or Python? Which language is best for College
+# Placements in India" runs x10 its channel median (niche pull, 2026-11-22). Answer in three named parts (DSA, data,
+# college) and the point that the coding round tests logic, not syntax. "Zyaadatar coding rounds teeno allow karte
+# hain" is the common case on the big test platforms, kept as "zyaadatar", not "sab".
+# Lead-magnet format: DSA; the tips block is a 4-week DSA plan (topics only, no claims).
+title: Placement prep | C++, Java ya Python?
+cast: arjun, bunty
+jobs: india-freshers, 0
+funnel: top
+steps: DSA: C++ ya Java | Data ya AI: Python | Jo college mein padhi
+hook: C++, JAVA YA PYTHON?
+trial_hook: The language is not what the coding round tests. Pick one in a minute, then stick to it.
+trial_card: LANGUAGE NAHI, LOGIC
+yt_last: Subscribe karo. Ek plus hi toh hai.
+threads: Placement ke liye tumne kaunsi language chuni, aur kyun?
+Bunty: C++, Java ya Python? Teen mahine se soch raha hoon.
+Arjun: Teen mahine mein ek seekh lete. Jawab teen line ka hai.
+Arjun: Ek: DSA ke liye C++ ya Java. Zyaadatar coding rounds teeno allow karte hain.
+Arjun: Do: data ya AI ki taraf jaana hai, toh Python.
+Bunty: Toh sabse best kaunsi hai?
+Arjun: Yahin sab atak jaate hain. Interview language nahi, logic dekhta hai.
+Bunty: Matlab syntax yaad karna bekaar?
+Arjun: Syntax Google pe hai. Teen: jo college mein padhi, wahi lo.
+Bunty: College mein C padhaya tha.
+Arjun: Toh C++. Ek plus hi toh hai.
+Arjun: DSA, data, college. Phir tik jao. Kal pehli salary ka hisaab.
+Arjun: Follow karke DSA comment karo, chaar hafte ka DSA plan DM mein bhejta hoon.
+
+--- description
+C++ Java or Python for placements | Best language for DSA | Coding interview for freshers
+Placement prep 💻
+Language chunne mein 1 minute, seekhne mein mahine. 3 line ka jawab:
+1. DSA aur coding round: C++ ya Java
+2. Data ya AI ki taraf jaana hai: Python
+3. Confused ho? Jo college mein padhi, wahi
+4 hafte ka DSA plan: Hafta 1: arrays, strings | Hafta 2: hashing, two pointers | Hafta 3: recursion, trees | Hafta 4: graphs, DP ki basics
+Roz 2 sawaal, zor se bolke solve karo.
+
+Kal: pehli salary ka hisaab.
+"DSA" comment karo: 4 hafte ka DSA plan + roz ki fresher jobs, DM mein bhej denge.
+
+#dsa #placementpreparation #coding #fresherjobs #java

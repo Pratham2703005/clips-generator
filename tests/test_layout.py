@@ -89,3 +89,21 @@ def test_hook_count_up_only_for_counts():
     assert len(hook) == 1 and "10 MINUTE RESUME FIX" in hook[0]  # the whole card at once, no "1", "2", ...
     ass, _ = cp.make_overlay({"hook_card": "200 APPLICATIONS. 0 CALLS.", "lines": [{"text": tl["lines"][0]["text"]}]}, tl, cfg)
     assert len([ln for ln in ass.splitlines() if ",hook," in ln]) > 2
+
+
+def test_series_steps_match_the_spoken_count():
+    """A series "steps:" line is only used when the dialogue counts out the same number of steps ("Ek: ... Do: ...
+    Teen: ..."); otherwise the on-screen list silently falls back (2026-11-23: the puzzle's third step was said without
+    "Teen:")."""
+    from pathlib import Path
+    from conftest import ROOT
+    import re
+    run = load("run.py")
+    for path in sorted((ROOT / "series").glob("*.txt")) + sorted((ROOT / "series" / "specials").glob("*.txt")):
+        ep = run.parse_series(path)
+        if not ep.get("steps"):
+            continue
+        lines = [re.sub(r"^\s*\w+(\s*\([^)]*\))?\s*:\s*", "", ln) for ln in ep["dialogue"].splitlines()]  # drop "Name (face):"
+        said = [cp.STEP.search(ln) for ln in lines]
+        nums = [cp.STEP_WORDS.get(m.group(1).lower()) or int(m.group(1)) for m in said if m]
+        assert nums == list(range(1, len(ep["steps"]) + 1)), f"{path.name}: steps: has {len(ep['steps'])}, the dialogue counts {nums}"

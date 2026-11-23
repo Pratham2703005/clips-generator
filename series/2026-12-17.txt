@@ -1,44 +1,51 @@
-# 2026-11-22: moved here from 2026-11-25 (user: 23-30 Nov is a week of the most viral topics). The lead-magnet
+# 2026-11-23: one day earlier (low CGPA went back to 23 Nov). 2026-11-22: moved here from 2026-11-26 (user: 23-30 Nov is a week of the most viral topics). The lead-magnet
 # and Opener test notes below were written for its old date.
 # "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
 # searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
 # 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
 # Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
 # worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
-# Ep 11/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# Ep 12/30 - promo episode (jobs + the website). Length test: long (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
 # 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
 # 2026-11-21: lead-magnet week (22-28 Nov, EXPERIMENTS.md): line 2 says what the viewer gets (lock-in), one
 # rehook at ~10-13 s (where the average watch ends), and the CTA asks for this topic's word; the Worker DMs the
 # template (the description's tips block) for it. Line 1 unchanged (Opener test B).
-title: Interview prep | 5 saal baad kahan dekhte ho?
-cast: malhotra, riya
-jobs: india-freshers, 0
-funnel: top
-hook: 5 SAAL BAAD? YE BOLO
-trial_hook: Don't joke about five years. Say a two-year plan instead.
-trial_card: 'AAPKI KURSI' = NO
-yt_last: Subscribe karo. Paanch saal baad bhi kaam aayega.
-Riya: Five years mein kahan dekhti ho, iska jawab ready hai. Aapki kursi pe!
-Malhotra: Joke hai, aur risky joke. Do saal ka plan isse kahin behtar hai. Sach mein kya chahti ho?
-Riya: Sach? Pata nahi. Shayad data mein, shayad MBA.
-Malhotra: Kisi ko nahi pata, aur interviewer ye jaanta hai. Ye sawaal plan dekhta hai. Is role mein pehle kya seekhna hai?
-Riya: SQL aur dashboards. Do saal mein inmein strong, phir team mein badi zimmedari.
-Riya: Aur yahin grow karna hai.
-Malhotra: Agar sach hai, toh bolo. MBA wali baat abhi mat bolo, plan badal sakta hai.
-Riya: Kursi wala joke doston ke liye bacha ke rakhti hoon.
-Malhotra: Paanch saal ka plan, kursi nahi. Kal internship ka asli game.
-Malhotra: Follow karke PLAN comment karo, poora sample answer DM mein bhejti hoon.
+title: Interview prep | Internship se full-time offer
+cast: arjun, bunty
+jobs: india-freshers, 1
+funnel: bottom
+hook: INTERNSHIP = 2 MAHINE KA INTERVIEW
+trial_hook: Don't waste your internship. Three habits turn it into an offer.
+trial_card: INTERNSHIP = INTERVIEW
+yt_last: Subscribe karo. Iska koi interview nahi.
+Bunty: Internship mil gayi! Do mahine kaam karo, certificate lo, bas.
+Arjun: Bas? Ye do mahine ka interview hai. Teen aadatein isse offer banati hain.
+Bunty: Main toh chupchaap kaam karne wala tha.
+Arjun: Chupchaap kaam ka kisi ko pata nahi chalta. Pehli aadat: har hafte manager ko teen line. Kya kiya, kahan atka, aage kya.
+Bunty: Par mujhe toh chhote kaam milenge.
+Arjun: Doosri aadat yahin kaam aati hai. Ek chhota kaam poora apne naam ka.
+Bunty: Aur full-time ka wo khud bolenge.
+Arjun: Zaroori nahi. Teesri: last do hafte mein seedha poocho.
+Bunty: Ye toh ChatGPT ne bhi nahi bataya.
+Arjun: Aur jinko abhi internship chahiye: ek website roz fresh roles ek jagah laati hai, link bio mein. Aaj: {job1}. [job: 1]
+Arjun: Do mahine ka interview. Kal coding round.
+Arjun: Follow karke INTERN comment karo, hafte wala teen line ka template DM mein bhejta hoon.
 
 --- description
-Where do you see yourself in 5 years answer for freshers | HR interview questions
-Interview prep 🔭
-"Aapki kursi" = joke, aur risky joke. Ye sawaal plan dekhta hai:
-1. 2 saal: is role mein strong
-2. Phir: team mein badi zimmedari
-3. "Yahin grow karna chahta/chahti hoon" (agar sach hai)
-Sample: "Do saal mein is role ke skills mein strong banna hai, jaise SQL aur dashboards. Phir team mein badi zimmedari. Aur yahin grow karna chahti hoon."
+How to convert internship into full time job | PPO tips for interns | Fresher jobs India
+Interview prep 🧑‍💻
+Internship asal mein 2 mahine ka interview hai. 3 kaam:
+1. Har hafte manager ko 3 line: kya kiya, kahan atka, aage kya
+2. Ek kaam poora apne naam ka
+3. Last 2 hafte mein seedha poocho: full-time ka chance hai?
+Template: "Is hafte: ___ kiya. Yahan atka: ___. Agle hafte: ___."
 
-Kal: internship ko full-time offer mein kaise badlein.
-"PLAN" comment karo: 5 saal wala sample answer + roz ki fresher jobs, DM mein bhej denge.
+Job in this episode:
+{jobs}
 
-#hrinterview #interviewquestions #fresherjobs #interviewtips #careergoals
+Fresh jobs from company career pages, every day: link in bio.
+
+Kal: coding round mein chup kyun nahi rehna.
+"INTERN" comment karo: Internship ka weekly update template + roz ki fresher jobs, DM mein bhej denge.
+
+#internship #ppo #fresherjobs #jobsearchtips #careeradvice

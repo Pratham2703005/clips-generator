@@ -1,0 +1,46 @@
+# Viral week (24-30 Nov 2026). Written 2026-11-23.
+# 5 free AI tools for placements. Why: Ishan Sharma's "5 AI Tools Every Student MUST-TRY" / "Best AI tools" run
+# x197 / x158 his channel median (niche pull, 2026-11-22), the biggest multiple in the study. Our angle: one tool per
+# placement job, and the rule that the tool asks and you answer (Bunty's ChatGPT gag is the episode's own premise).
+# Only real tools with a free tier, each with a use it really does: ChatGPT (mock interview), NotebookLM (questions
+# from your own notes), Perplexity (answers with source links), Gemini (resume vs job description), Claude (explain code).
+# Lead-magnet format: TOOLS; the tips block holds one copyable prompt per tool.
+title: Placement prep | 5 free AI tools freshers ke liye
+cast: arjun, bunty
+jobs: india-freshers, 0
+funnel: top
+steps: ChatGPT: mock interview | NotebookLM: notes se sawaal | Perplexity: company research | Gemini: resume match | Claude: code samjho
+hook: 5 FREE AI TOOLS: PLACEMENT
+trial_hook: Most freshers use AI to copy answers. Use these five to get asked the questions instead.
+trial_card: AI SE COPY NAHI, PREP
+yt_last: Subscribe karo. Tool poochega, jawab tum doge.
+threads: Placement prep mein kaunsa AI tool sabse zyada kaam aaya? Ek naam likho.
+Bunty: AI se main sirf assignment copy karta hoon.
+Arjun: Paanch free tools hain, har ek ka ek kaam. Placement ke liye.
+Arjun: Ek: ChatGPT se bolo, HR ban ke mujhse sawaal poocho.
+Bunty: Phir answer bhi wahi de dega?
+Arjun: Yahin sab galti karte hain. Tool sawaal poochega, jawab tum doge.
+Arjun: Do: NotebookLM. Apne notes ki PDF daalo, wo unhi se sawaal banata hai.
+Bunty: Mere notes toh dost ke hain.
+Arjun: Unhi se sahi. Teen: Perplexity. Company research, source ke link ke saath.
+Arjun: Chaar: Gemini mein job description aur resume, poocho kya missing hai.
+Arjun: Paanch: Claude se apna project code samjho, line by line.
+Bunty: ChatGPT ne bhi yahi bola. Paanch tool, kaam main karunga.
+Arjun: Haan. Mock, notes, research, resume, code. Kal tell me about yourself.
+Arjun: Follow karke TOOLS comment karo, paanchon ke prompt DM mein bhejta hoon.
+
+--- description
+Best free AI tools for students placement | AI tools for interview preparation | AI tools for freshers
+Placement prep 🤖
+5 free AI tools, har ek ka ek kaam. Copy karne wale prompts:
+1. ChatGPT: "HR ban ke mujhse fresher interview ke 5 sawaal poocho, ek-ek karke, har jawab pe feedback do."
+2. NotebookLM: apne notes ki PDF daalo: "Inse 10 interview sawaal banao, answer mat batana."
+3. Perplexity: "<company> kya banati hai aur pichhle saal ki 3 badi khabrein, sources ke saath."
+4. Gemini: job description + resume daalo: "Kaunsi 3 skills missing hain, aur kaunsi upar honi chahiye?"
+5. Claude: "Mere project ka ye code line by line samjhao, jaise main interview mein samjhaunga."
+Rule: tool sawaal poochega, jawab tum doge. Free version se shuru karo.
+
+Kal: tell me about yourself ka poora jawab.
+"TOOLS" comment karo: 5 AI tools ke copy karne wale prompts + roz ki fresher jobs, DM mein bhej denge.
+
+#aitools #placementpreparation #fresherjobs #interviewtips #chatgpt

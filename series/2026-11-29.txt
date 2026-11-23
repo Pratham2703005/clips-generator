@@ -1,0 +1,45 @@
+# Viral week (24-30 Nov 2026). Written 2026-11-23.
+# First salary: a phone in working days. Why: Ankur Warikoo's "iPhone afford karne ke liye kitne din kaam karna padega"
+# runs x13.6 his channel median and his "A ya B" money comparisons x12-17 (niche pull, 2026-11-22). The numbers are
+# Riya's own example, said as hers: Rs 25,000 in hand, a Rs 80,000 phone; 22 working days a month gives ~Rs 1,136 a
+# day, 80,000 / 1,136 = ~70 days. Budgeting basics only (an emergency fund, an EMI limit, the 50-30-20 split, all
+# common rules of thumb), no investment product named.
+# Lead-magnet format: PAISA; the tips block is the first-salary budget.
+title: Pehli salary | iPhone ke liye kitne din kaam?
+cast: arjun, riya
+jobs: india-freshers, 0
+funnel: top
+steps: Pehle 3 mahine ka fund | EMI: salary ka 10% se kam | Cheez ko dinon mein naapo
+hook: PEHLI SALARY = IPHONE?
+trial_hook: Before your first salary buys a phone, count it in working days.
+trial_card: PHONE = 70 DIN KAAM
+yt_last: Subscribe karo. Phone naya, aadat purani mat rakhna.
+threads: Pehli salary se sabse pehle kya kharida, ya kya khareedne wale ho?
+Riya: Pehli salary aayi. Seedha naya phone, assi hazaar ka.
+Arjun: Haath mein kitna aata hai? Teen hisaab, phir phone.
+Riya: Pachees hazaar.
+Arjun: Ek: pehle teen mahine ka kharcha bachao. Job gayi toh wahi bachata hai.
+Riya: Par sab dost le rahe hain.
+Arjun: Yahin sab phans jaate hain. No cost EMI, aur salary aadhi.
+Arjun: Do: EMI salary ke das percent se kam. Tumhare liye dhai hazaar.
+Riya: Assi hazaar ki EMI dhai hazaar mein?
+Arjun: Battees mahine. Teen: cheez ko dinon mein naapo.
+Arjun: Ye phone sattar din ka kaam hai.
+Riya: Sattar din? Itna toh mera notice period bhi nahi.
+Arjun: Fund, EMI, din. Phir lo, khushi se. Kal Sharma ji ka beta.
+Arjun: Follow karke PAISA comment karo, pehli salary ka budget DM mein bhejta hoon.
+
+--- description
+First salary budget for freshers | How to manage first salary | iPhone on EMI or not
+Pehli salary 💸
+Kuch bhi bada lene se pehle 3 hisaab:
+1. Fund: pehle 3 mahine ka kharcha bacha ke rakho
+2. EMI: saari EMI milake salary ke 10% se kam
+3. Din: daam ÷ (in-hand ÷ 22) = kitne din ka kaam (25,000 in-hand pe 80,000 ka phone = ~70 din)
+Budget: 50% zaroorat, 30% shauk, 20% bachat (pehle bachat, phir kharcha)
+Pehle mahine ghar walon ke liye ek chhota gift.
+
+Kal: Sharma ji ka beta se comparison.
+"PAISA" comment karo: Pehli salary ka budget + roz ki fresher jobs, DM mein bhej denge.
+
+#firstsalary #personalfinance #fresherjobs #moneytips #budget

@@ -1,0 +1,50 @@
+# 2026-11-23: back on its own date as the day's second reel (22 Nov's reel and the special both promised "Kal low
+# CGPA ka sawaal"; the nightly run had no file and used the AI pipeline). Next day is the viral week's puzzle.
+# "Interview prep" (standalone episodes, written 2026-11-10 with the ig-reel skill): one interview step per reel, a
+# searchable title, no "Din N" and no story to follow. Why: the general interview reels held best (Tell me about yourself
+# 3.1k views, Jab answer na aaye 2.0k, Apply early 2.4k) while Din 1 / Din 2 got 271 / 505.
+# Opening: a Hinglish scene that names the topic (the user: the reel that held best scored 79 on hookscore, a 93 did
+# worse). The English stake line is the trial_hook, so a trial reel tests the other kind of opening.
+# Ep 9/30 - value episode (no promotion). Length test: short (short ~25-30 s, long ~35 s; alternating, to compare in the reports).
+# 2026-11-20: dialogue rewritten as a conversation (playbook rule: the teacher reacts, the example is the learner's own story).
+# 2026-11-21: lead-magnet week (22-28 Nov, EXPERIMENTS.md): line 2 says what the viewer gets (lock-in), one
+# rehook at ~10-13 s (where the average watch ends), and the CTA asks for this topic's word; the Worker DMs the
+# template (the description's tips block) for it. Line 1 unchanged (Opener test B).
+# 2026-11-21 (2): after a review: the answer spoken as three named parts (sach, sudhaar, proof) that match the
+# description, a sharper rehook ("Yahin sab haarte hain"), a closing that repeats the three parts. The DM promises
+# "ek line wala jawab", so the tips block now holds that line. Line 1 unchanged (Opener test B, A day).
+title: Interview prep | Low CGPA ka sawaal
+cast: malhotra, bunty
+jobs: india-freshers, 0
+funnel: top
+hook: LOW CGPA? SORRY MAT BOLO
+trial_hook: Never hide a low CGPA. Show one project that beats it.
+trial_card: CGPA KAM? SORRY NAHI
+yt_last: Subscribe karo. CGPA koi nahi poochega.
+Bunty: Ma'am, six point two CGPA aur ek backlog. Mera toh khatam.
+Malhotra: Khatam nahi. Ek line ka jawab hai, teen hisse. Backlog kab aaya tha?
+Bunty: Second year. Hostel, cricket, aur thoda zyada cricket.
+Malhotra: Pehla hissa, sach. Par cricket mat bolna. Bas itna: focus kam tha.
+Bunty: Phir sorry bolun?
+Malhotra: Yahin sab haarte hain. Sorry nahi. Doosra hissa: uske baad kya badla.
+Bunty: Backlog clear kiya. Last do semester achhe gaye.
+Bunty: Aur marks na sudhre hote toh?
+Malhotra: Teesra hissa, proof. Is job se juda ek project.
+Malhotra: Aur pehle cutoff dekho, kai jobs mein hota hi nahi.
+Malhotra: Sorry nahi. Sach, sudhaar, proof. Kal puzzle wala sawaal.
+Malhotra: Follow karke CGPA comment karo, ek line wala jawab DM mein bhejti hoon.
+
+--- description
+Low CGPA in interview how to answer | Backlog question for freshers | HR interview tips
+Interview prep 📉
+Low CGPA pe sorry mat bolo. 1 line, 3 hisse:
+1. Sach: kya hua ("second year mein focus kam tha")
+2. Sudhaar: uske baad kya badla
+3. Proof: ek project ya certificate jo is job se jude
+Sample: "Second year mein focus kam tha aur ek backlog aaya. Maine use clear kiya, last do semester achhe gaye, aur mera ye project isi role se juda hai."
+Pehle job ka cutoff dekho, kai jobs mein hota hi nahi.
+
+Kal: interview puzzle #1.
+"CGPA" comment karo: Low CGPA ka 1 line jawab + roz ki fresher jobs, DM mein bhej denge.
+
+#lowcgpa #hrinterview #fresherjobs #placementpreparation #interviewtips
