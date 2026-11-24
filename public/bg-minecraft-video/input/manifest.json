@@ -74,6 +74,31 @@
         "trim_end": 3.0,
         "margin": 6
       }
+    },
+    {
+      "file": "clip4.mp4",
+      "source": "clip4.mp4",
+      "width": 1080,
+      "height": 1920,
+      "fps": 30.0,
+      "duration": 3198.53,
+      "has_audio": false,
+      "size_mb": 806.8,
+      "processed_at": "2026-11-24T10:32:34+00:00",
+      "settings": {
+        "width": 1080,
+        "height": 1920,
+        "fit": "crop",
+        "pad_color": "black",
+        "fps": 30,
+        "crf": 28,
+        "preset": "medium",
+        "keep_audio": false,
+        "audio_bitrate": "128k",
+        "trim_start": 3.0,
+        "trim_end": 3.0,
+        "margin": 6
+      }
     }
   ]
 }
