@@ -1,43 +1,42 @@
-# Viral week (24-30 Nov 2026). Written 2026-11-23.
-# Motivation, Raj Shamani-style: "How long are you willing to stay patient?" (x21 his channel median, niche pull
-# 2026-11-22), told our way: a conversation with a fix, not a speech. Patience plus a system: read where the
-# rejections stop, change one thing a week, one friend on Sunday. Riya's 60 rejections are her story in the reel.
-# Share prompt in the description (follows come from saves and shares, LEARNINGS 2026-11-21).
-# Lead-magnet format: SABAR; the tips block is the weekly tracker.
+# Viral week (24-30 Nov 2026). Written 2026-11-23; rewritten 2026-11-25 to "Clarity first" (SKILL.md).
+# Motivation, Raj Shamani-style ("How long are you willing to stay patient?", x21 his median), told as a fix.
+# One idea: count less, look where it stops ("mail nahi aata = resume, interview ke baad = jawab"). The first version
+# had three steps plus a Sunday call and a one-apply rule; now one idea, said twice (the second time as "saath baar
+# tumhe nahi, tumhare resume ko mana kiya"), a doctor comparison from the learner, the joke after the point.
+# Riya's 60 rejections are her story in the reel. Lead-magnet format: SABAR; the tips block is the tracker.
 title: Job search | 60 rejection ke baad kya?
 cast: arjun, riya
 jobs: india-freshers, 0
 funnel: top
-steps: Dekho kahan ruk rahe ho | Har hafte ek badlaav | Ek dost, har Sunday
 hook: 60 REJECTION. AB?
 trial_hook: Sixty rejections is not a reason to quit. It is data. Read it.
 trial_card: REJECTION = DATA
-yt_last: Subscribe karo. Saathvaan rejection aakhri ho sakta hai.
-threads: Ab tak kitne rejection aaye, aur kaunsa sabse zyada chubha?
+yt_last: Subscribe karo. Rejection ginna band, padhna shuru.
+threads: Ab tak kitne rejection aaye, aur kahan atak rahe ho: resume pe ya interview pe?
 Riya: Saath rejection ho gaye. Shayad main hi is laayak nahi.
-Arjun: Ek sawaal: kitne din aur sabar kar sakti ho?
-Arjun: Sabar ke saath teen cheezein ho, toh kaafi.
-Riya: Pata nahi. Sab dost lag gaye.
-Arjun: Ek: ginti band. Dekho kahan ruk rahi ho, resume pe ya interview pe.
-Riya: Zyada tar mail hi nahi aata.
-Arjun: Toh resume. Do: har hafte sirf ek cheez badlo.
-Arjun: Yahin sab galti karte hain. Sab ek saath badal dete hain.
-Riya: Main toh har hafte naya template bana leti hoon.
-Arjun: Isliye pata nahi chalta kya kaam kiya. Teen: ek dost, har Sunday das minute.
-Riya: Aur jis din bilkul mann na kare?
-Arjun: Us din sirf ek apply.
-Arjun: Ginti nahi, ek badlaav, ek dost. Kal Java ya Python.
+Arjun: Saath rejection ek jaise nahi hote. Bas dekho, kahan atak rahi ho.
+Riya: Rejection toh rejection hai.
+Arjun: Nahi. Mail hi nahi aata, toh dikkat resume mein hai.
+Arjun: Interview ke baad mana hua, toh dikkat jawab mein hai.
+Riya: Mujhe toh mail hi nahi aata.
+Arjun: Toh saath baar tumhe nahi, tumhare resume ko mana kiya gaya.
+Riya: Toh resume mein sab ek saath badal doon?
+Arjun: Ek hafte mein ek cheez. Warna pata hi nahi chalega kya kaam kiya.
+Riya: Jaise doctor ek dawai badalta hai, phir dekhta hai.
+Arjun: Bilkul.
+Riya: Aur jo saath rejection ho chuke, unka kya?
+Arjun: Woh data hai. Mehenga data, par data.
+Arjun: Ginti nahi, jagah dekho. Kal Java ya Python.
 Arjun: Follow karke SABAR comment karo, rejection tracker DM mein bhejta hoon.
 
 --- description
 Job rejection motivation for freshers | How to handle job rejections | Job search tips
 Job search 💪
-Rejection ginna band, padhna shuru. Har hafte:
-1. Kahan ruk rahe ho? Mail nahi aata = resume. Interview ke baad = jawab.
-2. Sirf ek cheez badlo (resume ki summary, ya ek jawab), phir 1 hafta dekho
-3. Ek dost jo pehle lag chuka hai, har Sunday 10 minute
-Tracker: date | company | kahan ruka | is hafte kya badla
-Mann na kare, us din bas ek apply.
+Rejection ginna band. Dekho kahan atak rahe ho:
+1. Mail hi nahi aata → dikkat resume mein (summary, skills upar)
+2. Interview ke baad mana → dikkat jawab mein (sabse kamzor jawab practice karo)
+Har hafte sirf ek cheez badlo, phir ek hafta dekho.
+Tracker: date | company | kahan ruka (mail / interview / final) | is hafte kya badla
 
 Kisi dost ko bhejo jo haar maan raha hai.
 

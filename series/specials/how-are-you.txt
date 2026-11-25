@@ -1,0 +1,47 @@
+# Special, 2026-11-25 (the user's topic): interview small talk. Value episode, no promotion. funnel: top.
+# Written to the new "Clarity first" rules (SKILL.md, 2026-11-25): one idea ("chhota jawab, sawaal wapas"), the
+# learner's own mistake as the hook (a heavy, too-honest first answer), but/therefore instead of a list, the key line
+# said twice (plainly, then as "jaise dost poochta hai"), the learner says the copyable lines herself, the joke after
+# the point lands, no on-screen step list (the idea is one line, not steps).
+# Lead-magnet format: HELLO; the tips block holds five small-talk questions with a copyable answer each.
+# Run it: Daily reel -> mode custom, script = series/specials/how-are-you.txt, name = special-how-are-you, posting off.
+title: Interview prep | How are you ka jawab
+cast: malhotra, riya
+jobs: india-freshers, 0
+funnel: top
+hook: HOW ARE YOU? PEHLA TEST
+trial_hook: The interview starts before the first question. How are you is the first one.
+trial_card: HOW ARE YOU = TEST
+yt_last: Subscribe karo. Aur haan, how are you?
+threads: Interview mein "how are you" pe tum kya bolte ho?
+Riya: How are you pe maine bola, bahut nervous hoon.
+Malhotra: Sach tha. Par pehle hi second mein mood bhaari ho gaya.
+Riya: Toh jhooth bolti?
+Malhotra: Nahi. Jawab chhota, aur sawaal wapas.
+Riya: Matlab, I'm good, thank you. How are you?
+Malhotra: Bas. Yahi poora jawab hai.
+Malhotra: Jaise dost poochta hai kaisa hai, tum bolte ho badhiya, tu bata.
+Riya: Aur agar poochein, how's your day going?
+Malhotra: Wahi. Chhota jawab, sawaal wapas.
+Riya: Good so far, thanks. How's yours?
+Malhotra: Perfect. Ab interview muskurahat se shuru hoga.
+Riya: Aur agar unka din kharab chal raha ho?
+Malhotra: Toh tumhara sawaal us din ki pehli achhi baat hogi.
+Malhotra: Chhota jawab, sawaal wapas. Kal tell me about yourself.
+Malhotra: Follow karke HELLO comment karo, paanch jawab DM mein bhejti hoon.
+
+--- description
+How to answer how are you in interview | Small talk in interview for freshers | HR interview tips
+Interview prep 👋
+Small talk ka formula: chhota jawab, phir sawaal wapas.
+1. How are you? → "I'm good, thank you. How are you?"
+2. How's your day going? → "Good so far, thanks for asking. How's yours?"
+3. Did you find the office easily? → "Yes, it was easy, thank you."
+4. How was your weekend? → "It was relaxing, thanks. How was yours?"
+5. Nervous ho? → "A little, but I'm excited about this role."
+Pehle hi jawab mein nervous, raat bhar padhai ya traffic ki kahani mat sunao.
+
+Kal: tell me about yourself ka poora jawab.
+"HELLO" comment karo: Small talk ke 5 jawab + roz ki fresher jobs, DM mein bhej denge.
+
+#interviewtips #hrinterview #fresherjobs #smalltalk #placementpreparation

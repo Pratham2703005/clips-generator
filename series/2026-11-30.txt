@@ -1,45 +1,46 @@
-# Viral week (24-30 Nov 2026). Written 2026-11-23.
-# Comparison with "Sharma ji ka beta". Why: Raj Shamani's "Which category do you fall into?" (x13) and "Send this to
-# someone..." (x11.8) show self-worth topics travel (niche pull, 2026-11-22), and our own cast holds the joke: Arjun's
-# nickname IS "Sharma ji ka beta". Three named fixes (tareeka, pichhla mahina, apni list); the rehook is the LinkedIn
-# scroll. Bunty's hour of scrolling is his story in the reel.
-# Lead-magnet format: LIST; the tips block is the weekly progress list. Next day: 1 Dec, "Tell me about a failure".
+# Viral week (24-30 Nov 2026). Written 2026-11-23; rewritten 2026-11-25 to "Clarity first" (SKILL.md).
+# Comparison with "Sharma ji ka beta" (Raj Shamani's self-worth topics, x11.8-13; Arjun's own nickname is the joke).
+# The first version had three fixes plus a LinkedIn rehook; now one idea, "compare apne pichhle mahine se, kisi aur se
+# nahi", said twice (the second time as Bunty's own month: resume then, interviews now), LinkedIn as the "but", the
+# joke last ("Mummy ko bhi ye reel bhej do", which is also the share ask).
+# Lead-magnet format: LIST; the tips block is the monthly progress list. Next day: 1 Dec, "Tell me about a failure".
 title: Job search | Sharma ji ka beta se comparison
 cast: arjun, bunty
 jobs: india-freshers, 0
 funnel: top
-steps: Date nahi, tareeka poocho | Apne pichhle mahine se compare | Har Sunday apni list
 hook: SHARMA JI KA BETA PLACED.
 trial_hook: Comparing your job search with a friend's offer date is the slowest way to get an offer.
 trial_card: COMPARE KHUD SE
 yt_last: Subscribe karo. Sharma ji ka beta bhi subscribe karta hai.
 threads: Tumhare ghar mein "Sharma ji ka beta" kaun hai, aur uski kaunsi baat sunni padti hai?
 Bunty: Mummy bolti hain, Sharma ji ka beta placed, tum kab?
-Arjun: Main hi Sharma ji ka beta hoon. Aur comparison ke teen sach sunlo.
+Arjun: Main hi Sharma ji ka beta hoon.
 Bunty: Tum? Tumhara toh sab set hai.
-Arjun: Pehle saal mera bhi nahi tha. Ek: uski date mat dekho, uska tareeka poocho.
-Bunty: Matlab tumse pooch loon?
-Arjun: Haan. Do: apne pichhle mahine se compare karo, mujhse nahi.
-Arjun: Yahin sab haarte hain. Raat ko LinkedIn khol ke.
-Bunty: Main roz ek ghanta scroll karta hoon.
-Arjun: Wahan sabka best din hai, poora saal nahi. Teen: har Sunday apni list.
-Bunty: Kya likhun?
-Arjun: Is hafte kya seekha, kitne apply, kya badla. Tareeka, pichhla mahina, list.
-Arjun: Kal failure wala sawaal.
-Arjun: Follow karke LIST comment karo, weekly progress list DM mein bhejta hoon.
+Arjun: Tum mera aaj dekh rahe ho. Mera pehla saal nahi dekha.
+Bunty: Par LinkedIn pe sab placed dikhte hain.
+Arjun: Wahan sab apna best din daalte hain. Bura din koi post nahi karta.
+Arjun: Isliye compare karo apne pichhle mahine se, kisi aur se nahi.
+Bunty: Pichhle mahine main resume bana raha tha. Ab interview de raha hoon.
+Arjun: Dekha? Yahi tumhari asli progress hai.
+Bunty: Mummy ko ye kaise samjhaun?
+Arjun: Unhe bhi ye reel bhej do.
+Arjun: Kisi aur se nahi, pichhle mahine se. Kal failure wala sawaal.
+Arjun: Follow karke LIST comment karo, mahine ki progress list DM mein bhejta hoon.
 
 --- description
 Comparison with friends job | Sharma ji ka beta | Job search motivation for freshers
 Job search 🧘
-Comparison ke 3 sach:
-1. Uski offer date nahi, uska tareeka poocho (kahan apply kiya, kya badla)
-2. Compare apne pichhle mahine se karo, kisi aur se nahi
-3. Har Sunday apni list: is hafte kya seekha | kitne apply | kya badla | agle hafte ek kaam
+Compare apne pichhle mahine se karo, kisi aur se nahi.
+Har mahine ke aakhir mein 4 line likho:
+1. Is mahine kya seekha
+2. Kitne apply, kitne mail aaye
+3. Kitne interview diye
+4. Agle mahine ek kaam
 LinkedIn pe sabka best din hota hai, poora saal nahi.
 
 Us dost ko bhejo jise roz Sharma ji ka beta sunna padta hai.
 
 Kal: "Tell me about a failure" ka jawab.
-"LIST" comment karo: Weekly progress list + roz ki fresher jobs, DM mein bhej denge.
+"LIST" comment karo: Mahine ki progress list + roz ki fresher jobs, DM mein bhej denge.
 
 #motivation #jobsearchtips #fresherjobs #placementpreparation #careeradvice
