@@ -31,7 +31,10 @@ const KEYWORDS = ["job", "jobs", "link", "daily jobs", "telegram", "channel"];
 const ROLE_WORDS = /\b(engineers?|engineering|developers?|analysts?|freshers?|b\.? ?tech|m\.? ?tech|bca|mca|mba|bba|b\.? ?com|diploma|intern|internship|hiring|vacanc(y|ies)|openings?|naukri|placement)\b/i;
 // bump when the matching rules change: every reel's comments are read once more, so older unanswered comments that now
 // match get their DM (within Instagram's 7 days)
-const RULES_VERSION = "3";
+// 4 (2026-11-26): re-read once after the comments-lag fix, so the two "Intro" comments it missed get their DM
+const RULES_VERSION = "4";
+// how long a reel is re-read while /comments shows fewer comments than comments_count (see the n:<media> write)
+const COMMENTS_LAG_MS = 15 * 60_000;
 const EMOJI_ONLY = true;
 const PROFILE_URL = "https://www.instagram.com/isha.07007/";
 const CHANNEL_URL = "https://telegram.me/fresherjobs_isha";
@@ -186,8 +189,9 @@ export async function run(env, dryRun = false) {
     if (Date.parse(m.timestamp) < reelsSince) break;
     out.reels++;
     const count = m.comments_count || 0;
-    const seen = await env.DM_STATE.get(`n:${m.id}`);
-    if (!count || (String(count) === seen && !rulesChanged)) continue; // nothing new on this reel
+    // n:<media> = the comment count already handled, or "<count>@<ms>" while the comments list lags behind that count
+    const [seenCount, waitingSince] = ((await env.DM_STATE.get(`n:${m.id}`)) || "").split("@");
+    if (!count || (String(count) === seenCount && !waitingSince && !rulesChanged)) continue; // nothing new on this reel
     out.read++;
     const magnet = parseMagnet(m.caption);
     if (magnet && !dryRun) {
@@ -197,8 +201,10 @@ export async function run(env, dryRun = false) {
     }
     const res = await graph(env, `${m.id}/comments`, { fields: "id,text,timestamp,username,replies{id,text,timestamp,username}", limit: 50 });
     let ok = true;
+    let listed = 0;
     for (const c of res.data || []) {
       for (const x of [c, ...((c.replies && c.replies.data) || [])]) {
+        listed++;
         if ((x.username || "").toLowerCase() === own.toLowerCase() || Date.parse(x.timestamp) < since) continue;
         if (!wantsLink(x.text, magnet && magnet.keyword) || (await env.DM_STATE.get(`c:${x.id}`))) continue;
         out.matched++;
@@ -230,14 +236,28 @@ export async function run(env, dryRun = false) {
         if (done) await env.DM_STATE.put(`c:${x.id}`, new Date().toISOString(), { expirationTtl: 8 * 86400 });
       }
     }
-    if (ok && !dryRun) await env.DM_STATE.put(`n:${m.id}`, String(count), { expirationTtl: 9 * 86400 });
+    if (ok && !dryRun) {
+      // Instagram raises comments_count a minute or two before the new comment shows in /comments. Saving the count
+      // then marked the reel as handled and its newest comment was never read again (2026-11-26: two "Intro" comments
+      // on the INTRO reel got no DM). So the count is saved only once the list has caught up; while it lags, the reel is
+      // read again every run, for at most COMMENTS_LAG_MS (hidden or deleted comments can keep the list short forever).
+      const complete = listed >= count || Boolean(res.paging && res.paging.next);
+      const ttl = { expirationTtl: 9 * 86400 };
+      if (complete || (waitingSince && seenCount === String(count) && Date.now() - Number(waitingSince) > COMMENTS_LAG_MS)) {
+        await env.DM_STATE.put(`n:${m.id}`, String(count), ttl);
+      } else if (seenCount !== String(count) || !waitingSince) {
+        await env.DM_STATE.put(`n:${m.id}`, `${count}@${Date.now()}`, ttl);
+        out.lagging = (out.lagging || 0) + 1;
+      } else out.lagging = (out.lagging || 0) + 1;
+    }
   }
   if (!dryRun && rulesChanged && out.failed === 0) await env.DM_STATE.put("rules", RULES_VERSION);
   if (!dryRun) {
     out.follows = await checkFollows(env).catch((e) => `follow check failed: ${e.message.slice(0, 160)}`);
     out.joins = await countJoins(env).catch((e) => `join count failed: ${e.message.slice(0, 160)}`);
   }
-  if (!dryRun && (out.matched || out.read)) {
+  // not on every read: a lagging reel is read on every run for a few minutes, and KV allows 1,000 writes a day
+  if (!dryRun && (out.matched || out.failed || (out.read && !out.lagging))) {
     // only the counts: GET / is public, so no commenter names or texts there (those go to the Worker's own logs)
     const { log, ...counts } = out;
     await env.DM_STATE.put("last-run", JSON.stringify(counts));
