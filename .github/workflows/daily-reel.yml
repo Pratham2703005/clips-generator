@@ -145,6 +145,8 @@ jobs:
       IN_SAVE_HISTORY: ${{ github.event_name == 'schedule' || inputs.save_history }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 50   # the report's "what changed" lists the commits of the last few days
 
       - uses: actions/setup-python@v5
         with:
@@ -203,6 +205,8 @@ jobs:
           python run.py "${args[@]}"
 
       - name: Keep the reel
+        # also when the make step failed: a reel held back by the voice check (run.py, 2026-11-27) must stay reviewable
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           # the run number tells two reels of one day apart (2026-10-31 had a manual run and the cron)
@@ -228,6 +232,20 @@ jobs:
             content/custom/${{ env.NAME }}/voice.wav
             content/custom/${{ env.NAME }}/variants/*/voice.wav
             content/custom/${{ env.NAME }}/variants/*/timeline.json
+            # the voice check (run.py, 2026-11-27): its verdict per take, the cast it measured against, and a rejected
+            # take's original voice (voice.bad.wav) next to the rebuilt one
+            content/${{ env.DAY }}/voice-check.json
+            content/${{ env.DAY }}/voice.bad.wav
+            content/${{ env.DAY }}/variants/*/voice-check.json
+            content/${{ env.DAY }}/variants/*/voice.json
+            content/${{ env.DAY }}/variants/*/voice.bad.wav
+            content/${{ env.DAY }}/variants/*/reel.bad.mp4
+            content/custom/${{ env.NAME }}/voice-check.json
+            content/custom/${{ env.NAME }}/voice.bad.wav
+            content/custom/${{ env.NAME }}/variants/*/voice-check.json
+            content/custom/${{ env.NAME }}/variants/*/voice.json
+            content/custom/${{ env.NAME }}/variants/*/voice.bad.wav
+            content/custom/${{ env.NAME }}/variants/*/reel.bad.mp4
             content/custom/${{ env.NAME }}/reel.mp4
             content/custom/${{ env.NAME }}/script.md
             content/custom/${{ env.NAME }}/script.json

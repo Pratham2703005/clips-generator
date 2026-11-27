@@ -64,6 +64,17 @@ stats_webhook_env = "MAKE_LINKEDIN_STATS_WEBHOOK"
 api_key_env = "MAKE_LINKEDIN_API_KEY"   # the webhooks' API key (x-make-apikey); "" = none
 organization = "urn:li:organization:144151724"
 page_url = "https://www.linkedin.com/company/144151724/"
+# Per-post stats (2026-11-27): the report sends {"organization", "shares": [post URNs, newest first]} to the stats
+# webhook; the scenario answers per post through LinkedIn's "Get the Statistics of Shares" module (see README).
+# Post URNs come from these, from the stats history (li.post_ids) and from tonight's posted.json.
+max_posts = 20
+seed_posts = [
+  "urn:li:share:7531900869987012609",  # 27 Nov
+  "urn:li:share:7531538732038934528",  # 26 Nov
+  "urn:li:share:7531348566951411712",  # 25 Nov special (How are you)
+  "urn:li:share:7531189502397165568",  # 25 Nov
+  "urn:li:share:7530846060164988928",  # 24 Nov
+]
 
 # the comment -> DM Worker (video-generator/cloudflare/instagram-dm): DMs, button clicks, Telegram joins via the DM link,
 # follows 3 h after a DM. "" = no such section.
@@ -78,3 +89,21 @@ refresh_token_env = "YT_REFRESH_TOKEN"
 # YouTube Analytics (yt-analytics.readonly): extra columns per Short, and the channel totals
 video_metrics = ["subscribersGained", "shares", "engagedViews"]
 channel_metrics = ["views", "engagedViews", "estimatedMinutesWatched", "averageViewDuration", "subscribersGained", "subscribersLost"]
+
+# The top of the mail (dashboard.py, 2026-11-27): verdict, "look at these first", five numbers against targets,
+# charts, what changed. Targets picked from the November numbers: usual views at 24 h ~1,500-2,400 (target past the
+# ~2k ceiling), best reels ~15-25 saves+shares per 1,000 views, ~0.5 new followers per 1,000 views, ~10-15 s watched
+# of ~33 s, ~4 DMs + 0 link taps a week. Raise them as the account grows.
+[dashboard]
+flop_ratio = 0.5            # yesterday's reel under this share of the usual views at 24 h = "flopped"
+hit_ratio = 1.5
+reels_in_chart = 14
+flat_followers_days = 3
+changes_days = 3            # changes.toml entries and pushed commits this many days back
+
+[dashboard.targets]
+views_24h = 3000            # median of this week's reels, views at ~24 h
+saves_shares_per_1k = 15    # at 24 h
+followers_per_1k = 2.0      # Instagram followers gained per 1,000 views gained (7 days)
+watch_s = 15                # median average watch time, seconds
+own_channel_week = 20       # DMs sent + profile-link taps in 7 days

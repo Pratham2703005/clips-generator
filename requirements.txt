@@ -3,3 +3,4 @@ faster-whisper>=1.2   # caption timing (the "small" model downloads once, ~460 M
 numpy                 # audio and pitch maths
 pillow                # character images
 websocket-client      # drives Chrome for page screenshots
+matplotlib>=3.8       # the report email's charts (tools/report/dashboard.py)

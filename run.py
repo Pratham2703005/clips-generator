@@ -53,6 +53,78 @@ def run(step: str, args: list[str], env: dict) -> None:
         sys.exit(f"{step} failed (exit {r.returncode}); the files made so far are kept")
 
 
+def voice_check_module():
+    sys.path.insert(0, str(TOOLS / "voice-generator"))
+    import voice_check
+    return voice_check
+
+
+def check_voice(folder: Path, label: str) -> dict | None:
+    """The voice check on one take (tools/voice-generator/voice_check.py: caption match + each line in its speaker's
+    voice; local, no TTS call). Writes <folder>/voice-check.json. None when the check itself can't run: that alone
+    never holds a reel back."""
+    try:
+        vc = voice_check_module()
+        res = vc.check_folder(folder)
+    except Exception as e:  # noqa: BLE001 - a broken check must not stop a reel
+        print(f"WARNING: voice check for {label} could not run ({e})", flush=True)
+        return None
+    print(f"{label}: {vc.summary(res)}", flush=True)
+    return res
+
+
+def repair_takes(folder: Path, made: list[str], env: dict) -> bool:
+    """Rebuild every take that failed the voice check from the takes that passed, with no new TTS call (user,
+    2026-11-27: free Gemini quota). The run makes up to three takes of nearly the same script (reel, trial, youtube),
+    so a bad take's lines usually exist, spoken right, in another one. A rebuilt take gets new captions, is checked
+    again and re-rendered on the same background stretch. Returns False when the reel itself is still bad (the caller
+    then holds it back); a variant that stays bad has its reel.mp4 renamed to reel.bad.mp4 so nothing posts it
+    (YouTube then uploads the reel itself; no trial reel that day)."""
+    takes = [("reel", folder)] + [(k, folder / "variants" / k) for k in made]
+    checks = {}
+    for name, f in takes:
+        p = f / "voice-check.json"
+        checks[name] = json.loads(p.read_text(encoding="utf-8")) if p.is_file() else None
+    bad = [(n, f) for n, f in takes if checks[n] is not None and not checks[n]["ok"]]
+    if not bad:
+        return True
+    vc = voice_check_module()
+    good = [vc.take_info(f, n) for n, f in takes if checks[n] is not None and checks[n]["ok"]]
+    comp = json.loads((folder / "compose.json").read_text(encoding="utf-8"))
+    background = f"{comp['background']['clip']}@{comp['background']['offset']}"
+    reel_ok = True
+    for name, f in bad:
+        print(f"\n==== voice repair: {name} (from {', '.join(g['name'] for g in good) or 'no good take'})", flush=True)
+        fixed = False
+        try:
+            script = json.loads((f / "script.json").read_text(encoding="utf-8"))
+            (f / "voice.wav").replace(f / "voice.bad.wav")
+            pieces = vc.splice_take(script, good, f / "voice.wav") if good else None
+            if pieces is None:
+                (f / "voice.bad.wav").replace(f / "voice.wav")
+                print(f"{name}: no good take has all of its lines", flush=True)
+            else:
+                print(f"{name}: rebuilt from " + ", ".join(f"{p['take']} lines {p['lines'][0]}-{p['lines'][1]}" for p in pieces), flush=True)
+                run("captions", ["--script", str(f / "script.json")], env)
+                res = check_voice(f, name)
+                if res is not None:
+                    res["repaired_from"] = pieces
+                    (f / "voice-check.json").write_text(json.dumps(res, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
+                if res is None or res["ok"]:
+                    run("compose", ["--folder", str(f), "--background", background], env)
+                    fixed = True
+        except SystemExit as e:  # a failed captions/compose step on the rebuilt take
+            print(f"WARNING: repair of {name} failed ({e})", flush=True)
+        if fixed:
+            continue
+        if name == "reel":
+            reel_ok = False
+        elif (f / "reel.mp4").is_file():
+            (f / "reel.mp4").replace(f / "reel.bad.mp4")
+            print(f"WARNING: variant {name} held back (voice check failed); see {f / 'voice-check.json'}", flush=True)
+    return reel_ok
+
+
 def characters() -> dict:
     """Characters as the content tool sees them (its config + master + mode), plus the voice labels for matching."""
     sys.path.insert(0, str(TOOLS / "content-data-preparation"))
@@ -448,6 +520,7 @@ def make_variants(folder: Path, opts: dict, day: str, env: dict) -> list[str]:
             target = ["--script", str(vf / "script.json")]
             run("voice", target, env)
             run("captions", target, env)
+            check_voice(vf, f"variant {kind}")
             if v.get("kind") == "standalone" and opts.get("visuals", True):
                 run("visuals", ["--folder", str(vf)], env)
             run("compose", ["--folder", str(vf), "--background", background], env)
@@ -543,15 +616,23 @@ def main() -> None:
 
     run("voice", target, env)
     run("captions", target, env)
+    check_voice(folder, "reel")
     if opts.get("visuals", True):
         run("visuals", ["--folder", str(folder)], env)
     else:
         (folder / "visuals.json").unlink(missing_ok=True)  # the composer shows whatever visuals.json lists
+    # rendered even when the voice check failed: the variants reuse its background stretch, and a repaired voice is
+    # re-rendered on that same stretch by repair_takes
     run("compose", ["--folder", str(folder)] + (["--clip", opts["clip"]] if opts.get("clip") else []), env)
     print(f"\nreel: {folder / 'reel.mp4'}")
     made = make_variants(folder, opts, a.date, env)
     if made:
         print(f"variants: {', '.join(made)} (in {folder / 'variants'})")
+    if not repair_takes(folder, made, env):
+        # a failed step: nothing is posted, the report email still goes out (2026-11-27: a reel with Arjun's lines in
+        # Riya's voice and 62% caption match was posted)
+        sys.exit(f"voice check failed for the reel and no good take could replace it: NOT posting. "
+                 f"See {folder / 'voice-check.json'}")
 
 
 if __name__ == "__main__":

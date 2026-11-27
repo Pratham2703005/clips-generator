@@ -1,0 +1,19 @@
+# What changed in the pipeline and why, newest first. The report email shows the entries of the last few days under
+# "Changed lately", and each "watch" as a "Check:" line (user, 2026-11-27: "I don't understand what you add and why;
+# problems happen where we should have kept our eyes"). One entry per change that ships, in plain short words:
+#   short = what is different (a few words)     why = the problem it fixes (one line)
+#   watch = what to check after it ships         what = a longer note, for the history (optional in the mail)
+
+[[change]]
+date = 2026-11-27
+short = "New short report email with charts"
+what = "Report email redesigned: verdict, what to look at, five numbers with goals, charts, what changed; old tables in the attachment"
+why = "the old one was a wall of numbers and said 'success' on a broken reel"
+watch = "Do the charts show on your phone? Tell Claude what's missing."
+
+[[change]]
+date = 2026-11-27
+short = "Voice check on every reel"
+what = "Voice check after every take; a bad take is rebuilt from the other takes (no extra Gemini call); a reel that stays bad is not posted"
+why = "27 Nov: Arjun spoke in Riya's voice and it still got posted"
+watch = "'Reel voice was fixed' or 'held back' in Fix = watch that reel once."

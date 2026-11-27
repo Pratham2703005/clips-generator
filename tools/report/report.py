@@ -437,9 +437,54 @@ def telegram_stats(cfg: dict) -> dict:
 LI_KEYS = ("impressions", "unique_impressions", "clicks", "likes", "comments", "shares", "engagement")
 
 
-def linkedin_stats(cfg: dict) -> dict:
+LI_STAT_NAMES = {"impressionCount": "impressions", "uniqueImpressionsCount": "unique_impressions",
+                 "clickCount": "clicks", "likeCount": "likes", "commentCount": "comments", "shareCount": "shares",
+                 "engagement": "engagement"}
+
+
+def linkedin_post_ids(cfg: dict, history: list[dict], posted: dict) -> list[str]:
+    """Every LinkedIn post URN we know (config seed, stats history, tonight's post), newest first (share ids grow over
+    time), at most [linkedin] max_posts."""
+    ids = set(cfg.get("seed_posts", []))
+    for s in history:
+        ids.update(((s.get("li") or {}).get("post_ids")) or [])
+    if posted.get("linkedin_post_id"):
+        ids.add(posted["linkedin_post_id"])
+    key = lambda u: int(re.sub(r"\D", "", u) or 0)  # noqa: E731
+    return sorted(ids, key=key, reverse=True)[: cfg.get("max_posts", 20)]
+
+
+def linkedin_posts(data) -> dict[str, dict]:
+    """urn -> {impressions, clicks, ...} from the scenario's answer: "posts" (or "elements", or a bare list) of either
+    LinkedIn's own shape ({"share": urn, "totalShareStatistics": {"impressionCount": ...}}) or a flat one
+    ({"urn": ..., "impressions": ...})."""
+    items = data if isinstance(data, list) else (data.get("posts") or data.get("elements") or []) if isinstance(data, dict) else []
+    if isinstance(items, str):
+        try:
+            items = json.loads(items)
+        except ValueError:
+            return {}
+    out = {}
+    for e in items if isinstance(items, list) else []:
+        if not isinstance(e, dict):
+            continue
+        urn = e.get("share") or e.get("ugcPost") or e.get("urn") or e.get("id")
+        stats = e.get("totalShareStatistics") or e
+        if not urn or not isinstance(stats, dict):
+            continue
+        row = {}
+        for k, v in stats.items():
+            name = LI_STAT_NAMES.get(k, k if k in LI_KEYS else None)
+            if name and isinstance(v, (int, float)):
+                row[name] = round(v, 4) if isinstance(v, float) else v
+        out[str(urn)] = row
+    return out
+
+
+def linkedin_stats(cfg: dict, post_ids: list[str] | None = None) -> dict:
     """The Page's followers and all-time share statistics, from the Make.com stats scenario (MAKE_LINKEDIN_STATS_WEBHOOK
-    answers {followers, impressions, clicks, likes, comments, shares, engagement}). No webhook: {}."""
+    answers {followers, impressions, clicks, likes, comments, shares, engagement}, and per post under "posts" once the
+    scenario has the "Get the Statistics of Shares" module). No webhook: {}."""
     hook = os.environ.get(cfg.get("stats_webhook_env", ""), "").strip()
     if not hook:
         return {}
@@ -447,8 +492,8 @@ def linkedin_stats(cfg: dict) -> dict:
     key = os.environ.get(cfg.get("api_key_env", ""), "").strip()
     if key:
         headers["x-make-apikey"] = key
-    req = urllib.request.Request(hook, data=json.dumps({"organization": cfg.get("organization", "")}).encode(),
-                                 method="POST", headers=headers)
+    body = {"organization": cfg.get("organization", ""), "shares": post_ids or []}
+    req = urllib.request.Request(hook, data=json.dumps(body).encode(), method="POST", headers=headers)
     try:
         with urllib.request.urlopen(req, timeout=90) as r:
             raw = (r.read() or b"{}").decode("utf-8", "replace")
@@ -467,7 +512,8 @@ def linkedin_stats(cfg: dict) -> dict:
         except (TypeError, ValueError):
             return None
     return {"page_url": cfg.get("page_url", ""), "followers": n(data.get("followers")),
-            "totals": {k: n(data[k]) for k in LI_KEYS if n(data.get(k)) is not None}}
+            "totals": {k: n(data[k]) for k in LI_KEYS if n(data.get(k)) is not None},
+            "post_ids": post_ids or [], "posts": linkedin_posts(data)}
 
 
 def threads_token_line() -> dict:
@@ -483,6 +529,31 @@ def threads_token_line() -> dict:
         line += (": generate a new one (Threads app -> Use cases -> Customize -> Settings -> Generate access token), "
                  "run tools/threads-publisher/get_token.py --long, push config.toml")
     return {"line": line, "warn": left < 14}
+
+
+# ---------- voice check (run.py + voice-generator/voice_check.py, 2026-11-27) ----------
+
+def voice_check_line(folder: Path) -> dict:
+    """One line on the voice check of the reel and its variants: caption match, each line in its speaker's voice,
+    and whether a take was rebuilt from the others or held back. Empty when no take was checked."""
+    takes = [("reel", folder)] + sorted((p.name, p) for p in (folder / "variants").glob("*") if p.is_dir()) \
+        if (folder / "variants").is_dir() else [("reel", folder)]
+    parts, warn = [], False
+    for name, f in takes:
+        res = read_json(f / "voice-check.json")
+        if not res:
+            continue
+        if res.get("ok") and not res.get("repaired_from"):
+            parts.append(f"{name} ok ({res.get('match', 0):.0%})")
+            continue
+        warn = True
+        if res.get("ok"):
+            src = ", ".join(f"{p['take']} {p['lines'][0]}-{p['lines'][1]}" for p in res["repaired_from"])
+            parts.append(f"{name} REBUILT from {src} ({res.get('match', 0):.0%})")
+        else:
+            held = " (not posted)" if name == "reel" or (f / "reel.bad.mp4").is_file() else ""
+            parts.append(f"{name} FAILED{held}: " + "; ".join(res.get("reasons") or ["?"]))
+    return {"line": "Voice check: " + " | ".join(parts), "warn": warn} if parts else {}
 
 
 # ---------- AI models: which ones made this reel, their specs, and what changed since the last run ----------
@@ -554,8 +625,10 @@ def snapshot(ig: dict, yt: dict, models: dict | None = None, pair: dict | None =
             m["id"]: {"views": m.get("views"), "likes": m.get("likes")} for m in o["th"]["posts"]}}
     if o.get("tg", {}).get("subscribers") is not None:
         s["tg"] = {"subscribers": o["tg"]["subscribers"]}
-    if o.get("li", {}).get("followers") is not None:
-        s["li"] = {"followers": o["li"]["followers"], "totals": o["li"].get("totals", {})}
+    if o.get("li", {}).get("followers") is not None or o.get("li", {}).get("post_ids"):
+        s["li"] = {"followers": o["li"].get("followers"), "totals": o["li"].get("totals", {}),
+                   # not "posts": growth_rows reads that key as views/likes per post (Facebook, Threads)
+                   "post_ids": o["li"].get("post_ids", []), "post_stats": o["li"].get("posts", {})}
     if pair:
         s["pair"] = pair
     if models:
@@ -759,33 +832,14 @@ def num(v) -> str:
 WINDOWS = [("24 h", 24, 16, 40), ("7 days", 168, 120, 240)]  # label, target age, accepted ages (hours)
 
 
-def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, history: list[dict],
-          pairs: list[dict] | None = None, others: dict | None = None, limit: int = 10) -> tuple[str, str, str, str]:
-    """(subject, text, html, attachment html). Each platform's list shows its newest `limit` posts in the mail; when a
-    list is longer, the attachment (all-posts-<day>.html) has every list in full ("" when none is longer). Mail apps
-    can't run a "show more" button (Gmail drops scripts and <details>), so the rest goes in the attachment."""
-    others = others or {}
-    full: list[str] = []      # the attachment's body
-    longer = False
-
-    def long_table(h: list[str], t: list[str], heading: str, header: str, rows: list[tuple[str, str]]) -> None:
-        nonlocal longer
-        h.append(header)
-        h += [r[0] for r in rows[:limit]]
-        h.append("</table>")
-        t += [r[1] for r in rows[:limit]]
-        if len(rows) > limit:
-            longer = True
-            more = f"+{len(rows) - limit} older: the full list is in the attached all-posts-{day}.html"
-            h.append(f"<p><i>{html.escape(more)}</i></p>")
-            t.append(more)
-        full.extend([f"<h3>{html.escape(heading)}</h3>", header] + [r[0] for r in rows] + ["</table>"])
-
+def step_rows(folder: Path, yt: dict) -> tuple[list[tuple[str, str, str]], str, bool]:
+    """(rows of (step, state, link), the reel's title, report_only): what went up tonight, from posted.json and the
+    workflow's step outcomes."""
     posted = json.loads((folder / "posted.json").read_text(encoding="utf-8")) if (folder / "posted.json").is_file() else {}
     script = json.loads((folder / "script.json").read_text(encoding="utf-8")) if (folder / "script.json").is_file() else {}
     out = {k: os.environ.get(f"OUT_{k.upper()}", "")
            for k in ("make", "instagram", "youtube", "trial", "facebook", "threads", "telegram", "telegram_jobs", "linkedin")}
-    title = script.get("title") or day
+    title = script.get("title") or folder.name
     if not posted.get("youtube_url"):
         # put up by an earlier run whose record wasn't kept (2026-11-02: a Post reel run with YouTube unticked showed
         # "skipped" for a Short that was live): the channel's recent uploads, by title
@@ -822,13 +876,43 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
         if out[key] or done:
             rows.append((label, state(bool(done), out[key]), done))
     report_only = bool(os.environ.get("REPORT_ONLY"))  # the Report workflow: stats only, no reel was made (2026-11-23)
-    if report_only:
-        rows = []
-    ok = report_only or (rows[0][1] == "success" and all(r[1] in ("success", "skipped") for r in rows))  # skipped = off
+    return ([] if report_only else rows), title, report_only
+
+
+def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, history: list[dict],
+          pairs: list[dict] | None = None, others: dict | None = None, limit: int = 10,
+          top: dict | None = None) -> tuple[str, str, str, str]:
+    """(subject, text, html, attachment html). Each platform's list shows its newest `limit` posts in the mail; when a
+    list is longer, the attachment (all-posts-<day>.html) has every list in full ("" when none is longer). Mail apps
+    can't run a "show more" button (Gmail drops scripts and <details>), so the rest goes in the attachment.
+    `top`: dashboard.render's result (2026-11-27): its verdict becomes the subject and its section opens the mail; the
+    tables below become "Details"."""
+    others = others or {}
+    full: list[str] = []      # the attachment's body
+    longer = False
+
+    def long_table(h: list[str], t: list[str], heading: str, header: str, rows: list[tuple[str, str]]) -> None:
+        nonlocal longer
+        h.append(header)
+        h += [r[0] for r in rows[:limit]]
+        h.append("</table>")
+        t += [r[1] for r in rows[:limit]]
+        if len(rows) > limit:
+            longer = True
+            more = f"+{len(rows) - limit} older: the full list is in the attached all-posts-{day}.html"
+            h.append(f"<p><i>{html.escape(more)}</i></p>")
+            t.append(more)
+        full.extend([f"<h3>{html.escape(heading)}</h3>", header] + [r[0] for r in rows] + ["</table>"])
+
+    rows, title, report_only = step_rows(folder, yt)
+    ok = report_only or (bool(rows) and rows[0][1] == "success" and all(r[1] in ("success", "skipped") for r in rows))  # skipped = off
     token = ig.get("token") or {}
     threads_token = threads_token_line()
     subject = (f"{'✅' if ok and not token.get('warn') and not threads_token.get('warn') else '⚠️'} "
                + (f"Job Shorts stats {day}" if report_only else f"Job Shorts {day}: {title}"))
+    if top:
+        icon = {"bad": "❌", "warn": "⚠️"}.get(top["level"], "✅")
+        subject = f"{icon} Job Shorts {day}: {top['headline']}"
 
     def link(v: str) -> str:
         return f'<a href="{html.escape(v)}">{html.escape(v)}</a>' if v.startswith("http") else html.escape(v)
@@ -842,7 +926,7 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
     if run_url:
         h.append(f'<p>Run: <a href="{run_url}">{run_url}</a></p>')
         t.append(f"Run: {run_url}")
-    for tk in (token, threads_token):
+    for tk in (token, threads_token, voice_check_line(folder)):
         if tk.get("line"):
             h.append(f"<p>{'⚠️ <b>' if tk.get('warn') else ''}{html.escape(tk['line'])}{'</b>' if tk.get('warn') else ''}</p>")
             t.append(tk["line"])
@@ -1069,6 +1153,26 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
                 + ", ".join(f"{num(tot[k]) if k != 'engagement' else f'{tot[k] * 100:.1f}%'} {k.replace('_', ' ')}" for k in LI_KEYS if k in tot))
         h.append(f"<p>{html.escape(line)}" + (f' (<a href="{html.escape(li["page_url"])}">Page</a>)' if li.get("page_url") else "") + "</p>")
         t.append(line)
+        # per post (2026-11-27): once the Make scenario answers "posts"; newest first
+        posts = li.get("posts") or {}
+        if posts:
+            cols = [k for k in LI_KEYS if any(k in p for p in posts.values())]
+            h.append('<table cellpadding="4" style="border-collapse:collapse"><tr><th align="left">Post</th>'
+                     + "".join(f'<th align="right">{k.replace("_", " ")}</th>' for k in cols) + "</tr>")
+            for urn in li.get("post_ids") or list(posts):
+                p = posts.get(urn)
+                if p is None:
+                    continue
+                link = f"https://www.linkedin.com/feed/update/{urn}/"
+                cells = "".join(f'<td align="right">{(f"{p[k] * 100:.1f}%" if k == "engagement" else num(p[k])) if k in p else "-"}</td>' for k in cols)
+                h.append(f'<tr><td><a href="{html.escape(link)}">{html.escape(urn.rsplit(":", 1)[-1])}</a></td>{cells}</tr>')
+                t.append(f"{urn}: " + ", ".join(f"{k} {p[k]}" for k in cols if k in p))
+            h.append("</table>")
+        elif li.get("post_ids"):
+            note = ("Per-post numbers: the Make stats scenario doesn't answer them yet (add 'Get the Statistics of Shares'"
+                    " and return its result as \"posts\"; see tools/report/README.md)")
+            h.append(f"<p><i>{html.escape(note)}</i></p>")
+            t.append(note)
     dm = others.get("dm") or {}
     if dm.get("all") is not None:
         h.append("<h3>Instagram comment -> DM</h3>")
@@ -1083,6 +1187,15 @@ def build(folder: Path, day: str, run_url: str, ig: dict, yt: dict, days: int, h
             t.append(f"Note ({name}): {o['note']}")
 
     page = lambda parts: "<html><body style=\"font-family:sans-serif\">" + "\n".join(parts) + "</body></html>"  # noqa: E731
+    if top:
+        # the short mail (2026-11-27, user: "less text, simple words"): the dashboard only; every old table and the
+        # full post lists go to the attached file
+        run = (f'<p style="font-size:12px;color:#666;font-family:Arial,sans-serif">Run: <a href="{html.escape(run_url)}">'
+               f"{html.escape(run_url)}</a></p>") if run_url else ""
+        details = page([f"<h2>{html.escape(f'Job Shorts {day}: all numbers')}</h2>"] + h[1:]
+                       + ([f"<h2>{html.escape(f'Every post of the last {days} days')}</h2>"] + full if longer else []))
+        text = "\n".join([subject, "", *top["text"], "", f"Run: {run_url}" if run_url else ""]) + "\n"
+        return subject, text, page([top["html"], run]), details
     attachment = page([f"<h2>{html.escape(f'Job Shorts {day}: every post of the last {days} days')}</h2>"] + full) if longer else ""
     return subject, "\n".join(t) + "\n", page(h), attachment
 
@@ -1144,6 +1257,7 @@ def main() -> None:
     p.add_argument("--dry-run", action="store_true", help="print the email instead of sending it")
     p.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     p.add_argument("--save-stats", action="store_true", help="add this report's numbers to the stats history (the Daily reel run does)")
+    p.add_argument("--preview", type=Path, help="also write the mail as one HTML file here (charts inline), to look at")
     a = p.parse_args()
     cfg = tomllib.loads(a.config.read_text(encoding="utf-8"))
     rep = cfg["report"]
@@ -1166,10 +1280,32 @@ def main() -> None:
     others = {"fb": facebook_stats(cfg.get("facebook", {}), since) if cfg.get("facebook") else {},
               "th": threads_stats(cfg.get("threads", {}), since) if cfg.get("threads") else {},
               "tg": telegram_stats(cfg["telegram"]) if cfg.get("telegram") else {},
-              "li": linkedin_stats(cfg["linkedin"]) if cfg.get("linkedin") else {},
+              "li": linkedin_stats(cfg["linkedin"], linkedin_post_ids(cfg["linkedin"], history, posted))
+              if cfg.get("linkedin") else {},
               "dm": dm_stats(cfg.get("instagram_dm", {}), day)}
+    # the dashboard on top (2026-11-27): verdict, what to look at, five numbers, charts, what changed. A failure here
+    # never stops the report: the old tables still go out.
+    top = None
+    if rep.get("dashboard", True):
+        try:
+            import dashboard
+            folder = a.folder.resolve()
+            steps, _, _ = step_rows(folder, yt)
+            top = dashboard.render(folder, day, ig, yt, history, snapshot(ig, yt, others=others), others, steps,
+                                   [ig.get("token") or {}, threads_token_line()], voice_check_line(folder),
+                                   models_used(folder), cfg.get("dashboard", {}))
+        except Exception as e:  # noqa: BLE001
+            print(f"WARNING: dashboard not made ({type(e).__name__}: {e}); sending the plain report", file=sys.stderr)
     subject, text, body, attachment = build(a.folder.resolve(), day, os.environ.get("RUN_URL", ""), ig, yt, rep["days"],
-                                            history, pairs, others, rep.get("rows_in_mail", 10))
+                                            history, pairs, others, rep.get("rows_in_mail", 10), top)
+    images = (top or {}).get("images") or {}
+    if a.preview:
+        import base64
+        inline = body
+        for cid, png in images.items():
+            inline = inline.replace(f"cid:{cid}", "data:image/png;base64," + base64.b64encode(png).decode())
+        a.preview.write_text(inline, encoding="utf-8")
+        print(f"preview: {a.preview}")
     if a.save_stats:
         cutoff = datetime.now(timezone.utc) - timedelta(days=rep.get("keep_stats_days", 120))
         history = [s for s in history if datetime.fromisoformat(s["at"]) >= cutoff] + [
@@ -1186,8 +1322,12 @@ def main() -> None:
     msg["Subject"], msg["From"], msg["To"] = subject, user, os.environ.get(rep["to_env"]) or user
     msg.set_content(text)
     msg.add_alternative(body, subtype="html")
+    html_part = msg.get_payload()[-1]
+    for cid, png in images.items():  # charts as inline images (Gmail shows cid: images, drops SVG and scripts)
+        html_part.add_related(png, maintype="image", subtype="png", cid=f"<{cid}>", filename=f"{cid}.png")
     if attachment:  # the full lists, when a platform has more posts than the mail shows
-        msg.add_attachment(attachment.encode("utf-8"), maintype="text", subtype="html", filename=f"all-posts-{day}.html")
+        name = f"all-numbers-{day}.html" if top else f"all-posts-{day}.html"
+        msg.add_attachment(attachment.encode("utf-8"), maintype="text", subtype="html", filename=name)
     with smtplib.SMTP_SSL(rep["smtp_host"], rep["smtp_port"], timeout=60) as s:
         s.login(user, password)
         s.send_message(msg)

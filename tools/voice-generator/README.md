@@ -51,3 +51,21 @@ python tools/voice-generator/audition.py --measure some.wav --lines lines.json  
 - Each request is a two-voice dialogue with plain direction, so one request measures two voices. Whisper times each line, and the median pitch and range per voice go to `voice-pitch.json` (in this folder, kept in git). The audio goes to `audition-audio/` (git-ignored) so you can listen.
 - It is gentle on the free tier. Requests go one at a time, at least `min_interval` (25 s) apart. A 429 waits as long as Google asks. A daily-quota 429 stops the run and keeps progress, instead of retrying. A voice already measured is never requested again.
 - 2026-10-30: 17 voices measured with 6 requests, from Algenib 113 Hz up to Leda 258 Hz. Gacrux, Puck, Charon and Enceladus all sit at 120-123 Hz.
+
+## Voice check (`voice_check.py`, 2026-11-27)
+
+`run.py` checks every take after its captions are made, with no TTS call:
+
+- **Caption match**: the take fails below 75% of the script's words (good takes run 79-100%; broken ones 22-62%).
+- **Right voice per line**: each line's median pitch (from timeline.json's line times) against each cast voice's
+  measured pitch in `voice-pitch.json` / `voice-pitch-oldman.json`. A line 2+ semitones nearer another cast voice is
+  "wrong voice"; the take fails when those lines hold more than 15% of the words. Cast voices under 3 semitones apart
+  are not tested by pitch.
+
+Results go to `<take>/voice-check.json`. After the variants are made, `run.py` rebuilds a failed take from the takes
+that passed (same speaker + text per line; consecutive lines cut as one piece), re-captions, re-checks and re-renders
+it on the same background (old voice kept as `voice.bad.wav`). A reel that still fails is **not posted** (the run
+fails, the report email says why); a variant that still fails is renamed `reel.bad.mp4`, so YouTube uploads the reel
+itself and no trial reel goes out.
+
+By hand: `python voice_check.py FOLDER` (check) or `python voice_check.py FOLDER OTHER_TAKE... --splice` (rebuild).
